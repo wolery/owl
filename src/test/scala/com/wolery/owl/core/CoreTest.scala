@@ -90,7 +90,7 @@ object CoreTest extends PropertyChecks
     isAction[S,ℤ]()                        // α is a ℤ-action
   }
 
-  def isIntervallic[S]()(implicit α: Intervallic[S],β: rbitrary[S],γ: Arbitrary[ℤ]) : Unit =
+  def isIntervallic[S]()(implicit α: Intervallic[S],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
   {
     isTorsor[S,ℤ]()                        // α is a ℤ-torsor
 
