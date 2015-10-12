@@ -7,7 +7,7 @@
 //*  Purpose : Unit tests for class Frequency.
 //*
 //*
-//*  Comments: This file uses a tab size of 3 spaces.
+//*  Comments: This file uses a tab size of 2 spaces.
 //*
 //*
 //****************************************************************************

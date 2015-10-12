@@ -14,7 +14,7 @@
 //*  Math    : 𝔹 ℝ ℚ ℤ
 //*  Greek   : αβγδεζηθιικλμνξοπρστυφχψω
 //*
-//*  Comments: This file uses a tab size of 3 spaces.
+//*  Comments: This file uses a tab size of 2 spaces.
 //*
 //*
 //****************************************************************************

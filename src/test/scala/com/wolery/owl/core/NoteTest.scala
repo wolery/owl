@@ -7,7 +7,7 @@
 //*  Purpose : Unit tests for class Note.
 //*
 //*
-//*  Comments: This file uses a tab size of 3 spaces.
+//*  Comments: This file uses a tab size of 2 spaces.
 //*
 //*
 //****************************************************************************
@@ -35,9 +35,9 @@ class NoteTest extends FunSuite
 
    test("Note properties")
    {
-      forAll("n") { (n : Note) ⇒
+      forAll("n") {(n: Note) ⇒
       {
-         assert(n(4) == Pitch(n,4),          "pitch")
+         assert(n(4) == Pitch(n,4),"pitch")
       }}
    }
 }

@@ -7,7 +7,7 @@
 //*  Purpose :
 //*
 //*
-//*  Comments: This file uses a tab size of 3 spaces.
+//*  Comments: This file uses a tab size of 2 spaces.
 //*
 //*
 //****************************************************************************
@@ -19,20 +19,20 @@ import grizzled.slf4j._
 
 object Main extends Logging
 {
-   def main(args : Array[String]) : Unit =
-   {
-      info("Hello, world!")
+  def main(args: Array[String]): Unit =
+  {
+    info("Hello, world!")
 
-      for (i ← 0 to 127)
-      {
-         val p = Pitch(i)
-         val m = p.midi
-         val f = p.frequency
-         val P = Pitch(p.frequency)
+    for (i ← 0 to 127)
+    {
+      val p = Pitch(i)
+      val m = p.midi
+      val f = p.frequency
+      val P = Pitch(p.frequency)
 
-         println(f"$m%3s $p%4s $f%8s $P%4s")
-      }
-   }
+      println(f"$m%3s $p%4s $f%8s $P%4s")
+    }
+  }
 }
 
 //****************************************************************************

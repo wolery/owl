@@ -7,7 +7,7 @@
 //*  Purpose : Unit tests for class Pitch.
 //*
 //*
-//*  Comments: This file uses a tab size of 3 spaces.
+//*  Comments: This file uses a tab size of 2 spaces.
 //*
 //*
 //****************************************************************************
@@ -44,11 +44,11 @@ class PitchTest extends FunSuite
 
    test("Pitch properties")
    {
-      forAll("p") { (p:Pitch) ⇒
+      forAll("p") {(p:Pitch) ⇒
       {
-         assert(p == Pitch(p.midi),          "midi")
-         assert(p == Pitch(p.frequency),     "frequency")
-         assert(p == Pitch(p.note,p.octave), "note+octave")
+         assert(p == Pitch(p.midi),         "midi")
+         assert(p == Pitch(p.frequency),    "frequency")
+         assert(p == Pitch(p.note,p.octave),"note+octave")
       }}
    }
 }
