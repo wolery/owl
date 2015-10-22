@@ -80,10 +80,10 @@ trait Action[S,G] extends Group[G]
    * Applies an element of the group ''G'' to an element of the carrier set
    * ''S'', whatever this may mean for the actual group action in question.
    *
-   * Notice that the mapping `(_ + g)` is necessarily a ''permutation'' of the
-   * carrier set ''S'',  and hence that the map `apply` effects a homomorphism
-   * from ''G'' into ''Sym(S)'', the permutations of ''S'' regarded as a group
-   * under composition of mappings.
+   * Notice that the map `(_ + g)` is necessarily a permutation of the carrier
+   * set ''S'', and thus `apply` is a homomorphism from ''G'' into Aut(''S''),
+   * the set of permutations of ''S'' regarded as a group under composition of
+   * mappings.
    */
   def apply(s: S,g: G): S
 }
