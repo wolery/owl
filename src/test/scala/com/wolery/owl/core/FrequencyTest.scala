@@ -24,11 +24,18 @@ import CoreTest._
 
 class FrequencyTest extends FunSuite
 {
-   implicit val f = Arbitrary(for {r ← choose(2.0,10.0)} yield Hz(Math.exp(r)))
-   implicit val r = Arbitrary(choose(-128.0,128.0))
+  implicit val α = Arbitrary(for (r ← choose(2.0,10.0)) yield Hz(Math.exp(r)))
+  implicit val β = Arbitrary(choose(-128.0,128.0))
 
-   test("Frequency is an ℝ-Torsor")          {isTorsor[Frequency,ℝ]()}
-   test("Frequency is ordered")              {isOrdered[Frequency]()}
+  test("Frequency is an ℝ-Torsor")
+  {
+    isTorsor[Frequency,ℝ]()
+  }
+
+  test("Frequency is ordered")
+  {
+    isOrdered[Frequency]()
+  }
 }
 
 //****************************************************************************

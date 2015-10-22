@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : Miscellaneous utility functions for use within the core.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -14,17 +14,16 @@
 
 package com.wolery.owl.core
 
-import Math.{log,pow,floorMod}
-
 //****************************************************************************
 
+private[core]
 object utilities
 {
   def subscript(char: Char): Char = char match
   {
     case '-'              ⇒ '₋'
     case '+'              ⇒ '₊'
-    case  c  if c.isDigit ⇒ (c - '0' + '₀').toChar
+    case  c  if c.isDigit ⇒ ('₀' + c - '0').toChar
     case  c               ⇒ c
   }
 
@@ -38,14 +37,14 @@ object utilities
     case '3'              ⇒ '³'
     case '-'              ⇒ '⁻'
     case '+'              ⇒ '⁺'
-    case  c  if c.isDigit ⇒ (c - '0' + '⁰').toChar
+    case  c  if c.isDigit ⇒ ('⁰' + c - '0').toChar
     case  c               ⇒ c
   }
 
   def subscript  (s: String): String = s.map(subscript)
   def superscript(s: String): String = s.map(superscript)
 
-  def mod12(i: ℤ): ℤ                 = floorMod(i,12)
+  def mod12(i: ℤ): ℤ                 = Math.floorMod(i,12)
 }
 
 //****************************************************************************

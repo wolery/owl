@@ -25,21 +25,24 @@ import CoreTest._
 
 class NoteTest extends FunSuite
 {
-   implicit val n = Arbitrary(oneOf(Note.notes))
-   implicit val z = Arbitrary(choose(-128,128))
+  implicit val α = Arbitrary(oneOf(Note.notes))
+  implicit val β = Arbitrary(choose(-128,128))
 
-   test("Note is intervallic")
-   {
-      isIntervallic[Note]()
-   }
+  test("Note is intervallic")
+  {
+    isIntervallic[Note]()
+  }
 
-   test("Note properties")
-   {
-      forAll("n") {(n: Note) ⇒
-      {
-         assert(n(4) == Pitch(n,4),"pitch")
-      }}
-   }
+  test("Note properties are consistent")
+  {
+    forAll("n") {(n: Note) ⇒
+    {
+       assert(n(-1) == Pitch(n,-1),"pitch")
+       assert(n( 0) == Pitch(n, 0),"pitch")
+       assert(n( 4) == Pitch(n, 4),"pitch")
+       assert(n(10) == Pitch(n,10),"pitch")
+    }}
+  }
 }
 
 //****************************************************************************

@@ -26,14 +26,13 @@ class CoreTest extends FunSuite
 {
   import CoreTest._
 
-  implicit val z = Arbitrary(choose(-128  ,128))
-  implicit val r = Arbitrary(choose(-128.0,128.0))
+  implicit val α = Arbitrary(choose(-128  ,128))
+  implicit val β = Arbitrary(choose(-128.0,128.0))
 
-  test("ℤ(0,+) is an Abelian group")        {isGroup[ℤ]()}
-  test("ℝ(0,+) is an Abelian group")        {isGroup[ℝ]()}
-
-  test("ℤ is a ℤ-torsor")                   {isTorsor[ℤ,ℤ]()}
-  test("ℝ is an R-torsor")                  {isTorsor[ℝ,ℝ]()}
+  test("ℤ(0,+) is an abelian group")       {isGroup[ℤ]()}
+  test("ℝ(0,+) is an abelian group")       {isGroup[ℝ]()}
+  test("ℤ is a ℤ-torsor")                  {isTorsor[ℤ,ℤ]()}
+  test("ℝ is an R-torsor")                 {isTorsor[ℝ,ℝ]()}
 }
 
 object CoreTest extends PropertyChecks
@@ -42,19 +41,19 @@ object CoreTest extends PropertyChecks
   {
     forAll("g") {(g: G) ⇒
     {
-       assert(α.zero + g == g,             "left identity")
-       assert(g + α.zero == g,             "right identity")
+      assert(α.zero + g == g,             "left identity")
+      assert(g + α.zero == g,             "right identity")
     }}
 
     forAll("g") {(g: G) ⇒
     {
-       assert(g + -g == α.zero,            "negation")
+      assert(g + -g == α.zero,            "negation")
     }}
 
     forAll("f","g","h") {(f: G,g: G,h: G) ⇒
     {
-       assert(f + (g + h) ==  (f + g) + h, "associative")
-       assert(f + g == g + f,              "commutative")
+      assert(f + (g + h) ==  (f + g) + h, "associative")
+      assert(f + g == g + f,              "commutative")
     }}
   }
 
@@ -62,15 +61,15 @@ object CoreTest extends PropertyChecks
   {
     forAll("s") {(s: S) ⇒
     {
-       assert(s + α.zero == s,             "identity")
+      assert(s + α.zero == s,             "identity")
     }}
 
     forAll("s","f","g") {(s: S,f: G,g: G) ⇒
     {
-       assert(s + (f+g) == (s+f) + g,      "homomorphism +")
-       assert(s - (f+g) == (s-f) - g,      "homomorphism -")
-       assert(s + f == s - -f,             "negation +")
-       assert(s - f == s + -f,             "negation -")
+      assert(s + (f + g) == (s + f) + g,  "homomorphism +")
+      assert(s - (f + g) == (s - f) - g,  "homomorphism -")
+      assert(s + f == s - -f,             "negation +")
+      assert(s - f == s + -f,             "negation -")
     }}
   }
 
@@ -80,34 +79,34 @@ object CoreTest extends PropertyChecks
 
     forAll("s","t") {(s: S,t: S) ⇒
     {
-       assert(s + (s ⊣ t) == t,            "forward interval")
-       assert(s + (t ⊢ s) == t,            "reverse interval")
-       assert(s ⊣ t == t ⊢ s,              "mutually inverse")
+      assert(s + (s ⊣ t) == t,            "forward interval")
+      assert(s + (t ⊢ s) == t,            "reverse interval")
+      assert(s ⊣ t == t ⊢ s,              "mutually inverse")
     }}
   }
 
   def isTransposing[S]()(implicit α: Transposing[S],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
   {
-    isAction[S,ℤ]()                        // α is a ℤ-action
+    isAction[S,ℤ]()                       // α is a ℤ-action
   }
 
   def isIntervallic[S]()(implicit α: Intervallic[S],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
   {
-    isTorsor[S,ℤ]()                        // α is a ℤ-torsor
+    isTorsor[S,ℤ]()                       // α is a ℤ-torsor
 
     forAll("s") {(s: S) ⇒
     {
-       assert(s.♭ == s - 1,               "flat")
-       assert(s.♮ == s    ,               "natural")
-       assert(s.♯ == s + 1,               "sharp")
+      assert(s.♭ == s - 1,                "flat")
+      assert(s.♮ == s    ,                "natural")
+      assert(s.♯ == s + 1,                "sharp")
     }}
   }
 
-  def isEquivariant[S,T,G](f: S⇒T)(implicit α: Action[S,G], β:Action[T,G],γ :Arbitrary[S],δ:Arbitrary[G]) : Unit =
+  def isEquivariant[S,T,G](f: S ⇒ T)(implicit α: Action[S,G], β:Action[T,G],γ :Arbitrary[S],δ:Arbitrary[G]): Unit =
   {
     forAll("s","g") {(s: S,g: G) ⇒
     {
-       assert(f(s) + g == f(s + g),        "equivarient")
+      assert(f(s) + g == f(s + g),        "equivarient")
     }}
   }
 
@@ -115,9 +114,9 @@ object CoreTest extends PropertyChecks
   {
     forAll("s","t","u") {(s: S,t: S,u: S) ⇒
     {
-       assert(s<=t && t<=s implies s==t,   "antisymmetric")
-       assert(s<=t && t<=u implies s<=u,   "transitive")
-       assert(s<=t || t<=s,                "total")
+      assert(s<=t && t<=s implies s==t,   "antisymmetric")
+      assert(s<=t && t<=u implies s<=u,   "transitive")
+      assert(s<=t || t<=s,                "total")
     }}
   }
 }

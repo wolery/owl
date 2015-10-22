@@ -24,33 +24,33 @@ import CoreTest._
 
 class PitchTest extends FunSuite
 {
-   implicit val p = Arbitrary(for {i ← choose(0,128)} yield Pitch(i))
-   implicit val z = Arbitrary(choose(-128,128))
+  implicit val α = Arbitrary(for (m ← choose(0,128)) yield Pitch(m))
+  implicit val β = Arbitrary(choose(-128,128))
 
-   test("Pitch is intervallic")
-   {
-      isIntervallic[Pitch]()
-   }
+  test("Pitch is intervallic")
+  {
+    isIntervallic[Pitch]()
+  }
 
-   test("Pitch is ordered")
-   {
-      isOrdered[Pitch]()
-   }
+  test("Pitch is ordered")
+  {
+    isOrdered[Pitch]()
+  }
 
-   test("Pitch⇒Note is equivarient")
-   {
-      isEquivariant[Pitch,Note,ℤ](_.note)
-   }
+  test("Pitch ⇒ Note is equivarient")
+  {
+    isEquivariant[Pitch,Note,ℤ](_.note)
+  }
 
-   test("Pitch properties")
-   {
-      forAll("p") {(p:Pitch) ⇒
-      {
-         assert(p == Pitch(p.midi),         "midi")
-         assert(p == Pitch(p.frequency),    "frequency")
-         assert(p == Pitch(p.note,p.octave),"note+octave")
-      }}
-   }
+  test("Pitch properties are consistent")
+  {
+    forAll("p") {(p: Pitch) ⇒
+    {
+      assert(p == Pitch(p.midi),         "midi")
+      assert(p == Pitch(p.frequency),    "frequency")
+      assert(p == Pitch(p.note,p.octave),"note+octave")
+    }}
+  }
 }
 
 //****************************************************************************
