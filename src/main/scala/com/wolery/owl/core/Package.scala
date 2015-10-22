@@ -62,6 +62,7 @@ package object core
 
   implicit final class TorsorSyntax[S,G](s: S)(implicit α: Torsor[S,G])
   {
+    def - (t: S): G                   = α.delta(t,s)
     def ⊣ (t: S): G                   = α.delta(s,t)
     def ⊢ (t: S): G                   = α.delta(t,s)
   }

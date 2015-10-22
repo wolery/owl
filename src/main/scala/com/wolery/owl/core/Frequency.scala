@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : Represents an audio frequency as a real number of hertz.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -14,8 +14,8 @@
 
 package com.wolery.owl.core
 
-import Frequency._
 import Math.{log,pow,abs,round}
+import Frequency._
 
 //****************************************************************************
 
@@ -23,8 +23,8 @@ final class Frequency(val Hz: ℝ) extends Ordered[Frequency]
 {
   require(Hz > 0)
 
-  def kHz   : ℝ                           = Hz / 1e3
-  def pitch : Pitch                       = A4 + round(A440 ⊣ this).toInt
+  def kHz: ℝ                              = Hz * 1e-3
+  def pitch: Pitch                        = A4 + round(this - A440).toInt
 
   override def equals(a: Any)             = a match
   {
@@ -32,15 +32,15 @@ final class Frequency(val Hz: ℝ) extends Ordered[Frequency]
     case _            ⇒ false
   }
 
+  override def toString                   = if (kHz >= 1) f"$kHz%.2fkHz" else f"$Hz%.2fHz"
   override def compare(f: Frequency)      = if (close(f)) 0 else Hz compare f.Hz
-  override def toString()                 = if (kHz >= 1) f"$kHz%.2fkHz" else  f"$Hz%.2fHz"
-  private  def close(f: Frequency)        = abs(this ⊣ f) < 1e-2
+  private  def close(f: Frequency)        = abs(this - f) < 1e-2
 }
 
 object Frequency
 {
   def apply(r: ℝ)                         = new Frequency(r)
-  def apply(p: Pitch)                     = A440 + (A4 ⊣ p).toDouble
+  def apply(p: Pitch)                     = A440 + (p - A4).toDouble
 
   private val A4                          = Pitch(A,4)
   private val A440                        = Hz(440.0)

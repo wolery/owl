@@ -79,6 +79,7 @@ object CoreTest extends PropertyChecks
 
     forAll("s","t") {(s: S,t: S) ⇒
     {
+      assert(s + (t - s) == t,            "interval")
       assert(s + (s ⊣ t) == t,            "forward interval")
       assert(s + (t ⊢ s) == t,            "reverse interval")
       assert(s ⊣ t == t ⊢ s,              "mutually inverse")
