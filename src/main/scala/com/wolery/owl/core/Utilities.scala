@@ -16,7 +16,7 @@ package com.wolery.owl.core
 
 //****************************************************************************
 
-private[core]
+//private[core]
 object utilities
 {
   def subscript(char: Char): Char = char match
@@ -44,7 +44,28 @@ object utilities
   def subscript  (s: String): String = s.map(subscript)
   def superscript(s: String): String = s.map(superscript)
 
-  def mod12(i: ℤ): ℤ                 = Math.floorMod(i,12)
+  def mod12(i: ℤ): ℤ =
+  {
+    Math.floorMod(i,12)
+  }
+
+  def rol12(bits: Int,by: ℤ): Int =
+  {
+    require((bits & ~0xFFF) == 0,"bad bits")
+
+    val i = mod12(by)
+
+    0xFFF & (bits << i | bits >> 12-i)
+  }
+
+  def ror12(bits: Int,by: ℤ): Int =
+  {
+    require((bits & ~0xFFF) == 0,"bad bits")
+
+    val i = mod12(by)
+
+    0xFFF & (bits >> i | bits << 12-i)
+  }
 }
 
 //****************************************************************************
