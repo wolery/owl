@@ -29,10 +29,10 @@ class CoreTest extends FunSuite
   implicit val α = Arbitrary(choose(-128  ,128))
   implicit val β = Arbitrary(choose(-128.0,128.0))
 
-  test("ℤ(0,+) is an abelian group")       {isGroup[ℤ]()}
-  test("ℝ(0,+) is an abelian group")       {isGroup[ℝ]()}
-  test("ℤ is a ℤ-torsor")                  {isTorsor[ℤ,ℤ]()}
-  test("ℝ is an R-torsor")                 {isTorsor[ℝ,ℝ]()}
+  test("ℤ(0,+) is an abelian group")      {isGroup[ℤ]()}
+  test("ℝ(0,+) is an abelian group")      {isGroup[ℝ]()}
+  test("ℤ is a ℤ-torsor")                 {isTorsor[ℤ,ℤ]()}
+  test("ℝ is an R-torsor")                {isTorsor[ℝ,ℝ]()}
 }
 
 object CoreTest extends PropertyChecks
@@ -75,7 +75,7 @@ object CoreTest extends PropertyChecks
 
   def isTorsor[S,G]()(implicit α: Torsor[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
   {
-    isAction[S,G]()(α,β,γ)                 // α is a group action
+    isAction[S,G]()(α,β,γ)                // α is a group action
 
     forAll("s","t") {(s: S,t: S) ⇒
     {
