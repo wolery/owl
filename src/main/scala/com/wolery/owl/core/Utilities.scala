@@ -45,15 +45,16 @@ object utilities
   def superscript(s: String): String = s.map(superscript)
 
 /**
- * Returns the positive remainder of the integer ''i'' on division by 12.
+ * Returns the non-negative remainder of the integer ''i'' on division by 12.
  *
- * The result is the unique integer 0 ≤ ''r'' < 12 such that ''i'' = 12 ''q''
+ * The result is the unique integer 0 ≤ ''r'' < 12 such that ''i'' = 12⋅''q''
  * + ''r'' for some ''q'' in ℤ.
  *
- * @param i an integer
- * @see   [[https://en.wikipedia.org/wiki/Modulo_operation]]
+ * @param  i an integer
+ * @return the non-negative remainder of ''i'' on division by 12
+ * @see    [[https://en.wikipedia.org/wiki/Modulo_operation]]
  */
-  def mod12(i: ℤ): ℤ =
+  def mod12(i: ℤ): ℕ =
   {
     val m = i % 12;
 
@@ -61,53 +62,67 @@ object utilities
   }
 
 /**
- * Rotates the binary representation of the integer ''i'' left by the given
- * number of bits, but as if the operation were being performed within a 12-
- * bit register.
+ * Rotates the binary representation of a given integer left by the specified
+ * number of bits, as if the operation were being performed within a register
+ * that is 12 bits wide.
  *
  * If ''by'' is negative, the bits are instead rotated to the right.
  *
- * The result is undefined if ''bits'' occupies more than the lowest 12 bits
- * of an integer; that is, if `bits & ~0xFFF` is non zero.
+ * The result is undefined if ''bits'' occupies more than just the 12 lowest
+ * bits of an integer; that is, if `bits & ~0xFFF` is non-zero.
  *
- * @param  bits a 12 bit word whose bits are to be rotated left
- * @param  by   the number of bit positions to rotate ''bits'' left by
- * @return 			the result of rotating the representation of ''bits'' left by
- * 							the given number of bits
+ * For example:
+ * {{{
+ *    rol12(0x001, 1) = 0x002
+ *    rol12(0x001,23) = 0x800
+ *    rol12(0x800, 1) = 0x001
+ *    rol12(0x800,-4) = 0x080
+ * }}}
+ *
+ * @param  bits a 12 bit integer
+ * @param  by   the number of bit positions to rotate ''bits'' by
+ * @return 			the result of rotating ''bits'' left by ''by'' bits
  * @see    [[https://en.wikipedia.org/wiki/Circular_shift]]
  */
   def rol12(bits: Int,by: ℤ): Int =
   {
-    require((bits & ~0xFFF) == 0,"bad bits")
+    require((bits & ~0xFFF) == 0,"domain error")         // Validate argument
 
-    val i = mod12(by)
+    val i = mod12(by)                                    // Skip cycles of 12
 
-    0xFFF & (bits << i | bits >>> 12-i)
+    0xFFF & (bits << i | bits >>> 12-i)                  // Rotate, then mask
   }
 
 /**
- * Rotates the binary representation of the integer ''i'' right by the given
- * number of bits,  but as if the operation were being performed within a 12-
- * bit register.
+ * Rotates the binary representation of a given integer right by the specified
+ * number of bits,  as if the operation were being performed within a register
+ * that is 12 bits wide.
  *
  * If ''by'' is negative, the bits are instead rotated to the left.
  *
- * The result is undefined if ''bits'' occupies more than the lowest 12 bits
- * of an integer; that is, if `bits & ~0xFFF` is non zero.
+ * The result is undefined if ''bits'' occupies more than just the 12 lowest
+ * bits of an integer; that is, if `bits & ~0xFFF` is non-zero.
  *
- * @param  bits a 12 bit word whose bits are to be rotated right
- * @param  by   the number of bit positions to rotate ''bits'' right by
- * @return 			the result of rotating the representation of ''bits'' right by
- * 							the given number of bits
+ * For example:
+ * {{{
+ *    ror12(0x001, 1) = 0x800
+ *    ror12(0x001,25) = 0x800
+ *    ror12(0x100, 1) = 0x080
+ *    ror12(0x800,-4) = 0x008
+ * }}}
+ *
+ * @param  bits a 12 bit integer
+ * @param  by   the number of bit positions to rotate ''bits'' by
+ * @return 			the result of rotating ''bits'' right by ''by'' bits
  * @see    [[https://en.wikipedia.org/wiki/Circular_shift]]
  */
   def ror12(bits: Int,by: ℤ): Int =
   {
-    require((bits & ~0xFFF) == 0,"bad bits")
+    require((bits & ~0xFFF) == 0,"domain error")         // Validate argument
 
-    val i = mod12(by)
+    val i = mod12(by)                                    // Skip cycles of 12
 
-    0xFFF & (bits >>> i | bits << 12-i)
+    0xFFF & (bits >>> i | bits << 12-i)                  // Rotate, then mask
   }
 }
 

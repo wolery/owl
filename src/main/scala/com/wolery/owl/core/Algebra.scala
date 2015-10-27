@@ -94,8 +94,8 @@ trait Action[S,G] extends Group[G]
  *
  * Here the term ''regular'' means that the action is ''sharply transitive'':
  * that is, for every pair of elements ''s₁'' and ''s₂'' in ''S'' there exists
- * a unique element ''s₂ - s₁'' in ''G'' such that ''s₁ + (s₂ - s₁) = s₂'',
- * where `+` and `-` denote the members `apply` and `delta`.
+ * a unique element ''s₂ - s₁'' in ''G'' such that ''s₁'' + (''s₂'' - ''s₁'') =
+ * ''s₂'', where `+` and `-` denote the members `apply` and `delta`.
  *
  * Thus in addition to the above axioms for a group action instances must also
  * satisfy the axiom:
@@ -122,7 +122,7 @@ trait Torsor[S,G] extends Action[S,G]
    *
    * @param  s an element of the carrier set ''S''
    * @param  t an element of the carrier set ''S''
-   * @return the unique group element that when applied to ''s'' maps it to ''t''
+   * @return the unique group element that maps ''s'' to ''t''
    */
   def delta(s: S,t: S): G
 }
