@@ -38,12 +38,12 @@ package com.wolery.owl.core
  * denote the members `zero`, `negate`, and `plus` respectively.
  *
  * @tparam G the underlying set on which these group operations act
- * @see    http://en.wikipedia.org/wiki/Group_(mathematics)
+ * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics)]]
  */
 trait Group[G]
 {
   /**
-   * Returns the identity element of this additive group.
+   * Returns the identity element of the additive group ''G''.
    */
   def zero: G
 
@@ -72,7 +72,7 @@ trait Group[G]
  *
  * @tparam G a group that acts upon the carrier set ''S'' via the mapping `apply`
  * @tparam S a non-empty set acted upon by the group ''G'' via the mapping `apply`
- * @see    http://en.wikipedia.org/wiki/Group_action
+ * @see    [[http://en.wikipedia.org/wiki/Group_action]]
  */
 trait Action[S,G] extends Group[G]
 {
@@ -95,22 +95,23 @@ trait Action[S,G] extends Group[G]
  * Here the term ''regular'' means that the action is ''sharply transitive'':
  * that is, for every pair of elements ''s₁'' and ''s₂'' in ''S'' there exists
  * a unique element ''s₂ - s₁'' in ''G'' such that ''s₁ + (s₂ - s₁) = s₂'',
- * where `-` denotes the member `delta`.
+ * where `+` and `-` denote the members `apply` and `delta`.
  *
  * Thus in addition to the above axioms for a group action instances must also
  * satisfy the axiom:
  * {{{
  *    s₁ + (s₂ - s₁) = s₂                                regularity
  * }}}
- * for all ''s₁'' and ''s₂'' in ''S'', where `-` denotes the member `delta`
+ * for all ''s₁'' and ''s₂'' in ''S'', where `+` and `-` denote the members
+ * `apply` and `delta` respectively.
  *
  * We say that ''S'' is a ''torsor'' for the group ''G'', or simply that ''S''
  * is a ''G-torsor''.
  *
  * @tparam G a group that acts regularly upon the carrier set ''S'' via the mapping `apply`
  * @tparam S a non-empty set acted upon regularly by the group ''G'' via the mapping `apply`
- * @see    http://en.wikipedia.org/wiki/Principal_homogeneous_space
- * @see    http://math.ucr.edu/home/baez/torsors.html
+ * @see    [[http://en.wikipedia.org/wiki/Principal_homogeneous_space]]
+ * @see    [[http://math.ucr.edu/home/baez/torsors.html]]
  */
 trait Torsor[S,G] extends Action[S,G]
 {
