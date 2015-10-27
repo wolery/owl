@@ -6,14 +6,34 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <name>Owl</name>
+  <url>https://github.com/wolery/owl</url>
+  <inceptionYear>September 2015</inceptionYear>
   <groupId>com.wolery.owl</groupId>
   <artifactId>owl</artifactId>
   <version>0.1.0</version>
   <packaging>jar</packaging>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  <organization>
+    <url>https://github.com/wolery</url>
+    <name>Wolery</name>
+  </organization>
+  
+  <developers>
+    <developer>
+      <id>jonathon</id>
+      <name>Jonathon Bell</name>
+      <email>jonathon.a.bell@gmail.com</email>
+      <url>https://github.com/jonathon-bell</url>
+      <timezone>US/Eastern</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <url>https://github.com/wolery/owl</url>
+    <connection>scm:git:git://github.com/wolery/owl.git</connection>
+    <developerConnection>scm:git:git@github.com:jonathon-bell/owl.git</developerConnection>
+  </scm>
 
   <dependencies>
     <dependency>
@@ -49,7 +69,7 @@
       <version>RELEASE</version>
     </dependency -->
   </dependencies>
-  
+
   <build>
     <sourceDirectory>src/main/scala</sourceDirectory>
     <testSourceDirectory>src/test/scala</testSourceDirectory>
@@ -73,5 +93,8 @@
     </plugins>
   </build>
 
-  <inceptionYear>September 2015</inceptionYear>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
 </project>
