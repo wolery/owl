@@ -32,9 +32,9 @@ class PitchTest extends FunSuite
     isIntervallic[Pitch]()
   }
 
-  test("Pitch is ordered")
+  test("Pitch is totally ordered")
   {
-    isOrdered[Pitch]()
+    isTotallyOrdered[Pitch]()
   }
 
   test("Pitch ⇒ Note is equivarient")

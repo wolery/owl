@@ -32,9 +32,9 @@ class FrequencyTest extends FunSuite
     isTorsor[Frequency,ℝ]()
   }
 
-  test("Frequency is ordered")
+  test("Frequency is totally ordered")
   {
-    isOrdered[Frequency]()
+    isTotallyOrdered[Frequency]()
   }
 }
 
