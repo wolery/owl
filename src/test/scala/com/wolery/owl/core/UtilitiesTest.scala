@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose : Unit tests for object Utilities.
+//*  Purpose : Unit tests for object utilities.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -25,8 +25,8 @@ import org.scalatest.prop.PropertyChecks
 
 class UtiltiesTest extends FunSuite with PropertyChecks
 {
-  import Integer.bitCount
   import utilities._
+  import Integer.bitCount
 
   test("mod12")
   {
@@ -37,52 +37,54 @@ class UtiltiesTest extends FunSuite with PropertyChecks
     {
       val r = mod12(i)
 
-      assert(0<=i implies i == r + 12 * (i/12))
       assert(0<=r && r<12)
+      assert(0<=i implies i == r + 12 * (i/12))
     }}
   }
 
   test("rol12")
   {
-    assert(rol12(0x001, 1) == 0x002,"A")
-    assert(rol12(0x001,23) == 0x800,"B")
-    assert(rol12(0x800, 1) == 0x001,"C")
-    assert(rol12(0x800,-4) == 0x080,"D")
+    assert(rol12(0x001, 1) == 0x002,      "[1]")
+    assert(rol12(0x001,23) == 0x800,      "[2]")
+    assert(rol12(0x800, 1) == 0x001,      "[3]")
+    assert(rol12(0x800,-4) == 0x080,      "[4]")
 
-    implicit val α = Arbitrary(choose(0,0xFFF))
-
-    forAll("i","by") {(i: ℤ,by: ℤ) ⇒
+    forAll("bits","by") {(bits: ℤ,by: ℤ) ⇒
     {
+      val b = clamp(Int.MinValue+12,Int.MaxValue-12)(by)
+      val i = bits & 0xFFF
       val j = rol12(i,by)
 
-      assert(0<=j && j<=0xFFF)
-      assert(j == rol12(i,by+12))
-      assert(j == rol12(i,by-12))
-      assert(i == ror12(rol12(i,by),by))
-      assert(bitCount(i) == bitCount(j))
+      assert(0<=j && j<=0xFFF,            "[1]")
+      assert(j == rol12(i,b + 12),        "[2]")
+      assert(j == rol12(i,b - 12),        "[3]")
+      assert(i == ror12(rol12(i,b),b),    "[4]")
+      assert(bitCount(i) == bitCount(j),  "[5]")
     }}
   }
 
   test("ror12")
   {
-    assert(ror12(0x001, 1) == 0x800,"A")
-    assert(ror12(0x001,25) == 0x800,"B")
-    assert(ror12(0x100, 1) == 0x080,"C")
-    assert(ror12(0x800,-4) == 0x008,"D")
+    assert(ror12(0x001, 1) == 0x800,      "[1]")
+    assert(ror12(0x001,25) == 0x800,      "[2]")
+    assert(ror12(0x100, 1) == 0x080,      "[3]")
+    assert(ror12(0x800,-4) == 0x008,      "[4]")
 
-    implicit val α = Arbitrary(choose(0,0xFFF))
-
-    forAll("i","by") {(i: ℤ,by: ℤ) ⇒
+    forAll("bits","by") {(bits: ℤ,by: ℤ) ⇒
     {
+      val b = clamp(Int.MinValue+12,Int.MaxValue-12)(by)
+      val i = bits & 0xFFF
       val j = ror12(i,by)
 
-      assert(0<=j && j<=0xFFF)
-      assert(j == ror12(i,by+12))
-      assert(j == ror12(i,by-12))
-      assert(i == rol12(ror12(i,by),by))
-      assert(bitCount(i) == bitCount(j))
+      assert(0<=j && j<=0xFFF,            "[1]")
+      assert(j == ror12(i,b + 12),        "[2]")
+      assert(j == ror12(i,b - 12),        "[3]")
+      assert(i == rol12(ror12(i,b),b),    "[4]")
+      assert(bitCount(i) == bitCount(j),  "[5]")
     }}
   }
+
+  def clamp(lo: ℤ,hi: ℤ)(i: ℤ) = i.min(hi).max(lo)
 }
 
 //****************************************************************************

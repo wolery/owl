@@ -37,10 +37,7 @@ class NoteTest extends FunSuite
   {
     forAll("n") {(n: Note) ⇒
     {
-      for (o ← -1 to 9)
-      {
-        assert(n(o) == Pitch(n,o),  "octave")
-      }
+      for (o ← -1 to 9) {assert(n(o) == Pitch(n,o),"[octave]")}
     }}
   }
 }

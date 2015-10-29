@@ -46,9 +46,9 @@ class PitchTest extends FunSuite
   {
     forAll("p") {(p: Pitch) ⇒
     {
-      assert(p == Pitch(p.midi),         "midi")
-      assert(p == Pitch(p.frequency),    "frequency")
-      assert(p == Pitch(p.note,p.octave),"note+octave")
+      assert(p == Pitch(p.midi),         "[midi]")
+      assert(p == Pitch(p.frequency),    "[frequency]")
+      assert(p == Pitch(p.note,p.octave),"[note+octave]")
     }}
   }
 }
