@@ -20,15 +20,13 @@ import org.scalacheck.Gen.choose
 import org.scalatest.FunSuite
 
 import CoreTest._
-import Notes._
+import CoreTest.arbitrary._
 
 //****************************************************************************
 
 class NotesTest extends FunSuite
 {
-  implicit val α = Arbitrary(for (bits ← choose(0,0xFFF)) yield Notes(bits))
-  implicit val β = Arbitrary(oneOf(Note.notes))
-  implicit val γ = Arbitrary(choose(-128,128))
+  implicit val α = Arbitrary(choose(-128,128))
 
   test("Notes is transposing")
   {

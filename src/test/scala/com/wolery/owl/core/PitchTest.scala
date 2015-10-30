@@ -19,12 +19,12 @@ import org.scalacheck.Gen.choose
 import org.scalatest.FunSuite
 
 import CoreTest._
+import CoreTest.arbitrary._
 
 //****************************************************************************
 
 class PitchTest extends FunSuite
 {
-  implicit val α = Arbitrary(for (m ← choose(0,128)) yield Pitch(m))
   implicit val β = Arbitrary(choose(-128,128))
 
   test("Pitch is intervallic")

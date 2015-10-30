@@ -15,7 +15,7 @@
 package com.wolery.owl.core;
 
 import org.scalacheck.Arbitrary
-import org.scalacheck.Gen.choose
+import org.scalacheck.Gen._
 import org.scalatest.FunSuite
 import org.scalatest.Assertions._
 import org.scalatest.prop.PropertyChecks
@@ -46,19 +46,19 @@ object CoreTest extends PropertyChecks
   {
     forAll("g") {(g: G) ⇒
     {
-      assert(α.zero + g == g,             "left identity")
-      assert(g + α.zero == g,             "right identity")
+      assert(α.zero + g == g,             "[left identity]")
+      assert(g + α.zero == g,             "[right identity]")
     }}
 
     forAll("g") {(g: G) ⇒
     {
-      assert(g + -g == α.zero,            "negation")
+      assert(g + -g == α.zero,            "[negation]")
     }}
 
     forAll("f","g","h") {(f: G,g: G,h: G) ⇒
     {
-      assert(f + (g + h) ==  (f + g) + h, "associative")
-      assert(f + g == g + f,              "commutative")
+      assert(f + (g + h) ==  (f + g) + h, "[associative]")
+      assert(f + g == g + f,              "[commutative]")
     }}
   }
 
@@ -72,15 +72,15 @@ object CoreTest extends PropertyChecks
   {
     forAll("s") {(s: S) ⇒
     {
-      assert(s + α.zero == s,             "identity")
+      assert(s + α.zero == s,             "[identity]")
     }}
 
     forAll("s","f","g") {(s: S,f: G,g: G) ⇒
     {
-      assert(s + (f + g) == (s + f) + g,  "homomorphism +")
-      assert(s - (f + g) == (s - f) - g,  "homomorphism -")
-      assert(s + f == s - -f,             "negation +")
-      assert(s - f == s + -f,             "negation -")
+      assert(s + (f + g) == (s + f) + g,  "[homomorphism +]")
+      assert(s - (f + g) == (s - f) - g,  "[homomorphism -]")
+      assert(s + f == s - -f,             "[negation +]")
+      assert(s - f == s + -f,             "[negation -]")
     }}
   }
 
@@ -96,10 +96,10 @@ object CoreTest extends PropertyChecks
 
     forAll("s","t") {(s: S,t: S) ⇒
     {
-      assert(s + (t - s) == t,            "interval")
-      assert(s + (s ⊣ t) == t,            "forward interval")
-      assert(s + (t ⊢ s) == t,            "reverse interval")
-      assert(s ⊣ t == t ⊢ s,              "mutually inverse")
+      assert(s + (t - s) == t,            "[interval]")
+      assert(s + (s ⊣ t) == t,            "[forward interval]")
+      assert(s + (t ⊢ s) == t,            "[reverse interval]")
+      assert(s ⊣ t == t ⊢ s,              "[mutually inverse]")
     }}
   }
 
@@ -122,9 +122,9 @@ object CoreTest extends PropertyChecks
 
     forAll("s") {(s: S) ⇒
     {
-      assert(s.♭ == s - 1,                "flat")
-      assert(s.♮ == s    ,                "natural")
-      assert(s.♯ == s + 1,                "sharp")
+      assert(s.♭ == s - 1,                "[flat]")
+      assert(s.♮ == s    ,                "[natural]")
+      assert(s.♯ == s + 1,                "[sharp]")
     }}
   }
 
@@ -138,7 +138,7 @@ object CoreTest extends PropertyChecks
   {
     forAll("s","g") {(s: S,g: G) ⇒
     {
-      assert(f(s) + g == f(s + g),        "equivarient")
+      assert(f(s) + g == f(s + g),        "[equivarient]")
     }}
   }
 
@@ -152,9 +152,9 @@ object CoreTest extends PropertyChecks
   {
     forAll("s","t","u") {(s: S,t: S,u: S) ⇒
     {
-      assert(s<=s,                        "reflexive")
-      assert(s<=t && t<=s implies s==t,   "antisymmetric")
-      assert(s<=t && t<=u implies s<=u,   "transitive")
+      assert(s<=s,                        "[reflexive]")
+      assert(s<=t && t<=s implies s==t,   "[antisymmetric]")
+      assert(s<=t && t<=u implies s<=u,   "[transitive]")
     }}
   }
 
@@ -170,8 +170,22 @@ object CoreTest extends PropertyChecks
 
     forAll("s","t") {(s: S,t: S) ⇒
     {
-      assert(s<=t || t<=s,                "total")
+      assert(s<=t || t<=s,                "[total]")
     }}
+  }
+
+  /**
+   * Defines random generators for some of the core data types.
+   */
+  object arbitrary
+  {
+    def gen[α:Choose,β](l: α,h: α,f: α ⇒ β) = Arbitrary(choose(l,h) map f)
+
+    implicit val α = gen(-128.0,128.0,(x: ℝ) ⇒ x)
+    implicit val β = gen(   2.0, 10.0,(x: ℝ) ⇒ Hz(Math.exp(x)))
+    implicit val γ = gen(   0,  128,  (x: ℕ) ⇒ Pitch(x))
+    implicit val δ = gen(   0,  128,  (x: ℕ) ⇒ Note(Pitch(x)))
+    implicit val ε = gen(   0,0xFFF,  (x: ℕ) ⇒ Notes(x))
   }
 }
 

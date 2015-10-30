@@ -19,14 +19,12 @@ import org.scalacheck.Gen.choose
 import org.scalatest.FunSuite
 
 import CoreTest._
+import CoreTest.arbitrary._
 
 //****************************************************************************
 
 class FrequencyTest extends FunSuite
 {
-  implicit val α = Arbitrary(for (r ← choose(2.0,10.0)) yield Hz(Math.exp(r)))
-  implicit val β = Arbitrary(choose(-128.0,128.0))
-
   test("Frequency is an ℝ-Torsor")
   {
     isTorsor[Frequency,ℝ]()

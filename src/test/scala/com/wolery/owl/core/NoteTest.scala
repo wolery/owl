@@ -20,13 +20,13 @@ import org.scalacheck.Gen.choose
 import org.scalatest.FunSuite
 
 import CoreTest._
+import CoreTest.arbitrary._
 
 //****************************************************************************
 
 class NoteTest extends FunSuite
 {
-  implicit val α = Arbitrary(oneOf(Note.notes))
-  implicit val β = Arbitrary(choose(-128,128))
+  implicit val α = Arbitrary(choose(-128,128))
 
   test("Note is intervallic")
   {
