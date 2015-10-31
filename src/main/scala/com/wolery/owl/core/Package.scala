@@ -43,8 +43,34 @@ package object core
   implicit final class BoolSyntax(a: Bool)
   {
     def implies(b: Bool): Bool        = !a || b
-    def iff    (b: Bool): Bool        = a == b
+    def iff    (b: Bool): Bool        =  a == b
   }
+
+  implicit final class SetSyntax[α](s: Set[α])
+  {
+    def \ (t: Set[α]): Set[α]         =  s.diff(t)
+    def ∪ (t: Set[α]): Set[α]         =  s.union(t)
+    def ∩ (t: Set[α]): Set[α]         =  s.intersect(t)
+    def ⊖ (t: Set[α]): Set[α]         =  s.union(t) diff s.intersect(t)
+    def ⊂ (t: Set[α]): Bool           =  s.subsetOf(t) && !t.subsetOf(s)
+    def ⊃ (t: Set[α]): Bool           =  t.subsetOf(s) && !s.subsetOf(t)
+    def ⊄ (t: Set[α]): Bool           = !s.subsetOf(t) ||  t.subsetOf(s)
+    def ⊅ (t: Set[α]): Bool           = !t.subsetOf(s) ||  s.subsetOf(t)
+    def ⊆ (t: Set[α]): Bool           =  s.subsetOf(t)
+    def ⊇ (t: Set[α]): Bool           =  t.subsetOf(s)
+    def ⊈ (t: Set[α]): Bool           = !s.subsetOf(t)
+    def ⊉ (t: Set[α]): Bool           = !t.subsetOf(s)
+    def ∋ (e: α)     : Bool           =  s.contains(e)
+    def ∌ (e: α)     : Bool           = !s.contains(e)
+  }
+
+  implicit final class ElementSyntax[α](e: α)
+  {
+    def ∈ (s: Set[α]): Bool           =  s.contains(e)
+    def ∉ (s: Set[α]): Bool           = !s.contains(e)
+  }
+
+  def ∅[α]: Set[α]                    = Set[α]()
 
   implicit final class GroupSyntax[G](f: G)(implicit α: Group[G])
   {
