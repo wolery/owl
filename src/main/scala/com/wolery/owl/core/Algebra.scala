@@ -178,11 +178,6 @@ trait Transposing[S] extends Action[S,ℤ]
  *
  * @tparam S a non-empty set acted upon regularly by the integers via the mapping `apply`
  */
-trait Intervallic[S] extends Torsor[S,ℤ]
-{
-  def zero: ℤ                 = 0
-  def negate(a: ℤ): ℤ         = -a
-  def plus  (a: ℤ,b: ℤ): ℤ    = a + b
-}
+trait Intervallic[S] extends Torsor[S,ℤ] with Transposing[S]
 
 //****************************************************************************

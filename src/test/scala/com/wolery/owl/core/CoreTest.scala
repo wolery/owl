@@ -145,11 +145,12 @@ object CoreTest extends PropertyChecks
 
   /**
    * Check that ''S'' satisfies the axioms of an intervallic set; namely, that
-   * it is a ℤ-torsor.
+   * it is a transposing ℤ-torsor.
    */
   def isIntervallic[S]()(implicit α: Intervallic[S],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
   {
-    isTorsor[S,ℤ]()                      // transposing ⇒ ℤ-torsor
+    isTorsor[S,ℤ]()                      // intervallic ⇒ ℤ-torsor
+    isTransposing[S]()                   // intervallic ⇒ transposing
 
     forAll("s") {(s: S) ⇒
     {
