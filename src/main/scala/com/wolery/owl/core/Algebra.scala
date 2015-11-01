@@ -25,49 +25,71 @@
 package com.wolery.owl.core
 
 /**
+ * Describes the operations that endow the type ''M'' with the structure of an
+ * additive monoid.
+ *
+ * Instances satisfy the axioms:
+ * {{{
+ *            0 + m = m = m + 0                          identity
+ *     (m₁ + m₂) + m₃ = m₁ + (m₂ + m₃)                   associativity
+ * }}}
+ * for all ''m'', ''m₁'', ''m₂'', ''m₃'' in ''M'', where 0 and + denote the
+ * members `zero` and `plus` respectively.  In other words, ''M'' is a
+ * semigroup with an identity element.
+ *
+ * @tparam M the underlying set on which the monoid operation acts
+ * @see    [[https://en.wikipedia.org/wiki/Monoid]]
+ */
+trait Monoid[M]
+{
+  /**
+   * The monoid identity element; that is, the unique element in ''M'' such
+   * that ''0 + m = m = m + 0'' for all ''m'' in ''M''.
+   */
+  def zero: M
+
+  /**
+   * Returns the 'sum' of the two specified monoid elements, whatever this may
+   * mean for the actual monoid in question.
+   */
+  def plus(m: M,n: M): M
+}
+
+/**
  * Describes the operations that endow the type ''G'' with the structure of an
  * additive group.
  *
- * Instances must satisfy the axioms:
+ * Instances satisfy the axioms:
  * {{{
  *            0 + g = g = g + 0                          identity
- *         g + (-g) = 0 = (-g) + g                       invertability
  *     (g₁ + g₂) + g₃ = g₁ + (g₂ + g₃)                   associativity
+ *           g + -g = 0 = -g + g                         invertability
  * }}}
- * for all ''g'', ''g₁'', ''g₂'', ''g₃'' in ''G'', where `0`, `-`, and `+`
- * denote the members `zero`, `negate`, and `plus` respectively.
+ * for all ''g'', ''g₁'', ''g₂'', ''g₃'' in ''G'', where 0, -, and + denote
+ * the members `zero`, `negate`, and `plus` respectively.  In other words,
+ * ''G'' is a monoid in which every element has an additive inverse.
  *
- * @tparam G the underlying set on which these group operations act
+ * @tparam G the underlying set on which the group operation acts
  * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics)]]
  */
-trait Group[G]
+trait Group[G] extends Monoid[G]
 {
   /**
-   * Returns the identity element of the additive group ''G''.
-   */
-  def zero: G
-
-  /**
-   * Returns the additive inverse of the given group element.
+   * Returns the inverse of the group element ''g'', the unique element ''-g''
+   * in ''G'' such that ''-g + g = 0 = g + -g''.
    */
   def negate(g: G): G
-
-  /**
-   * Returns the 'sum' of the two given group elements, whatever this may mean
-   * for the actual group in question.
-   */
-  def plus(a: G,b: G): G
 }
 
 /**
  * Describes a (right) action of the group ''G'' upon the carrier set ''S''.
  *
- * Instances must satisfy the axioms:
+ * Instances satisfy the axioms:
  * {{{
  *            s + 0 = s                                  identity
  *    s + (g₁ + g₂) = (s + g₁) + g₂                      compatability
  * }}}
- * for all ''s'' in ''S'' and all ''g₁'', ''g₂'' in ''G'', where `0` and `+`
+ * for all ''s'' in ''S'' and all ''g₁'' and ''g₂'' in ''G'', where 0 and +
  * denote the members `zero` and `plus` respectively.
  *
  * @tparam G a group that acts upon the carrier set ''S'' via the mapping `apply`
@@ -92,18 +114,18 @@ trait Action[S,G] extends Group[G]
  * Describes a regular (right) action of the group ''G'' upon the carrier set
  * ''S''.
  *
- * Here the term ''regular'' means that the action is ''sharply transitive'':
+ * Here the term ''regular'' means that the action is ''sharply transitive'';
  * that is, for every pair of elements ''s₁'' and ''s₂'' in ''S'' there exists
  * a unique element ''s₂ - s₁'' in ''G'' such that ''s₁'' + (''s₂'' - ''s₁'') =
- * ''s₂'', where `+` and `-` denote the members `apply` and `delta`.
+ * ''s₂'', where + and - denote the members `apply` and `delta` respectively.
  *
- * Thus in addition to the above axioms for a group action instances must also
- * satisfy the axiom:
+ * Thus in addition to the axioms of a group action,  instances also satisfy
+ * the axiom:
  * {{{
  *    s₁ + (s₂ - s₁) = s₂                                regularity
  * }}}
- * for all ''s₁'' and ''s₂'' in ''S'', where `+` and `-` denote the members
- * `apply` and `delta` respectively.
+ * for all ''s₁'' and ''s₂'' in ''S'', where + and - denote the members `apply`
+ * and `delta` respectively.
  *
  * We say that ''S'' is a ''torsor'' for the group ''G'', or simply that ''S''
  * is a ''G-torsor''.
@@ -131,7 +153,8 @@ trait Torsor[S,G] extends Action[S,G]
  * Describes a (right) action of the integers ℤ upon the carrier set ''S''.
  *
  * Transposing sets are of central importance within Owl because they allow us
- * to model transpositions of set elements using simple integer arithmetic.
+ * to model transpositions of set elements - notes, pitches, scales, and so on
+ * - using simple integer arithmetic.
  *
  * Notice that because ℤ is a unital ring, its action upon ''S'' is completely
  * determined by the mapping `apply(_,1)`.
@@ -148,6 +171,10 @@ trait Transposing[S] extends Action[S,ℤ]
 /**
  * Describes a regular (right) action of the integers ℤ upon the carrier set
  * ''S''.
+ *
+ * In an intervallic set, each pair of elements is uniquely associated with an
+ * ''interval'' - the unique integer that when applied to the first element of
+ * the pair 'transposes' it to the second.
  *
  * @tparam S a non-empty set acted upon regularly by the integers via the mapping `apply`
  */

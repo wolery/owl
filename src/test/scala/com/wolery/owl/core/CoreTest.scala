@@ -29,14 +29,46 @@ class CoreTest extends FunSuite
   implicit val α = Arbitrary(choose(-128  ,128))
   implicit val β = Arbitrary(choose(-128.0,128.0))
 
-  test("ℤ(0,+) is an abelian group")      {isGroup[ℤ]()}
-  test("ℝ(0,+) is an abelian group")      {isGroup[ℝ]()}
   test("ℤ is a ℤ-torsor")                 {isTorsor[ℤ,ℤ]()}
+  test("ℤ(+) is commutative")             {isCommutative[ℤ]()}
   test("ℝ is an R-torsor")                {isTorsor[ℝ,ℝ]()}
+  test("ℝ(+) is commutative")             {isCommutative[ℝ]()}
 }
 
 object CoreTest extends PropertyChecks
 {
+  /**
+   * Check that the monoid operation for ''M'' is commutative.
+   *
+   * @see [[https://en.wikipedia.org/wiki/Commutative_property]]
+   */
+  def isCommutative[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
+  {
+    forAll("a","b") {(a: M,b: M) ⇒
+    {
+      assert(a + b == b + a,              "[commutative]")
+    }}
+  }
+
+  /**
+   * Check that ''M'' satisfies the axioms of a monoid.
+   *
+   * @see [[https://en.wikipedia.org/wiki/Monoid]]
+   */
+  def isMonoid[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
+  {
+    forAll("a") {(a: M) ⇒
+    {
+      assert(α.zero + a == a,             "[left identity]")
+      assert(a + α.zero == a,             "[right identity]")
+    }}
+
+    forAll("a","b","c") {(a: M,b: M,c: M) ⇒
+    {
+      assert(a + (b + c) == (a + b) + c,  "[associative]")
+    }}
+  }
+
   /**
    * Check that ''G'' satisfies the axioms of a group.
    *
@@ -44,21 +76,11 @@ object CoreTest extends PropertyChecks
    */
   def isGroup[G]()(implicit α: Group[G],β: Arbitrary[G]): Unit =
   {
-    forAll("g") {(g: G) ⇒
-    {
-      assert(α.zero + g == g,             "[left identity]")
-      assert(g + α.zero == g,             "[right identity]")
-    }}
+    isMonoid[G]()
 
-    forAll("g") {(g: G) ⇒
+    forAll("a") {(a: G) ⇒
     {
-      assert(g + -g == α.zero,            "[negation]")
-    }}
-
-    forAll("f","g","h") {(f: G,g: G,h: G) ⇒
-    {
-      assert(f + (g + h) ==  (f + g) + h, "[associative]")
-      assert(f + g == g + f,              "[commutative]")
+      assert(a + -a == α.zero,            "[negation]")
     }}
   }
 
@@ -70,6 +92,8 @@ object CoreTest extends PropertyChecks
    */
   def isAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
   {
+    isGroup[G]()
+
     forAll("s") {(s: S) ⇒
     {
       assert(s + α.zero == s,             "[identity]")

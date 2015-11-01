@@ -46,6 +46,14 @@ package object core
     def iff    (b: Bool): Bool        =  a == b
   }
 
+  def ∅[α]: Set[α]                    = Set[α]()
+
+  implicit final class ElementSyntax[α](e: α)
+  {
+    def ∈ (s: Set[α]): Bool           =  s.contains(e)
+    def ∉ (s: Set[α]): Bool           = !s.contains(e)
+  }
+
   implicit final class SetSyntax[α](s: Set[α])
   {
     def \ (t: Set[α]): Set[α]         =  s.diff(t)
@@ -64,26 +72,22 @@ package object core
     def ∌ (e: α)     : Bool           = !s.contains(e)
   }
 
-  implicit final class ElementSyntax[α](e: α)
+  implicit final class MonoidSyntax[M](m: M)(implicit α: Monoid[M])
   {
-    def ∈ (s: Set[α]): Bool           =  s.contains(e)
-    def ∉ (s: Set[α]): Bool           = !s.contains(e)
+    def unary_+ : M                   = m
+    def + (n: M): M                   = α.plus(m,n)
   }
-
-  def ∅[α]: Set[α]                    = Set[α]()
 
   implicit final class GroupSyntax[G](f: G)(implicit α: Group[G])
   {
-    def unary_+ : G                   = f
     def unary_- : G                   = α.negate(f)
-    def + (g: G): G                   = α.plus(f, g)
-    def - (g: G): G                   = α.plus(f,-g)
+    def - (g: G): G                   = α.plus(f,α.negate(g))
   }
 
   implicit final class ActionSyntax[S,G](s: S)(implicit α: Action[S,G])
   {
-    def + (g: G): S                   = α.apply(s, g)
-    def - (g: G): S                   = α.apply(s,-g)
+    def + (g: G): S                   = α.apply(s,g)
+    def - (g: G): S                   = α.apply(s,α.negate(g))
   }
 
   implicit final class TorsorSyntax[S,G](s: S)(implicit α: Torsor[S,G])
