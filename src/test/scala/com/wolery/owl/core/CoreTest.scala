@@ -149,8 +149,8 @@ object CoreTest extends PropertyChecks
    */
   def isIntervallic[S]()(implicit α: Intervallic[S],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
   {
-    isTorsor[S,ℤ]()                      // intervallic ⇒ ℤ-torsor
-    isTransposing[S]()                   // intervallic ⇒ transposing
+    isTransposing[S]()                    // intervallic ⇒ transposing
+    isTorsor[S,ℤ]()                       // intervallic ⇒ ℤ-torsor
 
     forAll("s") {(s: S) ⇒
     {
@@ -166,8 +166,11 @@ object CoreTest extends PropertyChecks
    *
    * @see [[https://en.wikipedia.org/wiki/Equivariant_map]]
    */
-  def isEquivariant[S,T,G](f: S ⇒ T)(implicit α: Action[S,G], β:Action[T,G],γ : Arbitrary[S],δ: Arbitrary[G]): Unit =
+  def isEquivariant[S,T,G](f: S ⇒ T)(implicit α: Action[S,G], β:Action[T,G],γ : Arbitrary[S],δ: Arbitrary[T],ε: Arbitrary[G]): Unit =
   {
+    isAction[S,G]()                       // equivariant ⇒ G-action
+    isAction[T,G]()                       // equivariant ⇒ G-action
+
     forAll("s","g") {(s: S,g: G) ⇒
     {
       assert(f(s) + g == f(s + g),        "[equivarient]")
@@ -176,7 +179,7 @@ object CoreTest extends PropertyChecks
 
   /**
    * Check that ''S'' satisfies the axioms of a partial ordering; namely that
-   * the relation `<=` is reflexive, antisymmetric, and transitive.
+   * the relation <= is reflexive, antisymmetric, and transitive.
    *
    * @see [[https://en.wikipedia.org/wiki/Partially_ordered_set]]
    */
