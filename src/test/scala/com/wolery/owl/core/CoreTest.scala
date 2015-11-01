@@ -14,10 +14,12 @@
 
 package com.wolery.owl.core;
 
-import org.scalacheck.Arbitrary
+//****************************************************************************
+
 import org.scalacheck.Gen._
-import org.scalatest.FunSuite
+import org.scalacheck.Arbitrary
 import org.scalatest.Assertions._
+import org.scalatest.FunSuite
 import org.scalatest.prop.PropertyChecks
 
 //****************************************************************************
@@ -26,8 +28,13 @@ class CoreTest extends FunSuite
 {
   import CoreTest._
 
-  implicit val α = Arbitrary(choose(-128  ,128))
-  implicit val β = Arbitrary(choose(-128.0,128.0))
+  /* ℝ only satisfies the axioms exactly for limited subsets of its values due
+   	 to the inherent limitations of floating point representation. We are only
+   	 interested in audible frequencies, however, so restrict the set of values
+   	 to test for  rather than thread a custom comparison  function through the
+   	 entire test suite...*/
+
+  implicit val α: Arbitrary[ℝ] = arbitrary.α
 
   test("ℤ is a ℤ-torsor")                 {isTorsor[ℤ,ℤ]()}
   test("ℤ(+) is commutative")             {isCommutative[ℤ]()}
@@ -76,11 +83,11 @@ object CoreTest extends PropertyChecks
    */
   def isGroup[G]()(implicit α: Group[G],β: Arbitrary[G]): Unit =
   {
-    isMonoid[G]()
+    isMonoid[G]()                         // group ⇒ monoid
 
-    forAll("a") {(a: G) ⇒
+    forAll("g") {(g: G) ⇒
     {
-      assert(a + -a == α.zero,            "[negation]")
+      assert(g + -g == α.zero,            "[negation]")
     }}
   }
 
@@ -92,7 +99,7 @@ object CoreTest extends PropertyChecks
    */
   def isAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
   {
-    isGroup[G]()
+    isGroup[G]()                          // action ⇒ group
 
     forAll("s") {(s: S) ⇒
     {
@@ -116,7 +123,7 @@ object CoreTest extends PropertyChecks
    */
   def isTorsor[S,G]()(implicit α: Torsor[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
   {
-    isAction[S,G]()
+    isAction[S,G]()                       // torsor ⇒ action
 
     forAll("s","t") {(s: S,t: S) ⇒
     {
@@ -133,7 +140,7 @@ object CoreTest extends PropertyChecks
    */
   def isTransposing[S]()(implicit α: Transposing[S],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
   {
-    isAction[S,ℤ]()
+    isAction[S,ℤ]()                       // transposing ⇒ ℤ-action
   }
 
   /**
@@ -142,7 +149,7 @@ object CoreTest extends PropertyChecks
    */
   def isIntervallic[S]()(implicit α: Intervallic[S],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
   {
-    isTorsor[S,ℤ]()
+    isTorsor[S,ℤ]()                      // transposing ⇒ ℤ-torsor
 
     forAll("s") {(s: S) ⇒
     {
@@ -190,7 +197,7 @@ object CoreTest extends PropertyChecks
    */
   def isTotallyOrdered[S <: Ordered[S]]()(implicit α: Arbitrary[S]) : Unit =
   {
-    isPartiallyOrdered[S]()
+    isPartiallyOrdered[S]()               // totally ordered ⇒ partial ordered
 
     forAll("s","t") {(s: S,t: S) ⇒
     {
@@ -203,7 +210,7 @@ object CoreTest extends PropertyChecks
    */
   object arbitrary
   {
-    def gen[α:Choose,β](l: α,h: α,f: α ⇒ β) = Arbitrary(choose(l,h) map f)
+    def gen[α: Choose,β](l: α,h: α,f: α ⇒ β) = Arbitrary(choose(l,h) map f)
 
     implicit val α = gen(-128.0,128.0,(x: ℝ) ⇒ x)
     implicit val β = gen(   2.0, 10.0,(x: ℝ) ⇒ Hz(Math.exp(x)))
