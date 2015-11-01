@@ -158,7 +158,7 @@ object CoreTest extends PropertyChecks
    *
    * @see [[https://en.wikipedia.org/wiki/Equivariant_map]]
    */
-  def isEquivariant[S,T,G](f: S ⇒ T)(implicit α: Action[S,G], β:Action[T,G],γ :Arbitrary[S],δ:Arbitrary[G]): Unit =
+  def isEquivariant[S,T,G](f: S ⇒ T)(implicit α: Action[S,G], β:Action[T,G],γ : Arbitrary[S],δ: Arbitrary[G]): Unit =
   {
     forAll("s","g") {(s: S,g: G) ⇒
     {
@@ -172,7 +172,7 @@ object CoreTest extends PropertyChecks
    *
    * @see [[https://en.wikipedia.org/wiki/Partially_ordered_set]]
    */
-  def isPartiallyOrdered[S <: Ordered[S]]()(implicit α:Arbitrary[S]) : Unit =
+  def isPartiallyOrdered[S <: Ordered[S]]()(implicit α: Arbitrary[S]) : Unit =
   {
     forAll("s","t","u") {(s: S,t: S,u: S) ⇒
     {
@@ -188,7 +188,7 @@ object CoreTest extends PropertyChecks
    *
    * @see [[https://en.wikipedia.org/wiki/Total_order]]
    */
-  def isTotallyOrdered[S <: Ordered[S]]()(implicit α:Arbitrary[S]) : Unit =
+  def isTotallyOrdered[S <: Ordered[S]]()(implicit α: Arbitrary[S]) : Unit =
   {
     isPartiallyOrdered[S]()
 
