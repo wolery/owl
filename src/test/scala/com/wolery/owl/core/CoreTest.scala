@@ -37,9 +37,9 @@ class CoreTest extends FunSuite
   implicit val α: Arbitrary[ℝ] = arbitrary.α
 
   test("ℤ is a ℤ-torsor")                 {isTorsor[ℤ,ℤ]()}
-  test("ℤ(+) is commutative")             {isCommutative[ℤ]()}
+  test("ℤ is abelian")                    {isCommutative[ℤ]()}
   test("ℝ is an R-torsor")                {isTorsor[ℝ,ℝ]()}
-  test("ℝ(+) is commutative")             {isCommutative[ℝ]()}
+  test("ℝ is abelian")                    {isCommutative[ℝ]()}
 }
 
 object CoreTest extends PropertyChecks

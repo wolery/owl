@@ -26,10 +26,34 @@ import CoreTest.arbitrary._
 
 class NotesTest extends FunSuite
 {
-  implicit val α = Arbitrary(choose(-128,128))
+  test("Notes(∪) is a commutative monoid")
+  {
+    implicit object α extends Monoid[Notes]
+    {
+      def zero                    = Notes()
+      def plus(a: Notes,b: Notes) = a union b
+    }
+
+    isMonoid[Notes]()
+    isCommutative[Notes]()
+  }
+
+  test("Notes(∩) is a commutative monoid")
+  {
+    implicit object α extends Monoid[Notes]
+    {
+      def zero                    = Notes(0xFFF)
+      def plus(a: Notes,b: Notes) = a intersect b
+    }
+
+    isMonoid[Notes]()
+    isCommutative[Notes]()
+  }
 
   test("Notes is transposing")
   {
+    implicit val α = Arbitrary(choose(-128,128))
+
     isTransposing[Notes]()
   }
 }
