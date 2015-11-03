@@ -47,14 +47,9 @@ final class Notes private (private val bits: Int) extends Set[Note]
 
   def +  (n: Note) : Notes                = new Notes(bits |  bit(n))
   def -  (n: Note) : Notes                = new Notes(bits & ~bit(n))
-  def |  (s: Notes): Notes                = new Notes(bits |  s.bits)
-  def ^  (s: Notes): Notes                = new Notes(bits ^  s.bits)
-  def &  (s: Notes): Notes                = new Notes(bits &  s.bits)
-  def &~ (s: Notes): Notes                = new Notes(bits & ~s.bits)
+  def unary_~      : Notes                = new Notes(0xFFF& ~ bits)
 
   def contains(n: Note):  Bool            = (bits   & bit(n))  != 0
-  def contains(s: Notes): Bool            = (s.bits & ~bits)   == 0
-  def subsetOf(s: Notes): Bool            = (bits   & ~s.bits) == 0
 
   override def size: ℕ                    = bitCount(bits)
   override def empty: Notes               = new Notes(0)
@@ -66,18 +61,18 @@ final class Notes private (private val bits: Int) extends Set[Note]
 object Notes
 {
   def empty: Notes                        = new Notes(0)
-
   def apply(s: Note*)                     = (builder ++= s).result
+  def apply(s: Set[Note])                 = (builder ++= s).result
 
   implicit
-  object α extends CanBuildFrom[Notes,Note,Notes]
+  object canBuildFrom extends CanBuildFrom[Notes,Note,Notes]
   {
     def apply()                           = builder
     def apply(s: Notes)                   = builder
   }
 
   implicit
-  object β extends Transposing[Notes]
+  object transposing extends Transposing[Notes]
   {
     def apply(s: Notes,i: ℤ)              = new Notes(rol12(s.bits,i))
   }
@@ -91,10 +86,6 @@ object Notes
     def result()                          = new Notes(bits)
   }
 
-/**
- * Returns the index of the bit in which we record the presence or absence of
- * a given note within a note set.
- */
   private
   def bit(n: Note): Int                   = 1 << n-C
 
