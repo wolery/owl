@@ -27,35 +27,27 @@ import CoreTest.arbitrary._
 
 class NotesTest extends FunSuite
 {
-  test("Notes is transposing")
-  {
-    implicit val α = Arbitrary(choose(-128,128))
+  //https://en.wikipedia.org/wiki/Boolean_algebra_(structure)
 
-    isTransposing[Notes]()
-  }
-
-  test("Notes(∪) is an abelian monoid")
+  test("Notes(∩,∪,~,∅,~∅) is a boolean algebra")
   {
-    implicit object α extends Monoid[Notes]
+    val (nil,one) = (Notes(),~Notes())
+
+    forAll("a","b","c") {(a: Notes,b: Notes,c: Notes) =>
     {
-      def zero                    = Notes()
-      def plus(a: Notes,b: Notes) = a union b
-    }
-
-    isMonoid[Notes]()
-    isCommutative[Notes]()
-  }
-
-  test("Notes(∩) is an abelian monoid")
-  {
-    implicit object α extends Monoid[Notes]
-    {
-      def zero                    = Notes(0xFFF)
-      def plus(a: Notes,b: Notes) = a intersect b
-    }
-
-    isMonoid[Notes]()
-    isCommutative[Notes]()
+      assert(a ∪ (b ∪ c)  == (a ∪ b) ∪ c,      "[∪ associativity]")
+      assert(a ∩ (b ∩ c)  == (a ∩ b) ∩ c,      "[∩ associativity]")
+      assert(     a ∪ b   ==  b ∪ a,           "[∪ commutativity]")
+      assert(     a ∩ b   ==  b ∩ a,           "[∩ commutativity]")
+      assert(a ∪ (a ∩ b)  == a,                "[∪ absorption]")
+      assert(a ∩ (a ∪ b)  == a,                "[∩ absorption]")
+      assert(     a ∪ nil ==  a,               "[∪ identity]")
+      assert(     a ∩ one ==  a,               "[∩ identity]")
+      assert(a ∪ (b ∩ c)  == (a ∪ b) ∩ (a ∪ c),"[∪ distributivity]")
+      assert(a ∩ (b ∪ c)  == (a ∩ b) ∪ (a ∩ c),"[∩ distributivity]")
+      assert(     a ∪ ~a  == one,              "[∪ complements]")
+      assert(     a ∩ ~a  == nil,              "[∩ complements]")
+    }}
   }
 
   test("Notes(⊆) is a partial ordering")
@@ -67,6 +59,13 @@ class NotesTest extends FunSuite
     }
 
     isPartiallyOrdered[Notes]()
+  }
+
+  test("Notes is transposing")
+  {
+    implicit val α = Arbitrary(choose(-128,128))
+
+    isTransposing[Notes]()
   }
 
   test("C major looks ok")
