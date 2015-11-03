@@ -46,6 +46,21 @@ package object core
     def iff    (b: Bool): Bool        =  a == b
   }
 
+  implicit final class PartialOrderingSyntax[S](s: S)(implicit α: PartialOrdering[S])
+  {
+    def <    (t: S): Bool             = α.lt(s,t)
+    def <=   (t: S): Bool             = α.lteq(s,t)
+    def >    (t: S): Bool             = α.gt(s,t)
+    def >=   (t: S): Bool             = α.gteq(s,t)
+    def equiv(t: S): Bool             = α.equiv(s,t)
+  }
+
+  implicit final class OrderingSyntax[S](s: S)(implicit α: Ordering[S])
+  {
+    def max(t: S): S                  = α.max(s,t)
+    def min(t: S): S                  = α.min(s,t)
+  }
+
   def ∅[α]: Set[α]                    = Set[α]()
 
   implicit final class ElementSyntax[α](e: α)

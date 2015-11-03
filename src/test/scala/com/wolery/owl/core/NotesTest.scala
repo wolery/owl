@@ -14,8 +14,9 @@
 
 package com.wolery.owl.core;
 
+//****************************************************************************
+
 import org.scalacheck.Arbitrary
-import org.scalacheck.Gen.oneOf
 import org.scalacheck.Gen.choose
 import org.scalatest.FunSuite
 
@@ -26,7 +27,14 @@ import CoreTest.arbitrary._
 
 class NotesTest extends FunSuite
 {
-  test("Notes(∪) is a commutative monoid")
+  test("Notes is transposing")
+  {
+    implicit val α = Arbitrary(choose(-128,128))
+
+    isTransposing[Notes]()
+  }
+
+  test("Notes(∪) is an abelian monoid")
   {
     implicit object α extends Monoid[Notes]
     {
@@ -38,7 +46,7 @@ class NotesTest extends FunSuite
     isCommutative[Notes]()
   }
 
-  test("Notes(∩) is a commutative monoid")
+  test("Notes(∩) is an abelian monoid")
   {
     implicit object α extends Monoid[Notes]
     {
@@ -50,11 +58,15 @@ class NotesTest extends FunSuite
     isCommutative[Notes]()
   }
 
-  test("Notes is transposing")
+  test("Notes(<=) is a partial ordering")
   {
-    implicit val α = Arbitrary(choose(-128,128))
+    implicit object α extends PartialOrdering[Notes]
+    {
+      def lteq(s: Notes,t: Notes) = s ⊆ t
+      def tryCompare(x: Notes,y: Notes) = ???
+    }
 
-    isTransposing[Notes]()
+    isPartiallyOrdered[Notes]()
   }
 }
 

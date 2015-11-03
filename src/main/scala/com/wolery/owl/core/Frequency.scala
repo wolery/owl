@@ -14,12 +14,14 @@
 
 package com.wolery.owl.core
 
+//****************************************************************************
+
 import Math.{log,pow,abs,round}
 import Frequency._
 
 //****************************************************************************
 
-final class Frequency(val Hz: ℝ) extends Ordered[Frequency]
+final class Frequency(val Hz: ℝ)
 {
   require(Hz > 0)
 
@@ -33,7 +35,6 @@ final class Frequency(val Hz: ℝ) extends Ordered[Frequency]
   }
 
   override def toString                   = if (kHz >= 1) f"$kHz%.2fkHz" else f"$Hz%.2fHz"
-  override def compare(f: Frequency)      = if (close(f)) 0 else Hz compare f.Hz
   private  def close(f: Frequency)        = abs(this - f) < 1e-2
 }
 
@@ -45,7 +46,12 @@ object Frequency
   private val A4                          = Pitch(A,4)
   private val A440                        = Hz(440.0)
 
-  implicit val τ: Torsor[Frequency,ℝ]     = new Torsor[Frequency,ℝ]
+  implicit object ordering extends Ordering[Frequency]
+  {
+    def compare(f: Frequency,g: Frequency)= if (f close g) 0 else f.Hz compare g.Hz
+  }
+
+  implicit val torsor: Torsor[Frequency,ℝ]= new Torsor[Frequency,ℝ]
   {
      val zero                             = 0.0
      def negate(r: ℝ)                     = -r

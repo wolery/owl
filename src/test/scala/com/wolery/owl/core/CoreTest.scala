@@ -31,8 +31,8 @@ class CoreTest extends FunSuite
   /* ℝ only satisfies the axioms exactly for limited subsets of its values due
    	 to the inherent limitations of floating point representation. We are only
    	 interested in audible frequencies, however, so restrict the set of values
-   	 to test for  rather than thread a custom comparison  function through the
-   	 entire test suite...*/
+   	 that we test for rather than thread a  custom comparison function through
+   	 the entire test suite...*/
 
   implicit val α: Arbitrary[ℝ] = arbitrary.α
 
@@ -77,7 +77,8 @@ object CoreTest extends PropertyChecks
   }
 
   /**
-   * Check that ''G'' satisfies the axioms of a group.
+   * Check that ''G'' satisfies the axioms of a group; namely that it is a
+   * monoid in which every element possesses an additive inverse.
    *
    * @see [[https://en.wikipedia.org/wiki/Group_(mathematics)]]
    */
@@ -183,7 +184,7 @@ object CoreTest extends PropertyChecks
    *
    * @see [[https://en.wikipedia.org/wiki/Partially_ordered_set]]
    */
-  def isPartiallyOrdered[S <: Ordered[S]]()(implicit α: Arbitrary[S]) : Unit =
+  def isPartiallyOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]) : Unit =
   {
     forAll("s","t","u") {(s: S,t: S,u: S) ⇒
     {
@@ -195,13 +196,13 @@ object CoreTest extends PropertyChecks
 
   /**
    * Check that ''S'' satisfies the axioms of a total ordering; namely that it
-   * is partially ordered and, moreover, that the ordering is total.
+   * is partially ordered and, moreover, that the ordering <= is total.
    *
    * @see [[https://en.wikipedia.org/wiki/Total_order]]
    */
-  def isTotallyOrdered[S <: Ordered[S]]()(implicit α: Arbitrary[S]) : Unit =
+  def isOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]) : Unit =
   {
-    isPartiallyOrdered[S]()               // totally ordered ⇒ partial ordered
+    isPartiallyOrdered[S]()               // ordered ⇒ partial ordered
 
     forAll("s","t") {(s: S,t: S) ⇒
     {

@@ -14,8 +14,8 @@
 
 package com.wolery.owl.core;
 
-import org.scalacheck.Arbitrary
-import org.scalacheck.Gen.choose
+//****************************************************************************
+
 import org.scalatest.FunSuite
 
 import CoreTest._
@@ -32,7 +32,7 @@ class FrequencyTest extends FunSuite
 
   test("Frequency is totally ordered")
   {
-    isTotallyOrdered[Frequency]()
+    isOrdered[Frequency]()
   }
 }
 

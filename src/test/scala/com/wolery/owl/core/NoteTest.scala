@@ -14,6 +14,8 @@
 
 package com.wolery.owl.core;
 
+//****************************************************************************
+
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen.oneOf
 import org.scalacheck.Gen.choose
@@ -37,7 +39,10 @@ class NoteTest extends FunSuite
   {
     forAll("n") {(n: Note) ⇒
     {
-      for (o ← -1 to 9) {assert(n(o) == Pitch(n,o),"[octave]")}
+      for (o ← -1 to 9)
+      {
+        assert(n(o) == Pitch(n,o),"[octave]")
+      }
     }}
   }
 }
