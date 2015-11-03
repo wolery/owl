@@ -17,6 +17,7 @@ package com.wolery.owl.core;
 //****************************************************************************
 
 import java.lang.Integer._
+import scala.collection.GenSet
 import scala.collection.SetLike
 import scala.collection.mutable.Builder
 import scala.collection.generic.CanBuildFrom
@@ -45,11 +46,46 @@ final class Notes private (private val bits: Int) extends Set[Note]
     }
   }
 
-  def +  (n: Note) : Notes                = new Notes(bits |  bit(n))
-  def -  (n: Note) : Notes                = new Notes(bits & ~bit(n))
-  def unary_~      : Notes                = new Notes(0xFFF& ~ bits)
+  def + (n: Note) : Notes                 = new Notes(bits |  bit(n))
+  def - (n: Note) : Notes                 = new Notes(bits & ~bit(n))
+  def \ (s: Notes): Notes                 = new Notes(bits & ~s.bits)
+  def ∪ (s: Notes): Notes                 = new Notes(bits |  s.bits)
+  def ∩ (s: Notes): Notes                 = new Notes(bits &  s.bits)
+  def ⊖ (s: Notes): Notes                 = new Notes(bits ^  s.bits)
+  def unary_~     : Notes                 = new Notes(0xFFF&  ~ bits)
+  def ⊆ (s: Notes): Bool                  = (bits & ~s.bits) == 0
+  def contains(n: Note): Bool             = (bits & bit(n))  != 0
+  def complement       : Notes            = ~this
 
-  def contains(n: Note):  Bool            = (bits   & bit(n))  != 0
+  override def diff(s: GenSet[Note]): Notes = s match
+  {
+    case s: Notes ⇒ this \ s
+    case _        ⇒ super.diff(s)
+  }
+
+  override def union(s: GenSet[Note]): Notes = s match
+  {
+    case s: Notes ⇒ this ∪ s
+    case _        ⇒ super.union(s)
+  }
+
+  override def intersect(s: GenSet[Note]): Notes = s match
+  {
+    case s: Notes ⇒ this ∩ s
+    case _        ⇒ super.intersect(s)
+  }
+
+  override def subsetOf(s: GenSet[Note]): Bool = s match
+  {
+    case s: Notes ⇒ this ⊆ s
+    case _        ⇒ super.subsetOf(s)
+  }
+
+  def symdiff(s: GenSet[Note]): Notes = s match
+  {
+    case s: Notes ⇒ this ⊖ s
+    case _        ⇒ union(s) diff intersect(s)
+  }
 
   override def size: ℕ                    = bitCount(bits)
   override def empty: Notes               = new Notes(0)
