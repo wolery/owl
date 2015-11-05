@@ -17,11 +17,11 @@ package com.wolery.owl.core
 //****************************************************************************
 
 import Math.{log,pow,abs,round}
-import Frequency._
+import Frequency.{A4,A440}
 
 //****************************************************************************
 
-final class Frequency(val Hz: ℝ)
+final class Frequency private (val Hz: ℝ)
 {
   require(Hz > 0)
 
@@ -40,11 +40,8 @@ final class Frequency(val Hz: ℝ)
 
 object Frequency
 {
-  def apply(r: ℝ)                         = new Frequency(r)
-  def apply(p: Pitch)                     = A440 + (p - A4).toDouble
-
-  private val A4                          = Pitch(A,4)
-  private val A440                        = Hz(440.0)
+  def apply(r: ℝ): Frequency              = new Frequency(r)
+  def apply(p: Pitch): Frequency          = A440 + (p - A4).toDouble
 
   implicit object ordering extends Ordering[Frequency]
   {
@@ -60,6 +57,9 @@ object Frequency
      def delta (f: Frequency,g: Frequency)= log(g.Hz / f.Hz) / log_α
      val log_α                            = log(pow(2,1/12.0))
   }
+
+  private val A4                          = Pitch(A,4)
+  private val A440                        = Hz(440.0)
 }
 
 //****************************************************************************

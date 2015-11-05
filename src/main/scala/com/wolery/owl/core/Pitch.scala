@@ -20,30 +20,30 @@ import utilities.subscript
 
 //****************************************************************************
 
-class Pitch(val midi: Midi) extends AnyVal
+final class Pitch private (val midi: Midi) extends AnyVal
 {
-  def note     : Note             = Note(this)
-  def octave   : Octave           = midi/12 - 1
-  def frequency: Frequency        = Frequency(this)
+  def note     : Note                     = Note(this)
+  def octave   : Octave                   = midi/12 - 1
+  def frequency: Frequency                = Frequency(this)
 
-  override def toString()         = subscript(s"$note$octave")
+  override def toString()                 = subscript(s"$note$octave")
 }
 
 object Pitch
 {
-  def apply(m: Midi)              = new Pitch(m)
-  def apply(f: Frequency)         = f.pitch
-  def apply(n: Note,o: Octave)    = n.apply(o)
+  def apply(m: Midi): Pitch               = new Pitch(m)
+  def apply(f: Frequency): Pitch          = f.pitch
+  def apply(n: Note,o: Octave): Pitch     = n.apply(o)
 
   implicit object ordering extends Ordering[Pitch]
   {
-    def compare(p: Pitch,q: Pitch)= p.midi - q.midi
+    def compare(p: Pitch,q: Pitch)        = p.midi - q.midi
   }
 
   implicit object intervallic extends Intervallic[Pitch]
   {
-    def apply(p: Pitch,i: ℤ)      = new Pitch(p.midi + i)
-    def delta(p: Pitch,q: Pitch)  = q.midi - p.midi
+    def apply(p: Pitch,i: ℤ)              = new Pitch(p.midi + i)
+    def delta(p: Pitch,q: Pitch)          = q.midi - p.midi
   }
 }
 

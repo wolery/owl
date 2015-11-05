@@ -27,16 +27,16 @@ package object core
   type Octave                         = Int
   type Maybe[α]                       = Option[α]
 
-  def Hz (r: ℝ): Frequency            = new Frequency(r)
-  def kHz(r: ℝ): Frequency            = new Frequency(r * 1e3)
+  def Hz (r: ℝ): Frequency            = Frequency(r)
+  def kHz(r: ℝ): Frequency            = Frequency(r * 1e3)
 
-  val C: Note                         = Note.notes(0)
-  val D: Note                         = Note.notes(2)
-  val E: Note                         = Note.notes(4)
-  val F: Note                         = Note.notes(5)
-  val G: Note                         = Note.notes(7)
-  val A: Note                         = Note.notes(9)
-  val B: Note                         = Note.notes(11)
+  val C: Note                         = Note(Pitch(0))
+  val D: Note                         = Note(Pitch(2))
+  val E: Note                         = Note(Pitch(4))
+  val F: Note                         = Note(Pitch(5))
+  val G: Note                         = Note(Pitch(7))
+  val A: Note                         = Note(Pitch(9))
+  val B: Note                         = Note(Pitch(11))
 
 //****************************************************************************
 
@@ -108,8 +108,6 @@ package object core
   implicit final class TorsorSyntax[S,G](s: S)(implicit α: Torsor[S,G])
   {
     def - (t: S): G                   = α.delta(t,s)
-    def ⊣ (t: S): G                   = α.delta(s,t)
-    def ⊢ (t: S): G                   = α.delta(t,s)
   }
 
   implicit final class TransposingSyntax[S](s: S)(implicit α: Action[S,ℤ])
@@ -121,7 +119,7 @@ package object core
 
 //****************************************************************************
 
-  implicit object Torsorℤℤ extends Torsor[ℤ,ℤ]
+  implicit object torsorℤℤ extends Torsor[ℤ,ℤ]
   {
     def zero             : ℤ          = 0
     def negate(i: ℤ)     : ℤ          = -i
@@ -130,7 +128,7 @@ package object core
     def delta (i: ℤ,j: ℤ): ℤ          = j - i
   }
 
-  implicit object Torsorℝℝ extends Torsor[ℝ,ℝ]
+  implicit object torsorℝℝ extends Torsor[ℝ,ℝ]
   {
     def zero             : ℝ          = 0
     def negate(i: ℝ)     : ℝ          = -i
