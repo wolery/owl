@@ -82,13 +82,13 @@ object Shapes
 // harmonic minor
 // see http://docs.solfege.org/3.22/C/scales/har.html
 
-  f("harmonic minor",                                    2,1,2,2,2,1,3)
-  f("locrian ♯6",                                        1,2,2,2,1,3,2)
-  f("ionian augmented:ionian ♯5",                        2,2,2,1,3,2,1)
-  f("romanian:dorian ♯4",                                2,2,1,3,2,1,2)
-  f("phrygian dominant:phrygian ♯3",                     2,1,3,2,1,2,2)
-  f("lydian ♯2",                                         1,3,2,1,2,2,2)
-  f("ultra locrian:myxolydian ♯1",                       3,2,1,2,2,2,1)
+  f("harmonic minor",                                    2,1,2,2,1,3,1)
+  f("locrian ♯6",                                        1,2,2,1,3,1,2)
+  f("ionian augmented:ionian ♯5",                        2,2,1,3,1,2,1)
+  f("romanian:dorian ♯4",                                2,1,3,1,2,1,2)
+  f("phrygian dominant:phrygian ♯3",                     1,3,1,2,1,2,2)
+  f("lydian ♯2",                                         3,1,2,1,2,2,1)
+  f("ultra locrian:myxolydian ♯1",                       1,2,1,2,2,1,3)
 
 // whole tone
 
