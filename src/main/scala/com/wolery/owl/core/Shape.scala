@@ -16,8 +16,9 @@ package com.wolery.owl.core
 
 //****************************************************************************
 
-import java.lang.Integer.bitCount
+import java.lang.Integer.{bitCount,numberOfTrailingZeros ⇒ ntz}
 import scala.collection.immutable.BitSet
+import utilities.{mod12,ror12}
 
 //****************************************************************************
 
@@ -33,7 +34,24 @@ final class Shape private (val bits: Bits) extends AnyVal
 
   def intervals: BitSet                   = new BitSet.BitSet1(bits)
 
-  def mode(m: ℤ)                          = ???
+  def mode(mode: ℤ): Shape                =
+  {
+    def mod(i: ℤ): ℕ =
+    {
+      val m = i % size;
+
+      if (m < 0) m + size else m
+    }
+
+    var n: ℕ = 0
+
+    for (i ← 0 until mod(mode))
+    {
+      n += 1 + ntz(bits >>> (n+1))
+    }
+
+    new Shape(ror12(bits,n))
+  }
 
   def modes: Seq[Shape]                   = for (m ← 1 to size) yield mode(m)
 
@@ -56,7 +74,7 @@ object Shape
   }
 
   private
-  def bit(interval: ℤ): Int               = 1 << utilities.mod12(interval)
+  def bit(interval: ℤ): Int               = 1 << mod12(interval)
 }
 
 //****************************************************************************
