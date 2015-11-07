@@ -16,6 +16,7 @@ package com.wolery.owl.core;
 
 //****************************************************************************
 
+import org.scalacheck.Gen
 import org.scalacheck.Gen._
 import org.scalacheck.Arbitrary
 import org.scalatest.Assertions._
@@ -208,17 +209,33 @@ object CoreTest extends PropertyChecks
   }
 
   /**
-   * Defines random generators for some of the core data types.
+   * Defines generators for many of the core data types.
+   */
+  object generate
+  {
+    def gen[α: Choose,β](l: α,h: α,f: α ⇒ β): Gen[β] = choose(l,h) map f
+
+    val real  = gen(-128.0,  128.0,(x: ℝ) ⇒ x)
+    val hertz = gen(   2.0,   10.0,(x: ℝ) ⇒ Hz(Math.exp(x)))
+    val pitch = gen(   0  ,  128  ,(x: ℕ) ⇒ Pitch(x))
+    val note  = gen(   0  ,  128  ,(x: ℕ) ⇒ Note(Pitch(x)))
+    val notes = gen(   0  ,0xFFF  ,(x: ℕ) ⇒ Notes(x))
+    val shape = gen(   0  ,0xFFF  ,(x: ℕ) ⇒ Shape(x))
+    val scale = for(r ←note;s ←shape) yield Scale(r,s)
+  }
+
+  /**
+   * Defines implicit random generators for many of the core data types.
    */
   object arbitrary
   {
-    def gen[α: Choose,β](l: α,h: α,f: α ⇒ β) = Arbitrary(choose(l,h) map f)
-
-    implicit val α = gen(-128.0,128.0,(x: ℝ) ⇒ x)
-    implicit val β = gen(   2.0, 10.0,(x: ℝ) ⇒ Hz(Math.exp(x)))
-    implicit val γ = gen(   0,  128,  (x: ℕ) ⇒ Pitch(x))
-    implicit val δ = gen(   0,  128,  (x: ℕ) ⇒ Note(Pitch(x)))
-    implicit val ε = gen(   0,0xFFF,  (x: ℕ) ⇒ Notes(x))
+    implicit val α = Arbitrary(generate.real)
+    implicit val β = Arbitrary(generate.hertz)
+    implicit val γ = Arbitrary(generate.pitch)
+    implicit val δ = Arbitrary(generate.note)
+    implicit val ε = Arbitrary(generate.notes)
+    implicit val ζ = Arbitrary(generate.shape)
+    implicit val η = Arbitrary(generate.scale)
   }
 }
 
