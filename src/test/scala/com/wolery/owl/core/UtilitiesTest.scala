@@ -28,12 +28,12 @@ class UtiltiesTest extends FunSuite with PropertyChecks
 
   test("mod")
   {
-    forAll("i","n") {(i: ℤ,n: ℕ) ⇒ whenever (n > 0)
+    forAll("i","n") {(i: ℤ,n: ℕ) ⇒ whenever {n > 0}
     {
       val r = mod(i,n)
 
       assert(0<=r && r<n)
-      assert(0<=i implies i == r + n * (i/n))
+      assert(0<=i implies i == n * (i/n) + r)
     }}
   }
 
@@ -47,7 +47,8 @@ class UtiltiesTest extends FunSuite with PropertyChecks
       val r = mod12(i)
 
       assert(0<=r && r<12)
-      assert(0<=i implies i == r + 12 * (i/12))
+      assert(0<=i implies i == 12 * (i/12) + r)
+      assert(r == mod(i,12))
     }}
   }
 
@@ -58,16 +59,15 @@ class UtiltiesTest extends FunSuite with PropertyChecks
     assert(rol12(0x800, 1) == 0x001,      "[3]")
     assert(rol12(0x800,-4) == 0x080,      "[4]")
 
-    forAll("bits","by") {(bits: ℤ,by: ℤ) ⇒
+    forAll("bits","by") {(bits: ℤ,by: ℤ) ⇒ whenever {notTooBig(by)}
     {
-      val b = clamp(Int.MinValue+12,Int.MaxValue-12)(by)
       val i = bits & 0xFFF
       val j = rol12(i,by)
 
       assert(0<=j && j<=0xFFF,            "[1]")
-      assert(j == rol12(i,b + 12),        "[2]")
-      assert(j == rol12(i,b - 12),        "[3]")
-      assert(i == ror12(rol12(i,b),b),    "[4]")
+      assert(j == rol12(i,by + 12),       "[2]")
+      assert(j == rol12(i,by - 12),       "[3]")
+      assert(i == ror12(rol12(i,by),by),  "[4]")
       assert(bitCount(i) == bitCount(j),  "[5]")
     }}
   }
@@ -79,21 +79,20 @@ class UtiltiesTest extends FunSuite with PropertyChecks
     assert(ror12(0x100, 1) == 0x080,      "[3]")
     assert(ror12(0x800,-4) == 0x008,      "[4]")
 
-    forAll("bits","by") {(bits: ℤ,by: ℤ) ⇒
+    forAll("bits","by") {(bits: ℤ,by: ℤ) ⇒ whenever {notTooBig(by)}
     {
-      val b = clamp(Int.MinValue+12,Int.MaxValue-12)(by)
       val i = bits & 0xFFF
       val j = ror12(i,by)
 
       assert(0<=j && j<=0xFFF,            "[1]")
-      assert(j == ror12(i,b + 12),        "[2]")
-      assert(j == ror12(i,b - 12),        "[3]")
-      assert(i == rol12(ror12(i,b),b),    "[4]")
+      assert(j == ror12(i,by + 12),       "[2]")
+      assert(j == ror12(i,by - 12),       "[3]")
+      assert(i == rol12(ror12(i,by),by),  "[4]")
       assert(bitCount(i) == bitCount(j),  "[5]")
     }}
   }
 
-  def clamp(lo: ℤ,hi: ℤ)(i: ℤ) = i.min(hi).max(lo)
+  def notTooBig(i: ℤ) = Int.MinValue+12<=i && i<=Int.MaxValue-12
 }
 
 //****************************************************************************
