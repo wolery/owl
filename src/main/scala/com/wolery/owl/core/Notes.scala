@@ -27,14 +27,14 @@ import utilities._
 
 //****************************************************************************
 
-final class Notes private (private val bits: Int) extends Set[Note]
-                                                     with SetLike[Note,Notes]
+final class Notes private (private val bits: Bits) extends Set[Note]
+                                                      with SetLike[Note,Notes]
 {
   assert((bits & ~0xFFF) == 0,"bad bits")
 
   def iterator: Iterator[Note]            = new Iterator[Note]
   {
-    var i = 0
+    var i: Bits = 0
 
     def hasNext: Bool                     = (1 << i) <= highestOneBit(bits)
 
@@ -116,17 +116,17 @@ object Notes
   private
   def builder: Builder[Note,Notes]        = new Builder[Note,Notes]
   {
-    var bits: Int                         = 0
+    var bits: Bits                        = 0
     def += (n: Note)                      = {bits|= bit(n); this}
     def clear()                           = {bits = 0 }
     def result()                          = new Notes(bits)
   }
 
   private
-  def bit(n: Note): Int                   = 1 << n-C
+  def bit(n: Note): Bits                  = 1 << n-C
 
   private[core]
-  def apply(bits: Int)                    = new Notes(bits)
+  def apply(bits: Bits): Notes            = new Notes(bits & 0xFFF)
 }
 
 //****************************************************************************

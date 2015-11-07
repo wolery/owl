@@ -91,9 +91,6 @@ final class Shape private (val bits: Bits) extends AnyVal
     }
   }
 
-  def scale(root: Note): Scale            = Scale(root,this)
-  def apply(root: Note): Scale            = Scale(root,this)
-
   override def toString: String           = Shapes(bits).map(_.name).getOrElse(intervals.mkString("Shape(",", ",")"))
 }
 
@@ -115,7 +112,10 @@ object Shape
   }
 
   private
-  def bit(interval: ℤ): Int               = 1 << mod12(interval)
+  def bit(interval: ℤ): Bits              = 1 << mod12(interval)
+
+  private[core]
+  def apply(bits: Bits): Shape            = new Shape(bits & 0xFFF)
 }
 
 //****************************************************************************

@@ -24,11 +24,11 @@ final class Scale private (val root: Note,val shape: Shape)
 {
   def size: ℕ                             = shape.size
 
-  def set: Notes                          = (Notes.empty /: shape.intervals)((s,i) ⇒ s + (root + i))
-  def seq: Seq[Note]                      = shape.absolute.map(root + _)
+  def toSet: Notes                        = (Notes.empty /: shape.intervals)((s,i) ⇒ s + (root + i))
+  def toSeq: Seq[Note]                    = shape.absolute.map(root + _)
 
-  def mode(i: ℤ): Scale                   = Scale(note(i),seq:_*)
-  def modes: Seq[Scale]                   = seq.map(Scale(_,seq:_*))
+  def mode(i: ℤ): Scale                   = Scale(note(i),toSeq:_*)
+  def modes: Seq[Scale]                   = toSeq.map(Scale(_,toSeq:_*))
 
   override def toString: String           = s"$root $shape"
 
@@ -39,9 +39,10 @@ final class Scale private (val root: Note,val shape: Shape)
 
 object Scale
 {
+  def apply(r: Note,n: Name): Maybe[Scale]= Shape(n).map(Scale(r,_))
   def apply(r: Note,s: Note*): Scale      = new Scale(r,Shape(0,s.map(_-r):_*))
   def apply(r: Note,s: Shape): Scale      = new Scale(r,s)
-  def apply(r: Note,n: Name): Maybe[Scale]= Shape(n).map(Scale(r,_))
+  def apply(r: Note,s: Notes): Scale      = Scale(r,(s + r).toSeq:_*)
 
   implicit object transposing extends Transposing[Scale]
   {
