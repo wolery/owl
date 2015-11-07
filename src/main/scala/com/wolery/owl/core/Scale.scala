@@ -16,17 +16,23 @@ package com.wolery.owl.core
 
 //****************************************************************************
 
+import utilities.mod
+
+//****************************************************************************
+
 final class Scale private (val root: Note,val shape: Shape)
 {
-  def aliases: Seq[String]                = ???
   def size: ℕ                             = shape.size
 
-  def notes: Notes                        = (Notes.empty /: shape.intervals)((s,i) ⇒ s + (root + i))
+  def set: Notes                          = (Notes.empty /: shape.intervals)((s,i) ⇒ s + (root + i))
+  def seq: Seq[Note]                      = shape.absolute.map(root + _)
 
-  def mode(mode: ℕ): Scale                = ???
-  def modes: Seq[Scale]                   = ???
+  def mode(i: ℤ): Scale                   = Scale(note(i),seq:_*)
+  def modes: Seq[Scale]                   = seq.map(Scale(_,seq:_*))
 
   override def toString: String           = s"$root $shape"
+
+  def note(i: ℕ): Note                    = root + shape.interval(i)
 }
 
 //****************************************************************************
@@ -34,7 +40,8 @@ final class Scale private (val root: Note,val shape: Shape)
 object Scale
 {
   def apply(r: Note,s: Note*): Scale      = new Scale(r,Shape(0,s.map(_-r):_*))
-  def apply(n: Note,s: Shape): Scale      = new Scale(n,s)
+  def apply(r: Note,s: Shape): Scale      = new Scale(r,s)
+  def apply(r: Note,n: Name): Maybe[Scale]= Shape(n).map(Scale(r,_))
 
   implicit object transposing extends Transposing[Scale]
   {

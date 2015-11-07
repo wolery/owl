@@ -18,7 +18,7 @@ package com.wolery.owl.core
 
 import java.lang.Integer.{bitCount,numberOfTrailingZeros ⇒ ntz}
 import scala.collection.immutable.BitSet
-import utilities.{mod12,ror12}
+import utilities.{mod,mod12,ror12}
 
 //****************************************************************************
 
@@ -34,26 +34,62 @@ final class Shape private (val bits: Bits) extends AnyVal
 
   def intervals: BitSet                   = new BitSet.BitSet1(bits)
 
-  def mode(mode: ℤ): Shape                =
+  def absolute: Seq[ℤ]  =
   {
-    def mod(i: ℤ): ℕ =
-    {
-      val m = i % size;
-
-      if (m < 0) m + size else m
-    }
-
     var n: ℕ = 0
 
-    for (i ← 0 until mod(mode))
+    for (i ← 0 until size) yield
     {
-      n += 1 + ntz(bits >>> (n+1))
-    }
+      val m = n
 
-    new Shape(ror12(bits,n))
+      n += 1 + ntz(bits >>> n+1)
+
+      m
+    }
   }
 
-  def modes: Seq[Shape]                   = for (m ← 1 to size) yield mode(m)
+  def relative: Seq[ℤ]  =
+  {
+    var n: ℕ = 0
+
+    for (i ← 1 until size) yield
+    {
+      val m = n
+
+      n += 1 + ntz(bits >>> n+1)
+
+      n - m
+    }
+  }
+
+  def mode(i: ℤ): Shape                   = new Shape(ror12(bits,interval(i)))
+
+  def interval(index: ℤ): ℤ =
+  {
+    var i: ℕ = mod(index,size)
+    var n: ℕ = 0
+
+    while (i > 0)
+    {
+      n += 1 + ntz(bits >>> n+1)
+      i -= 1
+    }
+    n
+  }
+
+  def modes: Seq[Shape] =
+  {
+    var n: ℕ = 0
+
+    for (i ← 0 until size) yield
+    {
+      val m = n
+
+      n += 1 + ntz(bits >>> n+1)
+
+      new Shape(ror12(bits,m))
+    }
+  }
 
   def scale(root: Note): Scale            = Scale(root,this)
   def apply(root: Note): Scale            = Scale(root,this)
@@ -71,6 +107,11 @@ object Shape
   {
     case 0 ⇒ {           new Shape((1          /: tail)((b,i) ⇒ b | bit(i)))}
     case h ⇒ {var n = h; new Shape(((1|bit(h)) /: tail)((b,i) ⇒ b | bit{n+=i;n}))}
+  }
+
+  implicit object transposing extends Transposing[Shape]
+  {
+    def apply(s: Shape,i: ℤ)              = s mode i
   }
 
   private

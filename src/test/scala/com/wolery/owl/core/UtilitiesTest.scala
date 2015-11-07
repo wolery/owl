@@ -26,6 +26,17 @@ class UtiltiesTest extends FunSuite with PropertyChecks
   import utilities._
   import Integer.bitCount
 
+  test("mod")
+  {
+    forAll("i","n") {(i: ℤ,n: ℕ) ⇒ whenever (n > 0)
+    {
+      val r = mod(i,n)
+
+      assert(0<=r && r<n)
+      assert(0<=i implies i == r + n * (i/n))
+    }}
+  }
+
   test("mod12")
   {
     for (i ← 0 to  11) {assert(mod12(i) ==  i)}
