@@ -81,6 +81,12 @@ final class Notes private (private val bits: Bits) extends Set[Note]
     case _        ⇒ super.subsetOf(s)
   }
 
+  override def equals(a: Any): Bool = a match
+  {
+    case s: Notes ⇒ s.bits == bits
+    case _        ⇒ false
+  }
+
   def symdiff(s: GenSet[Note]): Notes = s match
   {
     case s: Notes ⇒ this ⊖ s
@@ -89,6 +95,7 @@ final class Notes private (private val bits: Bits) extends Set[Note]
 
   override def size: ℕ                    = bitCount(bits)
   override def empty: Notes               = new Notes(0)
+  override def hashCode: Bits             = bits
   override def newBuilder: Builder[Note,Notes] = builder
 }
 
