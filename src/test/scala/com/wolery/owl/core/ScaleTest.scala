@@ -27,6 +27,12 @@ import CoreTest.arbitrary._
 
 class ScaleTest extends FunSuite
 {
+  test("Scale is transposing")
+  {
+    implicit val α = Arbitrary(choose(-128,128))
+
+    isTransposing[Scale]()
+  }
 }
 
 //****************************************************************************

@@ -29,8 +29,8 @@ object Shapes
     def aliases: Seq[Name]                = names.split(":")
   }
 
-  def apply(b: Bits): Maybe[Info]         = bybits.get(b)
-  def apply(n: Name): Maybe[Info]         = byname.get(n.toLowerCase)
+  def apply(b: Bits): Maybe[Info]         = byBits.get(b)
+  def apply(n: Name): Maybe[Info]         = byName.get(n.toLowerCase)
 
   private def f(names: String,intervals: ℤ*) =
   {
@@ -41,13 +41,13 @@ object Shapes
 
     for (name ← names.split(":"))
     {
-      bybits += shape.bits       → info
-      byname += name.toLowerCase → info
+      byBits += shape.bits       → info
+      byName += name.toLowerCase → info
     }
   }
 
-  private val bybits: Map[Bits,Info]      = Map.empty
-  private val byname: Map[Name,Info]      = Map.empty
+  private val byBits: Map[Bits,Info]      = Map.empty
+  private val byName: Map[Name,Info]      = Map.empty
 
 //****************************************************************************
 // see https://en.wikipedia.org/wiki/Jazz_scale
@@ -66,29 +66,29 @@ object Shapes
   f("phrygian",                                          1,2,2,2,1,2,2)
   f("lydian",                                            2,2,2,1,2,2,1)
   f("myxolydian",                                        2,2,1,2,2,1,2)
-  f("aeolian:natural minor",                             2,1,2,2,1,2,2)
+  f("aeolian:minor:natural minor",                       2,1,2,2,1,2,2)
   f("locrian",                                           1,2,2,1,2,2,2)
 
 // melodic minor
 
-  f("melodic minor",                                     2,1,2,2,2,2,1)
-  f("phrygian ♮6:dorian ♭)",                             1,2,2,2,2,1,2)
-  f("lydian augmented:super lydian:lydian ♯5:acoustic",  2,2,2,2,1,2,1)
-  f("lydian dominant:lydian ♭7:mixolydian ♯4",           2,2,2,1,2,1,2)
+  f("melodic:melodic minor",                             2,1,2,2,2,2,1)
+  f("dorian ♭2:phrygian ♮6)",                            1,2,2,2,2,1,2)
+  f("lydian ♯5:lydian augmented:super lydian:acoustic",  2,2,2,2,1,2,1)
+  f("lydian ♭7:lydian dominant:mixolydian ♯4",           2,2,2,1,2,1,2)
   f("mixolydian ♭6:melodic major",                       2,2,1,2,1,2,2)
-  f("locrian ♮2:dorian ♭5:half diminished",              2,1,2,1,2,2,2)
-  f("altered dominant:super locrian",                    1,2,1,2,2,2,2)
+  f("dorian ♭5:locrian ♮2:half diminished",              2,1,2,1,2,2,2)
+  f("altered:altered dominant:super locrian",            1,2,1,2,2,2,2)
 
 // harmonic minor
 // see http://docs.solfege.org/3.22/C/scales/har.html
 
-  f("harmonic minor",                                    2,1,2,2,1,3,1)
+  f("harmonic:harmonic minor",                           2,1,2,2,1,3,1)
   f("locrian ♯6",                                        1,2,2,1,3,1,2)
-  f("ionian augmented:ionian ♯5",                        2,2,1,3,1,2,1)
-  f("romanian:dorian ♯4",                                2,1,3,1,2,1,2)
-  f("phrygian dominant:phrygian ♯3",                     1,3,1,2,1,2,2)
+  f("ionian ♯5:ionian augmented",                        2,2,1,3,1,2,1)
+  f("dorian ♯4:romanian",                                2,1,3,1,2,1,2)
+  f("phrygian ♯3:phrygian dominant",                     1,3,1,2,1,2,2)
   f("lydian ♯2",                                         3,1,2,1,2,2,1)
-  f("ultra locrian:myxolydian ♯1",                       1,2,1,2,2,1,3)
+  f("myxolydian ♯1:ultra locrian",                       1,2,1,2,2,1,3)
 
 // whole tone
 
