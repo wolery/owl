@@ -32,11 +32,11 @@ object Shapes
   def apply(b: Bits): Maybe[Info]         = bybits.get(b)
   def apply(n: Name): Maybe[Info]         = byname.get(n.toLowerCase)
 
-  private def f(names: String,head: ℤ,tail: ℤ*) =
+  private def f(names: String,intervals: ℤ*) =
   {
     require(names.nonEmpty)
 
-    val shape = Shape(head,tail: _*)
+    val shape = Shape(intervals: _*)
     val info  = new Info(names,shape)
 
     for (name ← names.split(":"))

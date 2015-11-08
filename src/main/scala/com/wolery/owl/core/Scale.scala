@@ -40,9 +40,9 @@ final class Scale private (val root: Note,val shape: Shape)
 object Scale
 {
   def apply(r: Note,n: Name): Maybe[Scale]= Shape(n).map(Scale(r,_))
-  def apply(r: Note,s: Note*): Scale      = new Scale(r,Shape(0,s.map(_-r):_*))
   def apply(r: Note,s: Shape): Scale      = new Scale(r,s)
-  def apply(r: Note,s: Notes): Scale      = Scale(r,(s + r).toSeq:_*)
+  def apply(r: Note,s: Notes): Scale      = Scale(r,Shape(s.map(_-r)))
+  def apply(r: Note,s: Note*): Scale      = Scale(r,Notes(s:_*))
 
   implicit object transposing extends Transposing[Scale]
   {

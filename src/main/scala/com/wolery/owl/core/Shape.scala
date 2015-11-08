@@ -87,7 +87,7 @@ final class Shape private (val bits: Bits) extends AnyVal
 
       n += 1 + ntz(bits >>> n+1)
 
-      new Shape(ror12(bits,m))
+      Shape(ror12(bits,m))
     }
   }
 
@@ -100,11 +100,14 @@ object Shape
 {
   def apply(n: Name): Maybe[Shape]        = Shapes(n).map(_.shape)
 
-  def apply(head: ℤ,tail: ℤ*): Shape = head match
+  def apply(intervals: ℤ*): Shape = intervals match
   {
-    case 0 ⇒ {           new Shape((1          /: tail)((b,i) ⇒ b | bit(i)))}
-    case h ⇒ {var n = h; new Shape(((1|bit(h)) /: tail)((b,i) ⇒ b | bit{n+=i;n}))}
+    case Seq()       ⇒ {        Shape(1)}
+    case Seq(0,t@_*) ⇒ {        Shape((1 /: t)((b,i) ⇒ b | bit(i)))}
+    case s           ⇒ {var n=0;Shape((1 /: s)((b,i) ⇒ b | bit{n+=i;n}))}
   }
+
+  def apply(intervals: Set[ℤ]): Shape     = Shape((1 /: intervals)((b,i) ⇒ b | bit(i)))
 
   implicit object transposing extends Transposing[Shape]
   {
@@ -115,7 +118,12 @@ object Shape
   def bit(interval: ℤ): Bits              = 1 << mod12(interval)
 
   private[core]
-  def apply(bits: Bits): Shape            = new Shape(bits & 0xFFF)
+  def apply(bits: Bits): Shape =
+  {
+    assert((bits & ~0xFFF) == 0,"extraneous bits")
+    assert((bits &  0x001) == 1,"must include 0")
+    new Shape(bits)
+  }
 }
 
 //****************************************************************************

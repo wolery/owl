@@ -27,11 +27,11 @@ import CoreTest.arbitrary._
 
 class ShapeTest extends FunSuite
 {
-  test("*")
+  test("Shape is transposing")
   {
+    implicit val α = Arbitrary(choose(-128,128))
 
-
-
+    isTransposing[Shape]()
   }
 }
 

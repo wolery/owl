@@ -220,7 +220,7 @@ object CoreTest extends PropertyChecks
     val pitch = gen(   0  ,  128  ,(x: ℕ) ⇒ Pitch(x))
     val note  = gen(   0  ,  128  ,(x: ℕ) ⇒ Note(Pitch(x)))
     val notes = gen(   0  ,0xFFF  ,(x: ℕ) ⇒ Notes(x))
-    val shape = gen(   0  ,0xFFF  ,(x: ℕ) ⇒ Shape(x))
+    val shape = gen(   0  ,0xFFF  ,(x: ℕ) ⇒ Shape(x | 1))
     val scale = for(r ←note;s ←shape) yield Scale(r,s)
   }
 
