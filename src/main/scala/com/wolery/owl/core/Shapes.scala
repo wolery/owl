@@ -34,7 +34,7 @@ object Shapes
 
   private def f(names: String,intervals: ℤ*) =
   {
-    require(names.nonEmpty)
+    assert(names.nonEmpty)
 
     val shape = Shape(intervals: _*)
     val info  = new Info(names,shape)

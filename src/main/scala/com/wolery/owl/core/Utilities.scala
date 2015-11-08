@@ -58,7 +58,7 @@ object utilities
    */
   def mod(i: ℤ,n: ℕ): ℕ =
   {
-    require(n > 0)                                       // Validate argument
+    assert(n > 0,"non-positive modulus")                 // Validate argument
 
     val r = i % n;                                       // Compute remainder
 
@@ -108,7 +108,7 @@ object utilities
    */
   def rol12(bits: Int,by: ℤ): Int =
   {
-    require((bits & ~0xFFF) == 0,"domain error")         // Validate argument
+    assert((bits & ~0xFFF) == 0,"extraneous bits")       // Validate argument
 
     val i = mod12(by)                                    // Skip cycles of 12
 
@@ -140,7 +140,7 @@ object utilities
    */
   def ror12(bits: Int,by: ℤ): Int =
   {
-    require((bits & ~0xFFF) == 0,"domain error")         // Validate argument
+    assert((bits & ~0xFFF) == 0,"extraneous bits")       // Validate argument
 
     val i = mod12(by)                                    // Skip cycles of 12
 

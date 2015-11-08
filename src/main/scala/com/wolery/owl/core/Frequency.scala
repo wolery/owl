@@ -23,7 +23,7 @@ import Frequency.{A4,A440}
 
 final class Frequency private (val Hz: ℝ)
 {
-  require(Hz > 0)
+  assert(Hz > 0,"non-positive Hz")
 
   def kHz: ℝ                              = Hz * 1e-3
   def pitch: Pitch                        = A4 + round(this - A440).toInt
@@ -37,6 +37,8 @@ final class Frequency private (val Hz: ℝ)
   override def toString                   = if (kHz >= 1) f"$kHz%.2fkHz" else f"$Hz%.2fHz"
   private  def close(f: Frequency)        = abs(this - f) < 1e-2
 }
+
+//****************************************************************************
 
 object Frequency
 {

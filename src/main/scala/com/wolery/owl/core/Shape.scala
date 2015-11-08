@@ -121,7 +121,7 @@ object Shape
   def apply(bits: Bits): Shape =
   {
     assert((bits & ~0xFFF) == 0,"extraneous bits")
-    assert((bits &  0x001) == 1,"must include 0")
+    assert((bits &  0x001) == 1,"missing zero")
     new Shape(bits)
   }
 }

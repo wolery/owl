@@ -30,7 +30,7 @@ import utilities._
 final class Notes private (private val bits: Bits) extends Set[Note]
                                                       with SetLike[Note,Notes]
 {
-  assert((bits & ~0xFFF) == 0,"bad bits")
+  assert((bits & ~0xFFF) == 0,"extraneous bits")
 
   def iterator: Iterator[Note]            = new Iterator[Note]
   {
@@ -126,7 +126,7 @@ object Notes
   def bit(n: Note): Bits                  = 1 << n-C
 
   private[core]
-  def apply(bits: Bits): Notes            = new Notes(bits & 0xFFF)
+  def apply(bits: Bits): Notes            = new Notes(bits)
 }
 
 //****************************************************************************
