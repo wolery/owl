@@ -35,7 +35,7 @@ class CoreTest extends FunSuite
    	 that we test for rather than thread a  custom comparison function through
    	 the entire test suite...*/
 
-  implicit val α: Arbitrary[ℝ] = arbitrary.α
+  implicit val r = Arbitrary(generate.real)              // For r ∈ [-128,128]
 
   test("ℤ is a ℤ-torsor")                 {isTorsor[ℤ,ℤ]()}
   test("ℤ is abelian")                    {isCommutative[ℤ]()}
@@ -121,7 +121,7 @@ object CoreTest extends PropertyChecks
    * Check that ''S'' satisfies the axioms of a ''G''-torsor, namely that the
    * action of ''G'' upon ''S'' is sharply transitive.
    *
-   * @see https://en.wikipedia.org/wiki/Principal_homogeneous_space]]
+   * @see [[https://en.wikipedia.org/wiki/Principal_homogeneous_space]]
    */
   def isTorsor[S,G]()(implicit α: Torsor[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
   {
@@ -200,7 +200,7 @@ object CoreTest extends PropertyChecks
    */
   def isOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]) : Unit =
   {
-    isPartiallyOrdered[S]()               // ordered ⇒ partial ordered
+    isPartiallyOrdered[S]()               // ordered ⇒ partially ordered
 
     forAll("s","t") {(s: S,t: S) ⇒
     {
@@ -215,6 +215,7 @@ object CoreTest extends PropertyChecks
   {
     def gen[α: Choose,β](l: α,h: α,f: α ⇒ β): Gen[β] = choose(l,h) map f
 
+    val int   = gen(-128  ,  128  ,(x: ℤ) ⇒ x)
     val real  = gen(-128.0,  128.0,(x: ℝ) ⇒ x)
     val hertz = gen(   2.0,   10.0,(x: ℝ) ⇒ Hz(Math.exp(x)))
     val pitch = gen(   0  ,  128  ,(x: ℕ) ⇒ Pitch(x))
@@ -229,13 +230,12 @@ object CoreTest extends PropertyChecks
    */
   object arbitrary
   {
-    implicit val α = Arbitrary(generate.real)
-    implicit val β = Arbitrary(generate.hertz)
-    implicit val γ = Arbitrary(generate.pitch)
-    implicit val δ = Arbitrary(generate.note)
-    implicit val ε = Arbitrary(generate.notes)
-    implicit val ζ = Arbitrary(generate.shape)
-    implicit val η = Arbitrary(generate.scale)
+    implicit val α = Arbitrary(generate.hertz)
+    implicit val β = Arbitrary(generate.pitch)
+    implicit val γ = Arbitrary(generate.note)
+    implicit val δ = Arbitrary(generate.notes)
+    implicit val ε = Arbitrary(generate.shape)
+    implicit val ζ = Arbitrary(generate.scale)
   }
 }
 

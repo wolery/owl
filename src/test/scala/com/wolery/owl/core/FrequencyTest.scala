@@ -16,6 +16,7 @@ package com.wolery.owl.core;
 
 //****************************************************************************
 
+import org.scalacheck.Arbitrary
 import org.scalatest.FunSuite
 
 import CoreTest._
@@ -27,12 +28,14 @@ class FrequencyTest extends FunSuite
 {
   test("Frequency is an ℝ-Torsor")
   {
-    isTorsor[Frequency,ℝ]()
+    implicit val r = Arbitrary(generate.real)            // For r ∈ [-128,128]
+
+    isTorsor[Frequency,ℝ]()                              // Check torsor axioms
   }
 
   test("Frequency is totally ordered")
   {
-    isOrdered[Frequency]()
+    isOrdered[Frequency]()                               // Check order axioms
   }
 }
 
