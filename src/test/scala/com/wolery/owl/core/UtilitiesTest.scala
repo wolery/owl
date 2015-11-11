@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose : Unit tests for object utilities.
+//*  Purpose : Unit tests for the core utilities.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -16,16 +16,13 @@ package com.wolery.owl.core;
 
 //****************************************************************************
 
-import org.scalatest.FunSuite
-import org.scalatest.prop.PropertyChecks
+import utilities._
+import Integer.bitCount
 
 //****************************************************************************
 
-class UtiltiesTest extends FunSuite with PropertyChecks
+class UtiltiesTest extends CoreSuite
 {
-  import utilities._
-  import Integer.bitCount
-
   test("mod")
   {
     forAll("i","n") {(i: ℤ,n: ℕ) ⇒ whenever {n > 0}

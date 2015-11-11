@@ -16,16 +16,10 @@ package com.wolery.owl.core;
 
 //****************************************************************************
 
-import org.scalacheck.Arbitrary
-import org.scalatest.FunSuite
-
-import CoreTest._
-import CoreTest.arbitrary._
-
-//****************************************************************************
-
-class NoteTest extends FunSuite
+class NoteTest extends CoreSuite
 {
+  import arbitrary._                                     // For owl implicits
+
   implicit val i = Arbitrary(generate.int)               // For i ∈ [-128,128]
 
   test("Note is intervallic")

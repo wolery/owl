@@ -16,16 +16,10 @@ package com.wolery.owl.core;
 
 //****************************************************************************
 
-import org.scalacheck.Arbitrary
-import org.scalatest.FunSuite
-
-import CoreTest._
-import CoreTest.arbitrary._
-
-//****************************************************************************
-
-class NotesTest extends FunSuite
+class NotesTest extends CoreSuite
 {
+  import arbitrary._                                     // For owl implicits
+
   test("Notes is transposing")
   {
     implicit val i = Arbitrary(generate.int)             // For i ∈ [-128,128]

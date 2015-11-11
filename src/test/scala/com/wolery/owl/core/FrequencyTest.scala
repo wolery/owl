@@ -16,16 +16,10 @@ package com.wolery.owl.core;
 
 //****************************************************************************
 
-import org.scalacheck.Arbitrary
-import org.scalatest.FunSuite
-
-import CoreTest._
-import CoreTest.arbitrary._
-
-//****************************************************************************
-
-class FrequencyTest extends FunSuite
+class FrequencyTest extends CoreSuite
 {
+  import arbitrary._                                     // For owl implicits
+
   test("Frequency is an ℝ-Torsor")
   {
     implicit val r = Arbitrary(generate.real)            // For r ∈ [-128,128]

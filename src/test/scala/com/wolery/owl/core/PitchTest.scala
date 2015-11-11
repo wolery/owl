@@ -16,16 +16,10 @@ package com.wolery.owl.core;
 
 //****************************************************************************
 
-import org.scalacheck.Arbitrary
-import org.scalatest.FunSuite
-
-import CoreTest._
-import CoreTest.arbitrary._
-
-//****************************************************************************
-
-class PitchTest extends FunSuite
+class PitchTest extends CoreSuite
 {
+  import arbitrary._                                     // For owl implicits
+
   implicit val i = Arbitrary(generate.int)               // For i ∈ [-128,128]
 
   test("Pitch is intervallic")
