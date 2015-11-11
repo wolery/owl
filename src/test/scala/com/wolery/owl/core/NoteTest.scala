@@ -17,8 +17,6 @@ package com.wolery.owl.core;
 //****************************************************************************
 
 import org.scalacheck.Arbitrary
-import org.scalacheck.Gen.oneOf
-import org.scalacheck.Gen.choose
 import org.scalatest.FunSuite
 
 import CoreTest._
@@ -28,14 +26,14 @@ import CoreTest.arbitrary._
 
 class NoteTest extends FunSuite
 {
-  implicit val α = Arbitrary(choose(-128,128))
+  implicit val i = Arbitrary(generate.int)               // For i ∈ [-128,128]
 
   test("Note is intervallic")
   {
-    isIntervallic[Note]()
+    isIntervallic[Note]()                                // Verify the axioms
   }
 
-  test("Note properties are consistent")
+  test("Note construction")
   {
     forAll("n") {(n: Note) ⇒
     {

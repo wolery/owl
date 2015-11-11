@@ -17,7 +17,6 @@ package com.wolery.owl.core;
 //****************************************************************************
 
 import org.scalacheck.Arbitrary
-import org.scalacheck.Gen.choose
 import org.scalatest.FunSuite
 
 import CoreTest._
@@ -29,9 +28,9 @@ class ScaleTest extends FunSuite
 {
   test("Scale is transposing")
   {
-    implicit val α = Arbitrary(choose(-128,128))
+    implicit val i = Arbitrary(generate.int)             // For i ∈ [-128,128]
 
-    isTransposing[Scale]()
+    isTransposing[Scale]()                               // Verify the axioms
   }
 }
 

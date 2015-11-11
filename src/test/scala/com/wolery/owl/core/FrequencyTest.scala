@@ -30,12 +30,12 @@ class FrequencyTest extends FunSuite
   {
     implicit val r = Arbitrary(generate.real)            // For r ∈ [-128,128]
 
-    isTorsor[Frequency,ℝ]()                              // Check torsor axioms
+    isTorsor[Frequency,ℝ]()                              // Verify the axioms
   }
 
   test("Frequency is totally ordered")
   {
-    isOrdered[Frequency]()                               // Check order axioms
+    isOrdered[Frequency]()                               // Verify the axioms
   }
 }
 

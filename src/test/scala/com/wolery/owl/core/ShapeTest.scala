@@ -17,7 +17,6 @@ package com.wolery.owl.core;
 //****************************************************************************
 
 import org.scalacheck.Arbitrary
-import org.scalacheck.Gen.choose
 import org.scalatest.FunSuite
 
 import CoreTest._
@@ -29,9 +28,9 @@ class ShapeTest extends FunSuite
 {
   test("Shape is transposing")
   {
-    implicit val α = Arbitrary(choose(-128,128))
+    implicit val i = Arbitrary(generate.int)             // For i ∈ [-128,128]
 
-    isTransposing[Shape]()
+    isTransposing[Shape]()                               // Verify the axioms
   }
 
   test("Mode names are consistent")
@@ -55,7 +54,7 @@ class ShapeTest extends FunSuite
     names("whole tone:whole tone")
   }
 
-  test("Shape properties are consistent")
+  test("Shape construction")
   {
     forAll("s") {(s: Shape) ⇒
     {

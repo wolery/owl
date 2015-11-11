@@ -17,7 +17,6 @@ package com.wolery.owl.core;
 //****************************************************************************
 
 import org.scalacheck.Arbitrary
-import org.scalacheck.Gen.choose
 import org.scalatest.FunSuite
 
 import CoreTest._
@@ -27,24 +26,24 @@ import CoreTest.arbitrary._
 
 class PitchTest extends FunSuite
 {
-  implicit val α = Arbitrary(choose(-128,128))
+  implicit val i = Arbitrary(generate.int)               // For i ∈ [-128,128]
 
   test("Pitch is intervallic")
   {
-    isIntervallic[Pitch]()
+    isIntervallic[Pitch]()                               // Verify the axioms
   }
 
   test("Pitch is totally ordered")
   {
-    isOrdered[Pitch]()
+    isOrdered[Pitch]()                                   // Verify the axioms
   }
 
   test("Pitch ⇒ Note is equivarient")
   {
-    isEquivariant[Pitch,Note,ℤ](_.note)
+    isEquivariant[Pitch,Note,ℤ](_.note)                  // Verify the axioms
   }
 
-  test("Pitch properties are consistent")
+  test("Pitch construction")
   {
     forAll("p") {(p: Pitch) ⇒
     {

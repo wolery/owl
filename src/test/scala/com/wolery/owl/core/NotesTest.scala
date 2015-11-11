@@ -17,7 +17,6 @@ package com.wolery.owl.core;
 //****************************************************************************
 
 import org.scalacheck.Arbitrary
-import org.scalacheck.Gen.choose
 import org.scalatest.FunSuite
 
 import CoreTest._
@@ -27,7 +26,25 @@ import CoreTest.arbitrary._
 
 class NotesTest extends FunSuite
 {
-  //https://en.wikipedia.org/wiki/Boolean_algebra_(structure)
+  test("Notes is transposing")
+  {
+    implicit val i = Arbitrary(generate.int)             // For i ∈ [-128,128]
+
+    isTransposing[Notes]()                               // Verify the axioms
+  }
+
+  test("Notes(⊆) is a partial ordering")
+  {
+    implicit object α extends PartialOrdering[Notes]
+    {
+      def lteq(s: Notes,t: Notes)       = s ⊆ t
+      def tryCompare(x: Notes,y: Notes) = ???
+    }
+
+    isPartiallyOrdered[Notes]()                          // Verify the axioms
+  }
+
+  // https://en.wikipedia.org/wiki/Boolean_algebra_(structure)
 
   test("Notes(∩,∪,~,∅,~∅) is a boolean algebra")
   {
@@ -48,24 +65,6 @@ class NotesTest extends FunSuite
       assert(     a ∪ ~a  == one,              "[∪ complements]")
       assert(     a ∩ ~a  == nil,              "[∩ complements]")
     }}
-  }
-
-  test("Notes(⊆) is a partial ordering")
-  {
-    implicit object α extends PartialOrdering[Notes]
-    {
-      def lteq(s: Notes,t: Notes) = s ⊆ t
-      def tryCompare(x: Notes,y: Notes) = ???
-    }
-
-    isPartiallyOrdered[Notes]()
-  }
-
-  test("Notes is transposing")
-  {
-    implicit val α = Arbitrary(choose(-128,128))
-
-    isTransposing[Notes]()
   }
 
   test("C major looks ok")
