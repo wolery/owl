@@ -46,18 +46,18 @@ class NotesTest extends CoreSuite
 
     forAll("a","b","c") {(a: Notes,b: Notes,c: Notes) =>
     {
-      assert(a ∪ (b ∪ c)  == (a ∪ b) ∪ c,      "[∪ associativity]")
-      assert(a ∩ (b ∩ c)  == (a ∩ b) ∩ c,      "[∩ associativity]")
-      assert(     a ∪ b   ==  b ∪ a,           "[∪ commutativity]")
-      assert(     a ∩ b   ==  b ∩ a,           "[∩ commutativity]")
-      assert(a ∪ (a ∩ b)  == a,                "[∪ absorption]")
-      assert(a ∩ (a ∪ b)  == a,                "[∩ absorption]")
-      assert(     a ∪ nil ==  a,               "[∪ identity]")
-      assert(     a ∩ one ==  a,               "[∩ identity]")
-      assert(a ∪ (b ∩ c)  == (a ∪ b) ∩ (a ∪ c),"[∪ distributivity]")
-      assert(a ∩ (b ∪ c)  == (a ∩ b) ∪ (a ∩ c),"[∩ distributivity]")
-      assert(     a ∪ ~a  == one,              "[∪ complements]")
-      assert(     a ∩ ~a  == nil,              "[∩ complements]")
+      assert(a ∪ (b ∪ c)  == (a ∪ b) ∪ c,                "[∪ associativity]")
+      assert(a ∩ (b ∩ c)  == (a ∩ b) ∩ c,                "[∩ associativity]")
+      assert(     a ∪ b   ==  b ∪ a,                     "[∪ commutativity]")
+      assert(     a ∩ b   ==  b ∩ a,                     "[∩ commutativity]")
+      assert(a ∪ (a ∩ b)  == a,                          "[∪ absorption]")
+      assert(a ∩ (a ∪ b)  == a,                          "[∩ absorption]")
+      assert(     a ∪ nil ==  a,                         "[∪ identity]")
+      assert(     a ∩ one ==  a,                         "[∩ identity]")
+      assert(a ∪ (b ∩ c)  == (a ∪ b) ∩ (a ∪ c),          "[∪ distributivity]")
+      assert(a ∩ (b ∪ c)  == (a ∩ b) ∪ (a ∩ c),          "[∩ distributivity]")
+      assert(     a ∪ ~a  == one,                        "[∪ complements]")
+      assert(     a ∩ ~a  == nil,                        "[∩ complements]")
     }}
   }
 
@@ -68,28 +68,28 @@ class NotesTest extends CoreSuite
     val Cmaj = Notes(C,D,E,F,G,A,B)
     val Gmaj = Notes(G,A,B,C,D,E,F♯)
 
-    assert(Cmaj.size == 7,                "[size]")
+    assert(Cmaj.size == 7,                               "[size = 7]")
 
-    assert(C   ∈ Cmaj,                    "[C ]")
-    assert(C.♯ ∉ Cmaj,                    "[C♯]")
-    assert(D   ∈ Cmaj,                    "[D ]")
-    assert(D.♯ ∉ Cmaj,                    "[D♯]")
-    assert(E   ∈ Cmaj,                    "[E ]")
-    assert(F   ∈ Cmaj,                    "[F ]")
-    assert(F.♯ ∉ Cmaj,                    "[F♯]")
-    assert(G   ∈ Cmaj,                    "[G ]")
-    assert(G.♯ ∉ Cmaj,                    "[G♯]")
-    assert(A   ∈ Cmaj,                    "[A ]")
-    assert(A.♯ ∉ Cmaj,                    "[A♯]")
-    assert(B   ∈ Cmaj,                    "[B ]")
+    assert(C   ∈ Cmaj,                                   "[C ]")
+    assert(C.♯ ∉ Cmaj,                                   "[C♯]")
+    assert(D   ∈ Cmaj,                                   "[D ]")
+    assert(D.♯ ∉ Cmaj,                                   "[D♯]")
+    assert(E   ∈ Cmaj,                                   "[E ]")
+    assert(F   ∈ Cmaj,                                   "[F ]")
+    assert(F.♯ ∉ Cmaj,                                   "[F♯]")
+    assert(G   ∈ Cmaj,                                   "[G ]")
+    assert(G.♯ ∉ Cmaj,                                   "[G♯]")
+    assert(A   ∈ Cmaj,                                   "[A ]")
+    assert(A.♯ ∉ Cmaj,                                   "[A♯]")
+    assert(B   ∈ Cmaj,                                   "[B ]")
 
-    assert(Cmaj+7 == Gmaj,                "[Gmaj]")
+    assert(Cmaj+7 == Gmaj,                               "[Gmaj]")
 
-    assert(Cmaj \ Gmaj == Notes(F),       "[\\]")
-    assert(Cmaj ∪ Gmaj == Cmaj + F.♯,     "[∪]")
-    assert(Cmaj ∩ Gmaj == Cmaj - F,       "[∩]")
-    assert(Cmaj ⊖ Gmaj == Notes(F,F♯),    "[⊖]")
-    assert(~Cmaj == Notes(C♯,D♯,F♯,G♯,A♯),"[~]")
+    assert(Cmaj \ Gmaj == Notes(F),                      "[\\]")
+    assert(Cmaj ∪ Gmaj == Cmaj + F.♯,                    "[∪]")
+    assert(Cmaj ∩ Gmaj == Cmaj - F,                      "[∩]")
+    assert(Cmaj ⊖ Gmaj == Notes(F,F♯),                   "[⊖]")
+    assert(~Cmaj == Notes(C♯,D♯,F♯,G♯,A♯),               "[~]")
   }
 }
 

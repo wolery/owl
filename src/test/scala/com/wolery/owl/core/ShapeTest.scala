@@ -52,11 +52,17 @@ class ShapeTest extends CoreSuite
   {
     forAll("s") {(s: Shape) ⇒
     {
-      assert(s == s)
-      assert(s == Shape(s.intervals))
-      assert(s == Shape(s.absolute:_*))
-      assert(s == Shape(s.relative:_*))
+      assert(s == Shape(s.intervals),                    "[Set[ℤ]]")
+      assert(s == Shape(s.absolute:_*),                  "[Seq[ℤ] (absolute)]")
+      assert(s == Shape(s.relative:_*),                  "[Seq[ℤ] (relative)]")
+    }}
+  }
 
+  test("Shape invariants")
+  {
+    forAll("s") {(s: Shape) ⇒
+    {
+      assert(s == s)
       assert(s.absolute == s.intervals.toSeq)
       assert(s.absolute == (for (i ← 0 until s.size) yield s interval i))
       assert(s.modes    == (for (i ← 0 until s.size) yield s mode i))

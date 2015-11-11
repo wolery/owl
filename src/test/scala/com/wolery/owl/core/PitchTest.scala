@@ -41,9 +41,9 @@ class PitchTest extends CoreSuite
   {
     forAll("p") {(p: Pitch) ⇒
     {
-      assert(p == Pitch(p.midi),         "[midi]")
-      assert(p == Pitch(p.frequency),    "[frequency]")
-      assert(p == Pitch(p.note,p.octave),"[note+octave]")
+      assert(p == Pitch(p.midi),                         "[Midi]")
+      assert(p == Pitch(p.frequency),                    "[Frequency")
+      assert(p == Pitch(p.note,p.octave),                "[Note,Octave")
     }}
   }
 }

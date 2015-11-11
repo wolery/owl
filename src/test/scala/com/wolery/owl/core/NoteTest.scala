@@ -27,14 +27,11 @@ class NoteTest extends CoreSuite
     isIntervallic[Note]()                                // Verify the axioms
   }
 
-  test("Note construction")
+  test("Note invariants")
   {
     forAll("n") {(n: Note) ⇒
     {
-      for (o ← -1 to 9)
-      {
-        assert(n(o) == Pitch(n,o),"[octave]")
-      }
+      for (o ← -1 to 9) {assert(n(o) == Pitch(n,o),      "[Pitch]")}
     }}
   }
 }
