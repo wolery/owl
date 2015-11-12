@@ -31,8 +31,16 @@ class NoteTest extends CoreSuite
   {
     forAll("n") {(n: Note) ⇒
     {
-      for (o ← -1 to 9) {assert(n(o) == Pitch(n,o),      "[Pitch]")}
+      assert(n == n,                                     "[n = n]")
+      assert(n != n + 1,                                 "[n != n + 1]")
+      assert(n != n - 1,                                 "[n != n - 1]")
+      assert(n == n + 12,                                "[n = n + 12]")
+      assert(n == n - 12,                                "[n = n - 12]")
+
+      for (o ← -1 to 9) {assert(n(o) == Pitch(n,o),      "[n(o) = Pitch(n,o)")}
     }}
+
+    assert(Set(C,D,E,F,G,A,B).size == 7,                 "[7 white notes]")
   }
 }
 
