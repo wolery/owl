@@ -4,8 +4,8 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
-//*
+//*  Purpose : Represents a musical scale as a set of notes, together with its
+//*            distinguished element, the 'root' of the scale.
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
 //*
@@ -14,30 +14,31 @@
 
 package com.wolery.owl.core
 
-//****************************************************************************
-
-import utilities.mod
-
-//****************************************************************************
-
-final class Scale private (val root: Note,val shape: Shape)
+/**
+ * Represents a musical scale as a subset of the twelve notes, together with a
+ * distinguished element, the ''root'' of the scale.
+ *
+ * @param root  The tonic center, or ''root'' note, of the scale.
+ * @param shape The underlying interval structure, or ''shape'', of the scale.
+ *
+ * @see [[https://en.wikipedia.org/wiki/Scale_(music)]]
+ */
+final case class Scale (val root: Note,val shape: Shape)
 {
   def size: ℕ                             = shape.size
 
-  def toSet: Notes                        = (Notes.empty /: shape.intervals)((s,i) ⇒ s + (root + i))
+  def notes: Notes                        = (Notes.empty /: shape.intervals)((s,i) ⇒ s + (root + i))
+  def toSet: Notes                        = notes
   def toSeq: Seq[Note]                    = shape.absolute.map(root + _)
 
-  def note(i: ℕ): Note                    = root + shape.interval(i)
   def mode(i: ℤ): Scale                   = Scale(note(i),toSeq:_*)
   def modes: Seq[Scale]                   = toSeq.map(Scale(_,toSeq:_*))
 
   override def toString: String           = s"$root $shape"
-  override def hashCode: Bits             = 41 * (41+root.##) + shape.##
-  override def equals(a: Any) = a match
-  {
-    case s: Scale ⇒ s.root==root && s.shape == shape
-    case _        ⇒ false
-  }
+
+  def note(i: ℤ): Note                    = root + shape.interval(i)
+  def contains(n: Note): Bool             = shape.intervals.contains(n - root)
+//def interval(n: Note): Maybe[ℕ]         = shape.indexOf(n)
 }
 
 //****************************************************************************
@@ -45,9 +46,8 @@ final class Scale private (val root: Note,val shape: Shape)
 object Scale
 {
   def apply(r: Note,n: Name): Maybe[Scale]= Shape(n).map(Scale(r,_))
-  def apply(r: Note,s: Shape): Scale      = new Scale(r,s)
-  def apply(r: Note,s: Notes): Scale      = Scale(r,Shape(s.map(_-r)))
   def apply(r: Note,s: Note*): Scale      = Scale(r,Notes(s:_*))
+  def apply(r: Note,s: Set[Note]): Scale  = Scale(r,Shape(s.map(_-r)))
 
   implicit object transposing extends Transposing[Scale]
   {
