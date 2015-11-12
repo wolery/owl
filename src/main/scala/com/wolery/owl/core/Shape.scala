@@ -91,6 +91,20 @@ final class Shape private (val bits: Bits) extends AnyVal
     }
   }
 
+  def contains(interval: ℤ): Bool =       (bits & Shape.bit(interval)) !=0
+
+  def indexOf(interval: ℤ): Maybe[ℕ] =
+  {
+    if (contains(interval))
+    {
+      val i = mod12(interval)
+      val m = 0xFFF >>> (11 - i)
+
+      Some(bitCount(bits & m) - 1)
+    }
+    else None
+  }
+
   override def toString: String           = Shapes(bits).map(_.name).getOrElse(intervals.mkString("Shape(",", ",")"))
 }
 
