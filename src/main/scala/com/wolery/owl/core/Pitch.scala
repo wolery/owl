@@ -36,13 +36,13 @@ import utilities.subscript
  * for all ''p'' and ''i'' in ℤ. Each pair of pitches ''(p, q)'' identifies an
  * ''interval'',  the unique integer that when applied to ''p'' ''transposes''
  * it to ''q''. Moreover, this definition of interval as the delta function of
- * a torsor coincides with the familiar notion of musical interval,  hence the
- * name.
+ * a torsor coincides with the more familiar notion of musical interval, hence
+ * the name.
  *
  * @param midi The note number assigned this pitch by the MIDI Tuning Standard.
  * @see   [[https://en.wikipedia.org/wiki/Equal_temperament Equal Temperament]]
  * @see   [[https://en.wikipedia.org/wiki/A440_(pitch_standard) A440 (pitch standard)]]
- * @see   [[https://en.wikipedia.org/wiki/midi_tuning_standard MIDI Tuning Standard]]
+ * @see   [[https://en.wikipedia.org/wiki/MIDI_Tuning_Standard MIDI Tuning Standard]]
  */
 final class Pitch private (val midi: Midi) extends AnyVal
 {
@@ -74,7 +74,7 @@ final class Pitch private (val midi: Midi) extends AnyVal
    *
    * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific Pitch Notation]]
    */
-  override def toString()                 = subscript(s"$note$octave")
+  override def toString() = subscript(s"$note$octave")
 }
 
 /**
