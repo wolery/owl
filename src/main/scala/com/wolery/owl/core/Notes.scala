@@ -103,6 +103,7 @@ final class Notes private (private val bits: Bits) extends Set[Note]
 
 object Notes
 {
+  def all: Notes                          = new Notes(0xFFF)
   def empty: Notes                        = new Notes(0)
   def apply(s: Note*)                     = (builder ++= s).result
   def apply(s: Set[Note])                 = (builder ++= s).result

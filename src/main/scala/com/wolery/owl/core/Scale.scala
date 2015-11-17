@@ -38,7 +38,7 @@ final case class Scale (val root: Note,val shape: Shape)
 
   def note(i: ℤ): Note                    = root + shape.interval(i)
   def contains(n: Note): Bool             = shape.intervals.contains(n - root)
-  def degree(n: Note): Maybe[ℕ]           = shape.indexOf(n - root)
+  def indexOf(n: Note): Maybe[ℕ]          = shape.indexOf(n - root)
 }
 
 //****************************************************************************
