@@ -48,8 +48,8 @@ trait Monoid[M]
   def zero: M
 
   /**
-   * Returns the 'sum' of the two given elements, whatever this might mean for
-   * the actual algebraic structure in question.
+   * Returns the 'sum' of the given elements, whatever this might mean for the
+   * actual algebraic structure in question.
    */
   def plus(m: M,n: M): M
 }
@@ -137,7 +137,7 @@ trait Action[S,G] extends Group[G]
 trait Torsor[S,G] extends Action[S,G]
 {
   /**
-   * Returns the ''delta'' between a pair of elements of the carrier set; that
+   * Returns the 'delta' between any pair of elements of the carrier set; that
    * is,  the unique group element that when applied to the first element maps
    * it into the second.
    *
@@ -184,7 +184,7 @@ trait Transposing[S] extends Action[S,ℤ]
  *
  * In an intervallic set, each pair of elements is uniquely associated with an
  * ''interval'' - the unique integer that when applied to the first element of
- * the pair 'transposes' it to the second.
+ * the pair ''transposes'' it to the second.
  *
  * @tparam S A non-empty set acted upon regularly by the integers via the mapping `apply`.
  */

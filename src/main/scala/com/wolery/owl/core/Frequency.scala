@@ -22,8 +22,8 @@ import Frequency.{A4,A440}
 /**
  * Represents an audio frequency as a positive real number of hertz.
  *
- * Frequencies form a torsor for ℝ(0,+), the set of reals regarded as a group
- * under addition, via the group action:
+ * Frequencies form a torsor for ℝ(0,+), the set of real numbers regarded as a
+ * group under addition, via the group action:
  * {{{
  * 		f Hz + r  =  pow(2,r/12) * f Hz
  * }}}
@@ -32,6 +32,15 @@ import Frequency.{A4,A440}
  * to ''g''. Moreover, this definition of interval as the delta function for a
  * torsor coincides with the more familiar notion of musical interval -  hence
  * the name.
+ *
+ * Informally, this action captures the notion of ''transposition'',  with the
+ * real number ''r'' representing a (possibly fractional) number of half-steps
+ * to raise or lower the frequency ''f'' by. Notice, for example, that:
+ * {{{
+ * 		f + 12  =  2 * f
+ * }}}
+ * for any frequency ''f'', which corresponds to the transposition of ''f'' by
+ * an interval of one octave.
  *
  * @param Hz The underlying frequency in hertz.
  * @see   [[https://en.wikipedia.org/wiki/Hertz Hertz (Wikipedia)]]
@@ -101,7 +110,7 @@ object Frequency
   }
 
   /**
-   * Frequencies are acted upon by reals via transposition by half-steps.
+   * Frequencies are acted upon by the reals via transposition in half-steps.
    */
   implicit val torsor: Torsor[Frequency,ℝ]= new Torsor[Frequency,ℝ]
   {
