@@ -33,24 +33,23 @@ package com.wolery.owl.core
  *            0 + m = m = m + 0                          identity
  *     (m₁ + m₂) + m₃ = m₁ + (m₂ + m₃)                   associativity
  * }}}
- * for all ''m'', ''m₁'', ''m₂'', ''m₃'' in ''M'', where 0 and + denote the
- * members `zero` and `plus` respectively.  In other words, ''M'' is a
- * semigroup with an identity element.
+ * for all ''m'' in ''M'', where 0 and + denote the members `zero` and `plus`
+ * respectively. In other words, ''M'' is a semigroup with an identity element.
  *
- * @tparam M the underlying set on which the monoid operation acts
- * @see    [[https://en.wikipedia.org/wiki/Monoid]]
+ * @tparam M The underlying set on which the monoid operation acts.
+ * @see    [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
  */
 trait Monoid[M]
 {
   /**
-   * The monoid identity element; that is, the unique element in ''M'' such
+   * The monoid identity element; that is, the unique element 0 in ''M'' such
    * that ''0 + m = m = m + 0'' for all ''m'' in ''M''.
    */
   def zero: M
 
   /**
-   * Returns the 'sum' of the two specified monoid elements, whatever this may
-   * mean for the actual monoid in question.
+   * Returns the 'sum' of the two given elements, whatever this might mean for
+   * the actual monoid in question.
    */
   def plus(m: M,n: M): M
 }
@@ -65,18 +64,18 @@ trait Monoid[M]
  *     (g₁ + g₂) + g₃ = g₁ + (g₂ + g₃)                   associativity
  *           g + -g = 0 = -g + g                         invertability
  * }}}
- * for all ''g'', ''g₁'', ''g₂'', ''g₃'' in ''G'', where 0, -, and + denote
- * the members `zero`, `negate`, and `plus` respectively.  In other words,
- * ''G'' is a monoid in which every element has an additive inverse.
+ * for all ''g'' in ''G'', where 0, +, and - denote the members `zero`, `plus`
+ * and `negate` respectively. In other words, ''G'' is a monoid in which every
+ * element has an additive inverse.
  *
- * @tparam G the underlying set on which the group operation acts
- * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics)]]
+ * @tparam G The underlying set on which the group operation acts.
+ * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics) Group (Wikipedia)]]
  */
 trait Group[G] extends Monoid[G]
 {
   /**
-   * Returns the inverse of the group element ''g'', the unique element ''-g''
-   * in ''G'' such that ''-g + g = 0 = g + -g''.
+   * Returns the inverse of the element ''g''; that is, the unique element
+   * ''-g'' in ''G'' such that ''g + -g = 0 = -g + g''.
    */
   def negate(g: G): G
 }
@@ -89,18 +88,18 @@ trait Group[G] extends Monoid[G]
  *            s + 0 = s                                  identity
  *    s + (g₁ + g₂) = (s + g₁) + g₂                      compatability
  * }}}
- * for all ''s'' in ''S'' and all ''g₁'' and ''g₂'' in ''G'', where 0 and +
- * denote the members `zero` and `plus` respectively.
+ * for all ''s'' in ''S'' and ''g'' in ''G'', where 0 and + denote the members
+ * `zero` and `plus` respectively.
  *
- * @tparam G a group that acts upon the carrier set ''S'' via the mapping `apply`
- * @tparam S a non-empty set acted upon by the group ''G'' via the mapping `apply`
- * @see    [[http://en.wikipedia.org/wiki/Group_action]]
+ * @tparam G A group that acts upon the carrier set ''S'' via the mapping `apply`.
+ * @tparam S A non-empty set acted upon by the group ''G'' via the mapping `apply`.
+ * @see    [[http://en.wikipedia.org/wiki/Group_action Group Action (Wikipedia)]]
  */
 trait Action[S,G] extends Group[G]
 {
   /**
    * Applies an element of the group ''G'' to an element of the carrier set
-   * ''S'', whatever this may mean for the actual group action in question.
+   * ''S'', whatever this might mean for the actual group action in question.
    *
    * Notice that the map `(_ + g)` is necessarily a permutation of the carrier
    * set ''S'', and thus `apply` is a homomorphism from ''G'' into Aut(''S''),
@@ -119,21 +118,21 @@ trait Action[S,G] extends Group[G]
  * a unique element ''s₂ - s₁'' in ''G'' such that ''s₁'' + (''s₂'' - ''s₁'') =
  * ''s₂'', where + and - denote the members `apply` and `delta` respectively.
  *
- * Thus in addition to the axioms of a group action,  instances also satisfy
+ * Thus in addition to the axioms for a group action, instances also satisfy
  * the axiom:
  * {{{
  *    s₁ + (s₂ - s₁) = s₂                                regularity
  * }}}
- * for all ''s₁'' and ''s₂'' in ''S'', where + and - denote the members `apply`
- * and `delta` respectively.
+ * for all ''s'' in ''S'', where + and - denote the members `apply` and `delta`
+ * respectively.
  *
  * We say that ''S'' is a ''torsor'' for the group ''G'', or simply that ''S''
  * is a ''G-torsor''.
  *
- * @tparam G a group that acts regularly upon the carrier set ''S'' via the mapping `apply`
- * @tparam S a non-empty set acted upon regularly by the group ''G'' via the mapping `apply`
- * @see    [[http://en.wikipedia.org/wiki/Principal_homogeneous_space]]
- * @see    [[http://math.ucr.edu/home/baez/torsors.html]]
+ * @tparam G A group that acts regularly upon the carrier set ''S'' via the mapping `apply`.
+ * @tparam S A non-empty set acted upon regularly by the group ''G'' via the mapping `apply`.
+ * @see    [[http://en.wikipedia.org/wiki/Principal_homogeneous_space Torsor (Wikipedia)]]
+ * @see    [[http://math.ucr.edu/home/baez/torsors.html Torsors Made Easy (John Baez)]]
  */
 trait Torsor[S,G] extends Action[S,G]
 {
@@ -142,9 +141,9 @@ trait Torsor[S,G] extends Action[S,G]
    * that is, the unique group element in ''G'' that when applied to the first
    * element maps it into the second.
    *
-   * @param  s an element of the carrier set ''S''
-   * @param  t an element of the carrier set ''S''
-   * @return the unique group element that maps ''s'' to ''t''
+   * @param  s An element of the carrier set ''S''.
+   * @param  t An element of the carrier set ''S''.
+   * @return The unique group element that maps ''s'' to ''t''.
    */
   def delta(s: S,t: S): G
 }
@@ -159,13 +158,24 @@ trait Torsor[S,G] extends Action[S,G]
  * Notice that because ℤ is a unital ring, its action upon ''S'' is completely
  * determined by the mapping `apply(_,1)`.
  *
- * @tparam S a non-empty set acted upon by the integers via the mapping `apply`
+ * @tparam S A non-empty set acted upon by the integers via the mapping `apply`.
  */
 trait Transposing[S] extends Action[S,ℤ]
 {
-  def zero: ℤ                 = 0
-  def negate(a: ℤ): ℤ         = -a
-  def plus  (a: ℤ,b: ℤ): ℤ    = a + b
+  /**
+   * 0, the additive identity.
+   */
+  def zero: ℤ = 0
+
+  /**
+   * ''-a'', the negation of the integer ''a''.
+   */
+  def negate(a: ℤ): ℤ = -a
+
+  /**
+   * ''a'' + ''b'', the sum of the integers ''a'' and ''b''.
+   */
+  def plus  (a: ℤ,b: ℤ): ℤ = a + b
 }
 
 /**
@@ -176,8 +186,9 @@ trait Transposing[S] extends Action[S,ℤ]
  * ''interval'' - the unique integer that when applied to the first element of
  * the pair 'transposes' it to the second.
  *
- * @tparam S a non-empty set acted upon regularly by the integers via the mapping `apply`
+ * @tparam S A non-empty set acted upon regularly by the integers via the mapping `apply`.
  */
 trait Intervallic[S] extends Torsor[S,ℤ] with Transposing[S]
+{}
 
 //****************************************************************************

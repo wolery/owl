@@ -22,16 +22,27 @@ import Frequency.{A4,A440}
 /**
  * Represents an audio frequency as a positive real number of hertz.
  *
- * @param Hz The underlying frequency as a positive real number of hertz.
- * @see   [[https://en.wikipedia.org/wiki/Hertz Hertz]]
- * @see   [[https://en.wikipedia.org/wiki/Frequency Frequency]]
+ * Frequencies form a torsor for ℝ(0,+), the set of reals regarded as a group
+ * under addition, via the group action:
+ * {{{
+ * 		f Hz + r  =  pow(2,r/12) * f Hz
+ * }}}
+ * for all ''f'' and ''r'' in ℝ. Each pair of frequencies ''(f,g)'' identifies
+ * an ''interval'',  the unique real that  when applied to ''f'' transposes it
+ * to ''g''. Moreover, this definition of interval as the delta function for a
+ * torsor coincides with the more familiar notion of musical interval -  hence
+ * the name.
+ *
+ * @param Hz The underlying frequency in hertz.
+ * @see   [[https://en.wikipedia.org/wiki/Hertz Hertz (Wikipedia)]]
+ * @see   [[https://en.wikipedia.org/wiki/Frequency Frequency (Wikipedia)]]
  */
 final class Frequency private (val Hz: ℝ)
 {
   assert(Hz > 0,"non-positive Hz")
 
   /**
-   * The underlying frequency as a positive real number of kilohertz.
+   * The underlying frequency in kilohertz.
    */
   def kHz: ℝ = Hz * 1e-3
 
@@ -41,8 +52,8 @@ final class Frequency private (val Hz: ℝ)
   def pitch: Pitch = A4 + round(this - A440).toInt
 
   /**
-   * Return true if the given object is another frequency within one cent of
-   * this one.
+   * True if ''any'' is a frequency that sounds within one cent of a half-step
+   * of this one.
    */
   override def equals(any: Any) = any match
   {
@@ -51,12 +62,13 @@ final class Frequency private (val Hz: ℝ)
   }
 
   /**
-   * Returns a formatted string representation of this frequency.
+   * A formatted string representation of this frequency.
    */
   override def toString: String = if (kHz >= 1) f"$kHz%.2fkHz" else f"$Hz%.2fHz"
 
   /**
-   * Returns true if the given frequency is within once cent of this one.
+   * True if the given frequency is sounds within once cent of a half-step of
+   * this one.
    */
   private def close(that: Frequency): Bool = abs(this - that) < 1e-2
 }
@@ -72,12 +84,16 @@ object Frequency
   def apply(real: ℝ): Frequency = new Frequency(real)
 
   /**
-   * Returns the underlying frequency of the given pitch.
+   * Returns the underlying frequency of an even tempered pitch.
    */
   def apply(pitch: Pitch): Frequency = A440 + (pitch - A4).toDouble
 
   /**
+   * Frequencies are ordered by the underlying real number that they wrap, but
+   * compare equal when within one cent of a half-step of one another.
    *
+   * Note that this behavior is not quite consistent with the implementation
+   * of [[hashCode]] they currently inherit.
    */
   implicit object ordering extends Ordering[Frequency]
   {
@@ -85,7 +101,7 @@ object Frequency
   }
 
   /**
-   *
+   * Implements the group action `f Hz + r  =  pow(2,r/12) * f Hz`.
    */
   implicit val torsor: Torsor[Frequency,ℝ]= new Torsor[Frequency,ℝ]
   {
