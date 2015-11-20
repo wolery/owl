@@ -70,6 +70,30 @@ final class Pitch private (val midi: Midi) extends AnyVal
   def frequency: Frequency = Frequency(this)
 
   /**
+   * Returns the sequence of pitches  ranging from  this to ''end'' exclusive,
+   * and skipping ''step''  half-steps between each consecutive element of the
+   * resulting range.
+   *
+   * @param  end  The bounding element of the resulting range.
+   * @param  step The number of half-steps between consecutive elements of the
+   * 				 			resulting range.
+   * @return The range `[this, this + step, ... , end)`
+   */
+  def until(end: Pitch,step: ℤ = +1): Seq[Pitch] = for (i ← midi until end.midi by step) yield Pitch(i)
+
+  /**
+   * Returns the sequence of pitches  ranging from  this to ''end'' inclusive,
+   * and skipping ''step''  half-steps between each consecutive element of the
+   * resulting range.
+   *
+   * @param  end  The bounding element of the resulting range.
+   * @param  step The number of half-steps between consecutive elements of the
+   * 				 			resulting range.
+   * @return The range `[this, this + step, ... , end]`
+   */
+  def to(end: Pitch,step: ℤ = +1): Seq[Pitch] = for (i ← midi to end.midi by step) yield Pitch(i)
+
+  /**
    * The name assigned this pitch in scientific pitch notation.
    *
    * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific Pitch Notation (Wikipedia)]]

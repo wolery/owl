@@ -23,9 +23,8 @@ object Main extends Logging
   {
     info("Hello, world!")
 
-    for (i ← 0 to 127)
+    for (p ← C(-1) to G(9))
     {
-      val p = Pitch(i)
       val m = p.midi
       val f = p.frequency
       val P = Pitch(p.frequency)

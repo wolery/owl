@@ -46,6 +46,12 @@ class PitchTest extends CoreSuite
       assert(p == Pitch(p.note,p.octave),                "[Note,Octave")
     }}
   }
+
+  test("Pitch reference")
+  {
+    assert(A(4).midi      == 69,                         "[A4]")
+    assert(A(4).frequency == Hz(440.0),                  "[A440]")
+  }
 }
 
 //****************************************************************************
