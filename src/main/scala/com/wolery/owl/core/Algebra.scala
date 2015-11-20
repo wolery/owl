@@ -42,14 +42,14 @@ package com.wolery.owl.core
 trait Monoid[M]
 {
   /**
-   * The monoid identity element; that is, the unique element 0 in ''M'' such
-   * that ''0 + m = m = m + 0'' for all ''m'' in ''M''.
+   * The identity element; that is, the unique element 0 in ''M'' such that
+   * ''0 + m = m = m + 0'' for all ''m'' in ''M''.
    */
   def zero: M
 
   /**
    * Returns the 'sum' of the two given elements, whatever this might mean for
-   * the actual monoid in question.
+   * the actual algebraic structure in question.
    */
   def plus(m: M,n: M): M
 }
@@ -98,8 +98,8 @@ trait Group[G] extends Monoid[G]
 trait Action[S,G] extends Group[G]
 {
   /**
-   * Applies an element of the group ''G'' to an element of the carrier set
-   * ''S'', whatever this might mean for the actual group action in question.
+   * Applies an element of the group to an element of the carrier set, whatever
+   * this might mean for the actual group action in question.
    *
    * Notice that the map `(_ + g)` is necessarily a permutation of the carrier
    * set ''S'', and thus `apply` is a homomorphism from ''G'' into Aut(''S''),
@@ -137,9 +137,9 @@ trait Action[S,G] extends Group[G]
 trait Torsor[S,G] extends Action[S,G]
 {
   /**
-   * Returns the 'delta' between a pair of elements of the carrier set ''S'';
-   * that is, the unique group element in ''G'' that when applied to the first
-   * element maps it into the second.
+   * Returns the ''delta'' between a pair of elements of the carrier set; that
+   * is,  the unique group element that when applied to the first element maps
+   * it into the second.
    *
    * @param  s An element of the carrier set ''S''.
    * @param  t An element of the carrier set ''S''.

@@ -101,7 +101,7 @@ object Frequency
   }
 
   /**
-   * Implements the group action `f Hz + r  =  pow(2,r/12) * f Hz`.
+   * Frequencies are acted upon by reals via transposition by half-steps.
    */
   implicit val torsor: Torsor[Frequency,ℝ]= new Torsor[Frequency,ℝ]
   {

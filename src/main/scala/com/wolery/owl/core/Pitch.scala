@@ -111,7 +111,7 @@ object Pitch
   }
 
   /**
-   * Implements the group action `Pitch(p) + i  =  Pitch(p + i)`.
+   * Pitches are acted upon by integers via transposition by half-steps.
    */
   implicit object intervallic extends Intervallic[Pitch]
   {
