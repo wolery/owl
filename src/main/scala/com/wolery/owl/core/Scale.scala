@@ -21,9 +21,9 @@ package com.wolery.owl.core
  * @param root  The tonic center, or ''root'' note, of the scale.
  * @param shape The underlying interval structure, or ''shape'', of the scale.
  *
- * @see [[https://en.wikipedia.org/wiki/Scale_(music)]]
+ * @see [[https://en.wikipedia.org/wiki/Scale_(music) Scale (Wikipedia)]]
  */
-final case class Scale (val root: Note,val shape: Shape)
+final case class Scale (val root: Note,val shape: Shape) extends (ℤ ⇒ Note)
 {
   def size: ℕ                             = shape.size
 
@@ -31,14 +31,18 @@ final case class Scale (val root: Note,val shape: Shape)
   def toSet: Notes                        = notes
   def toSeq: Seq[Note]                    = shape.absolute.map(root + _)
 
-  def mode(i: ℤ): Scale                   = Scale(note(i),toSeq:_*)
+  def mode(mode: ℤ): Scale                = Scale(apply(mode),toSeq:_*)
   def modes: Seq[Scale]                   = toSeq.map(Scale(_,toSeq:_*))
 
-  override def toString: String           = s"$root $shape"
+  def apply(index: ℤ): Note               = root + shape.interval(index)
+  def indexOf(note: Note): Maybe[ℕ]       = shape.indexOf(note - root)
+  def contains(note: Note): Bool          = shape.intervals.contains(note - root)
 
-  def note(i: ℤ): Note                    = root + shape.interval(i)
-  def contains(n: Note): Bool             = shape.intervals.contains(n - root)
-  def indexOf(n: Note): Maybe[ℕ]          = shape.indexOf(n - root)
+  override def toString: String           = shape.name match
+  {
+    case Some(name) ⇒ s"$root $name"
+    case _          ⇒ toSeq.mkString("Scale(",", ",")")
+  }
 }
 
 //****************************************************************************
@@ -49,7 +53,7 @@ object Scale
   def apply(r: Note,s: Note*): Scale      = Scale(r,Notes(s:_*))
   def apply(r: Note,s: Set[Note]): Scale  = Scale(r,Shape(s.map(_-r)))
 
-  implicit object transposing extends Transposing[Scale]
+  implicit val transposing = new Transposing[Scale]
   {
     def apply(s: Scale,i: ℤ): Scale       = new Scale(s.root + i,s.shape)
   }

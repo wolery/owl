@@ -26,10 +26,10 @@ class CoreTest extends CoreSuite
 
   implicit val r = Arbitrary(generate.real)              // For r ∈ [-128,128]
 
-  test("ℤ is a ℤ-torsor")  {isTorsor[ℤ,ℤ]()}             // Verify the axioms
-  test("ℤ is abelian")     {isCommutative[ℤ]()}          // Verify the axioms
-  test("ℝ is an R-torsor") {isTorsor[ℝ,ℝ]()}             // Verify the axioms
-  test("ℝ is abelian")     {isCommutative[ℝ]()}          // Verify the axioms
+  test("ℤ(0,+) is a ℤ-torsor")  {isTorsor[ℤ,ℤ]()}        // Verify the axioms
+  test("ℤ(0,+) is abelian")     {isCommutative[ℤ]()}     // Verify the axioms
+  test("ℝ(0,+) is an R-torsor") {isTorsor[ℝ,ℝ]()}        // Verify the axioms
+  test("ℝ(0,+) is abelian")     {isCommutative[ℝ]()}     // Verify the axioms
 }
 
 //****************************************************************************

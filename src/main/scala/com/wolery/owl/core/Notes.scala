@@ -97,6 +97,7 @@ final class Notes private (private val bits: Bits) extends Set[Note]
   override def empty: Notes               = new Notes(0)
   override def hashCode: Bits             = bits
   override def newBuilder: Builder[Note,Notes] = builder
+  override def toString: String           = mkString("{",", ","}")
 }
 
 //****************************************************************************

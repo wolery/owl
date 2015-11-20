@@ -38,9 +38,9 @@ class NotesTest extends CoreSuite
     isPartiallyOrdered[Notes]()                          // Verify the axioms
   }
 
-  // https://en.wikipedia.org/wiki/Boolean_algebra_(structure)
+  // @see [[https://en.wikipedia.org/wiki/Boolean_algebra_(structure) Boolean algebra (Wikipedia)]]
 
-  test("Notes(∩,∪,~,∅,~∅) is a boolean algebra")
+  test("Notes(∅,~∅,~,∩,∪) is a boolean algebra")
   {
     val (nil,one) = (Notes(),~Notes())
 

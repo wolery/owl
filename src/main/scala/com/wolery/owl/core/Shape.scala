@@ -24,6 +24,8 @@ import utilities.{mod,mod12,ror12}
 
 final class Shape private (val bits: Bits) extends AnyVal
 {
+  def name: Maybe[Name]                   = Shapes(bits).map(_.name)
+
   def aliases: Seq[Name]                  = Shapes(bits) match
   {
     case None    ⇒ Nil
@@ -105,7 +107,7 @@ final class Shape private (val bits: Bits) extends AnyVal
     else None
   }
 
-  override def toString: String           = Shapes(bits).map(_.name).getOrElse(intervals.mkString("Shape(",", ",")"))
+  override def toString: String           = name.getOrElse(intervals.mkString("Shape(",", ",")"))
 }
 
 //****************************************************************************
