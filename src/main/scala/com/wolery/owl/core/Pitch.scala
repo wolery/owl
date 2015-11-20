@@ -40,7 +40,7 @@ import utilities.subscript
  * the name.
  *
  * @param midi The note number assigned this pitch by the MIDI Tuning Standard.
- * @see   [[https://en.wikipedia.org/wiki/Equal_temperament Equal Temperament (Wikipedia)]]
+ * @see   [[https://en.wikipedia.org/wiki/Equal_temperament Equal temperament (Wikipedia)]]
  * @see   [[https://en.wikipedia.org/wiki/A440_(pitch_standard) A440 (pitch standard) (Wikipedia)]]
  * @see   [[https://en.wikipedia.org/wiki/MIDI_Tuning_Standard MIDI Tuning Standard (Wikipedia)]]
  */
@@ -50,15 +50,15 @@ final class Pitch private (val midi: Midi) extends AnyVal
    * The pitch class, or ''note'', assigned this pitch in scientific pitch
    * notation.
    *
-   * @see [[https://en.wikipedia.org/wiki/Pitch_class Pitch Class (Wikipedia)]]
-   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific Pitch Notation (Wikipedia)]]
+   * @see [[https://en.wikipedia.org/wiki/Pitch_class Pitch class (Wikipedia)]]
+   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
    */
   def note: Note = Note(this)
 
   /**
    * The octave number assigned this pitch in scientific pitch notation.
    *
-   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific Pitch Notation (Wikipedia)]]
+   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
    */
   def octave: Octave = midi/12 - 1
 
@@ -96,7 +96,7 @@ final class Pitch private (val midi: Midi) extends AnyVal
   /**
    * The name assigned this pitch in scientific pitch notation.
    *
-   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific Pitch Notation (Wikipedia)]]
+   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
    */
   override def toString() = subscript(s"$note$octave")
 }
@@ -109,7 +109,7 @@ object Pitch
   /**
    * Returns the pitch specified by the given MIDI note number.
    *
-   * @see [[https://en.wikipedia.org/wiki/midi_tuning_standard MIDI Tuning Standard (Wikipedia)]]
+   * @see [[https://en.wikipedia.org/wiki/MIDI_Tuning_Standard MIDI Tuning Standard (Wikipedia)]]
    */
   def apply(midi: Midi): Pitch = new Pitch(midi)
 
@@ -122,7 +122,7 @@ object Pitch
    * Returns the pitch specified by the given note and octave number in
    * scientific pitch notation.
    *
-   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific Pitch Notation (Wikipedia)]]
+   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation MIDI_Tuning_Standardia)]]
    */
   def apply(note: Note,octave: Octave): Pitch = note(octave)
 

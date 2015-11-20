@@ -28,7 +28,7 @@ object utilities
   }
 
   /**
-   * @see  [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts]]
+   * @see [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts Unicode subscripts and superscripts (Wikipedia)]]
    */
   def superscript(char : Char) : Char = char match
   {
@@ -51,10 +51,10 @@ object utilities
    * The result is the unique integer 0 ≤ ''r'' < ''n'' such that ''i'' =
    * ''n''⋅''q'' + ''r'' for some ''q'' in ℤ.
    *
-   * @param  i an integer
-   * @param  n a positive integer
-   * @return the non-negative remainder of ''i'' upon division by ''n''
-   * @see    [[https://en.wikipedia.org/wiki/Modulo_operation]]
+   * @param  i An integer.
+   * @param  n A positive integer.
+   * @return The non-negative remainder of ''i'' upon division by ''n''.
+   * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation (Wikipedia)]]
    */
   def mod(i: ℤ,n: ℕ): ℕ =
   {
@@ -72,9 +72,9 @@ object utilities
    * The result is the unique integer 0 ≤ ''r'' < 12 such that ''i'' = 12⋅''q''
    * + ''r'' for some ''q'' in ℤ.
    *
-   * @param  i an integer
-   * @return the non-negative remainder of ''i'' upon division by 12
-   * @see    [[https://en.wikipedia.org/wiki/Modulo_operation]]
+   * @param  i An integer.
+   * @return The non-negative remainder of ''i'' upon division by 12.
+   * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation (Wikipedia)]]
    */
   def mod12(i: ℤ): ℕ =
   {
@@ -101,10 +101,10 @@ object utilities
    *    rol12(0x800,-4) = 0x080
    * }}}
    *
-   * @param  bits a 12 bit integer
-   * @param  by   the number of bit positions to rotate ''bits'' by
-   * @return 			the result of rotating ''bits'' left by ''by'' bits
-   * @see    [[https://en.wikipedia.org/wiki/Circular_shift]]
+   * @param  bits A 12 bit integer.
+   * @param  by   The number of bit positions to rotate ''bits'' by.
+   * @return The result of rotating ''bits'' left by ''by'' bits.
+   * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift (Wikipedia)]]
    */
   def rol12(bits: Int,by: ℤ): Int =
   {
@@ -133,10 +133,10 @@ object utilities
    *    ror12(0x800,-4) = 0x008
    * }}}
    *
-   * @param  bits a 12 bit integer
-   * @param  by   the number of bit positions to rotate ''bits'' by
-   * @return 			the result of rotating ''bits'' right by ''by'' bits
-   * @see    [[https://en.wikipedia.org/wiki/Circular_shift]]
+   * @param  bits A 12 bit integer.
+   * @param  by   The number of bit positions to rotate ''bits'' by
+   * @return The result of rotating ''bits'' right by ''by'' bits.
+   * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift]]
    */
   def ror12(bits: Int,by: ℤ): Int =
   {
