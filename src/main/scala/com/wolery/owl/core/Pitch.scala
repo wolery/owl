@@ -122,7 +122,7 @@ object Pitch
    * Returns the pitch specified by the given note and octave number in
    * scientific pitch notation.
    *
-   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation MIDI_Tuning_Standardia)]]
+   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
    */
   def apply(note: Note,octave: Octave): Pitch = note(octave)
 

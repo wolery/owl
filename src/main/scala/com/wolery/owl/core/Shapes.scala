@@ -50,7 +50,7 @@ object Shapes
   private val byName: Map[Name,Info]      = Map.empty
 
 //****************************************************************************
-// see https://en.wikipedia.org/wiki/Jazz_scale
+// @see [[https://en.wikipedia.org/wiki/Jazz_scale Jazz scale (Wikipepdia)]]
 
   f("chromatic",                                         1,1,1,1,1,1,1,1,1,1,1,1)
 
@@ -80,7 +80,7 @@ object Shapes
   f("altered:altered dominant:super locrian",            1,2,1,2,2,2,2)
 
 // harmonic minor
-// see http://docs.solfege.org/3.22/C/scales/har.html
+// @see [[http://docs.solfege.org/3.22/C/scales/har.html Harmonic minor scale and its modes]]
 
   f("harmonic:harmonic minor",                           2,1,2,2,1,3,1)
   f("locrian ♯6",                                        1,2,2,1,3,1,2)

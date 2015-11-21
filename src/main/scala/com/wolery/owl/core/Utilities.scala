@@ -136,7 +136,7 @@ object utilities
    * @param  bits A 12 bit integer.
    * @param  by   The number of bit positions to rotate ''bits'' by
    * @return The result of rotating ''bits'' right by ''by'' bits.
-   * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift]]
+   * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift (Wikipedia)]]
    */
   def ror12(bits: Int,by: ℤ): Int =
   {
