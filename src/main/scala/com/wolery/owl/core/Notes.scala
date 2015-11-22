@@ -84,7 +84,7 @@ final class Notes private (private val bits: Bits) extends Set[Note]
   override def equals(a: Any): Bool = a match
   {
     case s: Notes ⇒ s.bits == bits
-    case _        ⇒ false
+    case _        ⇒ super.equals(a)
   }
 
   def symdiff(s: GenSet[Note]): Notes = s match

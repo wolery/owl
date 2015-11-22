@@ -27,8 +27,8 @@ final case class Scale (val root: Note,val shape: Shape) extends (ℤ ⇒ Note)
 {
   def size: ℕ                             = shape.size
 
-  def notes: Notes                        = (Notes.empty /: shape.intervals)((s,i) ⇒ s + (root + i))
-  def toSet: Notes                        = notes
+  def notes: Notes                        = toSet
+  def toSet: Notes                        = (Notes.empty /: shape.intervals)((s,i) ⇒ s + (root + i))
   def toSeq: Seq[Note]                    = shape.absolute.map(root + _)
 
   def mode(mode: ℤ): Scale                = Scale(apply(mode),toSeq:_*)
