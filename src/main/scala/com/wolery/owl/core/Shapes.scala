@@ -80,7 +80,7 @@ object Shapes
   f("altered:altered dominant:super locrian",            1,2,1,2,2,2,2)
 
 // harmonic minor
-// @see [[http://docs.solfege.org/3.22/C/scales/har.html Harmonic minor scale and its modes]]
+// @see [[http://docs.solfege.org/3.22/C/scales/har.html Harmonic minor]]
 
   f("harmonic:harmonic minor",                           2,1,2,2,1,3,1)
   f("locrian ♯6",                                        1,2,2,1,3,1,2)

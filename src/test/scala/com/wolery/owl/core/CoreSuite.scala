@@ -28,7 +28,7 @@ trait CoreSuite extends FunSuite with PropertyChecks
   /**
    * Check that the monoid operation for ''M'' is commutative.
    *
-   * @see [[https://en.wikipedia.org/wiki/Commutative_property]]
+   * @see [[https://en.wikipedia.org/wiki/Commutative_property Commutativity (Wikipedia)]]
    */
   def isCommutative[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
   {
@@ -41,7 +41,7 @@ trait CoreSuite extends FunSuite with PropertyChecks
   /**
    * Check that ''M'' satisfies the axioms of a monoid.
    *
-   * @see [[https://en.wikipedia.org/wiki/Monoid]]
+   * @see [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
    */
   def isMonoid[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
   {
@@ -61,7 +61,7 @@ trait CoreSuite extends FunSuite with PropertyChecks
    * Check that ''G'' satisfies the axioms of a group; namely that it is a
    * monoid in which every element possesses an additive inverse.
    *
-   * @see [[https://en.wikipedia.org/wiki/Group_(mathematics)]]
+   * @see [[https://en.wikipedia.org/wiki/Group_(mathematics) Group (Wikipedia)]]
    */
   def isGroup[G]()(implicit α: Group[G],β: Arbitrary[G]): Unit =
   {
@@ -77,7 +77,7 @@ trait CoreSuite extends FunSuite with PropertyChecks
    * Check that ''S'' satisfies the axioms of a ''G''-set; namely that `apply`
    * effects a homomorphism from ''G'' into Aut(''S'').
    *
-   * @see [[https://en.wikipedia.org/wiki/Group_action]]
+   * @see [[https://en.wikipedia.org/wiki/Group_action Group action (Wikipedia)]]
    */
   def isAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
   {
@@ -101,7 +101,7 @@ trait CoreSuite extends FunSuite with PropertyChecks
    * Check that ''S'' satisfies the axioms of a ''G''-torsor, namely that the
    * action of ''G'' upon ''S'' is sharply transitive.
    *
-   * @see [[https://en.wikipedia.org/wiki/Principal_homogeneous_space]]
+   * @see [[https://en.wikipedia.org/wiki/Principal_homogeneous_space Torsor (Wikipedia)]]
    */
   def isTorsor[S,G]()(implicit α: Torsor[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
   {
@@ -143,7 +143,7 @@ trait CoreSuite extends FunSuite with PropertyChecks
    * Check that the mapping ''f'' satisfies the axioms of an equivariant map;
    * namely that it commutes with the action of ''G'' on both ''S'' and ''T''.
    *
-   * @see [[https://en.wikipedia.org/wiki/Equivariant_map]]
+   * @see [[https://en.wikipedia.org/wiki/Equivariant_map Equivarient map (Wikipedia)]]
    */
   def isEquivariant[S,T,G](f: S ⇒ T)(implicit α: Action[S,G], β:Action[T,G],γ : Arbitrary[S],δ: Arbitrary[T],ε: Arbitrary[G]): Unit =
   {
@@ -160,7 +160,7 @@ trait CoreSuite extends FunSuite with PropertyChecks
    * Check that ''S'' satisfies the axioms of a partial ordering; namely that
    * the relation <= is reflexive, antisymmetric, and transitive.
    *
-   * @see [[https://en.wikipedia.org/wiki/Partially_ordered_set]]
+   * @see [[https://en.wikipedia.org/wiki/Partially_ordered_set Partial order (Wikipedia)]]
    */
   def isPartiallyOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]) : Unit =
   {
@@ -176,7 +176,7 @@ trait CoreSuite extends FunSuite with PropertyChecks
    * Check that ''S'' satisfies the axioms of a total ordering; namely that it
    * is partially ordered and, moreover, that the ordering <= is total.
    *
-   * @see [[https://en.wikipedia.org/wiki/Total_order]]
+   * @see [[https://en.wikipedia.org/wiki/Total_order Total order (Wikipedia)]]
    */
   def isOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]) : Unit =
   {

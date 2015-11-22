@@ -131,7 +131,7 @@ trait Action[S,G] extends Group[G]
  *
  * @tparam G A group that acts regularly upon the carrier set ''S'' via the mapping `apply`.
  * @tparam S A non-empty set acted upon regularly by the group ''G'' via the mapping `apply`.
- * @see    [[http://en.wikipedia.org/wiki/Principal_homogeneous_space Principal homogeneous space (Wikipedia)]]
+ * @see    [[http://en.wikipedia.org/wiki/Principal_homogeneous_space Torsor (Wikipedia)]]
  * @see    [[http://math.ucr.edu/home/baez/torsors.html Torsors Made Easy (John Baez)]]
  */
 trait Torsor[S,G] extends Action[S,G]
