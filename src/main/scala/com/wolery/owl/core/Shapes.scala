@@ -94,6 +94,15 @@ object Shapes
 
   f("whole tone",                                        2,2,2,2,2,2)
 
+// pentatonic
+// @see [[https://en.wikipedia.org/wiki/Pentatonic_scale Pentatonic scale (Wikipedia)]]
+
+  f("major pentatonic",                                  2,2,3,2,3)
+  f("suspended pentatonic:egyptian",                     2,3,2,3,2)
+  f("blues minor pentatonic:man gong",                   3,2,3,2,2)
+  f("blues major pentatonic:ritusen",                    2,3,2,2,3)
+  f("minor pentatonic",                                  3,2,2,3,2)
+
 //****************************************************************************
 }
 //****************************************************************************

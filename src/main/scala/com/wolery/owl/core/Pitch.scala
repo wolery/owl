@@ -39,7 +39,7 @@ import utilities.subscript
  * torsor coincides with the more familiar notion of musical interval -  hence
  * the name.
  *
- * @param midi The note number assigned this pitch by the MIDI Tuning Standard.
+ * @param midi The note number assigned to this pitch by the MIDI Tuning Standard.
  * @see   [[https://en.wikipedia.org/wiki/Equal_temperament Equal temperament (Wikipedia)]]
  * @see   [[https://en.wikipedia.org/wiki/A440_(pitch_standard) A440 (pitch standard) (Wikipedia)]]
  * @see   [[https://en.wikipedia.org/wiki/MIDI_Tuning_Standard MIDI Tuning Standard (Wikipedia)]]
@@ -47,16 +47,24 @@ import utilities.subscript
 final class Pitch private (val midi: Midi) extends AnyVal
 {
   /**
-   * The pitch class, or ''note'', assigned this pitch in scientific pitch
+   * The pitch class, or ''note'', assigned to this pitch in scientific pitch
    * notation.
+   *
+   * Notice that for any pitch ''p'' and and integer ''i'' we have that:
+   * {{{
+   * 		(p + i).note  =  p.note + i
+   * }}}
+   * In other words, `note` is an equivariant mapping from the intervallic set
+   * of pitches to the transposing set of notes.
    *
    * @see [[https://en.wikipedia.org/wiki/Pitch_class Pitch class (Wikipedia)]]
    * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
+   * @see [[https://en.wikipedia.org/wiki/Equivariant_map Equivarient map (Wikipedia)]]
    */
   def note: Note = Note(this)
 
   /**
-   * The octave number assigned this pitch in scientific pitch notation.
+   * The octave number assigned to this pitch in scientific pitch notation.
    *
    * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
    */
@@ -94,7 +102,7 @@ final class Pitch private (val midi: Midi) extends AnyVal
   def to(end: Pitch,step: ℤ = +1): Seq[Pitch] = for (i ← midi to end.midi by step) yield Pitch(i)
 
   /**
-   * The name assigned this pitch in scientific pitch notation.
+   * The name assigned to this pitch in scientific pitch notation.
    *
    * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
    */
