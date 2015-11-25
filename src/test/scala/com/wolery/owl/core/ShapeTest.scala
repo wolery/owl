@@ -27,27 +27,6 @@ class ShapeTest extends CoreSuite
     isTransposing[Shape]()                               // Verify the axioms
   }
 
-  test("Mode names are consistent")
-  {
-    def names(string: String): Unit =
-    {
-      val names   = string.split(":")
-      val Some(s) = Shape(names(0))
-
-      for (i ← 0 until names.size)
-      {
-        assert(Some(s + i) == Shape(names(i)),s"[${names(0)}]")
-      }
-    }
-
-    names("chromatic:chromatic")
-    names("whole half:half whole:whole half")
-    names("ionian:dorian:phrygian:lydian:myxolydian:aeolian:locrian")
-    names("melodic:dorian ♭2:lydian ♯5:lydian ♭7:mixolydian ♭6:dorian ♭5:altered")
-    names("harmonic:locrian ♯6:ionian ♯5:dorian ♯4:phrygian ♯3:lydian ♯2:myxolydian ♯1")
-    names("whole tone:whole tone")
-  }
-
   test("Shape construction")
   {
     forAll("s") {(s: Shape) ⇒
@@ -69,6 +48,34 @@ class ShapeTest extends CoreSuite
 
       Shape(s.toString) map ((t: Shape) ⇒ assert(t == s))
     }}
+  }
+
+  test("Mode names are consistent")
+  {
+    /*
+     * Verify that the names in the ':' delimited list each name a consecutive
+     * mode of the first shape to be named in the list.
+     *
+     * @param	string A ':' delimited list of mode names.
+     */
+    def modes(string: String): Unit =
+    {
+      val names   = string.split(":")                    // The list of names
+      val Some(s) = Shape(names(0))                      // The first in list
+
+      for ((n,i) ← names.zipWithIndex)                   // For each mode name
+      {
+        assert((s + i).name == Some(n),s"[mode $i of ${s.name} is named $n]")
+      }
+    }
+
+    modes("chromatic:chromatic")
+    modes("whole half:half whole:whole half")
+    modes("ionian:dorian:phrygian:lydian:myxolydian:aeolian:locrian")
+    modes("melodic:dorian ♭2:lydian ♯5:lydian ♭7:mixolydian ♭6:dorian ♭5:altered")
+    modes("harmonic:locrian ♯6:ionian ♯5:dorian ♯4:phrygian ♯3:lydian ♯2:myxolydian ♯1")
+    modes("whole tone:whole tone")
+    modes("major pentatonic:suspended pentatonic:blues minor pentatonic:blues major pentatonic:minor pentatonic")
   }
 }
 

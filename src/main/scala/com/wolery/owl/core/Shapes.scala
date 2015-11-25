@@ -32,22 +32,27 @@ object Shapes
   def apply(b: Bits): Maybe[Info]         = byBits.get(b)
   def apply(n: Name): Maybe[Info]         = byName.get(n.toLowerCase)
 
+  /**
+   *
+   */
   private def f(names: String,intervals: ℤ*) =
   {
     assert(names.nonEmpty)
 
-    val shape = Shape(intervals: _*)
-    val info  = new Info(names,shape)
+    val info = new Info(names,Shape(intervals: _*))
+
+    assert(!byBits.contains(info.shape.bits))
+
+    byBits += info.shape.bits → info
 
     for (name ← names.split(":"))
     {
-      byBits += shape.bits       → info
       byName += name.toLowerCase → info
     }
   }
 
-  private val byBits: Map[Bits,Info]      = Map.empty
-  private val byName: Map[Name,Info]      = Map.empty
+  private val byBits: Map[Bits,Info] = Map.empty         // Indexed by bits
+  private val byName: Map[Name,Info] = Map.empty         // Indexed by name
 
 //****************************************************************************
 // @see [[https://en.wikipedia.org/wiki/Jazz_scale Jazz scale (Wikipepdia)]]
