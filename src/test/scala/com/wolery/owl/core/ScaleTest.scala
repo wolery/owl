@@ -80,7 +80,7 @@ class ScaleTest extends CoreSuite
       def apply(s: Scale,i: ℤ): Scale = s.mode(i)
     }
 
-    isAction[Scale,ℤ]()                                  // Verify axioms
+    isAction[Scale,ℤ]()                                  // Verify the axioms
   }
 }
 
