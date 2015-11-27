@@ -25,24 +25,23 @@ package com.wolery.owl.core
  */
 final case class Scale (val root: Note,val shape: Shape) extends (ℤ ⇒ Note)
 {
-  def size: ℕ                             = shape.size
+  def name:  Maybe[Name]                  = shape.name   .map(n ⇒ s"$root $n")
+  def aliases: Seq[Name]                  = shape.aliases.map(n ⇒ s"$root $n")
 
+  def size:  ℕ                            = shape.size
   def notes: Notes                        = toSet
-  def toSet: Notes                        = (Notes.empty /: shape.intervals)((s,i) ⇒ s + (root + i))
+  def toSet: Notes                        = (Notes.empty /: shape.toSet)((s,i) ⇒ s + (root + i))
   def toSeq: Seq[Note]                    = shape.absolute.map(root + _)
 
   def mode(mode: ℤ): Scale                = Scale(apply(mode),toSeq:_*)
-  def modes: Seq[Scale]                   = toSeq.map(Scale(_,toSeq:_*))
+  def modes:         Seq[Scale]           = toSeq.map(Scale(_,toSeq:_*))
 
-  def apply(index: ℤ): Note               = root + shape.interval(index)
-  def indexOf(note: Note): Maybe[ℕ]       = shape.indexOf(note - root)
-  def contains(note: Note): Bool          = shape.intervals.contains(note - root)
+  def apply   (index: ℤ):   Note          = root + shape(index)
+  def note    (index: ℤ):   Note          = root + shape(index)
+  def indexOf (note: Note): Maybe[ℕ]      = shape.indexOf (note - root)
+  def contains(note: Note): Bool          = shape.contains(note - root)
 
-  override def toString: String           = shape.name match
-  {
-    case Some(name) ⇒ s"$root $name"
-    case _          ⇒ toSeq.mkString("Scale(",", ",")")
-  }
+  override def toString: String           = name.getOrElse(toSeq.mkString("Scale(",", ",")"))
 }
 
 //****************************************************************************

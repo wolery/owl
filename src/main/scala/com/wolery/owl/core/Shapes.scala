@@ -29,30 +29,30 @@ object Shapes
     def aliases: Seq[Name]                = names.split(":")
   }
 
-  def apply(b: Bits): Maybe[Info]         = byBits.get(b)
-  def apply(n: Name): Maybe[Info]         = byName.get(n.toLowerCase)
+  def info(n: Name):  Maybe[Info]         = byNames.get(n.toLowerCase)
+  def info(s: Shape): Maybe[Info]         = byShape.get(s)
 
-  /**
-   *
-   */
+//****************************************************************************
+
   private def f(names: String,intervals: ℤ*) =
   {
     assert(names.nonEmpty)
 
-    val info = new Info(names,Shape(intervals: _*))
+    val s = Shape(intervals: _*)
+    val i = new Info(names,s)
 
-    assert(!byBits.contains(info.shape.bits))
+    assert(!byShape.contains(s))
 
-    byBits += info.shape.bits → info
+    byShape += s → i
 
     for (name ← names.split(":"))
     {
-      byName += name.toLowerCase → info
+      byNames += name.toLowerCase → i
     }
   }
 
-  private val byBits: Map[Bits,Info] = Map.empty         // Indexed by bits
-  private val byName: Map[Name,Info] = Map.empty         // Indexed by name
+  private val byNames: Map[Name, Info] = Map.empty   // Indexed by name
+  private val byShape: Map[Shape,Info] = Map.empty   // Indexed by shape
 
 //****************************************************************************
 // @see [[https://en.wikipedia.org/wiki/Jazz_scale Jazz scale (Wikipepdia)]]

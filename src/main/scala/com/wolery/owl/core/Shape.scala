@@ -19,22 +19,31 @@ package com.wolery.owl.core
 import java.lang.Integer.{bitCount,numberOfTrailingZeros ⇒ ntz}
 import scala.collection.immutable.BitSet
 import utilities.{mod,mod12,ror12}
+import Shapes.{info}
 
 //****************************************************************************
 
-final class Shape private (val bits: Bits) extends AnyVal
+final class Shape private (private val bits: Bits) extends AnyVal
 {
-  def name: Maybe[Name]                   = Shapes(bits).map(_.name)
+  def name : Maybe[Name]                  = info(this).map(_.name)
+  def aliases: Seq[Name]                  = info(this) match {case None ⇒ Nil;case Some(i) ⇒ i.aliases}
 
-  def aliases: Seq[Name]                  = Shapes(bits) match
-  {
-    case None    ⇒ Nil
-    case Some(i) ⇒ i.aliases
-  }
+  def size:      ℕ                        = bitCount(bits)
+  def intervals: BitSet                   = toSet
+  def toSet:     BitSet                   = new BitSet.BitSet1(bits)
+  def toSeq:     Seq[ℤ]                   = absolute
 
-  def size: ℕ                             = bitCount(bits)
+  def mode(mode: ℤ): Shape                = new Shape(ror12(bits,interval(mode)))
+  def modes:         Seq[Shape]           = modes_imp
 
-  def intervals: BitSet                   = new BitSet.BitSet1(bits)
+  def apply   (index: ℤ)   : ℕ            = interval_imp(index)
+  def interval(index: ℤ)   : ℕ            = interval_imp(index)
+  def indexOf (interval: ℤ): Maybe[ℕ]     = indexOf_imp(interval)
+  def contains(interval: ℤ): Bool         = indexOf_imp(interval).isDefined
+
+  override def toString: String           = name.getOrElse(intervals.mkString("Shape(",", ",")"))
+
+//****************************************************************************
 
   def absolute: Seq[ℤ]  =
   {
@@ -64,9 +73,7 @@ final class Shape private (val bits: Bits) extends AnyVal
     }
   }
 
-  def mode(i: ℤ): Shape                   = new Shape(ror12(bits,interval(i)))
-
-  def interval(index: ℤ): ℤ =
+  def interval_imp(index: ℤ): ℤ =
   {
     var i: ℕ = mod(index,size)
     var n: ℕ = 0
@@ -79,7 +86,7 @@ final class Shape private (val bits: Bits) extends AnyVal
     n
   }
 
-  def modes: Seq[Shape] =
+  def modes_imp: Seq[Shape] =
   {
     var n: ℕ = 0
 
@@ -93,9 +100,9 @@ final class Shape private (val bits: Bits) extends AnyVal
     }
   }
 
-  def contains(interval: ℤ): Bool =       (bits & Shape.bit(interval)) !=0
+  def contains_imp(interval: ℤ): Bool =       (bits & Shape.bit(interval)) !=0
 
-  def indexOf(interval: ℤ): Maybe[ℕ] =
+  def indexOf_imp(interval: ℤ): Maybe[ℕ] =
   {
     if (contains(interval))
     {
@@ -106,15 +113,13 @@ final class Shape private (val bits: Bits) extends AnyVal
     }
     else None
   }
-
-  override def toString: String           = name.getOrElse(intervals.mkString("Shape(",", ",")"))
 }
 
 //****************************************************************************
 
 object Shape
 {
-  def apply(n: Name): Maybe[Shape]        = Shapes(n).map(_.shape)
+  def apply(n: Name): Maybe[Shape] = info(n).map(_.shape)
 
   def apply(intervals: ℤ*): Shape = intervals match
   {
