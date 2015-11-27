@@ -25,8 +25,8 @@ package com.wolery.owl.core
  */
 final case class Scale (val root: Note,val shape: Shape) extends (ℤ ⇒ Note)
 {
-  def name:  Maybe[Name]                  = shape.name   .map(n ⇒ s"$root $n")
-  def aliases: Seq[Name]                  = shape.aliases.map(n ⇒ s"$root $n")
+  def name:  Maybe[Name]                  = shape.name .map(n ⇒ s"$root $n")
+  def names: Seq[Name]                    = shape.names.map(n ⇒ s"$root $n")
 
   def size:  ℕ                            = shape.size
   def notes: Notes                        = toSet

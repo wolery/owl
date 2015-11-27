@@ -26,7 +26,7 @@ import Shapes.{info}
 final class Shape private (private val bits: Bits) extends AnyVal
 {
   def name : Maybe[Name]                  = info(this).map(_.name)
-  def aliases: Seq[Name]                  = info(this) match {case None ⇒ Nil;case Some(i) ⇒ i.aliases}
+  def names: Seq[Name]                    = info(this).map(_.names).getOrElse(Nil)
 
   def size:      ℕ                        = bitCount(bits)
   def intervals: BitSet                   = toSet

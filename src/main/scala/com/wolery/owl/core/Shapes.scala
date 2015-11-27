@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : Provides additional information about scale shapes.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -18,41 +18,103 @@ package com.wolery.owl.core
 
 import scala.collection.mutable.Map
 
-//****************************************************************************
-
-private[core]
+/**
+ * Provides additional information about scale shapes beyond that which can be
+ * calculated from their underlying interval structures.
+ *
+ * Implements a tiny database of meta data about shapes as a pair of maps from
+ * names and shapes to instances of class [[Shapes.Info]].
+ */
+//private[core]
 object Shapes
 {
-  final class Info (names: String,val shape: Shape)
+  /**
+   * Augments a scale shape with information that cannot be computed from its
+   * interval structure alone, including:
+   *
+   *  - the preferred name for the shape
+   *  - other names by which the shape is commonly known
+   *
+   * @param shape The shape for which we carry additional information.
+   * @param names A ':' delimited list of names by which the shape is commonly
+   * 							known, beginning with its preferred name.
+   */
+  final class Info (val shape: Shape,_names: String)
   {
-    def name: Name                        = names.split(":",2).head
-    def aliases: Seq[Name]                = names.split(":")
+    /**
+     * The preferred name for this shape.
+     */
+    def name: Name = _names.split(":",2).head
+
+    /**
+     * A list of names by which this shape is commonly known, beginning with
+     * its preferred name.
+     */
+    def names: Seq[Name] = _names.split(":")
+
+    @deprecated def aliases: Seq[Name] = names
   }
 
-  def info(n: Name):  Maybe[Info]         = byNames.get(n.toLowerCase)
-  def info(s: Shape): Maybe[Info]         = byShape.get(s)
+  /**
+   * Returns additional information about the scale shape with the given name.
+   *
+   * Not every shape ''has'' such additional information - there are thousands
+   * of them, after all - so we return the result in the Maybe monad.
+   *
+   * @param name The name by which a scale shape is commonly known.
+   */
+  def info(name: Name): Maybe[Info] = byNames.get(name.toLowerCase)
 
-//****************************************************************************
+  /**
+   * Returns additional information about the given scale shape.
+   *
+   * Not every shape ''has'' such additional information - there are thousands
+   * of them, after all - so we return the result in the Maybe monad.
+   *
+   * @param shape A scale shape.
+   */
+  def info(shape: Shape): Maybe[Info] = byShape.get(shape)
 
+  /**
+   * Adds a scale shape to our little database.
+   *
+   * The new shape is specified via a sequence of intervals (that is, integers
+   * modulo 12) that is either:
+   *
+   *  - ''absolute'': each interval is specified relative to the root of the
+   *  								scale (e.g. `[0,2,4,5,7,9,11]` = diatonic)
+   *  - ''relative'': each interval is specified relative to its predecessor
+   *  								in the sequence (e.g. `[2,2,1,2,2,2,1]` = diatonic)
+   *
+	 * @param names     A ':' delimited list of names by which the scale shape
+	 * 									is commonly known, beginning with the preferred name.
+	 * @param intervals The sequence of intervals that specifies the underlying
+	 * 									interval structure of the scale shape.
+	 */
   private def f(names: String,intervals: ℤ*) =
   {
-    assert(names.nonEmpty)
+    assert(names.nonEmpty)                               // At least one name
 
-    val s = Shape(intervals: _*)
-    val i = new Info(names,s)
+    val s = Shape(intervals: _*)                         // The new shape
+    val i = new Info(s,names)                            // The new shape info
 
-    assert(!byShape.contains(s))
-
-    byShape += s → i
-
-    for (name ← names.split(":"))
+    def add[Key](map: Map[Key,Info],key:Key) =           // Add key → i to map
     {
-      byNames += name.toLowerCase → i
+      assert(!map.contains(key))                         // ...not yet added
+      map += key → i                                     // ...add it now
+      assert( map.contains(key))                         // ...now in there
     }
+
+    for (name <- names.split(":"))                       // For each name
+    {
+      add(byNames,name.toLowerCase)                      // Index by name
+    }
+
+    add(byShape,i.shape)                                 // Index by shape
   }
 
-  private val byNames: Map[Name, Info] = Map.empty   // Indexed by name
-  private val byShape: Map[Shape,Info] = Map.empty   // Indexed by shape
+  private val byNames: Map[Name, Info] = Map.empty       // Indexed by name
+  private val byShape: Map[Shape,Info] = Map.empty       // Indexed by shape
 
 //****************************************************************************
 // @see [[https://en.wikipedia.org/wiki/Jazz_scale Jazz scale (Wikipepdia)]]
