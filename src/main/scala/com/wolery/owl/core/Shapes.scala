@@ -23,9 +23,9 @@ import scala.collection.mutable.Map
  * calculated from their underlying interval structure.
  *
  * Implements a little database of meta data for shapes as a pair of maps from
- * names and shapes to instances of class [[Shapes.Info]].
+ * names (''byNames'') and shapes (''byShape'') to instances of class [[Info]].
  */
-//private[core]
+private[core]
 object Shapes
 {
   /**
@@ -178,13 +178,15 @@ object Shapes
 
 // Double Harmonic
 
-  f("double harmonic major:arabic:gypsy major:byzantine",1,3,1,2,1,3,1)
+  f("double harmonic:arabic:gypsy major:byzantine",      1,3,1,2,1,3,1)
   f("lydian ♯2 ♯6",                                      3,1,2,1,3,1,1)
   f("ultraphrygian",                                     1,2,1,3,1,1,3)
   f("hungarian minor",                                   2,1,3,1,1,3,1)
   f("oriental",                                          1,3,1,1,3,1,2)
   f("ionian augmented ♯2",                               3,1,1,3,1,2,1)
   f("locrian 𝄫3 𝄫7",                                     1,1,3,1,2,1,3)
+
+// Heptatonic
 
   f("roman byzantine:hungarian major",                   2,1,3,1,1,3,1)
 
@@ -193,8 +195,8 @@ object Shapes
   f("whole tone",                                        2,2,2,2,2,2)
   f("prometheus",                                        2,2,2,3,1,2)
   f("augmented",                                         3,1,3,1,3,1)
-  f("blues",                                             3,2,1,1,3,2)
   f("tritone",                                           1,2,3,1,3,2)
+  f("blues",                                             3,2,1,1,3,2)
 
 // Pentatonic
 
