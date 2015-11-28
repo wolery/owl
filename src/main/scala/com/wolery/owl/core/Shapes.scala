@@ -87,7 +87,7 @@ object Shapes
    *
 	 * @param names     A ':' delimited list of names by which the scale shape
 	 * 									is commonly known, beginning with the preferred name.
-	 * @param intervals The sequence of intervals that specifies the underlying
+	 * @param intervals A sequence of intervals that specifies the underlying
 	 * 									interval structure of the new scale shape.
 	 */
   private def f(names: String,intervals: ℤ*) =
@@ -115,11 +115,13 @@ object Shapes
   /**
    * Reduce the given name to a ''normal form'' in which characters like -, +,
    * ♭, ♮, ♯, and # are replaced with Latin letters, yielding a string that is
-   * is suitable for use as a key in the ''byName'' dictionary. For example:
+   * suitable for use as a key in the ''byName'' dictionary.
+   *
+   * For example:
    * {{{
-   *		normalize("DorIan ♭2")   ⇒  "dorian b2"
-   *		normalize("Locrian ♯2")  ⇒  "locrian n2"
-   *		normalize("Ionian ♯5")   ⇒  "ionian s5"
+   *		normalize("DorIan ♭2")   =  "dorian b2"
+   *		normalize("Locrian ♮2")  =  "locrian n2"
+   *		normalize("Ionian ♯5")   =  "ionian s5"
    * }}}
    * @param  name The name of a scale shape.
    * @return A simplified form of the name suitable for use as a key in a map.
@@ -141,7 +143,7 @@ object Shapes
 
   f("chromatic",                                         1,1,1,1,1,1,1,1,1,1,1,1)
 
-// Symmetric Diminished:
+// Symmetric Diminished
 
   f("whole half",                                        2,1,2,1,2,1,2,1)
   f("half whole",                                        1,2,1,2,1,2,1,2)
