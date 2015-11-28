@@ -178,17 +178,13 @@ object Shapes
 
 // Double Harmonic
 
-  f("double harmonic:arabic:gypsy major:byzantine",      1,3,1,2,1,3,1)
+  f("double harmonic:arabic:gypsy:byzantine",            1,3,1,2,1,3,1)
   f("lydian ♯2 ♯6",                                      3,1,2,1,3,1,1)
   f("ultraphrygian",                                     1,2,1,3,1,1,3)
   f("hungarian minor",                                   2,1,3,1,1,3,1)
   f("oriental",                                          1,3,1,1,3,1,2)
   f("ionian augmented ♯2",                               3,1,1,3,1,2,1)
   f("locrian 𝄫3 𝄫7",                                     1,1,3,1,2,1,3)
-
-// Heptatonic
-
-  f("roman byzantine:hungarian major",                   2,1,3,1,1,3,1)
 
 // Hexatonic
 
