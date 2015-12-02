@@ -18,12 +18,15 @@ package com.wolery.owl.core
 
 import java.lang.Integer.bitCount
 import scala.collection.immutable.BitSet
-import utilities.{mod,mod12,ror12}
-import Shapes.info
 import Shape.bit
+import Shapes.info
+import utilities.{mod,mod12,ror12}
 
-//****************************************************************************
-
+/**
+ * @param bits A 12 element bit set, each of whose bits indicates the presence
+ * 					   or absence of the corresponding interval.
+ *
+ */
 final class Shape private (bits: Bits) extends (ℤ ⇒ ℕ)
 {
   def name : Maybe[Name]                  = info(this).map(_.name)
@@ -34,41 +37,35 @@ final class Shape private (bits: Bits) extends (ℤ ⇒ ℕ)
   def toSeq: Seq[ℤ]                       = absolute
 
   def mode(mode: ℤ): Shape                = new Shape(ror12(bits,apply(mode)))
-  def modes:         Seq[Shape]           = modes_imp
+  def modes:         Seq[Shape]           = (0 until size).map(mode(_))
 
-  def apply   (index: ℤ)   : ℕ            = interval_imp(mod(index,size))
-  def indexOf (interval: ℤ): Maybe[ℕ]     = indexOf_imp(interval)
-  def contains(interval: ℤ): Bool         = indexOf_imp(interval).isDefined
+  def apply   (index: ℤ)   : ℕ            = interval(mod(index,size))
 
-  override def toString: String           = name.getOrElse(toSet.mkString("Shape(",", ",")"))
-  override def equals(a: Any): Bool       = a match {case s: Shape => s.hashCode == bits; case _ => false}
-  override def hashCode: Bits             = bits
-
-//****************************************************************************
-
-  private var ints: Long                  = 0L
-
+  def indexOf(interval: ℤ): Maybe[ℕ] =
   {
-    var (s,i,j) = (bits,0,0L)
+    val i = mod12(interval)
 
-    while (s != 0)
+    if ((bits & 0x1<<i) != 0)
     {
-      if ((s & 0x1) != 0)
-      {
-        ints |= (j << i*4)
-        i    += 1
-      }
+      val m = 0xFFF >>> (11 - i)
 
-      s >>>= 1
-      j   += 1
+      Some(bitCount(bits & m) - 1)
     }
+    else None
+  }
+
+  def interval(index: ℤ): ℤ =
+  {
+    assert(0<=index && index<size)
+
+    (ints >>> index*4 & 0xFL).toInt
   }
 
   def absolute: Seq[ℤ]  =
   {
     for (i ← 0 until size) yield
     {
-      interval_imp(i)
+      interval(i)
     }
   }
 
@@ -79,41 +76,40 @@ final class Shape private (bits: Bits) extends (ℤ ⇒ ℕ)
     for (i ← 1 until size) yield
     {
       val m = n
-      n = interval_imp(i)
+      n = interval(i)
       n - m
     }
   }
 
-  private def interval_imp(index: ℤ): ℤ =
-  {
-    assert(0<=index && index<size)
+  def contains(interval: ℤ): Bool         = (bits & bit(interval)) != 0
 
-    (ints >>> index*4 & 0xFL).toInt
-  }
+  override def toString: String           = name.getOrElse(toSet.mkString("Shape(",", ",")"))
+  override def equals(a: Any): Bool       = a match {case s: Shape => s.hashCode == bits; case _ => false}
+  override def hashCode: Bits             = bits
 
-  private def modes_imp: Seq[Shape] =
+  /**
+   * The sequence of intervals that comprise the shape, packed into a single
+   * long integer.
+   */
+  private var ints: Long = 0L;                           // Interval vector
   {
-    for (i ← 0 until size) yield
+    var b = bits                                         // Copy the bit set
+    var n = 0                                            // Intervals seen
+    var i = 0L                                           // Interval to add
+
+    while (b != 0)                                       // While bits unseen
     {
-      Shape(ror12(bits,interval_imp(i)))
+      if ((b & 0x1) != 0)                                // ...low bit is set?
+      {
+        ints |= (i << n*4)                               // ....add interval
+        n    += 1                                        // ....seen another
+      }
+
+      b >>>= 1                                           // ...slide to right
+      i   += 1                                           // ...tested another
     }
-  }
 
-  private def contains_imp(interval: ℤ): Bool =
-  {
-    (bits & bit(interval)) != 0
-  }
-
-  private def indexOf_imp(interval: ℤ): Maybe[ℕ] =
-  {
-    if (contains(interval))
-    {
-      val i = mod12(interval)
-      val m = 0xFFF >>> (11 - i)
-
-      Some(bitCount(bits & m) - 1)
-    }
-    else None
+    assert(n == size)                                    // All intervals seen
   }
 }
 
