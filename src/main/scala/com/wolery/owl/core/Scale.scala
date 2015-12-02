@@ -29,15 +29,13 @@ final case class Scale (val root: Note,val shape: Shape) extends (ℤ ⇒ Note)
   def names: Seq[Name]                    = shape.names.map(n ⇒ s"$root $n")
 
   def size:  ℕ                            = shape.size
-  def notes: Notes                        = toSet
   def toSet: Notes                        = (Notes.empty /: shape.toSet)((s,i) ⇒ s + (root + i))
-  def toSeq: Seq[Note]                    = shape.absolute.map(root + _)
+  def toSeq: Seq[Note]                    = shape.toSeq.map(root + _)
 
-  def mode(mode: ℤ): Scale                = Scale(apply(mode),toSeq:_*)
-  def modes:         Seq[Scale]           = toSeq.map(Scale(_,toSeq:_*))
+  def mode(mode: ℤ): Scale                = Scale(apply(mode),toSet)
+  def modes:         Seq[Scale]           = toSeq.map(Scale(_,toSet))
 
   def apply   (index: ℤ):   Note          = root + shape(index)
-  def note    (index: ℤ):   Note          = root + shape(index)
   def indexOf (note: Note): Maybe[ℕ]      = shape.indexOf (note - root)
   def contains(note: Note): Bool          = shape.contains(note - root)
 
