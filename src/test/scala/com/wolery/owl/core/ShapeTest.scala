@@ -19,6 +19,7 @@ package com.wolery.owl.core;
 class ShapeTest extends CoreSuite
 {
   import arbitrary._                                     // For owl implicits
+  import utilities.mod                                   // For mod(i,n)
 
   test("Shape is transposing")
   {
@@ -56,6 +57,12 @@ class ShapeTest extends CoreSuite
       assert(s.modes == (0 until s.size).map(s.mode(_)), "[check modes]")
 
       Shape(s.toString).map((t: Shape) ⇒ assert(t == s)) // Find it by name
+    }}
+
+    forAll("s","i") {(s: Shape,i: ℤ) ⇒
+    {
+      assert(0<=s(i) && s(i)<=12,                        "[1 ≤ s(i) ≤ 12]")
+      assert(Some(mod(i,s.size)) == s.indexOf(s(i)),     "[i == s.indexOf(s(i))]")
     }}
   }
 
