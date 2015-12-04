@@ -42,7 +42,16 @@ class ShapeTest extends CoreSuite
   {
     forAll("s") {(s: Shape) ⇒
     {
-      assert(s.toSet == s.toSeq.toSet,                   "[same intervals]")
+      assert(s.contains(0),                              "[0 ∈ s]")
+      assert(0 ∈ s.toSet,                                "[0 ∈ toSet]")
+      assert(0 == s(0),                                  "[0 = s(0)]")
+      assert(0 == s.toSeq(0),                            "[0 = toSeq(0)]")
+
+      assert(s.size == s.toSet.size,                     "[size = toSet.size]")
+      assert(s.size == s.toSeq.size,                     "[size = toSeq.size]")
+      assert(s.toSet== s.toSeq.toSet,                    "[same notes]")
+      assert(1<=s.size && s.size<=12,                    "[1 ≤ size ≤ 12]")
+
       assert(s.toSeq == (0 until s.size).map(s.apply(_)),"[check intervals]")
       assert(s.modes == (0 until s.size).map(s.mode(_)), "[check modes]")
 

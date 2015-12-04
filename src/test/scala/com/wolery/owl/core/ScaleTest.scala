@@ -42,12 +42,20 @@ class ScaleTest extends CoreSuite
   {
     forAll("s") {(s: Scale) ⇒
     {
+      assert(s.contains(s.root),                         "[root ∈ s]")
       assert(s.root ∈  s.toSet,                          "[root ∈ toSet]")
+      assert(s.root == s(0),                             "[root = s(0)]")
       assert(s.root == s.toSeq(0),                       "[root = toSeq(0)]")
+
       assert(s.size == s.toSet.size,                     "[size = toSet.size]")
       assert(s.size == s.toSeq.size,                     "[size = toSeq.size]")
       assert(s.toSet== s.toSeq.toSet,                    "[same notes]")
       assert(1<=s.size && s.size<=12,                    "[1 ≤ size ≤ 12]")
+    }}
+
+    forAll("s","i") {(s: Scale,i: ℤ) ⇒
+    {
+      assert(Some(mod(i,s.size)) == s.indexOf(s(i)),     "[i == s.indexOf(s(i))]")
     }}
   }
 
