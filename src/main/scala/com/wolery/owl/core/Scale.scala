@@ -36,6 +36,7 @@ final case class Scale (val root: Note,val shape: Shape) extends (ℤ ⇒ Note)
   def modes:         Seq[Scale]           = toSeq.map(Scale(_,toSet))
 
   def apply   (index: ℤ):   Note          = root + shape(index)
+  def note    (index: ℤ):   Note          = root + shape(index)
   def indexOf (note: Note): Maybe[ℕ]      = shape.indexOf (note - root)
   def contains(note: Note): Bool          = shape.contains(note - root)
 

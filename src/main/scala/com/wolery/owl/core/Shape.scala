@@ -24,7 +24,7 @@ import utilities.{mod,mod12,ror12}
 
 /**
  * @param bits A 12 element bit set, each of whose bits indicates the presence
- * 					   or absence of the corresponding interval.
+ *              or absence of the corresponding interval.
  *
  */
 final class Shape private (bits: Bits) extends (ℤ ⇒ ℕ)
@@ -56,6 +56,11 @@ final class Shape private (bits: Bits) extends (ℤ ⇒ ℕ)
 
   def interval(index: ℤ): ℤ =
   {
+    at(mod(index,size))
+  }
+
+  def at(index: ℤ): ℤ =
+  {
     assert(0<=index && index<size)
 
     (ints >>> index*4 & 0xFL).toInt
@@ -65,7 +70,7 @@ final class Shape private (bits: Bits) extends (ℤ ⇒ ℕ)
   {
     for (i ← 0 until size) yield
     {
-      interval(i)
+      at(i)
     }
   }
 
@@ -76,7 +81,7 @@ final class Shape private (bits: Bits) extends (ℤ ⇒ ℕ)
     for (i ← 1 until size) yield
     {
       val m = n
-      n = interval(i)
+      n = at(i)
       n - m
     }
   }

@@ -43,19 +43,29 @@ class ScaleTest extends CoreSuite
     forAll("s") {(s: Scale) ⇒
     {
       assert(s.contains(s.root),                         "[root ∈ s]")
-      assert(s.root ∈  s.toSet,                          "[root ∈ toSet]")
-      assert(s.root == s(0),                             "[root = s(0)]")
-      assert(s.root == s.toSeq(0),                       "[root = toSeq(0)]")
+      assert(s.root == s.note(0),                        "[root = s[0]]")
+      assert(s.toSet == s.toSeq.toSet,                   "[toSet = toSeq]")
+      assert(1<=s.size && s.size<=12,                    "[1 ≤ |s| ≤ 12]")
+    }}
 
-      assert(s.size == s.toSet.size,                     "[size = toSet.size]")
-      assert(s.size == s.toSeq.size,                     "[size = toSeq.size]")
-      assert(s.toSet== s.toSeq.toSet,                    "[same notes]")
-      assert(1<=s.size && s.size<=12,                    "[1 ≤ size ≤ 12]")
+    forAll("s","n") {(s: Scale,n: Note) ⇒
+    {
+      assert(s.contains(n) == s.toSet(n),                "[n ∈ s <=> n ∈ toSet]")
+    }}
+
+    forAll("s","n") {(s: Scale,n: Note) ⇒
+    {
+      assert(s.indexOf(n).getOrElse(-1) == s.toSeq.indexOf(n),"[indexOf = toSeq.indexOf]")
     }}
 
     forAll("s","i") {(s: Scale,i: ℤ) ⇒
     {
-      assert(Some(mod(i,s.size)) == s.indexOf(s(i)),     "[i == s.indexOf(s(i))]")
+      assert(s.note(i) == s.toSeq(mod(i,s.size)),        "[s[i] = toSeq[i]]")
+    }}
+
+    forAll("s","i") {(s: Scale,i: ℤ) ⇒
+    {
+      assert(s.indexOf(s.note(i)) == Some(mod(i,s.size)),"[indexOf∘note = id]")
     }}
   }
 
@@ -63,14 +73,13 @@ class ScaleTest extends CoreSuite
   {
     forAll("s","i") {(s: Scale,i: ℤ) ⇒
     {
-      val M = s.modes                                    // all modes of s
-      val m = s.mode(i)                                  // i'th mode of s
+      val M = s.modes                                    // Lists modes of s
+      val m = s.mode(i)                                  // The i'th mode of s
 
-      assert(M.size == s.size,                           "[s has s.size modes]")
       assert(M.contains(m),                              "[mode(i) ∈ modes]")
-
-      assert(m.toSet == s.toSet,                         "[same notes]")
-      assert(m.root  == s.toSeq(mod(i,s.size)),          "[m.root = s(i)]")
+      assert(M.size  == s.size,                          "[s has |s| modes]")
+      assert(m.toSet == s.toSet,                         "[modes share notes]")
+      assert(m.root  == s.note(i),                       "[m.root = s[i]]")
     }}
   }
 
@@ -79,7 +88,7 @@ class ScaleTest extends CoreSuite
     implicit val i = Arbitrary(generate.int)             // For i ∈ [-128,128]
     implicit val t = new Transposing[Scale]
     {
-      def apply(s: Scale,i: ℤ): Scale = s.mode(i)
+      def apply(s: Scale,i: ℤ): Scale = s.mode(i)        // ...i'th mode of s
     }
 
     isAction[Scale,ℤ]()                                  // Verify the axioms

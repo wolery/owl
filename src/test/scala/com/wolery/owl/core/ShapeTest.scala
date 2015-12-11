@@ -19,7 +19,7 @@ package com.wolery.owl.core;
 class ShapeTest extends CoreSuite
 {
   import arbitrary._                                     // For owl implicits
-  import utilities.mod                                   // For mod(i,n)
+  import utilities.{mod,mod12}                           // For mod(i,n)
 
   test("Shape is transposing")
   {
@@ -44,25 +44,35 @@ class ShapeTest extends CoreSuite
     forAll("s") {(s: Shape) ⇒
     {
       assert(s.contains(0),                              "[0 ∈ s]")
-      assert(0 ∈ s.toSet,                                "[0 ∈ toSet]")
-      assert(0 == s(0),                                  "[0 = s(0)]")
-      assert(0 == s.toSeq(0),                            "[0 = toSeq(0)]")
-
-      assert(s.size == s.toSet.size,                     "[size = toSet.size]")
-      assert(s.size == s.toSeq.size,                     "[size = toSeq.size]")
-      assert(s.toSet== s.toSeq.toSet,                    "[same notes]")
-      assert(1<=s.size && s.size<=12,                    "[1 ≤ size ≤ 12]")
-
-      assert(s.toSeq == (0 until s.size).map(s.apply(_)),"[check intervals]")
-      assert(s.modes == (0 until s.size).map(s.mode(_)), "[check modes]")
-
-      Shape(s.toString).map((t: Shape) ⇒ assert(t == s)) // Find it by name
+      assert(0 == s.interval(0),                         "[0 = s[0]]")
+      assert(s.toSet == s.toSeq.toSet,                   "[toSet = toSeq]")
+      assert(1<=s.size && s.size<=12,                    "[1 ≤ |s| ≤ 12]")
+      Shape(s.toString).map((t: Shape) ⇒ assert(t == s)) // Can find by name
     }}
 
     forAll("s","i") {(s: Shape,i: ℤ) ⇒
     {
-      assert(0<=s(i) && s(i)<=12,                        "[1 ≤ s(i) ≤ 12]")
-      assert(Some(mod(i,s.size)) == s.indexOf(s(i)),     "[i == s.indexOf(s(i))]")
+      assert(s.contains(i) == s.toSet(mod12(i)),         "[i ∈ s <=> i ∈ toSet]")
+    }}
+
+    forAll("s","i") {(s: Shape,i: ℤ) ⇒
+    {
+      assert(s.indexOf(mod12(i)).getOrElse(-1) == s.toSeq.indexOf(mod12(i)),"[indexOf = toSeq.indexOf]")
+    }}
+
+    forAll("s","i") {(s: Shape,i: ℤ) ⇒
+    {
+      assert(s.interval(i) == s.toSeq(mod(i,s.size)),    "[s[i] = toSeq[i]]")
+    }}
+
+    forAll("s","i") {(s: Shape,i: ℤ) ⇒
+    {
+      assert(s.indexOf(s.interval(i))==Some(mod(i,s.size)),"[indexOf∘interval = id]")
+    }}
+
+    forAll("s","i") {(s: Shape,i: ℤ) ⇒
+    {
+      assert(0<=s.interval(i) && s.interval(i)<=12,      "[1 ≤ s[i] ≤ 12]")
     }}
   }
 
@@ -72,7 +82,7 @@ class ShapeTest extends CoreSuite
      * Verify that the names in the ':' delimited list each name a consecutive
      * mode of the first shape to be named in the list.
      *
-     * @param	string A ':' delimited list of mode names.
+     * @param  string A ':' delimited list of mode names.
      */
     def modes(string: String): Unit =
     {

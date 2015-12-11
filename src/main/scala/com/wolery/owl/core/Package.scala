@@ -43,8 +43,8 @@ package object core
 
   implicit final class BoolSyntax(a: Bool)
   {
-    def implies(b: Bool): Bool        = !a || b
-    def iff    (b: Bool): Bool        =  a == b
+    def iff    (b:  Bool): Bool       =  a == b
+    def implies(b: ⇒Bool): Bool       = !a || b
   }
 
   implicit final class PartialOrderingSyntax[S](s: S)(implicit α: PartialOrdering[S])
