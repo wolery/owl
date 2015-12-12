@@ -23,7 +23,7 @@ package com.wolery.owl.core
  *
  * @see [[https://en.wikipedia.org/wiki/Scale_(music) Scale (Wikipedia)]]
  */
-final case class Scale (val root: Note,val shape: Shape) extends (ℤ ⇒ Note)
+final case class Scale (val root: Note,val shape: Shape)
 {
   def name:  Maybe[Name]                  = shape.name .map(n ⇒ s"$root $n")
   def names: Seq[Name]                    = shape.names.map(n ⇒ s"$root $n")
@@ -32,11 +32,10 @@ final case class Scale (val root: Note,val shape: Shape) extends (ℤ ⇒ Note)
   def toSet: Notes                        = (Notes.empty /: shape.toSet)((s,i) ⇒ s + (root + i))
   def toSeq: Seq[Note]                    = shape.toSeq.map(root + _)
 
-  def mode(mode: ℤ): Scale                = Scale(apply(mode),toSet)
+  def mode(mode: ℤ): Scale                = Scale(note(mode),toSet)
   def modes:         Seq[Scale]           = toSeq.map(Scale(_,toSet))
 
-  def apply   (index: ℤ):   Note          = root + shape(index)
-  def note    (index: ℤ):   Note          = root + shape(index)
+  def note    (index: ℤ):   Note          = root + shape.interval(index)
   def indexOf (note: Note): Maybe[ℕ]      = shape.indexOf (note - root)
   def contains(note: Note): Bool          = shape.contains(note - root)
 

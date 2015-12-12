@@ -33,9 +33,7 @@ class ShapeTest extends CoreSuite
     forAll("s") {(s: Shape) ⇒
     {
       assert(s == Shape(s.toSet),                        "[Set[ℤ]]")
-      assert(s == Shape(s.toSeq:_*),                     "[Seq[ℤ] (absolute)]")
-      assert(s == Shape(s.absolute:_*),                  "[Seq[ℤ] (absolute)]")
-      assert(s == Shape(s.relative:_*),                  "[Seq[ℤ] (relative)]")
+      assert(s == Shape(s.toSeq:_*),                     "[Seq[ℤ]]")
     }}
   }
 
@@ -47,7 +45,6 @@ class ShapeTest extends CoreSuite
       assert(0 == s.interval(0),                         "[0 = s[0]]")
       assert(s.toSet == s.toSeq.toSet,                   "[toSet = toSeq]")
       assert(1<=s.size && s.size<=12,                    "[1 ≤ |s| ≤ 12]")
-      Shape(s.toString).map((t: Shape) ⇒ assert(t == s)) // Can find by name
     }}
 
     forAll("s","i") {(s: Shape,i: ℤ) ⇒

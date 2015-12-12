@@ -18,28 +18,29 @@ package com.wolery.owl.core
 
 import java.lang.Integer.bitCount
 import scala.collection.immutable.BitSet
-import Shape.bit
-import Shapes.info
+import scala.collection.immutable.BitSet.BitSet1
 import utilities.{mod,mod12,ror12}
+import Shapes.info
+import Shape.bit
 
 /**
  * @param bits A 12 element bit set, each of whose bits indicates the presence
  *              or absence of the corresponding interval.
  *
  */
-final class Shape private (bits: Bits) extends (ℤ ⇒ ℕ)
+final class Shape private (bits: Bits,ints: Long)
 {
-  def name : Maybe[Name]                  = info(this).map(_.name)
+  def name: Maybe[Name]                   = info(this).map(_.name)
   def names: Seq[Name]                    = info(this).map(_.names).getOrElse(Nil)
 
   def size:  ℕ                            = bitCount(bits)
-  def toSet: BitSet                       = new BitSet.BitSet1(bits)
-  def toSeq: Seq[ℤ]                       = absolute
+  def toSet: BitSet                       = new BitSet1(bits)
+  def toSeq: Seq[ℕ]                       = for (i ← 0 until size) yield at(i)
 
-  def mode(mode: ℤ): Shape                = new Shape(ror12(bits,apply(mode)))
-  def modes:         Seq[Shape]           = (0 until size).map(mode(_))
+  def mode(mode: ℤ): Shape                = Shape(ror12(bits,interval(mode)))
+  def modes:         Seq[Shape]           = for (i ← 0 until size) yield mode(i)
 
-  def apply   (index: ℤ)   : ℕ            = interval(mod(index,size))
+  def interval(index: ℤ): ℕ               = at(mod(index,size))
 
   def indexOf(interval: ℤ): Maybe[ℕ] =
   {
@@ -54,67 +55,17 @@ final class Shape private (bits: Bits) extends (ℤ ⇒ ℕ)
     else None
   }
 
-  def interval(index: ℤ): ℤ =
-  {
-    at(mod(index,size))
-  }
-
-  def at(index: ℤ): ℤ =
-  {
-    assert(0<=index && index<size)
-
-    (ints >>> index*4 & 0xFL).toInt
-  }
-
-  def absolute: Seq[ℤ]  =
-  {
-    for (i ← 0 until size) yield
-    {
-      at(i)
-    }
-  }
-
-  def relative: Seq[ℤ]  =
-  {
-    var n: ℕ = 0
-
-    for (i ← 1 until size) yield
-    {
-      val m = n
-      n = at(i)
-      n - m
-    }
-  }
-
   def contains(interval: ℤ): Bool         = (bits & bit(interval)) != 0
 
   override def toString: String           = name.getOrElse(toSet.mkString("Shape(",", ",")"))
   override def equals(a: Any): Bool       = a match {case s: Shape => s.hashCode == bits; case _ => false}
   override def hashCode: Bits             = bits
 
-  /**
-   * The sequence of intervals that comprise the shape, packed into a single
-   * long integer.
-   */
-  private var ints: Long = 0L;                           // Interval vector
+  private def at(index: ℤ): ℕ =
   {
-    var b = bits                                         // Copy the bit set
-    var n = 0                                            // Intervals seen
-    var i = 0L                                           // Interval to add
+    assert(0<=index && index<size)
 
-    while (b != 0)                                       // While bits unseen
-    {
-      if ((b & 0x1) != 0)                                // ...low bit is set?
-      {
-        ints |= (i << n*4)                               // ....add interval
-        n    += 1                                        // ....seen another
-      }
-
-      b >>>= 1                                           // ...slide to right
-      i   += 1                                           // ...tested another
-    }
-
-    assert(n == size)                                    // All intervals seen
+    (ints >>> index*4 & 0xFL).toInt
   }
 }
 
@@ -144,9 +95,35 @@ object Shape
   private[core]
   def apply(bits: Bits): Shape =
   {
-    assert((bits & ~0xFFF) == 0,"extraneous bits")
-    assert((bits &  0x001) == 1,"missing zero")
-    new Shape(bits)
+    assert((bits &  0x001) == 1,"zero is missing")       // Must include zero
+    assert((bits & ~0xFFF) == 0,"extraneous bits")       // Must lie in range
+
+ /* Compute the sorted interval vector 'v',  whose elements list in order the
+    intervals that make up the new scale shape.  Each interval is represented
+    as an integer reduced modulo 12, so fits within a 4-bit nibble, and there
+    are at most 12 of them. Hence we can pack the entire vector into a single
+		64 long integer...*/
+
+    var b = bits >>> 1                                   // Copy to temporary
+    var v = 0L                                           // Interval vector
+    var i = 1L                                           // Interval value
+    var n = 4                                            // Interval index
+
+    while (b != 0)                                       // While bits remain
+    {
+      if ((b & 0x1) != 0)                                // ...lowest bit set?
+      {
+        v |= (i << n)                                    // ....add interval i
+        n += 4                                           // ....advance index
+      }
+
+      b >>>= 1                                           // ...slide to right
+      i   += 1                                           // ...tested another
+    }
+
+    assert(n == 4*bitCount(bits))                        // All intervals seen
+
+    new Shape(bits,v)                                    // Creates the shape
   }
 }
 
