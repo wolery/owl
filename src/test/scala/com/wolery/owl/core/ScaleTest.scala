@@ -19,7 +19,7 @@ package com.wolery.owl.core;
 class ScaleTest extends CoreSuite
 {
   import arbitrary._                                     // For owl implicits
-  import utilities.mod                                   // For mod(i,n)
+  import utilities._                                     // For utilities
 
   test("Scale is transposing")
   {

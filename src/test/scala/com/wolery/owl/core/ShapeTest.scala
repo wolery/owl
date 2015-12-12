@@ -19,7 +19,7 @@ package com.wolery.owl.core;
 class ShapeTest extends CoreSuite
 {
   import arbitrary._                                     // For owl implicits
-  import utilities.{mod,mod12}                           // For mod(i,n)
+  import utilities._                                     // For utilities
 
   test("Shape is transposing")
   {

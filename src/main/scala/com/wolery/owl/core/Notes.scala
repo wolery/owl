@@ -23,7 +23,7 @@ import scala.collection.mutable.Builder
 import scala.collection.generic.CanBuildFrom
 
 import Notes._
-import utilities._
+import utilities.rol12
 
 //****************************************************************************
 
