@@ -43,29 +43,23 @@ class ScaleTest extends CoreSuite
     forAll("s") {(s: Scale) ⇒
     {
       assert(s.contains(s.root),                         "[root ∈ s]")
-      assert(s.root == s.note(0),                        "[root = s[0]]")
+      assert(s.root  == s.note(0),                       "[root = s[0]]")
       assert(s.toSet == s.toSeq.toSet,                   "[toSet = toSeq]")
       assert(1<=s.size && s.size<=12,                    "[1 ≤ |s| ≤ 12]")
     }}
 
     forAll("s","n") {(s: Scale,n: Note) ⇒
     {
-      assert(s.contains(n) == s.toSet(n),                "[n ∈ s <=> n ∈ toSet]")
-    }}
-
-    forAll("s","n") {(s: Scale,n: Note) ⇒
-    {
-      assert(s.indexOf(n).getOrElse(-1) == s.toSeq.indexOf(n),"[indexOf = toSeq.indexOf]")
+      assert(s.contains(n) iff s.toSet(n),               "[n ∈ s iff n ∈ toSet]")
+      assert(s.indexOf(n).getOrElse(-1)==s.toSeq.indexOf(n),"[indexOf = toSeq.indexOf]")
     }}
 
     forAll("s","i") {(s: Scale,i: ℤ) ⇒
     {
-      assert(s.note(i) == s.toSeq(mod(i,s.size)),        "[s[i] = toSeq[i]]")
-    }}
+      val n = mod(i,s.size)                              // The n'th note
 
-    forAll("s","i") {(s: Scale,i: ℤ) ⇒
-    {
-      assert(s.indexOf(s.note(i)) == Some(mod(i,s.size)),"[indexOf∘note = id]")
+      assert(s.note(i) == s.toSeq(n),                    "[s[] = toSeq[]]")
+      assert(s.indexOf(s.note(i)) == Some(n),            "[indexOf∘note = id]")
     }}
   }
 

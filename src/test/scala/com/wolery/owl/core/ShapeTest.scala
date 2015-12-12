@@ -52,22 +52,18 @@ class ShapeTest extends CoreSuite
 
     forAll("s","i") {(s: Shape,i: ℤ) ⇒
     {
-      assert(s.contains(i) == s.toSet(mod12(i)),         "[i ∈ s <=> i ∈ toSet]")
+      val n = mod12(i)                                   // Convert to interval
+
+      assert(s.contains(n) iff s.toSet(n),               "[n ∈ s iff n ∈ toSet]")
+      assert(s.indexOf(n).getOrElse(-1)==s.toSeq.indexOf(n),"[indexOf = toSeq.indexOf]")
     }}
 
     forAll("s","i") {(s: Shape,i: ℤ) ⇒
     {
-      assert(s.indexOf(mod12(i)).getOrElse(-1) == s.toSeq.indexOf(mod12(i)),"[indexOf = toSeq.indexOf]")
-    }}
+      val n = mod(i,s.size)                              // The n'th interval
 
-    forAll("s","i") {(s: Shape,i: ℤ) ⇒
-    {
-      assert(s.interval(i) == s.toSeq(mod(i,s.size)),    "[s[i] = toSeq[i]]")
-    }}
-
-    forAll("s","i") {(s: Shape,i: ℤ) ⇒
-    {
-      assert(s.indexOf(s.interval(i))==Some(mod(i,s.size)),"[indexOf∘interval = id]")
+      assert(s.interval(n) == s.toSeq(n),                "[s[] = toSeq[]]")
+      assert(s.indexOf(s.interval(n)) == Some(n),        "[indexOf∘interval = id]")
     }}
 
     forAll("s","i") {(s: Shape,i: ℤ) ⇒
