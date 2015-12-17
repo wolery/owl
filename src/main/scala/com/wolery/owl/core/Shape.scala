@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : Represents the defining interval structure of a musical scale.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -18,63 +18,226 @@ package com.wolery.owl.core
 
 import java.lang.Integer.bitCount
 import scala.collection.immutable.BitSet
-import scala.collection.immutable.BitSet.BitSet1
 import utilities.{mod,mod12,ror12}
 import Shapes.info
 import Shape.bit
 
 /**
- * @param bits A 12 element bit set, each of whose bits indicates the presence
- *              or absence of the corresponding interval.
+ * Represents the defining interval structure of a musical scale as a sequence
+ * of intervals, modeled here as integers reduced modulo 12.
  *
+ * What do the 12, say, lydian scales have in common with one another? What is
+ * it that ''makes'' them lydian, exactly?
+ *
+ * One answer is that although each scale includes a different set of notes
+ * and has a different root, the set of ''intervals'' formed by each scale's
+ * notes and its root is nevertheless the same for all; this common set of
+ * intervals, or ''shape'', embodies a sort of abstraction of any one specific
+ * scale over its root from which all 12 scale instances can be reconstructed
+ * by 'applying' the shape to a specific root; that is, by mapping its intervals,
+ * which we view as transpositions, down the root note.
+ *
+ * A Shape, then, has a set of between 1 and 12 intervals, each an integer in
+ * the range [0, .. ,11], arranged in a monotonically increasing sequence that
+ * must always start with the interval 0 (the root). We may therefore speak of
+ * the 'first', 'second', 'third' and so on intervals of the shape - what are
+ * sometimes referred to as its ''degrees''.
+ *
+ * @param set A subset of the integers [0, .. ,11] encoded as an integer whose
+ * 						''i''-th bit is set if and only if scale instances of this shape
+ * 						include the note ''i'' half steps above their root.
+ *
+ * @param seq A sorted sequence of the intervals listed in ''set'', encoded as
+ * 						as an integer whose ''i''-th  nibble is the ''i''-th interval of
+ *						the sequence.
+ *
+ *  example   new Shape(0x555,0xA86420L)  ≡  Shape("whole tone")
  */
-final class Shape private (bits: Bits,ints: Long)
+final class Shape private (set: Int,seq: Long)
 {
-  def name: Maybe[Name]                   = info(this).map(_.name)
-  def names: Seq[Name]                    = info(this).map(_.names).getOrElse(Nil)
+  /**
+   * The preferred name of the scale shape.
+   *
+   * Not every shape ''has'' a name - there are thousands of them, after all -
+   * so we return the result in the Maybe monad.
+   */
+  def name: Maybe[Name] =
+  {
+    info(this).map(_.name)
+  }
 
-  def size:  ℕ                            = bitCount(bits)
-  def toSet: BitSet                       = new BitSet1(bits)
-  def toSeq: Seq[ℕ]                       = for (i ← 0 until size) yield at(i)
+  /**
+   * A list of names by which this shape is commonly known, beginning with the
+   * preferred name.
+   */
+  def names: Seq[Name] =
+  {
+    info(this).map(_.names).getOrElse(Nil)
+  }
 
-  def mode(mode: ℤ): Shape                = Shape(ror12(bits,interval(mode)))
-  def modes:         Seq[Shape]           = for (i ← 0 until size) yield mode(i)
+  /**
+   * The number of intervals that make up the scale shape.
+   */
+  def size: ℕ =
+  {
+    bitCount(set)
+  }
 
-  def interval(index: ℤ): ℕ               = at(mod(index,size))
+  /**
+   *
+   */
+  def toSet: BitSet =
+  {
+    new BitSet.BitSet1(set)
+  }
 
+  /**
+   *
+   */
+  def toSeq: Seq[ℕ] =
+  {
+    for (i ← 0 until size)
+      yield at(i)
+  }
+
+  /**
+   *
+   */
+  def mode(mode: ℤ): Shape =
+  {
+    Shape(ror12(set,interval(mode)))
+  }
+
+  /**
+   *
+   */
+  def modes: Seq[Shape] =
+  {
+    for (i ← 0 until size)
+      yield mode(i)
+  }
+
+  /**
+   * Returns the ''i''-th element of the underlying interval sequence.
+   *
+   * For a scale with this shape, this is the number of half steps between the
+   * root and the ''i''-th note of the scale.
+   *
+   * @param  i An index into the interval sequence ''seq''.
+   *
+   * @return The ''i'' element of the interval sequence ''seq''.
+   */
+  def interval(i: ℤ): ℕ =
+  {
+    at(mod(i,size))
+  }
+
+  /**
+   *
+   */
   def indexOf(interval: ℤ): Maybe[ℕ] =
   {
     val i = mod12(interval)
 
-    if ((bits & 0x1<<i) != 0)
+    if ((set & 0x1<<i) != 0)
     {
       val m = 0xFFF >>> (11 - i)
 
-      Some(bitCount(bits & m) - 1)
+      Some(bitCount(set & m) - 1)
     }
     else None
   }
 
-  def contains(interval: ℤ): Bool         = (bits & bit(interval)) != 0
-
-  override def toString: String           = name.getOrElse(toSet.mkString("Shape(",", ",")"))
-  override def equals(a: Any): Bool       = a match {case s: Shape => s.hashCode == bits; case _ => false}
-  override def hashCode: Bits             = bits
-
-  private def at(index: ℤ): ℕ =
+  /**
+   * Returns `true` if the given interval is included in the shape.
+   *
+   * @param interval
+   *
+   * @return `true` if
+   */
+  def contains(interval: ℤ): Bool =
   {
-    assert(0<=index && index<size)
+    (set & bit(interval)) != 0                           // Is i'th bit set?
+  }
 
-    (ints >>> index*4 & 0xFL).toInt
+  /**
+   *
+   */
+  override def toString: String =
+  {
+    name.getOrElse(toSet.mkString("Shape(",", ",")"))
+  }
+
+  /**
+   *
+   */
+  override def equals(any: Any): Bool = any match
+  {
+    case s: Shape ⇒ s.hashCode == set
+    case _        ⇒ false
+  }
+
+  /**
+   *
+   */
+  override def hashCode: Int = set
+
+  /**
+   * Returns the ''i''-th element of the underlying interval sequence.
+   *
+   * For a scale with this shape, this is the number of half steps between the
+   * root and ''i''-th notes of the scale.
+   *
+   * @param  i An index into the interval sequence ''seq''.
+   *
+   * @return The ''i'' element of the interval sequence ''seq''.
+   */
+  private
+  def at(i: ℤ): ℕ =
+  {
+    assert(0<=i && i<size)                               // Validate argument
+
+    (seq >>> i*4 & 0xFL).toInt                           // Subscript sequence
   }
 }
 
-//****************************************************************************
-
+/**
+ * The companion object for class [[Shape]].
+ */
 object Shape
 {
-  def apply(n: Name): Maybe[Shape] = info(n).map(_.shape)
+  /**
+   * Retrieves a shape by name.
+   *
+   * @return The named shape, or `None` if ''name'' is not recognized as being
+   * 				 the name of a scale shape.
+   *
+   * @example Shape("lydian") (the ''lydian'' scale shape)
+   */
+  def apply(name: Name): Maybe[Shape] =
+  {
+    info(name).map(_.shape)
+  }
 
+  /**
+   * Creates a shape from its defining set of intervals.
+   *
+   * Intervals are reduced modulo 12 and an interval of 0 interval is implied,
+   * thus `Shape(Set(14))` and `Shape(Set(0,2))` refer to the same shape.
+   *
+   * @param intervals A set of integer intervals that define the scale shape.
+   *
+   * @example Shape(0,2,4,6,7,9,11) (the ''lydian'' scale shape)
+   */
+  def apply(intervals: Set[ℤ]): Shape =
+  {
+    Shape((1 /: intervals)((b,i) ⇒ b | bit(i)))
+  }
+
+  /**
+   * @param  intervals
+   * @return
+   */
   def apply(intervals: ℤ*): Shape = intervals match
   {
     case Seq()       ⇒ {        Shape(1)}
@@ -82,29 +245,33 @@ object Shape
     case s           ⇒ {var n=0;Shape((1 /: s)((b,i) ⇒ b | bit{n+=i;n}))}
   }
 
-  def apply(intervals: Set[ℤ]): Shape     = Shape((1 /: intervals)((b,i) ⇒ b | bit(i)))
-
-  implicit object transposing extends Transposing[Shape]
+  /**
+   * @param interval
+   */
+  private
+  def bit(interval: ℤ): Int =
   {
-    def apply(s: Shape,i: ℤ)              = s mode i
+    1 << mod12(interval)
   }
 
-  private
-  def bit(interval: ℤ): Bits              = 1 << mod12(interval)
-
+  /**
+   * @param set A subset of the integers [0, .. ,11] encoded as an integer
+   * 						whose ''i''-th bit is set if and only if scale instances of
+   * 						this shape include the note ''i'' half steps above their root.
+   */
   private[core]
-  def apply(bits: Bits): Shape =
+  def apply(set: Int): Shape =
   {
-    assert((bits &  0x001) == 1,"zero is missing")       // Must include zero
-    assert((bits & ~0xFFF) == 0,"extraneous bits")       // Must lie in range
+    assert((set &  0x001) == 1,"zero is missing")        // Must include zero
+    assert((set & ~0xFFF) == 0,"extraneous set")         // Must lie in range
 
  /* Compute the sorted interval vector 'v',  whose elements list in order the
     intervals that make up the new scale shape.  Each interval is represented
     as an integer reduced modulo 12, so fits within a 4-bit nibble, and there
     are at most 12 of them. Hence we can pack the entire vector into a single
-		64 long integer...*/
+		64-bit long integer...*/
 
-    var b = bits >>> 1                                   // Copy to temporary
+    var b = set >>> 1                                    // Copy to temporary
     var v = 0L                                           // Interval vector
     var i = 1L                                           // Interval value
     var n = 4                                            // Interval index
@@ -121,9 +288,14 @@ object Shape
       i   += 1                                           // ...tested another
     }
 
-    assert(n == 4*bitCount(bits))                        // All intervals seen
+    assert(n == 4*bitCount(set))                        // All intervals seen
 
-    new Shape(bits,v)                                    // Creates the shape
+    new Shape(set,v)                                    // Creates the shape
+  }
+
+  implicit val transposing: Transposing[Shape] = new Transposing[Shape]
+  {
+    def apply(shape: Shape,i: ℤ): Shape = shape.mode(i)
   }
 }
 
