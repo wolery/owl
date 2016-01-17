@@ -207,12 +207,22 @@ final class Shape private (set: Int,seq: Long)
 object Shape
 {
   /**
-   * Retrieves a shape by name.
+   * Retrieves a scale shape by name.
    *
-   * @return The named shape, or `None` if ''name'' is not recognized as being
-   * 				 the name of a scale shape.
+   * The library includes a database of scale shapes and their associated meta
+   * data (see class [[Shapes]]). Here we attempt to look up a shape by one of
+   * its names, an operation which can fail, hence we return the result in the
+   * [[Maybe]] monad.
    *
-   * @example Shape("lydian") (the ''lydian'' scale shape)
+   * Names are matched case insensitively, and the accidental characters ♭, ♮,
+   * and ♯ match the Latin letters ''b'', ''n'', and ''s'' respectively.
+   *
+   * @param   name A name by which the scale shape is commonly known.
+   *
+   * @return  The named shape, or `None` if ''name'' does not name an existing
+   * 				  scale shape.
+   *
+   * @example Shape("lydian")  ≡  Some(Shape(0,2,4,6,7,9,11))
    */
   def apply(name: Name): Maybe[Shape] =
   {
@@ -222,21 +232,43 @@ object Shape
   /**
    * Creates a shape from its defining set of intervals.
    *
-   * Intervals are reduced modulo 12 and an interval of 0 interval is implied,
-   * thus `Shape(Set(14))` and `Shape(Set(0,2))` refer to the same shape.
+   * Intervals are reduced modulo 12 and an interval of 0 is implied, thus the
+   * expressions `Shape(Set(14))` and `Shape(Set(0,2))` both describe the same
+   * scale shape.
    *
-   * @param intervals A set of integer intervals that define the scale shape.
+   * @param   intervals A collection of intervals defining a scale shape.
    *
-   * @example Shape(0,2,4,6,7,9,11) (the ''lydian'' scale shape)
+   * @return	The scale shape with the given interval structure.
+   *
+   * @example Shape(Set(0,2,4,6,7,9,11))  ≡  Shape("lydian").get
    */
-  def apply(intervals: Set[ℤ]): Shape =
+  def apply(intervals: Traversable[ℤ]): Shape =
   {
     Shape((1 /: intervals)((b,i) ⇒ b | bit(i)))
   }
 
   /**
-   * @param  intervals
-   * @return
+   * Creates a shape from its defining set of intervals.
+   *
+   * The argument can take one of two forms:
+   *
+   *  - an ''absolute'' sequence starts at 0, each subsequent element b
+   *  of the form 0, ''i,,1,,'', .. ''i,,n'',,,
+   *
+   *  - a ''relative'' sequence begins with some interval other than 0, each
+   *  subsequent element denoting a number of half steps relative to its pre-
+   *	decessor in the sequence
+   *
+   * Intervals are reduced modulo 12 and an interval of 0 is implied, thus the
+   * expressions `Shape(14,3)` and `Shape(0,2,3)` both describe the same scale
+   * shape.
+   *
+   * @param   intervals A collection of intervals that define the scale shape.
+   *
+   * @return	The scale shape with the given interval structure.
+   *
+   * @example Shape(0,2,4,6,7,9,11)  ≡  Shape("lydian").get // absolute
+   * @example Shape(2,2,2,1,2,2)     ≡  Shape("lydian").get // relative
    */
   def apply(intervals: ℤ*): Shape = intervals match
   {
@@ -246,7 +278,13 @@ object Shape
   }
 
   /**
-   * @param interval
+   * Returns the singleton bitset that encodes the given inter
+   * Reduces the given integer modulo 12 and encodes it as  Encodes an interval as a singleton bitset.
+   *
+   * @param interval  An integer representing a number of half steps above the
+   *									the root of the scale.
+   *
+   * @return The singleton interval bitset {''interval''}.
    */
   private
   def bit(interval: ℤ): Int =
@@ -255,9 +293,18 @@ object Shape
   }
 
   /**
-   * @param set A subset of the integers [0, .. ,11] encoded as an integer
-   * 						whose ''i''-th bit is set if and only if scale instances of
-   * 						this shape include the note ''i'' half steps above their root.
+   * Creates a shape from its defining set of intervals.
+   *
+   * This private constructor provides the underlying implementation common to
+   * the public constructors above. It iterates over the bits in the specified
+   * set to generate a sorted interval vector that it packs into a single long
+   * integer and passes as the second parameter to the real Shape constructor.
+   *
+   * @param   set  A subset of the integers [0, .. ,11], encoded as an integer
+   * 					whose ''i''-th bit is set if and only if scale instances of this
+   * 					shape include the note ''i'' half steps above their root.
+   *
+   * @return	The scale shape with the given interval structure.
    */
   private[core]
   def apply(set: Int): Shape =
@@ -288,11 +335,14 @@ object Shape
       i   += 1                                           // ...tested another
     }
 
-    assert(n == 4*bitCount(set))                        // All intervals seen
+    assert(n == 4*bitCount(set))                         // All intervals seen
 
-    new Shape(set,v)                                    // Creates the shape
+    new Shape(set,v)                                     // Create scale shape
   }
 
+  /**
+   * The integers act upon the set of shapes via modal interchange.
+   */
   implicit val transposing: Transposing[Shape] = new Transposing[Shape]
   {
     def apply(shape: Shape,i: ℤ): Shape = shape.mode(i)

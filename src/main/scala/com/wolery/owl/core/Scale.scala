@@ -48,7 +48,7 @@ object Scale
 {
   def apply(r: Note,n: Name): Maybe[Scale]= Shape(n).map(Scale(r,_))
   def apply(r: Note,s: Note*): Scale      = Scale(r,Notes(s:_*))
-  def apply(r: Note,s: Set[Note]): Scale  = Scale(r,Shape(s.map(_-r)))
+  def apply(r: Note,s: Traversable[Note]): Scale  = Scale(r,Shape(s.map(_-r)))
 
   implicit val transposing = new Transposing[Scale]
   {
