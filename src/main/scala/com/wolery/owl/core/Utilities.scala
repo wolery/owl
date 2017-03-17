@@ -45,6 +45,42 @@ object utilities
   def superscript(s: String): String = s.map(superscript)
 
   /**
+   * Returns true if the value ''n'' lies within the closed interval [''lo'',
+   * ''hi''].
+   *
+   * By 'closed' we mean that the interval includes its bounds.
+   *
+   * @param  n  The value to test for inclusion in the closed interval.
+   * @param  lo The lower bound of the closed interval.
+   * @param  hi The upper bound of the closed interval.
+   * @return True if ''n'' lies within the closed interval [''lo'',''hi''].
+   */
+  def between(n: ℤ,lo: ℤ,hi: ℤ): Bool   =
+  {
+    assert(lo <= hi)                                     // Validate arguments
+
+    lo<=n && n<=hi                                       // Test for inclusion
+  }
+
+  /**
+   * Returns true if the value ''n'' lies within the closed interval [''lo'',
+   * ''hi''].
+   *
+   * By 'closed' we mean that the interval includes its bounds.
+   *
+   * @param  n  The value to test for inclusion in the closed interval.
+   * @param  lo The lower bound of the closed interval.
+   * @param  hi The upper bound of the closed interval.
+   * @return True if ''n'' lies within the closed interval [''lo'',''hi''].
+   */
+  def between(n: ℝ,lo: ℝ,hi: ℝ): Bool   =
+  {
+    assert(lo <= hi)                                     // Validate arguments
+
+    lo<=n && n<=hi                                       // Test for inclusion
+  }
+
+  /**
    * Returns the non-negative remainder of the integer ''i'' upon division by
    * the positive integer ''n''.
    *
