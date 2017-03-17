@@ -16,28 +16,27 @@ package com.wolery.owl.core
 
 //****************************************************************************
 
-private[core]
 object utilities
 {
   def subscript(char: Char): Char = char match
   {
     case '-'              ⇒ '₋'
     case '+'              ⇒ '₊'
-    case  c  if c.isDigit ⇒ ('₀' + c - '0').toChar
+    case  c if c.isDigit  ⇒ ('₀' + c - '0').toChar
     case  c               ⇒ c
   }
 
   /**
    * @see [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts Unicode subscripts and superscripts (Wikipedia)]]
    */
-  def superscript(char : Char) : Char = char match
+  def superscript(char: Char): Char = char match
   {
     case '1'              ⇒ '¹'
     case '2'              ⇒ '²'
     case '3'              ⇒ '³'
     case '-'              ⇒ '⁻'
     case '+'              ⇒ '⁺'
-    case  c  if c.isDigit ⇒ ('⁰' + c - '0').toChar
+    case  c if c.isDigit  ⇒ ('⁰' + c - '0').toChar
     case  c               ⇒ c
   }
 
