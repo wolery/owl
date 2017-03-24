@@ -1,3 +1,4 @@
+
 //**************************** Copyright © Jonathon Bell. All rights reserved.
 //*
 //*
@@ -44,16 +45,16 @@ import Shape.bit
  * sometimes referred to as its ''degrees''.
  *
  * @param set A subset of the integers [0, .. ,11] encoded as an integer whose
- * 						''i''-th bit is set if and only if scale instances of this shape
- * 						include the note ''i'' half steps above their root.
+ *            ''i''-th bit is set if and only if scale instances of this shape
+ *            include the note ''i'' half steps above their root.
  *
  * @param seq A sorted sequence of the intervals listed in ''set'', encoded as
- * 						as an integer whose ''i''-th  nibble is the ''i''-th interval of
- *						the sequence.
+ *            as an integer whose ''i''-th  nibble is the ''i''-th interval of
+ *            the sequence.
  *
  *  example   new Shape(0x555,0xA86420L)  ≡  Shape("whole tone")
  */
-final class Shape private (set: Int,seq: Long)
+final class Shape private (set: Int,seq: Long) extends Serializable
 {
   /**
    * The preferred name of the scale shape.
@@ -220,7 +221,7 @@ object Shape
    * @param   name A name by which the scale shape is commonly known.
    *
    * @return  The named shape, or `None` if ''name'' does not name an existing
-   * 				  scale shape.
+   *           scale shape.
    *
    * @example Shape("lydian")  ≡  Some(Shape(0,2,4,6,7,9,11))
    */
@@ -238,7 +239,7 @@ object Shape
    *
    * @param   intervals A collection of intervals defining a scale shape.
    *
-   * @return	The scale shape with the given interval structure.
+   * @return  The scale shape with the given interval structure.
    *
    * @example Shape(Set(0,2,4,6,7,9,11))  ≡  Shape("lydian").get
    */
@@ -257,7 +258,7 @@ object Shape
    *
    *  - a ''relative'' sequence begins with some interval other than 0, each
    *  subsequent element denoting a number of half steps relative to its pre-
-   *	decessor in the sequence
+   *  decessor in the sequence
    *
    * Intervals are reduced modulo 12 and an interval of 0 is implied, thus the
    * expressions `Shape(14,3)` and `Shape(0,2,3)` both describe the same scale
@@ -265,7 +266,7 @@ object Shape
    *
    * @param   intervals A collection of intervals that define the scale shape.
    *
-   * @return	The scale shape with the given interval structure.
+   * @return  The scale shape with the given interval structure.
    *
    * @example Shape(0,2,4,6,7,9,11)  ≡  Shape("lydian").get // absolute
    * @example Shape(2,2,2,1,2,2)     ≡  Shape("lydian").get // relative
@@ -282,7 +283,7 @@ object Shape
    * Reduces the given integer modulo 12 and encodes it as  Encodes an interval as a singleton bitset.
    *
    * @param interval  An integer representing a number of half steps above the
-   *									the root of the scale.
+   *                  the root of the scale.
    *
    * @return The singleton interval bitset {''interval''}.
    */
@@ -301,10 +302,10 @@ object Shape
    * integer and passes as the second parameter to the real Shape constructor.
    *
    * @param   set  A subset of the integers [0, .. ,11], encoded as an integer
-   * 					whose ''i''-th bit is set if and only if scale instances of this
-   * 					shape include the note ''i'' half steps above their root.
+   *           whose ''i''-th bit is set if and only if scale instances of this
+   *           shape include the note ''i'' half steps above their root.
    *
-   * @return	The scale shape with the given interval structure.
+   * @return  The scale shape with the given interval structure.
    */
   private[core]
   def apply(set: Int): Shape =
@@ -316,7 +317,7 @@ object Shape
     intervals that make up the new scale shape.  Each interval is represented
     as an integer reduced modulo 12, so fits within a 4-bit nibble, and there
     are at most 12 of them. Hence we can pack the entire vector into a single
-		64-bit long integer...*/
+    64-bit long integer...*/
 
     var b = set >>> 1                                    // Copy to temporary
     var v = 0L                                           // Interval vector
