@@ -18,29 +18,81 @@ package com.wolery.owl.core
 
 object utilities
 {
-  def subscript(char: Char): Char = char match
+  /**
+   * Returns a subscripted version of the given character ''c'' if such a code
+   * point is present in the Unicode standard, and ''c'' otherwise.
+   *
+   * Subscripted versions exist for the full set of Arabic numerals.
+   *
+   * @param  c An arbitrary character.
+   *
+   * @return The subscripted version of ''c'', if defined by Unicode, otherwise ''c''.
+   * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts Unicode subscripts and superscripts (Wikipedia)]]
+   */
+  def subscript(c: Char): Char = c match
   {
     case '-'              ⇒ '₋'
     case '+'              ⇒ '₊'
+    case '='              ⇒ '₌'
+    case '('              ⇒ '₍'
+    case ')'              ⇒ '₎'
     case  c if c.isDigit  ⇒ ('₀' + c - '0').toChar
-    case  c               ⇒ c
+    case  _               ⇒ c
   }
 
   /**
-   * @see [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts Unicode subscripts and superscripts (Wikipedia)]]
+   * Returns a superscripted version of the given character ''c'' if such a code
+   * point is present in the Unicode standard, and ''c'' otherwise.
+   *
+   * Superscripted versions exist for the full set of Arabic numerals.
+   *
+   * @param  c An arbitrary character.
+   *
+   * @return The superscripted version of the character ''c'', if defined by Unicode, otherwise ''c''.
+   * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts Unicode subscripts and superscripts (Wikipedia)]]
    */
-  def superscript(char: Char): Char = char match
+  def superscript(c: Char): Char = c match
   {
     case '1'              ⇒ '¹'
     case '2'              ⇒ '²'
     case '3'              ⇒ '³'
     case '-'              ⇒ '⁻'
     case '+'              ⇒ '⁺'
+    case '='              ⇒ '⁼'
+    case '('              ⇒ '⁽'
+    case ')'              ⇒ '⁾'
     case  c if c.isDigit  ⇒ ('⁰' + c - '0').toChar
-    case  c               ⇒ c
+    case  _               ⇒ c
   }
 
-  def subscript  (s: String): String = s.map(subscript)
+  /**
+   * Returns a copy of the given string in which  characters with  subscripted
+   * versions defined by Unicode are replaced with subscripted variants.
+   *
+   * For example:
+   * {{{
+   *    subscript("A13")  =  "A₁₃"
+   * }}}
+   *
+   * @param  s A string of characters.
+   *
+   * @return A superscripted version of the character string ''s''.
+   */
+  def subscript(s: String): String = s.map(subscript)
+
+  /**
+   * Returns a copy of the given string in which characters with superscripted
+   * versions defined by Unicode are replaced with superscripted variants.
+   *
+   * For example:
+   * {{{
+   *    superscript("A13")  =  "A¹³"
+   * }}}
+   *
+   * @param  s A string of characters.
+   *
+   * @return A superscripted version of the character string ''s''.
+   */
   def superscript(s: String): String = s.map(superscript)
 
   /**
@@ -52,13 +104,26 @@ object utilities
    * @param  n  The value to test for inclusion in the closed interval.
    * @param  lo The lower bound of the closed interval.
    * @param  hi The upper bound of the closed interval.
+   *
    * @return True if ''n'' lies within the closed interval [''lo'',''hi''].
    */
-  def between[α: Ordering](n: α,lo: α,hi: α): Bool =
+  def isBetween[α: Ordering](n: α,lo: α,hi: α): Bool =
   {
     assert(lo <= hi)                                     // Validate arguments
 
     lo<=n && n<=hi                                       // Test for inclusion
+  }
+
+  /**
+   * Returns true if the given integer is a natural power of 2.
+   *
+   * @param  i An arbitrary integer.
+   *
+   * @return True if the integer ''i'' is a natural power of 2.
+   */
+  def isPowerOf2(i: ℤ): Bool =
+  {
+    i > 0 && (i & (i-1)) == 0                            // Mask off with i-1
   }
 
   /**
@@ -70,6 +135,7 @@ object utilities
    *
    * @param  i An integer.
    * @param  n A positive integer.
+   *
    * @return The non-negative remainder of ''i'' upon division by ''n''.
    * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation (Wikipedia)]]
    */
@@ -90,6 +156,7 @@ object utilities
    * + ''r'' for some ''q'' in ℤ.
    *
    * @param  i An integer.
+   *
    * @return The non-negative remainder of ''i'' upon division by 12.
    * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation (Wikipedia)]]
    */
@@ -120,6 +187,7 @@ object utilities
    *
    * @param  bits A 12 bit integer.
    * @param  by   The number of bit positions to rotate ''bits'' by.
+   *
    * @return The result of rotating ''bits'' left by ''by'' bits.
    * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift (Wikipedia)]]
    */
@@ -152,6 +220,7 @@ object utilities
    *
    * @param  bits A 12 bit integer.
    * @param  by   The number of bit positions to rotate ''bits'' by.
+   *
    * @return The result of rotating ''bits'' right by ''by'' bits.
    * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift (Wikipedia)]]
    */

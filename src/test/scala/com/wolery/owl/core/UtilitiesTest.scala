@@ -23,6 +23,25 @@ import Integer.bitCount
 
 class UtiltiesTest extends CoreSuite
 {
+  test("subscript")
+  {
+    assert(subscript("A(0123-+)Z") == "A₍₀₁₂₃₋₊₎Z")
+    assert(subscript("A C") == "A C")
+    assert(subscript("ABC") == "ABC")
+  }
+
+  test("superscript")
+  {
+    assert(superscript("A(0123-+)Z") == "A⁽⁰¹²³⁻⁺⁾Z")
+    assert(superscript("A C") == "A C")
+    assert(superscript("ABC") == "ABC")
+  }
+
+  test("isPowerOf2")
+  {
+    assert((-8 to +8).map(isPowerOf2(_)) == "FFFFFFFFFTTFTFFFT".map(_=='T'))
+  }
+
   test("mod")
   {
     forAll("i","n") {(i: ℤ,n: ℕ) ⇒ whenever {n > 0}
