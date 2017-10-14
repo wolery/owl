@@ -6,92 +6,52 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>com.wolery</groupId>
+    <artifactId>pom</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../pom/pom.xml</relativePath>
+  </parent>
+
   <groupId>com.wolery.owl</groupId>
-  <artifactId>owl</artifactId>
-  <version>1.0.0</version>
+  <artifactId>owl-core</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>owl</name>
+  <name>owl-core</name>
   <description></description>
   <url>https://github.com/wolery/owl</url>
   <inceptionYear>September 2015</inceptionYear>
-
-  <organization>
-    <url>https://github.com/wolery</url>
-    <name>Wolery</name>
-  </organization>
-  
-  <developers>
-    <developer>
-      <id>jonathon</id>
-      <name>Jonathon Bell</name>
-      <email>jonathon.a.bell@gmail.com</email>
-      <url>https://github.com/jonathon-bell</url>
-      <timezone>US/Eastern</timezone>
-    </developer>
-  </developers>
-
-  <scm>
-    <url>https://github.com/wolery/owl</url>
-    <connection>scm:git:git://github.com/wolery/owl.git</connection>
-    <developerConnection>scm:git:git@github.com:jonathon-bell/owl.git</developerConnection>
-  </scm>
-
-  <prerequisites>
-    <maven>3.0.4</maven>
-  </prerequisites>
-
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
-      <version>2.12.2</version>
     </dependency>
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest_2.12</artifactId>
-      <version>3.0.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.scalacheck</groupId>
       <artifactId>scalacheck_2.12</artifactId>
-      <version>1.13.5</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
   
-    <sourceDirectory>src/main/scala</sourceDirectory>
-    <testSourceDirectory>src/test/scala</testSourceDirectory>
-
     <plugins>
     
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
       </plugin>
 
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
-        <version>3.2.2</version>
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
     </plugins>

@@ -19,11 +19,12 @@
   <packaging>pom</packaging>
 
   <name>Owl Parent POM</name>
-  <description>Paren POM for the Owl project.</description>
+  <description>Parent POM for the Owl project.</description>
   <url>https://github.com/wolery/owl</url>
   <inceptionYear>September 2015</inceptionYear>
 
   <modules>
+    <module>owl-core</module>
   </modules>
 
 </project>
