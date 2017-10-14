@@ -25,6 +25,8 @@
 
   <modules>
     <module>owl-core</module>
+    <module>owl-macros</module>
+    <module>owl-controls</module>
     <module>owl-gui</module>
   </modules>
 
