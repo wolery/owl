@@ -1,0 +1,94 @@
+//**************************** Copyright © Jonathon Bell. All rights reserved.
+//*
+//*
+//*  Version : $Header:$
+//*
+//*
+//*  Purpose :
+//*
+//*
+//*  Comments: This file uses a tab size of 3 spaces.
+//*
+//*
+//*  See Also: http://docs.oracle.com/javase/8/javafx/api/javafx/scene/doc-files/cssref.html
+//*
+//*
+//****************************************************************************
+
+.binding 
+{
+   -fx-background-color:            beige;
+}
+
+.fingerboard 
+{
+   -fx-background-image:            url("/img/ebony-2.jpg");
+   -fx-background-size:             cover;
+}
+                                    
+.inlay
+{
+   -fx-fill:                        #e1dddd;
+   -fx-stroke:                      black;
+   -fx-stroke-type:                 inside;
+   -fx-stroke-width:                1;
+}
+
+.nut
+{
+   -fx-stroke:                      grey;
+   -fx-stroke-width:                10;
+// -fx-stroke-line-cap:             round;
+// -fx-stroke-line-join:            round;
+}
+
+.fret
+{
+   -fx-stroke:                      #f2ebbc;
+   -fx-stroke-width:                6;
+   -fx-stroke-line-cap:             round;
+   -fx-stroke-line-join:            round;
+}
+
+.grid
+{
+   -fx-font-size:                   12;
+}
+
+.string
+{
+   -fx-stroke:                      #c6c4c4;
+   -fx-stroke-width:                2;
+}
+
+//****************************************************************************
+
+.harmonic
+{
+   -fx-border-width:                1;
+   -fx-border-color:                grey;
+// -fx-background-color:            ;
+   -fx-shape:                      "M-1   0   
+                                    a 1 1 0 1 1  2.0 0  
+                                    a 1 1 0 1 1 -2.0 0 Z";
+   -fx-pref-width:                  30;
+   -fx-pref-height:                 30;
+
+   -fx-stroke:                      silver;
+}
+
+.melodic
+{
+   -fx-border-width:                1;
+   -fx-border-color:                red;
+   -fx-background-color:            cornsilk;
+   -fx-shape:                      "M-1   0   
+                                    a 1 1 0 1 1  2.0 0  
+                                    a 1 1 0 1 1 -2.0 0 Z";
+   -fx-pref-width:                  30;
+   -fx-pref-height:                 30;
+
+   -fx-stroke:                      navy;
+}
+
+//****************************************************************************

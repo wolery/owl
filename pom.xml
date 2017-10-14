@@ -25,6 +25,7 @@
 
   <modules>
     <module>owl-core</module>
+    <module>owl-gui</module>
   </modules>
 
 </project>

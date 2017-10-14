@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="1400.0" stylesheets="@Guitar.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane cache="true" styleClass="binding" />
+      <Pane cache="true" styleClass="fingerboard">
+         <StackPane.margin>
+            <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+         </StackPane.margin></Pane>
+      <Pane cache="true">
+         <children>
+            <Line endY="300.0" layoutX="56.0" styleClass="nut" />
+            <Line endY="300.0" layoutX="112.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="168.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="224.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="280.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="336.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="392.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="448.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="504.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="560.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="616.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="672.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="728.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="784.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="840.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="896.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="952.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="1008.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="1064.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="1120.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="1176.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="1232.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="1288.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="1344.0" styleClass="fret" />
+            <Line endY="300.0" layoutX="1395.0" styleClass="fret" />
+         </children>
+      </Pane>
+      <Pane cache="true">
+         <children>
+            <Line endX="1400.0" layoutY="25.0" styleClass="string" />
+            <Line endX="1400.0" layoutY="76.0" styleClass="string" />
+            <Line endX="1400.0" layoutY="125.0" styleClass="string" />
+            <Line endX="1400.0" layoutY="176.0" styleClass="string" />
+            <Line endX="1400.0" layoutY="224.0" styleClass="string" />
+            <Line endX="1400.0" layoutY="275.0" styleClass="string" />
+         </children>
+      </Pane>
+      <Pane cache="true">
+         <children>
+            <Circle layoutX="196.0" layoutY="150.0" radius="8.0" styleClass="inlay" />
+            <Circle layoutX="308.0" layoutY="150.0" radius="8.0" styleClass="inlay" />
+            <Circle layoutX="420.0" layoutY="150.0" radius="8.0" styleClass="inlay" />
+            <Circle layoutX="532.0" layoutY="150.0" radius="8.0" styleClass="inlay" />
+            <Circle layoutX="700.0" layoutY="102.0" radius="8.0" styleClass="inlay" />
+            <Circle layoutX="700.0" layoutY="200.0" radius="8.0" styleClass="inlay" />
+            <Circle layoutX="869.0" layoutY="150.0" radius="8.0" styleClass="inlay" />
+            <Circle layoutX="980.0" layoutY="150.0" radius="8.0" styleClass="inlay" />
+            <Circle layoutX="1092.0" layoutY="150.0" radius="8.0" styleClass="inlay" />
+            <Circle layoutX="1204.0" layoutY="150.0" radius="8.0" styleClass="inlay" />
+            <Circle layoutX="1371.0" layoutY="102.0" radius="8.0" styleClass="inlay" />
+            <Circle layoutX="1371.0" layoutY="200.0" radius="8.0" styleClass="inlay" />
+         </children>
+      </Pane>
+   </children>
+</StackPane>

@@ -1,0 +1,179 @@
+//**************************** Copyright © Jonathon Bell. All rights reserved.
+//*
+//*
+//*  Version : $Header:$
+//*
+//*
+//*  Purpose :
+//*
+//*
+//*  Comments: This file uses a tab size of 3 spaces.
+//*
+//*
+//****************************************************************************
+
+.transport-frame
+{
+  -frame-color:            #5D646A;
+  -panel-color:            #141414;
+  -hover-color:            white;
+  -static-color:           grey;
+  -active-color:           snow;
+  -button-color:           #bbbbbb;
+  -marker-color:           #2d659a;
+  -playing-color:          lightgreen;
+  -stopped-color:          deepskyblue;
+  -looping-color:          deepskyblue;
+
+  -fx-background-color:    -frame-color,linear-gradient(to bottom,-frame-color,derived(-frame-color,-50%));
+  -fx-background-insets:   0, 45 0 0 0;
+  -fx-background-radius:   0 0 10 10;
+  -fx-font-family:         Arial;
+  -fx-alignment:           center;
+}
+
+#transport-pane
+{
+  -fx-background-color:    -panel-color;
+  -fx-shape:               "M0,0 l15,50 h1000 l15,-50z";
+}
+
+.static-text
+{
+  -fx-font-size:           11;
+  -fx-text-fill:           -static-color;
+}
+
+.active-text
+{
+  -fx-font-size:           14;
+  -fx-text-fill:           -active-color;
+}
+
+.transport-button
+{
+  -fx-background-color:    -button-color;
+  -fx-scale-shape:         false;
+}
+
+.transport-button:hover
+{
+  -fx-background-color:    -hover-color;
+  -fx-border-color:        -hover-color;
+}
+
+.transport-button:stopped,
+.transport-button:looping
+{
+  -fx-background-color:    -stopped-color;
+}
+
+.transport-button:playing
+{
+  -fx-background-color:    -playing-color;
+}
+
+#transport-button-prev     {-fx-shape:"M0,6 l 12,6 v -12 z";}
+#transport-button-rwnd     {-fx-shape:"M0,6 l 12,6 v -12 z M8,6 l 12,6 v -12 z";}
+#transport-button-fwrd     {-fx-shape:"M0,0 v 12,l 12,-6 z M8,0 v 12 l 12,-6 z";}
+#transport-button-next     {-fx-shape:"M0,0 v 12,l 12,-6 z";}
+#transport-button-rset     {-fx-shape:"M0,6 l 12,6 v -12 z M0,0 v 12 h 2 v -12 z";}
+#transport-button-stop     {-fx-shape:"M0,0 v 20 h 20 v -20 z";}
+#transport-button-play     {-fx-shape:"M0,0 v 20 l 16,-10 z";}
+#transport-button-loop
+{
+  -fx-scale-shape:         true;                           
+  -fx-shape:               "
+                           M485.65,84.294
+                           l-111.9-75.3
+                           c-6.1-4.1-14.3,0.3-14.3,7.6
+                           v40.7
+                           H40.65c-19.1,0-34.6,15.5-34.6,34.6
+                           v183.9h69.2
+                           v-149.2
+                           h284.1
+                           v40.8
+                           c0,7.4,8.2,11.7,14.3,7.6
+                           l111.9-75.4
+                           C491.05,95.994,491.05,87.994,485.65,84.294z
+
+                           M414.45,362.994
+                           h-284.1v-40.7
+                           c0-7.4-8.2-11.7-14.3-7.6
+                           l-112,75.3
+                           c-5.4,3.6-5.4,11.6,0,15.3
+                           l111.9,75.4
+                           c6.1,4.1,14.3-0.3,14.3-7.6
+                           v-40.8h318.7
+                           c19.1,0,34.6-15.5,34.6-34.6
+                           v-183.9h-69.2v149.2
+                           H414.45z
+                           ";
+}
+
+//****************************************************************************
+
+.spinner:focused,
+.spinner:contains-focus 
+{
+  -fx-background-color:    -panel-color;
+}
+
+.spinner > .text-field 
+{
+  -fx-background-color:    -panel-color;
+  -fx-background-radius:   0;
+  -fx-text-fill:           -active-color;
+  -fx-font-size:           14;
+  -fx-alignment:           center;
+}
+
+.spinner.arrows-on-right-horizontal .increment-arrow-button,
+.spinner.arrows-on-right-horizontal .decrement-arrow-button 
+{
+  -fx-background-color:    -panel-color;
+  -fx-background-radius:   0;
+}
+
+.spinner.arrows-on-right-horizontal .increment-arrow-button .increment-arrow,
+.spinner.arrows-on-right-horizontal .decrement-arrow-button .decrement-arrow
+{
+  -fx-scale-shape:        false;
+  -fx-background-color:   -button-color;
+}
+
+.spinner.arrows-on-right-horizontal .increment-arrow-button:hover .increment-arrow,
+.spinner.arrows-on-right-horizontal .decrement-arrow-button:hover .decrement-arrow
+{
+  -fx-background-color:   -hover-color;
+}
+
+.spinner.arrows-on-right-horizontal .increment-arrow-button .increment-arrow
+{
+  -fx-shape:              "M8,5
+                           v  4
+                           h  2 
+                           v -4
+                           h -2
+                           M4,9
+                           h  10
+                           v   2
+                           h -10
+                           v  -2
+                           M8,11
+                           v  4
+                           h  2 
+                           v -4
+                           h -2";
+}
+
+.spinner.arrows-on-right-horizontal .decrement-arrow-button .decrement-arrow
+{
+  -fx-shape:              "M4,10
+                           h  10
+                           v   2
+                           h -10
+                           v  -2";
+}
+
+//****************************************************************************
