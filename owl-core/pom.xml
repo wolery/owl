@@ -7,15 +7,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.wolery</groupId>
-    <artifactId>pom</artifactId>
+    <groupId>com.wolery.owl</groupId>
+    <artifactId>owl</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
-  <groupId>com.wolery.owl</groupId>
   <artifactId>owl-core</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>owl-core</name>
