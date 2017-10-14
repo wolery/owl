@@ -1,0 +1,19 @@
+#**************************** Copyright © Jonathon Bell. All rights reserved.
+#**
+#**
+#**  Version : $Header:$
+#**
+#**
+#**  Purpose : Specifies intentionally untracked files to ignore.
+#**
+#**
+#**  See Also: https://git-scm.com/docs/gitignore
+#**
+#**
+#*****************************************************************************
+
+target/
+doc/
+.*
+
+#*****************************************************************************
