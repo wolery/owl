@@ -15,8 +15,8 @@
   <artifactId>owl-core</artifactId>
   <packaging>jar</packaging>
 
-  <name>owl-core</name>
-  <description></description>
+  <name>Owl Core</name>
+  <description>Owl Core Library</description>
   <url>https://github.com/wolery/owl</url>
   <inceptionYear>September 2015</inceptionYear>
 
@@ -38,9 +38,8 @@
   </dependencies>
 
   <build>
-  
     <plugins>
-    
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

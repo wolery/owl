@@ -15,19 +15,23 @@
   <artifactId>owl-controls</artifactId>
   <packaging>jar</packaging>
 
-  <name>owl-controls</name>
-  <description></description>
+  <name>Owl Controls</name>
+  <description>Owl JavaFX Controls Library</description>
   <url>https://github.com/wolery/try</url>
   <inceptionYear>October 2017</inceptionYear>
 
   <dependencies>
     <dependency>
       <groupId>org.scala-lang</groupId>
-      <artifactId>scala-compiler</artifactId>
+      <artifactId>scala-library</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
+      <groupId>com.wolery.owl</groupId>
+      <artifactId>owl-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.wolery.owl</groupId>
+      <artifactId>owl-macros</artifactId>
     </dependency>
   </dependencies>
 

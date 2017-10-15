@@ -15,11 +15,11 @@
   <artifactId>owl-macros</artifactId>
   <packaging>jar</packaging>
 
-  <name>owl-macros</name>
-  <description></description>
+  <name>Owl Macros</name>
+  <description>Owl Macro Library</description>
   <url>https://github.com/wolery/try</url>
   <inceptionYear>October 2017</inceptionYear>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.scala-lang</groupId>
@@ -28,6 +28,10 @@
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.wolery.owl</groupId>
+      <artifactId>owl-core</artifactId>
     </dependency>
   </dependencies>
 
