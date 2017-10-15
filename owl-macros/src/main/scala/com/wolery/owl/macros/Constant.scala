@@ -21,36 +21,27 @@ package macros
 import scala.reflect.macros.blackbox.Context
 
 //****************************************************************************
-//⌥⌘⌃◆⇧
 
-object modifier_keys
+object constant
 {
-  val NONE  = 0
-  val SHIFT = 1
-  val CNTRL = 2
-  val ALT   = 4
-  val META  = 8
+  type Parser[α] = String ⇒ Either[α, String]
 
-  def parse(string: String): Either[ℕ,String] =
+  def apply[α: c.universe.Liftable](parse: Parser[α])(c: Context): c.Expr[α] =
   {
-    var keys                        = NONE
-    if (string.contains('⇧')) keys |= SHIFT
-    if (string.contains('⌃')) keys |= CNTRL
-    if (string.contains('⌥')) keys |= ALT
-    if (string.contains('◆')) keys |= META
-    Left(keys)
-  }
+    import c.universe._                                  //
 
-  implicit class StringContextEx(val s: StringContext) extends AnyVal
-  {
-    import scala.language.experimental.macros
+    val text: String = c.prefix.tree match               //
+    {
+      case Apply(_,Apply(_,Literal(Constant(s: String))::Nil)::Nil) ⇒ s
+    }
 
-    def keys(): ℕ = macro modifiers
-  }
-
-  def modifiers(c: Context)(): c.Expr[ℕ] =
-  {
-    constant(parse)(c)
+    c.Expr(q"${
+      parse(text) match                                  //
+      {
+        case Left (value) ⇒ value                        //
+        case Right(error) ⇒ c.abort(c.enclosingPosition, //
+                                    error)               //
+      }}")
   }
 }
 
