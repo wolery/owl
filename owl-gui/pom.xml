@@ -17,7 +17,7 @@
 
   <name>Owl Gui</name>
   <description>Owl JavaFX Application</description>
-  <url>https://github.com/wolery/try</url>
+  <url>https://github.com/wolery/owl</url>
   <inceptionYear>January 2016</inceptionYear>
   
   <dependencies>
@@ -28,12 +28,10 @@
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest_2.12</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.scalacheck</groupId>
       <artifactId>scalacheck_2.12</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>

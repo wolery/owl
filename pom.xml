@@ -23,6 +23,12 @@
   <url>https://github.com/wolery/owl</url>
   <inceptionYear>September 2015</inceptionYear>
 
+  <scm>
+    <url>https://github.com/wolery/owl</url>
+    <connection>scm:git:git://github.com/wolery/owl.git</connection>
+    <developerConnection>scm:git:git@github.com:wolery/owl.git</developerConnection>
+  </scm>
+
   <modules>
     <module>owl-core</module>
     <module>owl-macros</module>
