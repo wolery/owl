@@ -12,7 +12,8 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl.core
+package com.wolery.owl
+package core
 
 //****************************************************************************
 
@@ -25,7 +26,7 @@ import Frequency.{A4,A440}
  * Frequencies form a torsor for ℝ(0,+), the set of real numbers regarded as a
  * group under addition, via the group action:
  * {{{
- * 		f Hz + r  =  pow(2,r/12) * f Hz
+ *    f Hz + r  =  pow(2,r/12) * f Hz
  * }}}
  * for all ''f'' and ''r'' in ℝ. Each pair of frequencies ''(f,g)'' identifies
  * an ''interval'',  the unique real that  when applied to ''f'' transposes it
@@ -37,7 +38,7 @@ import Frequency.{A4,A440}
  * real number ''r'' representing a (possibly fractional) number of half-steps
  * to raise or lower the frequency ''f'' by. Notice, for example, that:
  * {{{
- * 		f + 12  =  2 * f
+ *    f + 12  =  2 * f
  * }}}
  * for any frequency ''f'', which corresponds to the transposition of ''f'' by
  * an interval of one octave.

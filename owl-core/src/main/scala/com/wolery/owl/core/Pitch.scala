@@ -12,7 +12,8 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl.core
+package com.wolery.owl
+package core
 
 //****************************************************************************
 
@@ -31,7 +32,7 @@ import utilities.subscript
  * they form a torsor for ℤ(0,+),  the set of integers viewed as a group under
  * addition, via the group action:
  * {{{
- * 		Pitch(p) + i  =  Pitch(p + i)
+ *    Pitch(p) + i  =  Pitch(p + i)
  * }}}
  * for all ''p'' and ''i'' in ℤ. Each pair of pitches ''(p, q)'' identifies an
  * ''interval'',  the unique integer that when  applied to ''p'' transposes it
@@ -52,7 +53,7 @@ final class Pitch private (val midi: Midi) extends AnyVal
    *
    * Notice that for any pitch ''p'' and and integer ''i'' we have that:
    * {{{
-   * 		(p + i).note  =  p.note + i
+   *    (p + i).note  =  p.note + i
    * }}}
    * In other words, `note` is an equivariant mapping from the intervallic set
    * of pitches to the transposing set of notes.
@@ -84,7 +85,7 @@ final class Pitch private (val midi: Midi) extends AnyVal
    *
    * @param  end  The bounding element of the resulting range.
    * @param  step The number of half-steps between consecutive elements of the
-   * 				 			resulting range.
+   *              resulting range.
    * @return The range `[this, this + step, ... , end)`
    */
   def until(end: Pitch,step: ℤ = +1): Seq[Pitch] = for (i ← midi until end.midi by step) yield Pitch(i)
@@ -96,7 +97,7 @@ final class Pitch private (val midi: Midi) extends AnyVal
    *
    * @param  end  The bounding element of the resulting range.
    * @param  step The number of half-steps between consecutive elements of the
-   * 				 			resulting range.
+   *              resulting range.
    * @return The range `[this, this + step, ... , end]`
    */
   def to(end: Pitch,step: ℤ = +1): Seq[Pitch] = for (i ← midi to end.midi by step) yield Pitch(i)

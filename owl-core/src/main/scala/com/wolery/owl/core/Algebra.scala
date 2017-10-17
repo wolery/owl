@@ -22,7 +22,8 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl.core
+package com.wolery.owl
+package core
 
 /**
  * Describes the operations that endow the type ''M'' with the structure of an

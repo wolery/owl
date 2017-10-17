@@ -12,7 +12,8 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl.core
+package com.wolery.owl
+package core
 
 /**
  * Represents a musical scale as a subset of the twelve notes, together with a

@@ -12,7 +12,8 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl.core
+package com.wolery.owl
+package core
 
 //****************************************************************************
 
@@ -37,7 +38,7 @@ object Shapes
    *
    * @param shape The shape for which we carry additional information.
    * @param names A ':' delimited list of names by which the shape is commonly
-   * 							known, beginning with its preferred name.
+   *              known, beginning with its preferred name.
    */
   final class Info (val shape: Shape,_names: String)
   {
@@ -80,16 +81,16 @@ object Shapes
    * modulo 12) that is either:
    *
    *  - ''absolute'': each interval is specified relative to the ultimate root
-   *  								of the scale (e.g. `[0,2,4,5,7,9,11]` = diatonic)
+   *                  of the scale (e.g. `[0,2,4,5,7,9,11]` = diatonic)
    *
    *  - ''relative'': each interval is specified relative to its predecessor
-   *  								in the sequence (e.g. `[2,2,1,2,2,2,1]` = diatonic)
+   *                  in the sequence (e.g. `[2,2,1,2,2,2,1]` = diatonic)
    *
-	 * @param names     A ':' delimited list of names by which the scale shape
-	 * 									is commonly known, beginning with the preferred name.
-	 * @param intervals A sequence of intervals that specifies the underlying
-	 * 									interval structure of the new scale shape.
-	 */
+   * @param names     A ':' delimited list of names by which the scale shape
+   *                  is commonly known, beginning with the preferred name.
+   * @param intervals A sequence of intervals that specifies the underlying
+   *                  interval structure of the new scale shape.
+   */
   private def f(names: String,intervals: ℤ*) =
   {
     assert(names.nonEmpty)                               // At least one name
@@ -119,9 +120,9 @@ object Shapes
    *
    * For example:
    * {{{
-   *		normalize("DorIan ♭2")   =  "dorian b2"
-   *		normalize("Locrian ♮2")  =  "locrian n2"
-   *		normalize("Ionian ♯5")   =  "ionian s5"
+   *    normalize("DorIan ♭2")   =  "dorian b2"
+   *    normalize("Locrian ♮2")  =  "locrian n2"
+   *    normalize("Ionian ♯5")   =  "ionian s5"
    * }}}
    * @param  name The name of a scale shape.
    * @return A simplified form of the name suitable for use as a key in a map.
