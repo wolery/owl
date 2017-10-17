@@ -37,9 +37,23 @@ class UtiltiesTest extends CoreSuite
     assert(superscript("ABC") == "ABC")
   }
 
+  test("isBetween")
+  {
+    assert((-8 to +8).map(isBetween(_,-2,+2)) == "FFFFFFTTTTTFFFFFF".map(_=='T'))
+  }
+
   test("isPowerOf2")
   {
-    assert((-8 to +8).map(isPowerOf2(_)) == "FFFFFFFFFTTFTFFFT".map(_=='T'))
+    assert((-8 to +8).map(isPowerOf2) == "FFFFFFFFFTTFTFFFT".map(_=='T'))
+  }
+
+  test("clamp")
+  {
+    assert(clamp(-1,-2,+1) == -1)
+    assert(clamp(-1,-1,+1) == -1)
+    assert(clamp(-1, 0,+1) ==  0)
+    assert(clamp(-1,+1,+1) == +1)
+    assert(clamp(-1,+2,+1) == +1)
   }
 
   test("mod")

@@ -96,26 +96,26 @@ object utilities
   def superscript(s: String): String = s.map(superscript)
 
   /**
-   * Returns true if the value ''n'' lies within the closed interval [''lo'',
+   * Returns true if the value ''v'' lies within the closed interval [''lo'',
    * ''hi''].
    *
    * By 'closed' we mean that the interval includes its bounds.
    *
-   * @param  n  The value to test for inclusion in the closed interval.
+   * @param  v  The value to test for inclusion in the closed interval.
    * @param  lo The lower bound of the closed interval.
    * @param  hi The upper bound of the closed interval.
    *
-   * @return True if ''n'' lies within the closed interval [''lo'',''hi''].
+   * @return True if ''v'' lies within the closed interval [''lo'',''hi''].
    */
-  def isBetween[α: Ordering](n: α,lo: α,hi: α): Bool =
+  def isBetween[α: Ordering](v: α,lo: α,hi: α): Bool =
   {
     assert(lo <= hi)                                     // Validate arguments
 
-    lo<=n && n<=hi                                       // Test for inclusion
+    lo<=v && v<=hi                                       // Test for inclusion
   }
 
   /**
-   * Returns true if the given integer is a natural power of 2.
+   * Returns true if the integer ''i'' is a natural power of 2.
    *
    * @param  i An arbitrary integer.
    *
@@ -124,6 +124,29 @@ object utilities
   def isPowerOf2(i: ℤ): Bool =
   {
     i > 0 && (i & (i-1)) == 0                            // Mask off with i-1
+  }
+
+  /**
+   * Clamp the given value to lie within the closed interval [''lo'', ''hi''].
+   *
+   * @param lo  The lower bound of the range to which ''v'' is clamped.
+   * @param v   The value to be clamped.
+   * @param hi  The upper bound of the range to which ''v'' is clamped.
+   *
+   * @return The value ''v'', clamped to lie within the closed interval
+   *         [''lo'', ''hi''].
+   */
+  def clamp[α: Ordering](lo: α,v: α,hi: α): α =
+  {
+    assert(lo <= hi);                                    // Validate arguments
+
+    if (v < lo)                                          // Less than 'lo'?
+      lo                                                 // ...clamp to 'lo'
+    else
+    if (v > hi)                                          // Greater than 'hi'?
+      hi                                                 // ...clamp to 'hi'
+    else                                                 // Within interval
+      v                                                  // ...nothing to do
   }
 
   /**

@@ -21,7 +21,7 @@ import javafx.beans.property.{ ObjectProperty, SimpleObjectProperty }
 import javafx.event.{ ActionEvent, EventHandler }
 import javafx.scene.control.TextArea
 import javafx.scene.input.{KeyCode,KeyEvent}
-import com.wolery.owl.utils.utilities._
+import core.utilities._
 import javafx.application.Platform.{ runLater ⇒ defer }
 import preferences.{eol}
 import com.wolery.owl.utils.Logging
