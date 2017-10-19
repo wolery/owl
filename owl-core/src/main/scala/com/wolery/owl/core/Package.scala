@@ -36,53 +36,6 @@ package object core
 
 //****************************************************************************
 
-  implicit final class BoolSyntax(a: Bool)
-  {
-    def iff    (b:  Bool): Bool       =  a == b
-    def implies(b: ⇒Bool): Bool       = !a || b
-  }
-
-  implicit final class PartialOrderingSyntax[S](s: S)(implicit α: PartialOrdering[S])
-  {
-    def <    (t: S): Bool             = α.lt(s,t)
-    def <=   (t: S): Bool             = α.lteq(s,t)
-    def >    (t: S): Bool             = α.gt(s,t)
-    def >=   (t: S): Bool             = α.gteq(s,t)
-    def equiv(t: S): Bool             = α.equiv(s,t)
-  }
-
-  implicit final class OrderingSyntax[S](s: S)(implicit α: Ordering[S])
-  {
-    def max(t: S): S                  = α.max(s,t)
-    def min(t: S): S                  = α.min(s,t)
-  }
-
-  def ∅[α]: Set[α]                    = Set[α]()
-
-  implicit final class ElementSyntax[α](e: α)
-  {
-    def ∈ (s: Set[α]): Bool           =  s.contains(e)
-    def ∉ (s: Set[α]): Bool           = !s.contains(e)
-  }
-
-  implicit final class SetSyntax[α](s: Set[α])
-  {
-    def \ (t: Set[α]): Set[α]         =  s.diff(t)
-    def ∪ (t: Set[α]): Set[α]         =  s.union(t)
-    def ∩ (t: Set[α]): Set[α]         =  s.intersect(t)
-    def ⊖ (t: Set[α]): Set[α]         =  s.union(t) diff s.intersect(t)
-    def ⊂ (t: Set[α]): Bool           =  s.subsetOf(t) && !t.subsetOf(s)
-    def ⊃ (t: Set[α]): Bool           =  t.subsetOf(s) && !s.subsetOf(t)
-    def ⊄ (t: Set[α]): Bool           = !s.subsetOf(t) ||  t.subsetOf(s)
-    def ⊅ (t: Set[α]): Bool           = !t.subsetOf(s) ||  s.subsetOf(t)
-    def ⊆ (t: Set[α]): Bool           =  s.subsetOf(t)
-    def ⊇ (t: Set[α]): Bool           =  t.subsetOf(s)
-    def ⊈ (t: Set[α]): Bool           = !s.subsetOf(t)
-    def ⊉ (t: Set[α]): Bool           = !t.subsetOf(s)
-    def ∋ (e: α)     : Bool           =  s.contains(e)
-    def ∌ (e: α)     : Bool           = !s.contains(e)
-  }
-
   implicit final class MonoidSyntax[M](m: M)(implicit α: Monoid[M])
   {
     def unary_+ : M                   = m

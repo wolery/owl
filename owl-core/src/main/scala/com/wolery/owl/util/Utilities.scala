@@ -15,8 +15,6 @@
 package com.wolery.owl
 package util
 
-import Ordering.Implicits._
-
 //****************************************************************************
 
 object utilities
