@@ -16,23 +16,17 @@ package com.wolery.owl
 
 //****************************************************************************
 
-import javax.sound.midi.Receiver
-import javax.sound.midi.MidiMessage
-
-//****************************************************************************
-
-trait Controller extends Receiver
+package object gui
 {
-  def instrument: Instrument
-  def view      : Pane
+  type Chord       = Seq[core.Pitch]
+  type Pitches     = Seq[core.Pitch]
+  type Pane        = javafx.scene.layout.Pane
+  type Tick        = Long
+  type Tempo       = ℝ // in BPM
+  type BPM         = ℝ
+  type Millisecond = ℕ
 
-  def send(message: MidiMessage): Unit =
-  {
-    send(message,-1)
-  }
-
-  def close()   : Unit =
-  {}
+  type fx          = javafx.fxml.FXML
 }
 
 //****************************************************************************

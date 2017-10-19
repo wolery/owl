@@ -12,7 +12,9 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl.utils
+package com.wolery.owl
+package gui
+package util
 
 import javafx.stage.Stage
 

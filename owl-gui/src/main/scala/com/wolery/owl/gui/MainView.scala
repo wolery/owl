@@ -13,19 +13,17 @@
 //****************************************************************************
 
 package com.wolery.owl
+package gui
 
 import com.wolery.owl.core._
-import com.wolery.owl.utils._
-
+import com.wolery.owl.util.Logging
 import javafx.event.ActionEvent
-import javafx.fxml.{ FXML ⇒ fx }
 import javafx.scene.Scene
 import javafx.scene.control.MenuBar
-import javafx.scene.layout.BorderPane
 import javafx.stage.{ Stage, StageStyle }
 import javax.sound.midi.{ MetaEventListener, MetaMessage }
-import javax.sound.midi.Receiver
-import com.wolery.owl.midi.messages
+import midi.Transport
+import util.load
 
 //****************************************************************************
 
@@ -72,7 +70,7 @@ object MainView
 {
   def apply(): Unit =
   {
-    val instrument = stringed.StringedInstrument(24,E(2),A(2),D(3),G(3),B(3),E(4))
+    val instrument = com.wolery.owl.gui.stringed.StringedInstrument(24,E(2),A(2),D(3),G(3),B(3),E(4))
     owl.sequencer.setSequence(load.sequence("time"))
     val transport = new Transport(owl.sequencer)
 

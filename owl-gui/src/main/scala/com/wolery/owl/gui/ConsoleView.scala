@@ -13,16 +13,14 @@
 //****************************************************************************
 
 package com.wolery.owl
+package gui
 
 import scala.tools.nsc.interpreter.Results.Incomplete
-
 import com.wolery.owl.control.{ Console, NewlineEvent }
-import com.wolery.owl.utils.load
+import com.wolery.owl.gui.util.load
 import preferences._
-import javafx.fxml.{FXML ⇒ fx}
 import javafx.scene.Scene
 import javafx.stage.Stage
-import javafx.scene.input.{KeyCode,KeyEvent,KeyCombination,KeyCodeCombination}
 
 //****************************************************************************
 

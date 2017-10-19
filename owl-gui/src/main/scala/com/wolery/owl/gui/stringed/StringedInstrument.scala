@@ -12,19 +12,16 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl.stringed
-
-//****************************************************************************
-
-import Math.{max,min}
+package com.wolery.owl
+package gui
+package stringed
 
 import com.wolery.owl._
 import com.wolery.owl.core._
 import com.wolery.owl.core.utilities._
-import com.wolery.owl.Instrument
-import com.wolery.owl.utils.load
-
-import javafx.scene.Parent
+import com.wolery.owl.gui.Instrument
+import com.wolery.owl.gui.util.load
+import com.wolery.owl.gui.stringed.StringedController
 
 //****************************************************************************
 

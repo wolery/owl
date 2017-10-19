@@ -13,10 +13,11 @@
 //****************************************************************************
 
 package com.wolery.owl
+package gui
 
-import java.io.{ PrintWriter, Writer }
+import java.io.{PrintWriter,Writer}
 
-import scala.tools.nsc.{ ConsoleWriter, Settings }
+import scala.tools.nsc.{ConsoleWriter,Settings}
 import scala.tools.nsc.interpreter.IMain
 
 //****************************************************************************

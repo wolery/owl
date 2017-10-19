@@ -12,17 +12,17 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl.stringed
+package com.wolery.owl
+package gui
+package stringed
 
-import com.wolery.owl.Controller
+import com.wolery.owl.gui.Controller
 import com.wolery.owl.core.Pitch
 import com.wolery.owl.core.Scale
 import com.wolery.owl.gui.Bead
 import com.wolery.owl.midi.messages._
-import com.wolery.owl.utils.implicits._
+import com.wolery.owl.gui.util.implicits._
 import com.wolery.owl._
-
-import javafx.application.Platform.{ runLater ⇒ defer }
 import javafx.fxml.{ FXML ⇒ fx }
 import javafx.scene.Node
 import javafx.scene.layout.ColumnConstraints

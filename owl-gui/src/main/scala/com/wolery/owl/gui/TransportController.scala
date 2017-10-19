@@ -13,6 +13,7 @@
 //****************************************************************************
 
 package com.wolery.owl
+package gui
 
 //****************************************************************************
 
@@ -21,19 +22,19 @@ import Math.max
 import com.wolery.owl.core._
 import com.wolery.owl.core.utilities._
 import com.wolery.owl.midi.messages._
-import com.wolery.owl.utils.implicits._
+import com.wolery.owl.gui.util.implicits._
 
 import javafx.animation.{ KeyFrame, Timeline }
 import javafx.application.Platform.{ runLater ⇒ defer }
 import javafx.css.PseudoClass.getPseudoClass
 import javafx.event.ActionEvent
-import javafx.fxml.{ FXML ⇒ fx }
 import javafx.scene.control.{ Label, Spinner, SpinnerValueFactory }
 import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory
 import javafx.scene.input.MouseEvent
 import javafx.util.Duration.millis
 import javafx.util.StringConverter
 import javax.sound.midi.{ MetaEventListener, MetaMessage }
+import midi.Transport
 
 //****************************************************************************
 

@@ -13,7 +13,7 @@
 //****************************************************************************
 
 package com.wolery.owl
-package utils
+package util
 
 import org.slf4j.{Logger,LoggerFactory}
 

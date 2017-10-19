@@ -15,7 +15,8 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl.midi
+package com.wolery.owl
+package midi
 
 //****************************************************************************
 
@@ -25,9 +26,8 @@ import scala.language.postfixOps
 
 import com.wolery.owl.core._
 import com.wolery.owl.core.utilities._
-import com.wolery.owl.Tempo
 
-import javax.sound.midi.{ MetaMessage, ShortMessage }
+import javax.sound.midi.{MetaMessage,ShortMessage}
 
 //****************************************************************************
 

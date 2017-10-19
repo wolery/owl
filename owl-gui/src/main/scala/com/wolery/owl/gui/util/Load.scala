@@ -15,12 +15,13 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl.utils
+package com.wolery.owl
+package gui
+package util
 
 //****************************************************************************
 
 import com.wolery.owl.ℕ
-
 import javafx.fxml.FXMLLoader
 import javafx.scene.layout.Pane
 import javafx.scene.text.Font

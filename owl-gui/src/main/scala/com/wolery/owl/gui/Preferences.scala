@@ -1,7 +1,7 @@
 //**************************** Copyright © Jonathon Bell. All rights reserved.
 //*
 //*
-//*  Version : $Header:$
+//*  Version : Header:
 //*
 //*
 //*  Purpose :
@@ -13,20 +13,19 @@
 //****************************************************************************
 
 package com.wolery.owl
+package gui
+
+import com.wolery.owl.util.Preferences
 
 //****************************************************************************
 
-import core._
-
-//****************************************************************************
-
-trait Instrument
+object preferences extends Preferences(owl.getClass)
 {
-  def lowest              : Pitch
-  def highest             : Pitch
-  def playable            : Seq[Pitch] = lowest to highest
+  val compiler = string("compiler","-deprecation -feature -Xlint")
+  val prompt1  = string("prompt1","owl> ")
+  val prompt2  = string("prompt2","   | ")
 
-  def view(fxml: String)  : (Pane,Controller)
+  val eol      = System.lineSeparator
 }
 
 //****************************************************************************

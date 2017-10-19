@@ -12,12 +12,13 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl.utils
+package com.wolery.owl
+package gui
+package util
 
 //****************************************************************************
 
 import scala.language.implicitConversions
-
 import javafx.concurrent.Task
 import javafx.event.Event
 import javafx.event.EventHandler

@@ -1,7 +1,7 @@
 //**************************** Copyright © Jonathon Bell. All rights reserved.
 //*
 //*
-//*  Version : $Header:$
+//*  Version : Header:
 //*
 //*
 //*  Purpose :
@@ -12,26 +12,15 @@
 //*
 //****************************************************************************
 
-package com.wolery
+package com.wolery.owl
 
 //****************************************************************************
 
-package object owl
+package object midi
 {
-  import core._
-
-  type ℕ         = core.ℕ
-  type ℤ         = core.ℤ
-  type ℝ         = core.ℝ
-  type Bool      = core.Bool
-  type Name      = core.Name
-  type Chord     = Seq[Pitch]
-  type Pitches   = Seq[Pitch]
-
-  type Pane      = javafx.scene.layout.Pane
-  type Tick      = Long
-  type Tempo     = ℝ // in BPM
-  type BPM       = ℝ
+  type Tick        = Long
+  type Tempo       = ℝ // in BPM
+  type BPM         = ℝ
   type Millisecond = ℕ
 }
 

@@ -13,24 +13,20 @@
 //****************************************************************************
 
 package com.wolery.owl
+package gui
 
 //****************************************************************************
 
-import com.wolery.owl.utils.implicits._
-import com.wolery.owl.utils.load
+import com.wolery.owl.gui.util.load
 
 import javafx.animation.FadeTransition
-import javafx.concurrent.Task
-import javafx.concurrent.WorkerStateEvent
+import javafx.concurrent.{Task,WorkerStateEvent}
 import javafx.event.ActionEvent
-import javafx.fxml.{ FXML ⇒ fx }
 import javafx.scene.Scene
-import javafx.scene.control.Label
-import javafx.scene.control.ProgressBar
+import javafx.scene.control.{Label,ProgressBar}
 import javafx.scene.paint.Color
-import javafx.stage.Stage
-import javafx.stage.StageStyle
-import javafx.util.Duration._
+import javafx.stage.{Stage,StageStyle}
+import javafx.util.Duration.seconds
 
 //****************************************************************************
 

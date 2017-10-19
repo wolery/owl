@@ -16,15 +16,14 @@ package com.wolery.owl
 package control
 
 import java.io.Writer
-import com.wolery.owl.utils.implicits.asRunnable
+import com.wolery.owl.gui.util.implicits.asRunnable
 import javafx.beans.property.{ ObjectProperty, SimpleObjectProperty }
 import javafx.event.{ ActionEvent, EventHandler }
 import javafx.scene.control.TextArea
 import javafx.scene.input.{KeyCode,KeyEvent}
 import core.utilities._
 import javafx.application.Platform.{ runLater ⇒ defer }
-import preferences.{eol}
-import com.wolery.owl.utils.Logging
+import util.Logging
 
 //****************************************************************************
 

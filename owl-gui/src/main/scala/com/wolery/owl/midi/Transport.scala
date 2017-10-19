@@ -13,6 +13,7 @@
 //****************************************************************************
 
 package com.wolery.owl
+package midi
 
 //****************************************************************************
 
@@ -22,7 +23,7 @@ import scala.collection.mutable.ArrayBuffer
 import com.wolery.owl.core._
 import com.wolery.owl.midi.messages._
 import com.wolery.owl.core.utilities._
-import com.wolery.owl.utils.Logging
+import com.wolery.owl.util.Logging
 
 import javax.sound.midi.MetaMessage
 import javax.sound.midi.Sequencer

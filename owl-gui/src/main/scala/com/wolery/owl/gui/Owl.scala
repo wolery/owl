@@ -13,19 +13,18 @@
 //****************************************************************************
 
 package com.wolery.owl
+package gui
 
 //****************************************************************************
 
-import com.wolery.owl.utils.implicits.asTask
-import com.wolery.owl.utils.load
-
+import com.wolery.owl.gui.util.implicits.asTask
 import javafx.concurrent.Task
 import javafx.stage.Stage
 import javax.sound.midi.{ MidiSystem, Sequencer, Synthesizer }
 
 //****************************************************************************
 
-object owl extends utils.Application
+object owl extends util.Application
 {
   val sequencer:   Sequencer   = MidiSystem.getSequencer()
   val synthesizer: Synthesizer = MidiSystem.getSynthesizer()
