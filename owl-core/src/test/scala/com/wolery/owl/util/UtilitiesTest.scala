@@ -13,7 +13,7 @@
 //****************************************************************************
 
 package com.wolery.owl
-package core
+package util
 
 //****************************************************************************
 
@@ -22,7 +22,7 @@ import Integer.bitCount
 
 //****************************************************************************
 
-class UtiltiesTest extends CoreSuite
+class UtiltiesTest extends UtilSuite
 {
   test("subscript")
   {
