@@ -16,14 +16,14 @@ package com.wolery.owl
 package control
 
 import java.io.Writer
-import com.wolery.owl.gui.util.implicits.asRunnable
-import javafx.beans.property.{ ObjectProperty, SimpleObjectProperty }
-import javafx.event.{ ActionEvent, EventHandler }
+
+import javafx.beans.property.{ObjectProperty,SimpleObjectProperty}
+import javafx.event.{ActionEvent, EventHandler}
 import javafx.scene.control.TextArea
-import javafx.scene.input.{KeyCode,KeyEvent}
-import core.utilities._
-import javafx.application.Platform.{ runLater ⇒ defer }
+import javafx.scene.input.{KeyCode, KeyEvent}
+
 import util.Logging
+import core.utilities.clamp
 
 //****************************************************************************
 
@@ -151,7 +151,7 @@ class Console extends TextArea with Logging
   def onKeyTypedFilter(e: KeyEvent): Unit =
   {
     log.debug("onKeyTypedFilter({})",e)
-    
+
     if (e.getModifiers == ALT)
     {
       e.consume
