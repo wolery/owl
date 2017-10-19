@@ -18,12 +18,7 @@ package com.wolery.owl
 
 package object core
 {
-  type ℕ                              = Int
-  type ℤ                              = Int
-  type ℝ                              = Double
-  type Bool                           = Boolean
   type Bits                           = Int
-  type Name                           = String
   type Midi                           = Int
   type Octave                         = Int
   type Maybe[α]                       = Option[α]
