@@ -16,7 +16,7 @@ package com.wolery.owl
 
 //****************************************************************************
 
-object preferences extends utils.Preferences(owl.getClass)
+object preferences extends util.Preferences(owl.getClass)
 {
   val compiler = string("compiler","-deprecation -feature -Xlint")
   val prompt1  = string("prompt1","owl> ")
