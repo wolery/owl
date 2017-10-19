@@ -47,52 +47,51 @@ package object owl
   type Name = String
 
 
-
-  implicit final class BoolSyntax(a: Bool)
+  implicit final class BoolEx(val a: Bool) extends AnyVal
   {
     def iff    (b:  Bool): Bool       =  a == b
     def implies(b: ⇒Bool): Bool       = !a || b
   }
 
-  implicit final class PartialOrderingSyntax[S](s: S)(implicit α: PartialOrdering[S])
+  implicit final class PartialOrderingEx[α](a: α)(implicit ε: PartialOrdering[α])
   {
-    def <    (t: S): Bool             = α.lt(s,t)
-    def <=   (t: S): Bool             = α.lteq(s,t)
-    def >    (t: S): Bool             = α.gt(s,t)
-    def >=   (t: S): Bool             = α.gteq(s,t)
-    def equiv(t: S): Bool             = α.equiv(s,t)
+    def <    (b: α): Bool             = ε.lt(a,b)
+    def <=   (b: α): Bool             = ε.lteq(a,b)
+    def >    (b: α): Bool             = ε.gt(a,b)
+    def >=   (b: α): Bool             = ε.gteq(a,b)
+    def equiv(b: α): Bool             = ε.equiv(a,b)
   }
 
-  implicit final class OrderingSyntax[S](s: S)(implicit α: Ordering[S])
+  implicit final class OrderingEx[α](a: α)(implicit ε: Ordering[α])
   {
-    def max(t: S): S                  = α.max(s,t)
-    def min(t: S): S                  = α.min(s,t)
+    def max(b: α): α                  = ε.max(a,b)
+    def min(b: α): α                  = ε.min(a,b)
   }
 
-  def ∅[α]: Set[α]                    = Set[α]()
+  final def ∅[α]: Set[α]              = Set[α]()
 
-  implicit final class ElementSyntax[α](e: α)
+  implicit final class ElementEx[α](val e: α) extends AnyVal
   {
     def ∈ (s: Set[α]): Bool           =  s.contains(e)
     def ∉ (s: Set[α]): Bool           = !s.contains(e)
   }
 
-  implicit final class SetSyntax[α](s: Set[α])
+  implicit final class SetEx[α](val a: Set[α]) extends AnyVal
   {
-    def \ (t: Set[α]): Set[α]         =  s.diff(t)
-    def ∪ (t: Set[α]): Set[α]         =  s.union(t)
-    def ∩ (t: Set[α]): Set[α]         =  s.intersect(t)
-    def ⊖ (t: Set[α]): Set[α]         =  s.union(t) diff s.intersect(t)
-    def ⊂ (t: Set[α]): Bool           =  s.subsetOf(t) && !t.subsetOf(s)
-    def ⊃ (t: Set[α]): Bool           =  t.subsetOf(s) && !s.subsetOf(t)
-    def ⊄ (t: Set[α]): Bool           = !s.subsetOf(t) ||  t.subsetOf(s)
-    def ⊅ (t: Set[α]): Bool           = !t.subsetOf(s) ||  s.subsetOf(t)
-    def ⊆ (t: Set[α]): Bool           =  s.subsetOf(t)
-    def ⊇ (t: Set[α]): Bool           =  t.subsetOf(s)
-    def ⊈ (t: Set[α]): Bool           = !s.subsetOf(t)
-    def ⊉ (t: Set[α]): Bool           = !t.subsetOf(s)
-    def ∋ (e: α)     : Bool           =  s.contains(e)
-    def ∌ (e: α)     : Bool           = !s.contains(e)
+    def \ (b: Set[α]): Set[α]         =  a.diff(b)
+    def ∪ (b: Set[α]): Set[α]         =  a.union(b)
+    def ∩ (b: Set[α]): Set[α]         =  a.intersect(b)
+    def ⊖ (b: Set[α]): Set[α]         =  a.union(b) diff a.intersect(b)
+    def ⊂ (b: Set[α]): Bool           =  a.subsetOf(b) && !b.subsetOf(a)
+    def ⊃ (b: Set[α]): Bool           =  b.subsetOf(a) && !a.subsetOf(b)
+    def ⊄ (b: Set[α]): Bool           = !a.subsetOf(b) ||  b.subsetOf(a)
+    def ⊅ (b: Set[α]): Bool           = !b.subsetOf(a) ||  a.subsetOf(b)
+    def ⊆ (b: Set[α]): Bool           =  a.subsetOf(b)
+    def ⊇ (b: Set[α]): Bool           =  b.subsetOf(a)
+    def ⊈ (b: Set[α]): Bool           = !a.subsetOf(b)
+    def ⊉ (b: Set[α]): Bool           = !b.subsetOf(a)
+    def ∋ (e: α)     : Bool           =  a.contains(e)
+    def ∌ (e: α)     : Bool           = !a.contains(e)
   }
 }
 
