@@ -25,7 +25,7 @@ import Math.{max}
 import scala.language.postfixOps
 
 import com.wolery.owl.core._
-import com.wolery.owl.core.utilities._
+import com.wolery.owl.util.utilities._
 
 import javax.sound.midi.{MetaMessage,ShortMessage}
 

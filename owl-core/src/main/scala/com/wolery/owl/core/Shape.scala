@@ -20,7 +20,7 @@ package core
 
 import java.lang.Integer.bitCount
 import scala.collection.immutable.BitSet
-import utilities.{mod,mod12,ror12}
+import util.utilities.{mod,mod12,ror12}
 import Shapes.info
 import Shape.bit
 

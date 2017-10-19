@@ -22,7 +22,7 @@ import scala.collection.mutable.ArrayBuffer
 
 import com.wolery.owl.core._
 import com.wolery.owl.midi.messages._
-import com.wolery.owl.core.utilities._
+import com.wolery.owl.util.utilities._
 import com.wolery.owl.util.Logging
 
 import javax.sound.midi.MetaMessage

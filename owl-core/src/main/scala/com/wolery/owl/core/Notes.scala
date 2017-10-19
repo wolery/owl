@@ -24,7 +24,7 @@ import scala.collection.mutable.Builder
 import scala.collection.generic.CanBuildFrom
 
 import Notes._
-import utilities.rol12
+import util.utilities.rol12
 
 //****************************************************************************
 

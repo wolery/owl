@@ -20,7 +20,7 @@ package gui
 import Math.max
 
 import com.wolery.owl.core._
-import com.wolery.owl.core.utilities._
+import com.wolery.owl.util.utilities._
 import com.wolery.owl.midi.messages._
 import com.wolery.owl.gui.util.implicits._
 

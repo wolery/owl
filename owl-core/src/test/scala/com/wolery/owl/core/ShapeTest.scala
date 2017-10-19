@@ -20,7 +20,7 @@ package core
 class ShapeTest extends CoreSuite
 {
   import arbitrary._                                     // For owl implicits
-  import utilities._                                     // For utilities
+  import util.utilities._                                // For utilities
 
   test("Shape is transposing")
   {

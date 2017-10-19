@@ -18,10 +18,9 @@ package stringed
 
 import com.wolery.owl._
 import com.wolery.owl.core._
-import com.wolery.owl.core.utilities._
+import com.wolery.owl.util.utilities._
 import com.wolery.owl.gui.Instrument
 import com.wolery.owl.gui.util.load
-import com.wolery.owl.gui.stringed.StringedController
 
 //****************************************************************************
 

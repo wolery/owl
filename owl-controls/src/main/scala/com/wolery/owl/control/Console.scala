@@ -23,7 +23,7 @@ import javafx.scene.control.TextArea
 import javafx.scene.input.{KeyCode, KeyEvent}
 
 import util.Logging
-import core.utilities.clamp
+import util.utilities.clamp
 
 //****************************************************************************
 

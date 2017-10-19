@@ -20,7 +20,7 @@ package core
 class ScaleTest extends CoreSuite
 {
   import arbitrary._                                     // For owl implicits
-  import utilities._                                     // For utilities
+  import util.utilities._                                // For utilities
 
   test("Scale is transposing")
   {

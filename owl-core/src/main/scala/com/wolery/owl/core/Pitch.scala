@@ -17,7 +17,7 @@ package core
 
 //****************************************************************************
 
-import utilities.subscript
+import util.utilities.subscript
 
 /**
  * Represents an even tempered pitch as the interval it forms with a standard
