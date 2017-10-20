@@ -4,18 +4,18 @@
 //*  Version : Header:
 //*
 //*
-//*  Purpose : Common definitions for use throughout the Owl project.
+//*  Purpose : Common definitions for use throughout Owl.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
-//*
-//*
-//****************************************************************************
+//*                                                                     0-0
+//*                                                                   (| v |)
+//**********************************************************************w*w***
 
 package com.wolery
 
 /**
- * Common definitions for use throughout the Owl project.
+ * Common definitions for use throughout Owl.
  *
  * @author Jonathon Bell
  */
@@ -60,46 +60,41 @@ package object owl
   /**
    * Extends partially ordered types with additional syntax.
    *
-   * Here the type polymorphic variable α ranges over types that are instances 
-   * of the PartialOrdering type class, allowing us to refer to its comparison 
-   * methods by their traditional symbolic names.
+   * Type variable α ranges over instances of the type class PartialOrdering.
    *
-   * @example assert((... < ...) && (... <= ...))
-   *
-   * @tparam α  An instance of the type class ''PartialOrdering''.
+   * @tparam α  An instance of the type class PartialOrdering.
    * @param  a  A value of type α.
    * @param  b  A value of type α.
    */
   implicit final class PartialOrderingEx[α](a: α)(implicit ε: PartialOrdering[α])
   {
-    def <    (b: α): Bool      = ε.lt(a,b)
-    def <=   (b: α): Bool      = ε.lteq(a,b)
-    def >    (b: α): Bool      = ε.gt(a,b)
-    def >=   (b: α): Bool      = ε.gteq(a,b)
-    def equiv(b: α): Bool      = ε.equiv(a,b)
+    def <    (b: α): Bool = ε.lt(a,b)
+    def <=   (b: α): Bool = ε.lteq(a,b)
+    def >    (b: α): Bool = ε.gt(a,b)
+    def >=   (b: α): Bool = ε.gteq(a,b)
+    def equiv(b: α): Bool = ε.equiv(a,b)
   }
 
   /**
    * Extends ordered types with additional syntax.
    *
-   * Here the type polymorphic variable α ranges over types that are instances 
-   * of the Ordering type class.
-   * 
-   * @tparam α  An instance of type class ''Ordering''.
+   * Type variable α ranges over instances of the type class Ordering.
+   *
+   * @tparam α  An instance of the type class Ordering.
    * @param  a  A value of type α.
    * @param  b  A value of type α.
    */
   implicit final
   class OrderingEx[α](a: α)(implicit ε: Ordering[α])
   {
-    def max(b: α): α           = ε.max(a,b)
-    def min(b: α): α           = ε.min(a,b)
+    def max(b: α): α = ε.max(a,b)
+    def min(b: α): α = ε.min(a,b)
   }
 
   /**
    * Extends type Set[ε] with additional syntax.
    *
-   * Adds syntactic extensions to give the methods of Set[ε] their traditional
+   * Allows us to refer to the methods of Set[ε] by their traditional symbolic
    * symbolic names:
    *
    *  - \  set difference
@@ -145,8 +140,8 @@ package object owl
   implicit final
   class ElementEx[ε](val e: ε) extends AnyVal
   {
-    def ∈ (s: Set[ε]): Bool    =  s.contains(e)
-    def ∉ (s: Set[ε]): Bool    = !s.contains(e)
+    def ∈ (s: Set[ε]): Bool =  s.contains(e)
+    def ∉ (s: Set[ε]): Bool = !s.contains(e)
   }
 
   /**
@@ -157,7 +152,7 @@ package object owl
    * @return An empty set of type Set[ε].
    * @see    [[SetEx]]
    */
-  def ∅[ε]: Set[ε]             = Set[ε]()
+  def ∅[ε]: Set[ε] = Set[ε]()
 }
 
 //****************************************************************************

@@ -8,9 +8,9 @@
 //*            distinguished element, the 'root' of the scale.
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
-//*
-//*
-//****************************************************************************
+//*                                                                     0-0
+//*                                                                   (| v |)
+//**********************************************************************w*w***
 
 package com.wolery.owl
 package core

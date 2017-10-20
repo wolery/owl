@@ -8,9 +8,9 @@
 //*            a standard reference pitch.
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
-//*
-//*
-//****************************************************************************
+//*                                                                     0-0
+//*                                                                   (| v |)
+//**********************************************************************w*w***
 
 package com.wolery.owl
 package core

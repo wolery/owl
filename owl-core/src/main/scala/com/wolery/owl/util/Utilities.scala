@@ -4,20 +4,23 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose : Miscellaneous utility functions for use within the core.
+//*  Purpose : Miscellaneous utility functions for use throughout Owl.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
-//*
-//*
-//****************************************************************************
+//*                                                                     0-0
+//*                                                                   (| v |)
+//**********************************************************************w*w***
 
 package com.wolery.owl
 package util
 
-//****************************************************************************
-
-object utilities
+/**
+ * Miscellaneous utility functions for use throughout Owl.
+ *
+ * @author Jonathon Bell
+ */
+trait utilities
 {
   /**
    * Returns a subscripted version of the given character ''c'' if such a code
@@ -257,5 +260,10 @@ object utilities
     0xFFF & (bits >>> i | bits << 12-i)                  // Rotate, then mask
   }
 }
+
+/**
+ * @author Jonathon Bell
+ */
+object utilities extends utilities
 
 //****************************************************************************
