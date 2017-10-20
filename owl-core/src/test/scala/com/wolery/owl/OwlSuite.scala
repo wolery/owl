@@ -26,7 +26,7 @@ import org.scalatest.prop.PropertyChecks
 trait OwlSuite extends FunSuite with PropertyChecks
 {
   /**
-   * Asserts the given boolean is false, and throws an exception if not.
+   * Asserts the given value is false, and throws an exception if not.
    *
    * @param bool  A boolean value to test.
    * @param clue  A value whose toString() method returns a message to include
@@ -41,7 +41,7 @@ trait OwlSuite extends FunSuite with PropertyChecks
   }
 
   /**
-   * Asserts the given boolean is false, and throws an exception if not.
+   * Asserts the given value is false, and throws an exception if not.
    *
    * This variant includes the given clue in the generated failure report.
    *

@@ -4,7 +4,7 @@
 //*  Version : Header:
 //*
 //*
-//*  Purpose : Common definitions for use throughout Owl.
+//*  Purpose : Common definitions used throughout Owl.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -15,7 +15,7 @@
 package com.wolery
 
 /**
- * Common definitions for use throughout Owl.
+ * Common definitions used throughout Owl.
  *
  * @author Jonathon Bell
  */
@@ -49,9 +49,11 @@ package object owl
   /**
    * Extends the boolean type with additional syntax.
    *
-   * @example assert((... iff ...) && (... implies ...))
+   * @param  a  A truth value.
+   * @param  b  A truth value.
    */
-  implicit final class BoolEx(val a: Bool) extends AnyVal
+  implicit final
+  class BoolEx(val a: Bool) extends AnyVal
   {
     def iff    (b:  Bool): Bool =  a == b
     def implies(b: ⇒Bool): Bool = !a || b
@@ -60,13 +62,14 @@ package object owl
   /**
    * Extends partially ordered types with additional syntax.
    *
-   * Type variable α ranges over instances of the type class PartialOrdering.
+   * The variable α ranges over instances of the type class PartialOrdering.
    *
    * @tparam α  An instance of the type class PartialOrdering.
    * @param  a  A value of type α.
    * @param  b  A value of type α.
    */
-  implicit final class PartialOrderingEx[α](a: α)(implicit ε: PartialOrdering[α])
+  implicit final
+  class PartialOrderingEx[α](a: α)(implicit ε: PartialOrdering[α])
   {
     def <    (b: α): Bool = ε.lt(a,b)
     def <=   (b: α): Bool = ε.lteq(a,b)
@@ -78,7 +81,7 @@ package object owl
   /**
    * Extends ordered types with additional syntax.
    *
-   * Type variable α ranges over instances of the type class Ordering.
+   * The variable α ranges over instances of the type class Ordering.
    *
    * @tparam α  An instance of the type class Ordering.
    * @param  a  A value of type α.
@@ -92,10 +95,10 @@ package object owl
   }
 
   /**
-   * Extends type Set[ε] with additional syntax.
+   * Extends the type Set[ε] with additional syntax.
    *
-   * Allows us to refer to the methods of Set[ε] by their traditional symbolic
-   * symbolic names:
+   * Enables us to refer to the methods of Set[ε] by their traditional symbolic
+   * names:
    *
    *  - \  set difference
    *  - ∪  set union
@@ -106,7 +109,7 @@ package object owl
    *  - ∈  set membership
    *  - ∅  the empty set
    *
-   * @tparam ε  The type of a set element.
+   * @tparam ε  The type of an element.
    * @param  s  A set of elements.
    * @param  t  A set of elements.
    * @param  e  A (candidate) set element.
@@ -131,9 +134,11 @@ package object owl
   }
 
   /**
-   * Extends type ε with additional methods.
+   * Extends the element type ε with additional syntax.
    *
-   * @tparam ε  The type of set element.
+   * @tparam ε  The type of an element.
+   * @param  s  A set of elements.
+   * @param  e  A (candidate) set element.
    *
    * @see    [[SetEx]]
    */
@@ -147,7 +152,7 @@ package object owl
   /**
    * The empty set.
    *
-   * @tparam ε  The type of set element.
+   * @tparam ε  The type of an element.
    *
    * @return An empty set of type Set[ε].
    * @see    [[SetEx]]
