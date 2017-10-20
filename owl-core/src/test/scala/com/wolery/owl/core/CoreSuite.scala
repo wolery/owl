@@ -19,12 +19,10 @@ package core
 
 import org.scalacheck._
 import org.scalacheck.Gen._
-import org.scalatest.FunSuite
-import org.scalatest.prop.PropertyChecks
 
 //****************************************************************************
 
-trait CoreSuite extends FunSuite with PropertyChecks
+trait CoreSuite extends OwlSuite
 {
   /**
    * Check that the monoid operation for ''M'' is commutative.

@@ -22,7 +22,7 @@ import Integer.bitCount
 
 //****************************************************************************
 
-class UtiltiesTest extends UtilSuite
+class UtiltiesTest extends OwlSuite
 {
   test("subscript")
   {

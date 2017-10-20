@@ -16,7 +16,7 @@ package com.wolery.owl
 
 //****************************************************************************
 
-class OwlTest extends util.UtilSuite
+class OwlTest extends OwlSuite
 {
   test("iff")
   {
