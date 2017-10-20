@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : A common trait for implementing unit tests.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -19,24 +19,42 @@ import org.scalatest.{Assertion,FunSuite}
 import org.scalatest.prop.PropertyChecks
 
 /**
- * TODO
+ * A common trait for implementing unit tests in project Owl.
+ *
+ * @author Jonathon Bell
  */
 trait OwlSuite extends FunSuite with PropertyChecks
 {
   /**
-   * TODO
+   * Asserts the given boolean is false, and throws an exception if not.
+   *
+   * @param bool  A boolean value to test.
+   * @param clue  A value whose toString() method returns a message to include
+   *              in the failure report.
+   *
+   * @throws TestFailedException   if ''bool'' is `false`.
+   * @throws NullArgumentException if ''clue'' is `null`.
    */
-  def reject(expression: Boolean)(implicit α: Prettifier,β: source.Position): Assertion =
+  def reject(bool: Boolean)(implicit α: Prettifier,β: source.Position): Assertion =
   {
-    assert(!expression)(α,β)
+    assert(!bool)(α,β)
   }
 
   /**
-   * TODO
+   * Asserts the given boolean is false, and throws an exception if not.
+   *
+   * This variant includes the given clue in the generated failure report.
+   *
+   * @param bool  A boolean value to test.
+   * @param clue  A value whose toString() method returns a message to include
+   *              in the failure report.
+   *
+   * @throws TestFailedException   if ''bool'' is `false`.
+   * @throws NullArgumentException if ''clue'' is `null`.
    */
-  def reject(expression: Boolean,clue: String)(implicit α: Prettifier,β: source.Position): Assertion =
+  def reject(bool: Boolean,clue: Any)(implicit α: Prettifier,β: source.Position): Assertion =
   {
-    assert(!expression,clue)(α,β)
+    assert(!bool,clue)(α,β)
   }
 }
 

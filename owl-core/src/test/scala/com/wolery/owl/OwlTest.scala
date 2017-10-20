@@ -48,7 +48,7 @@ class OwlTest extends OwlSuite
     assert('a'.max('b') == 'b',   "[3]")
   }
 
-  test("SetEx")
+  test("Set operators")
   {
     val s = Set(1,2,3)
     val t = Set(  2,3,4)

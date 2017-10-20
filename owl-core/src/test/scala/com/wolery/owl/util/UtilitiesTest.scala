@@ -26,16 +26,16 @@ class UtiltiesTest extends OwlSuite
 {
   test("subscript")
   {
-    assert(subscript("A(0123-+)Z") == "A₍₀₁₂₃₋₊₎Z")
-    assert(subscript("A C") == "A C")
-    assert(subscript("ABC") == "ABC")
+    assert(subscript("A(0123-+)Z") == "A₍₀₁₂₃₋₊₎Z",      "[1]")
+    assert(subscript("A C")        == "A C",             "[2]")
+    assert(subscript("ABC")        == "ABC",             "[3]")
   }
 
   test("superscript")
   {
-    assert(superscript("A(0123-+)Z") == "A⁽⁰¹²³⁻⁺⁾Z")
-    assert(superscript("A C") == "A C")
-    assert(superscript("ABC") == "ABC")
+    assert(superscript("A(0123-+)Z") == "A⁽⁰¹²³⁻⁺⁾Z",    "[1]")
+    assert(superscript("A C")        == "A C",           "[2]")
+    assert(superscript("ABC")        == "ABC",           "[3]")
   }
 
   test("isBetween")
@@ -50,11 +50,11 @@ class UtiltiesTest extends OwlSuite
 
   test("clamp")
   {
-    assert(clamp(-1,-2,+1) == -1)
-    assert(clamp(-1,-1,+1) == -1)
-    assert(clamp(-1, 0,+1) ==  0)
-    assert(clamp(-1,+1,+1) == +1)
-    assert(clamp(-1,+2,+1) == +1)
+    assert(clamp(-1,-2,+1) == -1,                        "[1]")
+    assert(clamp(-1,-1,+1) == -1,                        "[2]")
+    assert(clamp(-1, 0,+1) ==  0,                        "[3]")
+    assert(clamp(-1,+1,+1) == +1,                        "[4]")
+    assert(clamp(-1,+2,+1) == +1,                        "[5]")
   }
 
   test("mod")
