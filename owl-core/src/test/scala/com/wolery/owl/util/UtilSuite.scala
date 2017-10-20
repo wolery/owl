@@ -23,5 +23,9 @@ import org.scalatest.prop.PropertyChecks
 //****************************************************************************
 
 trait UtilSuite extends FunSuite with PropertyChecks
+{
+  def reject(e: Bool)           = assert(!e)
+  def reject(e: Bool,m: String) = assert(!e,m)
+}
 
 //****************************************************************************

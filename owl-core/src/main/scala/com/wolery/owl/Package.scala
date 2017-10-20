@@ -4,7 +4,7 @@
 //*  Version : Header:
 //*
 //*
-//*  Purpose : TODO
+//*  Purpose : Common definitions for use throughout the Owl project.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -15,44 +15,56 @@
 package com.wolery
 
 /**
- * TODO
+ * Common definitions for use throughout the Owl project.
  *
  * @author Jonathon Bell
  */
 package object owl
 {
   /**
-   * Represents a natural - that is, non negative - number as a 32 bit integer.
+   * A non-negative integer, represented as a native 32 bit signed integer.
    */
   type ℕ = Int
 
   /**
-   * Represents an integer as a signed 32 bit integer.
+   * An integer, represented as a native 32 bit signed integer.
    */
   type ℤ = Int
 
   /**
-   * Represents a real number a double precision IEEE floating point number.
+   * A real number, represented as a double precision floating point number.
    */
   type ℝ = Double
 
   /**
-   * Represents a boolean truth value as a native Scala boolean.
+   * A Boolean truth value, represented as a native boolean.
    */
   type Bool = Boolean
 
   /**
-   * Represents the name of some entity as a Scala string.
+   * A name for some entity, represented as a native string.
    */
   type Name = String
 
-
+  /**
+   * Extends type Bool with additional methods.
+   */
   implicit final class BoolEx(val a: Bool) extends AnyVal
   {
+    /**
+     * TODO
+     * 
+     * @param  b
+     * 
+     * @return a == b
+     */
     def iff    (b:  Bool): Bool       =  a == b
     def implies(b: ⇒Bool): Bool       = !a || b
   }
 
+  /**
+   * TO DO
+   */
   implicit final class PartialOrderingEx[α](a: α)(implicit ε: PartialOrdering[α])
   {
     def <    (b: α): Bool             = ε.lt(a,b)
