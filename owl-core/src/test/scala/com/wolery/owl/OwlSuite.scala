@@ -19,7 +19,7 @@ import org.scalatest.{Assertion,FunSuite}
 import org.scalatest.prop.PropertyChecks
 
 /**
- * A common trait for implementing unit tests in project Owl.
+ * A common trait for implementing unit tests.
  *
  * @author Jonathon Bell
  */

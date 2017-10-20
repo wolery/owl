@@ -17,7 +17,6 @@ package util
 
 //****************************************************************************
 
-import utilities._
 import Integer.bitCount
 
 //****************************************************************************
@@ -26,9 +25,9 @@ class UtiltiesTest extends OwlSuite
 {
   test("subscript")
   {
-    assert(subscript("A(0123-+)Z") == "A₍₀₁₂₃₋₊₎Z",      "[1]")
-    assert(subscript("A C")        == "A C",             "[2]")
-    assert(subscript("ABC")        == "ABC",             "[3]")
+    assert(subscript("A(0123-+)Z")   == "A₍₀₁₂₃₋₊₎Z",    "[1]")
+    assert(subscript("A C")          == "A C",           "[2]")
+    assert(subscript("ABC")          == "ABC",           "[3]")
   }
 
   test("superscript")
@@ -45,7 +44,7 @@ class UtiltiesTest extends OwlSuite
 
   test("isPowerOf2")
   {
-    assert((-8 to +8).map(isPowerOf2) == "FFFFFFFFFTTFTFFFT".map(_=='T'))
+    assert((-8 to +8).map(isPowerOf2)         == "FFFFFFFFFTTFTFFFT".map(_=='T'))
   }
 
   test("clamp")

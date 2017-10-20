@@ -37,7 +37,7 @@ package object owl
   type ℝ = Double
 
   /**
-   * A Boolean truth value, represented as a native boolean.
+   * A truth value, represented as a native boolean.
    */
   type Bool = Boolean
 
@@ -47,64 +47,117 @@ package object owl
   type Name = String
 
   /**
-   * Extends type Bool with additional methods.
+   * Extends the boolean type with additional syntax.
+   *
+   * @example assert((... iff ...) && (... implies ...))
    */
   implicit final class BoolEx(val a: Bool) extends AnyVal
   {
-    /**
-     * TODO
-     * 
-     * @param  b
-     * 
-     * @return a == b
-     */
-    def iff    (b:  Bool): Bool       =  a == b
-    def implies(b: ⇒Bool): Bool       = !a || b
+    def iff    (b:  Bool): Bool =  a == b
+    def implies(b: ⇒Bool): Bool = !a || b
   }
 
   /**
-   * TO DO
+   * Extends partially ordered types with additional syntax.
+   *
+   * Here the type polymorphic variable α ranges over types that are instances 
+   * of the PartialOrdering type class, allowing us to refer to its comparison 
+   * methods by their traditional symbolic names.
+   *
+   * @example assert((... < ...) && (... <= ...))
+   *
+   * @tparam α  An instance of the type class ''PartialOrdering''.
+   * @param  a  A value of type α.
+   * @param  b  A value of type α.
    */
   implicit final class PartialOrderingEx[α](a: α)(implicit ε: PartialOrdering[α])
   {
-    def <    (b: α): Bool             = ε.lt(a,b)
-    def <=   (b: α): Bool             = ε.lteq(a,b)
-    def >    (b: α): Bool             = ε.gt(a,b)
-    def >=   (b: α): Bool             = ε.gteq(a,b)
-    def equiv(b: α): Bool             = ε.equiv(a,b)
+    def <    (b: α): Bool      = ε.lt(a,b)
+    def <=   (b: α): Bool      = ε.lteq(a,b)
+    def >    (b: α): Bool      = ε.gt(a,b)
+    def >=   (b: α): Bool      = ε.gteq(a,b)
+    def equiv(b: α): Bool      = ε.equiv(a,b)
   }
 
-  implicit final class OrderingEx[α](a: α)(implicit ε: Ordering[α])
+  /**
+   * Extends ordered types with additional syntax.
+   *
+   * Here the type polymorphic variable α ranges over types that are instances 
+   * of the Ordering type class.
+   * 
+   * @tparam α  An instance of type class ''Ordering''.
+   * @param  a  A value of type α.
+   * @param  b  A value of type α.
+   */
+  implicit final
+  class OrderingEx[α](a: α)(implicit ε: Ordering[α])
   {
-    def max(b: α): α                  = ε.max(a,b)
-    def min(b: α): α                  = ε.min(a,b)
+    def max(b: α): α           = ε.max(a,b)
+    def min(b: α): α           = ε.min(a,b)
   }
 
-  final def ∅[α]: Set[α]              = Set[α]()
-
-  implicit final class ElementEx[α](val e: α) extends AnyVal
+  /**
+   * Extends type Set[ε] with additional syntax.
+   *
+   * Adds syntactic extensions to give the methods of Set[ε] their traditional
+   * symbolic names:
+   *
+   *  - \  set difference
+   *  - ∪  set union
+   *  - ∩  set intersection
+   *  - ⊖  symmetric difference
+   *  - ⊂  set inclusion (proper)
+   *  - ⊆  set inclusion
+   *  - ∈  set membership
+   *  - ∅  the empty set
+   *
+   * @tparam ε  The type of a set element.
+   * @param  s  A set of elements.
+   * @param  t  A set of elements.
+   * @param  e  A (candidate) set element.
+   */
+  implicit final
+  class SetEx[ε](val s: Set[ε]) extends AnyVal
   {
-    def ∈ (s: Set[α]): Bool           =  s.contains(e)
-    def ∉ (s: Set[α]): Bool           = !s.contains(e)
+    def \ (t: Set[ε]): Set[ε]  =  s.diff(t)
+    def ∪ (t: Set[ε]): Set[ε]  =  s.union(t)
+    def ∩ (t: Set[ε]): Set[ε]  =  s.intersect(t)
+    def ⊖ (t: Set[ε]): Set[ε]  =  s.union(t) diff s.intersect(t)
+    def ⊂ (t: Set[ε]): Bool    =  s.subsetOf(t) && !t.subsetOf(s)
+    def ⊃ (t: Set[ε]): Bool    =  t.subsetOf(s) && !s.subsetOf(t)
+    def ⊄ (t: Set[ε]): Bool    = !s.subsetOf(t) ||  t.subsetOf(s)
+    def ⊅ (t: Set[ε]): Bool    = !t.subsetOf(s) ||  s.subsetOf(t)
+    def ⊆ (t: Set[ε]): Bool    =  s.subsetOf(t)
+    def ⊇ (t: Set[ε]): Bool    =  t.subsetOf(s)
+    def ⊈ (t: Set[ε]): Bool    = !s.subsetOf(t)
+    def ⊉ (t: Set[ε]): Bool    = !t.subsetOf(s)
+    def ∋ (e: ε)     : Bool    =  s.contains(e)
+    def ∌ (e: ε)     : Bool    = !s.contains(e)
   }
 
-  implicit final class SetEx[α](val a: Set[α]) extends AnyVal
+  /**
+   * Extends type ε with additional methods.
+   *
+   * @tparam ε  The type of set element.
+   *
+   * @see    [[SetEx]]
+   */
+  implicit final
+  class ElementEx[ε](val e: ε) extends AnyVal
   {
-    def \ (b: Set[α]): Set[α]         =  a.diff(b)
-    def ∪ (b: Set[α]): Set[α]         =  a.union(b)
-    def ∩ (b: Set[α]): Set[α]         =  a.intersect(b)
-    def ⊖ (b: Set[α]): Set[α]         =  a.union(b) diff a.intersect(b)
-    def ⊂ (b: Set[α]): Bool           =  a.subsetOf(b) && !b.subsetOf(a)
-    def ⊃ (b: Set[α]): Bool           =  b.subsetOf(a) && !a.subsetOf(b)
-    def ⊄ (b: Set[α]): Bool           = !a.subsetOf(b) ||  b.subsetOf(a)
-    def ⊅ (b: Set[α]): Bool           = !b.subsetOf(a) ||  a.subsetOf(b)
-    def ⊆ (b: Set[α]): Bool           =  a.subsetOf(b)
-    def ⊇ (b: Set[α]): Bool           =  b.subsetOf(a)
-    def ⊈ (b: Set[α]): Bool           = !a.subsetOf(b)
-    def ⊉ (b: Set[α]): Bool           = !b.subsetOf(a)
-    def ∋ (e: α)     : Bool           =  a.contains(e)
-    def ∌ (e: α)     : Bool           = !a.contains(e)
+    def ∈ (s: Set[ε]): Bool    =  s.contains(e)
+    def ∉ (s: Set[ε]): Bool    = !s.contains(e)
   }
+
+  /**
+   * The empty set.
+   *
+   * @tparam ε  The type of set element.
+   *
+   * @return An empty set of type Set[ε].
+   * @see    [[SetEx]]
+   */
+  def ∅[ε]: Set[ε]             = Set[ε]()
 }
 
 //****************************************************************************
