@@ -14,6 +14,8 @@
 
 package com.wolery.owl
 
+//****************************************************************************
+
 import org.scalactic.{Prettifier,source}
 import org.scalatest.{Assertion,FunSuite}
 import org.scalatest.prop.PropertyChecks

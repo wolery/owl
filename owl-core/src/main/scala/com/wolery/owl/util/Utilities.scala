@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose : Miscellaneous utility functions for use throughout Owl.
+//*  Purpose : Miscellaneous utility functions used throughout Owl.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -16,7 +16,7 @@ package com.wolery.owl
 package util
 
 /**
- * Miscellaneous utility functions for use throughout Owl.
+ * Miscellaneous utility functions used throughout Owl.
  *
  * @author Jonathon Bell
  */
@@ -28,7 +28,7 @@ trait utilities
    *
    * Subscripted versions exist for the full set of Arabic numerals.
    *
-   * @param  c An arbitrary character.
+   * @param  c  An arbitrary character.
    *
    * @return The subscripted version of ''c'', if defined by Unicode, otherwise ''c''.
    * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts Unicode subscripts and superscripts (Wikipedia)]]
@@ -50,7 +50,7 @@ trait utilities
    *
    * Superscripted versions exist for the full set of Arabic numerals.
    *
-   * @param  c An arbitrary character.
+   * @param  c  An arbitrary character.
    *
    * @return The superscripted version of the character ''c'', if defined by Unicode, otherwise ''c''.
    * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts Unicode subscripts and superscripts (Wikipedia)]]
@@ -78,7 +78,7 @@ trait utilities
    *    subscript("A13")  =  "A₁₃"
    * }}}
    *
-   * @param  s A string of characters.
+   * @param  s  A string of characters.
    *
    * @return A superscripted version of the character string ''s''.
    */
@@ -105,9 +105,9 @@ trait utilities
    *
    * By 'closed' we mean that the interval includes its bounds.
    *
-   * @param  v  The value to test for inclusion in the closed interval.
-   * @param  lo The lower bound of the closed interval.
-   * @param  hi The upper bound of the closed interval.
+   * @param  v   The value to test for inclusion in the closed interval.
+   * @param  lo  The lower bound of the closed interval.
+   * @param  hi  The upper bound of the closed interval.
    *
    * @return True if ''v'' lies within the closed interval [''lo'',''hi''].
    */
@@ -121,7 +121,7 @@ trait utilities
   /**
    * Returns true if the integer ''i'' is a natural power of 2.
    *
-   * @param  i An arbitrary integer.
+   * @param  i  An arbitrary integer.
    *
    * @return True if the integer ''i'' is a natural power of 2.
    */
@@ -160,8 +160,8 @@ trait utilities
    * The result is the unique integer 0 ≤ ''r'' < ''n'' such that ''i'' =
    * ''n''⋅''q'' + ''r'' for some ''q'' in ℤ.
    *
-   * @param  i An integer.
-   * @param  n A positive integer.
+   * @param  i  An integer.
+   * @param  n  A positive integer.
    *
    * @return The non-negative remainder of ''i'' upon division by ''n''.
    * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation (Wikipedia)]]
@@ -182,7 +182,7 @@ trait utilities
    * The result is the unique integer 0 ≤ ''r'' < 12 such that ''i'' = 12⋅''q''
    * + ''r'' for some ''q'' in ℤ.
    *
-   * @param  i An integer.
+   * @param  i  An integer.
    *
    * @return The non-negative remainder of ''i'' upon division by 12.
    * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation (Wikipedia)]]
@@ -212,8 +212,8 @@ trait utilities
    *    rol12(0x800,-4) = 0x080
    * }}}
    *
-   * @param  bits A 12 bit integer.
-   * @param  by   The number of bit positions to rotate ''bits'' by.
+   * @param  bits  A 12 bit integer.
+   * @param  by    The number of bit positions to rotate ''bits'' by.
    *
    * @return The result of rotating ''bits'' left by ''by'' bits.
    * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift (Wikipedia)]]
@@ -245,8 +245,8 @@ trait utilities
    *    ror12(0x800,-4) = 0x008
    * }}}
    *
-   * @param  bits A 12 bit integer.
-   * @param  by   The number of bit positions to rotate ''bits'' by.
+   * @param  bits  A 12 bit integer.
+   * @param  by    The number of bit positions to rotate ''bits'' by.
    *
    * @return The result of rotating ''bits'' right by ''by'' bits.
    * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift (Wikipedia)]]
@@ -262,6 +262,8 @@ trait utilities
 }
 
 /**
+ * Miscellaneous utility functions used throughout Owl.
+ *
  * @author Jonathon Bell
  */
 object utilities extends utilities

@@ -43,7 +43,8 @@ import Frequency.{A4,A440}
  * for any frequency ''f'', which corresponds to the transposition of ''f'' by
  * an interval of one octave.
  *
- * @param Hz The underlying frequency in hertz.
+ * @param  Hz  The underlying frequency in hertz.
+ *
  * @see   [[https://en.wikipedia.org/wiki/Hertz Hertz (Wikipedia)]]
  * @see   [[https://en.wikipedia.org/wiki/Frequency Frequency (Wikipedia)]]
  */
@@ -65,7 +66,8 @@ final class Frequency private (val Hz: ℝ)
    * True if ''any'' is a frequency that sounds within one cent of a half-step
    * of this one.
    */
-  override def equals(any: Any) = any match
+  override
+  def equals(any: Any) = any match
   {
     case f: Frequency ⇒ close(f)
     case _            ⇒ false
@@ -74,13 +76,15 @@ final class Frequency private (val Hz: ℝ)
   /**
    * A formatted string representation of this frequency.
    */
-  override def toString: String = if (kHz >= 1) f"$kHz%.2fkHz" else f"$Hz%.2fHz"
+  override
+  def toString: String = if (kHz >= 1) f"$kHz%.2fkHz" else f"$Hz%.2fHz"
 
   /**
    * True if the given frequency is sounds within once cent of a half-step of
    * this one.
    */
-  private def close(that: Frequency): Bool = abs(this - that) < 1e-2
+  private
+  def close(that: Frequency): Bool = abs(this - that) < 1e-2
 }
 
 /**
@@ -105,7 +109,8 @@ object Frequency
    * Note that this behavior is not quite consistent with the implementation
    * of [[hashCode]] they currently inherit.
    */
-  implicit object ordering extends Ordering[Frequency]
+  implicit
+  object ordering extends Ordering[Frequency]
   {
     def compare(f: Frequency,g: Frequency)= if (f close g) 0 else f.Hz compare g.Hz
   }
@@ -113,7 +118,8 @@ object Frequency
   /**
    * Frequencies are acted upon by the reals via transposition in half-steps.
    */
-  implicit val torsor: Torsor[Frequency,ℝ]= new Torsor[Frequency,ℝ]
+  implicit
+  val torsor: Torsor[Frequency,ℝ]= new Torsor[Frequency,ℝ]
   {
      val zero                             = 0.0
      def negate(r: ℝ)                     = -r

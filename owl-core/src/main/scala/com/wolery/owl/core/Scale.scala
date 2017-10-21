@@ -19,10 +19,10 @@ package core
  * Represents a musical scale as a subset of the twelve notes, together with a
  * distinguished element, the ''root'' of the scale.
  *
- * @param root  The tonic center, or ''root'' note, of the scale.
- * @param shape The underlying interval structure, or ''shape'', of the scale.
+ * @param  root   The tonic center, or ''root'' note, of the scale.
+ * @param  shape  The underlying interval structure, or ''shape'', of the scale.
  *
- * @see [[https://en.wikipedia.org/wiki/Scale_(music) Scale (Wikipedia)]]
+ * @see   [[https://en.wikipedia.org/wiki/Scale_(music) Scale (Wikipedia)]]
  */
 final case class Scale (val root: Note,val shape: Shape)
 {

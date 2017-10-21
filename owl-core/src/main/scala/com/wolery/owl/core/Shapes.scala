@@ -36,9 +36,9 @@ object Shapes
    *  - the preferred name of the shape
    *  - other names by which the shape is commonly known
    *
-   * @param shape The shape for which we carry additional information.
-   * @param names A ':' delimited list of names by which the shape is commonly
-   *              known, beginning with its preferred name.
+   * @param  shape  The shape for which we carry additional information.
+   * @param  names  A ':' delimited list of names by which the shape is commonly
+   *                known, beginning with its preferred name.
    */
   final class Info (val shape: Shape,_names: String)
   {
@@ -60,7 +60,7 @@ object Shapes
    * Not every shape ''has'' such additional information - there are thousands
    * of them, after all - so we return the result in the Maybe monad.
    *
-   * @param name The name by which a scale shape is commonly known.
+   * @param  name  The name by which a scale shape is commonly known.
    */
   def info(name: Name): Maybe[Info] = byNames.get(normalize(name))
 
@@ -70,7 +70,7 @@ object Shapes
    * Not every shape ''has'' such additional information - there are thousands
    * of them, after all - so we return the result in the Maybe monad.
    *
-   * @param shape A scale shape.
+   * @param  shape  A scale shape.
    */
   def info(shape: Shape): Maybe[Info] = byShape.get(shape)
 
@@ -80,16 +80,16 @@ object Shapes
    * The new shape is specified via a sequence of intervals (that is, integers
    * modulo 12) that is either:
    *
-   *  - ''absolute'': each interval is specified relative to the ultimate root
-   *                  of the scale (e.g. `[0,2,4,5,7,9,11]` = diatonic)
+   *  - ''absolute'':   each interval is specified relative to the ultimate root
+   *                    of the scale (e.g. `[0,2,4,5,7,9,11]` = diatonic)
    *
-   *  - ''relative'': each interval is specified relative to its predecessor
-   *                  in the sequence (e.g. `[2,2,1,2,2,2,1]` = diatonic)
+   *  - ''relative'':   each interval is specified relative to its predecessor
+   *                    in the sequence (e.g. `[2,2,1,2,2,2,1]` = diatonic)
    *
-   * @param names     A ':' delimited list of names by which the scale shape
-   *                  is commonly known, beginning with the preferred name.
-   * @param intervals A sequence of intervals that specifies the underlying
-   *                  interval structure of the new scale shape.
+   * @param  names      A ':' delimited list of names by which the scale shape
+   *                    is commonly known, beginning with the preferred name.
+   * @param  intervals  A sequence of intervals that specifies the underlying
+   *                    interval structure of the new scale shape.
    */
   private def f(names: String,intervals: ℤ*) =
   {
@@ -124,7 +124,8 @@ object Shapes
    *    normalize("Locrian ♮2")  =  "locrian n2"
    *    normalize("Ionian ♯5")   =  "ionian s5"
    * }}}
-   * @param  name The name of a scale shape.
+   * @param   name  The name of a scale shape.
+   *
    * @return A simplified form of the name suitable for use as a key in a map.
    */
   private def normalize(name: Name): Name = name.map

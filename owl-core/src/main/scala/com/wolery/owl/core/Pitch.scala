@@ -40,7 +40,8 @@ import util.utilities.subscript
  * torsor coincides with the more familiar notion of musical interval -  hence
  * the name.
  *
- * @param midi The note number assigned to this pitch by the MIDI Tuning Standard.
+ * @param  midi  The note number assigned to this pitch by the MIDI Tuning Standard.
+ *
  * @see   [[https://en.wikipedia.org/wiki/Equal_temperament Equal temperament (Wikipedia)]]
  * @see   [[https://en.wikipedia.org/wiki/A440_(pitch_standard) A440 (pitch standard) (Wikipedia)]]
  * @see   [[https://en.wikipedia.org/wiki/MIDI_Tuning_Standard MIDI Tuning Standard (Wikipedia)]]
@@ -83,9 +84,10 @@ final class Pitch private (val midi: Midi) extends AnyVal
    * and skipping ''step''  half-steps between each consecutive element of the
    * resulting range.
    *
-   * @param  end  The bounding element of the resulting range.
-   * @param  step The number of half-steps between consecutive elements of the
-   *              resulting range.
+   * @param  end   The bounding element of the resulting range.
+   * @param  step  The number of half-steps between consecutive elements of the
+   *               resulting range.
+   *
    * @return The range `[this, this + step, ... , end)`
    */
   def until(end: Pitch,step: ℤ = +1): Seq[Pitch] = for (i ← midi until end.midi by step) yield Pitch(i)
@@ -95,9 +97,10 @@ final class Pitch private (val midi: Midi) extends AnyVal
    * and skipping ''step''  half-steps between each consecutive element of the
    * resulting range.
    *
-   * @param  end  The bounding element of the resulting range.
-   * @param  step The number of half-steps between consecutive elements of the
-   *              resulting range.
+   * @param  end   The bounding element of the resulting range.
+   * @param  step  The number of half-steps between consecutive elements of the
+   *               resulting range.
+   *
    * @return The range `[this, this + step, ... , end]`
    */
   def to(end: Pitch,step: ℤ = +1): Seq[Pitch] = for (i ← midi to end.midi by step) yield Pitch(i)

@@ -15,7 +15,11 @@
 package com.wolery.owl
 package util
 
+//****************************************************************************
+
 import java.util.prefs.{Preferences ⇒ JavaPreferences}
+
+//****************************************************************************
 
 trait Preference[α]
 {
@@ -31,6 +35,8 @@ trait Preference[α]
   override final
   def toString()        : String = s"Preference($name, $value)"
 }
+
+//****************************************************************************
 
 class Preferences(private val m_imp: JavaPreferences)
 {

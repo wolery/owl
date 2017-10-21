@@ -1,4 +1,3 @@
-
 //**************************** Copyright © Jonathon Bell. All rights reserved.
 //*
 //*
@@ -45,15 +44,15 @@ import Shape.bit
  * the 'first', 'second', 'third' and so on intervals of the shape - what are
  * sometimes referred to as its ''degrees''.
  *
- * @param set A subset of the integers [0, .. ,11] encoded as an integer whose
- *            ''i''-th bit is set if and only if scale instances of this shape
- *            include the note ''i'' half steps above their root.
+ * @param set  A subset of the integers [0, .. ,11] encoded as an integer whose
+ *             ''i''-th bit is set if and only if scale instances of this shape
+ *             include the note ''i'' half steps above their root.
  *
- * @param seq A sorted sequence of the intervals listed in ''set'', encoded as
- *            as an integer whose ''i''-th  nibble is the ''i''-th interval of
- *            the sequence.
+ * @param seq  A sorted sequence of the intervals listed in ''set'', encoded as
+ *             as an integer whose ''i''-th  nibble is the ''i''-th interval of
+ *             the sequence.
  *
- *  example   new Shape(0x555,0xA86420L)  ≡  Shape("whole tone")
+ * @example   new Shape(0x555,0xA86420L)  ≡  Shape("whole tone")
  */
 final class Shape private (set: Int,seq: Long) extends Serializable
 {
@@ -219,10 +218,10 @@ object Shape
    * Names are matched case insensitively, and the accidental characters ♭, ♮,
    * and ♯ match the Latin letters ''b'', ''n'', and ''s'' respectively.
    *
-   * @param   name A name by which the scale shape is commonly known.
+   * @param   name  A name by which the scale shape is commonly known.
    *
    * @return  The named shape, or `None` if ''name'' does not name an existing
-   *           scale shape.
+   *          scale shape.
    *
    * @example Shape("lydian")  ≡  Some(Shape(0,2,4,6,7,9,11))
    */
@@ -238,7 +237,7 @@ object Shape
    * expressions `Shape(Set(14))` and `Shape(Set(0,2))` both describe the same
    * scale shape.
    *
-   * @param   intervals A collection of intervals defining a scale shape.
+   * @param   intervals  A collection of intervals defining a scale shape.
    *
    * @return  The scale shape with the given interval structure.
    *
@@ -265,7 +264,7 @@ object Shape
    * expressions `Shape(14,3)` and `Shape(0,2,3)` both describe the same scale
    * shape.
    *
-   * @param   intervals A collection of intervals that define the scale shape.
+   * @param   intervals  A collection of intervals that define the scale shape.
    *
    * @return  The scale shape with the given interval structure.
    *
@@ -283,8 +282,8 @@ object Shape
    * Returns the singleton bitset that encodes the given inter
    * Reduces the given integer modulo 12 and encodes it as  Encodes an interval as a singleton bitset.
    *
-   * @param interval  An integer representing a number of half steps above the
-   *                  the root of the scale.
+   * @param  interval  An integer representing a number of half steps above the
+   *                   the root of the scale.
    *
    * @return The singleton interval bitset {''interval''}.
    */
@@ -302,9 +301,9 @@ object Shape
    * set to generate a sorted interval vector that it packs into a single long
    * integer and passes as the second parameter to the real Shape constructor.
    *
-   * @param   set  A subset of the integers [0, .. ,11], encoded as an integer
-   *           whose ''i''-th bit is set if and only if scale instances of this
-   *           shape include the note ''i'' half steps above their root.
+   * @param  set  A subset of the integers [0, .. ,11], encoded as an integer
+   *              whose ''i''-th bit is set if and only if scale instances of
+   *              this shape include the note ''i'' half steps above their root.
    *
    * @return  The scale shape with the given interval structure.
    */

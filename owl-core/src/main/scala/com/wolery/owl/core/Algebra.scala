@@ -38,6 +38,7 @@ package core
  * respectively. In other words, ''M'' is a semigroup with an identity element.
  *
  * @tparam M The underlying set on which the monoid operation acts.
+ *
  * @see    [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
  */
 trait Monoid[M]
@@ -70,6 +71,7 @@ trait Monoid[M]
  * element has an additive inverse.
  *
  * @tparam G The underlying set on which the group operation acts.
+ *
  * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics) Group (Wikipedia)]]
  */
 trait Group[G] extends Monoid[G]
@@ -92,8 +94,9 @@ trait Group[G] extends Monoid[G]
  * for all ''s'' in ''S'' and ''g'' in ''G'', where 0 and + denote the members
  * `zero` and `plus` respectively.
  *
- * @tparam G A group that acts upon the carrier set ''S'' via the mapping `apply`.
- * @tparam S A non-empty set acted upon by the group ''G'' via the mapping `apply`.
+ * @tparam G  A group that acts upon the carrier set ''S'' via the mapping `apply`.
+ * @tparam S  A non-empty set acted upon by the group ''G'' via the mapping `apply`.
+ *
  * @see    [[http://en.wikipedia.org/wiki/Group_action Group action (Wikipedia)]]
  */
 trait Action[S,G] extends Group[G]
@@ -130,8 +133,9 @@ trait Action[S,G] extends Group[G]
  * We say that ''S'' is a ''torsor'' for the group ''G'', or simply that ''S''
  * is a ''G-torsor''.
  *
- * @tparam G A group that acts regularly upon the carrier set ''S'' via the mapping `apply`.
- * @tparam S A non-empty set acted upon regularly by the group ''G'' via the mapping `apply`.
+ * @tparam G  A group that acts regularly upon the carrier set ''S'' via the mapping `apply`.
+ * @tparam S  A non-empty set acted upon regularly by the group ''G'' via the mapping `apply`.
+ *
  * @see    [[http://en.wikipedia.org/wiki/Principal_homogeneous_space Torsor (Wikipedia)]]
  * @see    [[http://math.ucr.edu/home/baez/torsors.html Torsors Made Easy (John Baez)]]
  */
@@ -159,7 +163,7 @@ trait Torsor[S,G] extends Action[S,G]
  * Notice that because ℤ is a unital ring, its action upon ''S'' is completely
  * determined by the mapping `apply(_,1)`.
  *
- * @tparam S A non-empty set acted upon by the integers via the mapping `apply`.
+ * @tparam S  A non-empty set acted upon by the integers via the mapping `apply`.
  */
 trait Transposing[S] extends Action[S,ℤ]
 {
@@ -187,9 +191,8 @@ trait Transposing[S] extends Action[S,ℤ]
  * ''interval'' - the unique integer that when applied to the first element of
  * the pair ''transposes'' it to the second.
  *
- * @tparam S A non-empty set acted upon regularly by the integers via the mapping `apply`.
+ * @tparam S  A non-empty set acted upon regularly by the integers via the mapping `apply`.
  */
 trait Intervallic[S] extends Torsor[S,ℤ] with Transposing[S]
-{}
 
 //****************************************************************************
