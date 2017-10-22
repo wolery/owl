@@ -33,9 +33,9 @@ import util._
 
 class Console extends TextArea with Logging
 {
-  private var m_home : ℕ = 0
-  private var m_saved: ℕ = 0
-  
+  private var m_home: ℕ = 0
+  private var m_save: ℕ = 0
+
   addEventHandler(KeyEvent.KEY_PRESSED,onKeyPressedHandler(_))
   addEventFilter (KeyEvent.KEY_TYPED,  onKeyTypedFilter   (_))
   addEventHandler(KeyEvent.KEY_TYPED,  onKeyTypedHandler  (_))
@@ -68,6 +68,7 @@ class Console extends TextArea with Logging
 
     super.appendText(text)
     m_home = getLength
+    m_save = m_home
   }
 
   override
@@ -94,50 +95,49 @@ class Console extends TextArea with Logging
     {
    // Cursor Movment:
 
-      case ('^, A     ) ⇒ home()
-      case ('^, E     ) ⇒ end()
-      case ('^, F     ) ⇒ forward()
-      case ('^, B     ) ⇒ backward()
-      case ('⌥, B     ) ⇒ previousWord()
-      case ('⌥, F     ) ⇒ nextWord()
-      case ('^, X     ) ⇒ toggleHome()
+      case ('^,A)           ⇒ home()
+      case ('^,E)           ⇒ end()
+      case ('^,F)           ⇒ forward()
+      case ('^,B)           ⇒ backward()
+      case ('⌥,B)           ⇒ previousWord()
+      case ('⌥,F)           ⇒ nextWord()
+      case ('^,X)           ⇒ toggleHome()
 
    // Editing:
 
-      case ('^, L     ) ⇒ clearLine()
-      case ('⌥, BACK_SPACE) ⇒ deletePreviousWord()
-      case ('⌥, D     ) ⇒ deleteNextWord()
-      case ('^, D     ) ⇒ deleteNextChar()
-      case ('^, H     ) ⇒ deletePreviousChar()
-      case ('^, W     ) ⇒ cutPreviousWord()
-      case ('^, K     ) ⇒ cutToEnd()
-      case ('^, U     ) ⇒ cutFromHome()
-      case ('⌥, T     ) ⇒ swapPreviousWord()
-      case ('^, T     ) ⇒ swapPreviousChars()
-      case ('⇧^,T     ) ⇒ swapPreviousWords()
-      case ('^, Y     ) ⇒ paste()
-    //case ('⌥, U     ) ⇒ println("⌥U") //
-      case ('⌥, L     ) ⇒ lowerToEndOfWord()
-      case ('⌥, C     ) ⇒ upperNextChar()
-      case ('⌥, R     ) ⇒ cancelEdit()
-      case ('⇧^, MINUS) ⇒ undo()
-      case ('_, TAB   ) ⇒ complete()
+      case ('^,L)           ⇒ clearLine()
+      case ('⌥,BACK_SPACE)  ⇒ deletePreviousWord()
+      case ('⌥,D)           ⇒ deleteNextWord()
+      case ('^,D)           ⇒ deleteNextChar()
+      case ('^,H)           ⇒ deletePreviousChar()
+      case ('^,W)           ⇒ cutPreviousWord()
+      case ('^,K)           ⇒ cutToEnd()
+      case ('^,U)           ⇒ cutFromHome()
+      case ('⌥,T)           ⇒ swapPreviousWord()
+      case ('^,T)           ⇒ swapPreviousChars()
+      case ('⇧^,T)          ⇒ swapPreviousWords()
+      case ('^,Y)           ⇒ paste()
+      case ('⌥,L)           ⇒ lowerToEndOfWord()
+      case ('⌥,C)           ⇒ upperNextChar()
+      case ('⌥,R)           ⇒ cancelEdit()
+      case ('⇧^,MINUS)      ⇒ undo()
+      case ('_,TAB)         ⇒ complete()
 
    // Command History:
 
-      case ('_, UP    ) ⇒ println("UP")
-      case ('_, DOWN  ) ⇒ println("DN")
-      case ('^, R     ) ⇒ println("^R")
-      case ('^, P     ) ⇒ println("^P")
-      case ('^, N     ) ⇒ println("^N")
-      case ('⌥, PERIOD) ⇒ println("⌥.")
-      case ('^, S     ) ⇒ println("^S")
-      case ('^, O     ) ⇒ println("^O")
-      case ('^, G     ) ⇒ println("^G")
+      case ('_,UP)          ⇒ println("UP")
+      case ('_,DOWN)        ⇒ println("DN")
+      case ('^,R)           ⇒ println("^R")
+      case ('^,P)           ⇒ println("^P")
+      case ('^,N)           ⇒ println("^N")
+      case ('⌥,PERIOD)      ⇒ println("⌥.")
+      case ('^,S)           ⇒ println("^S")
+      case ('^,O)           ⇒ println("^O")
+      case ('^,G)           ⇒ println("^G")
 
    // Anything Else...
 
-      case  _           ⇒ consumed = false
+      case  _                ⇒ consumed = false
     }
 
     if (consumed)
@@ -160,22 +160,14 @@ class Console extends TextArea with Logging
   {
     log.debug("onKeyTypedHandler({})",e)
 
-    (getModifiers(e),e.getCharacter) match
+    if (getModifiers(e)=='_ && e.getCharacter=="\r")
     {
-      case ('_,"\r") ⇒
-      {
-        getOnNewline.handle(new ActionEvent)
-        m_home = getLength
-        m_saved = m_home
-      }
-      case ('_,"\t") ⇒
-      {
-        getOnComplete.handle(new ActionEvent)
-        m_home = getLength
-        m_saved = m_home
-      }
-      case _ ⇒
+      getOnNewline.handle(new ActionEvent)
+      m_home  = getLength
+      m_save = m_home
     }
+
+    assert(isConsistent)
   }
 
   def buffer: String =
@@ -198,28 +190,27 @@ class Console extends TextArea with Logging
     }
   }
 
-  def onHistoryNext()     = {}
-  def onHistoryPrev()     = {}
-  def onClearScreen()     = {}
-  def onCharachterNext()  = {}
-  def onCharachterPrev()  = {}
-  def onWordNext()        = {}
-  def onWordPrev()        = {}
+//  def onHistoryNext()     = {}
+//  def onHistoryPrev()     = {}
+//  def onCharachterNext()  = {}
+//  def onCharachterPrev()  = {}
+//  def onWordNext()        = {}
+//  def onWordPrev()        = {}
 
   def toggleHome(): Unit =
   {
-    log.debug("goOtherEnd({})",m_saved)
+    log.debug("toggleHome({})",m_save)
 
     val c = getCaretPosition
 
     if (c > m_home)
     {
       selectRange(m_home,m_home)
-      m_saved = c
+      m_save = c
     }
     else
     {
-      selectRange(m_saved,m_saved)
+      selectRange(m_save,m_save)
     }
   }
 
@@ -228,11 +219,13 @@ class Console extends TextArea with Logging
     log.debug("clearLine()")
 
     deleteText(m_home,getLength)
-    m_saved = m_home
+    m_save = m_home
   }
 
   def deletePreviousWord(): Unit =
   {
+    log.debug("deletePreviousWord()")
+
     val e = getCaretPosition
     previousWord()
     val s = getCaretPosition
@@ -241,45 +234,60 @@ class Console extends TextArea with Logging
 
   def deleteNextWord(): Unit =
   {
+    log.debug("deleteNextWord()")
+
     val e = getCaretPosition
     nextWord()
     val s = getCaretPosition
     deleteText(s,e)
   }
-  
-  def complete(): Unit = 
+
+  def complete(): Unit =
   {
+    log.debug("onComplete()")
+
     getOnComplete.handle(new ActionEvent)
   }
 
-  def cutPreviousWord(): Unit = {}
-  def cutToEnd(): Unit = {}
-  def cutFromHome(): Unit = {}
+  def cutPreviousWord(): Unit =
+  {
+    log.debug("cutPreviousWord()")
 
-  def swapPreviousWord(): Unit = {}
+    selectPreviousWord()
+    cut()
+  }
+
+  def cutToEnd(): Unit =
+  {
+    log.debug("cutToEnd()")
+
+    selectRange(getCaretPosition,getLength)
+    cut()
+  }
+
+  def cutFromHome(): Unit       =
+  {
+    log.debug("cutFromHome()")
+
+    selectRange(m_home,getCaretPosition)
+    cut()
+  }
+
+  def swapPreviousWord(): Unit  = {}
   def swapPreviousWords(): Unit = {}
   def swapPreviousChars(): Unit = {}
-
-  def lowerToEndOfWord(): Unit = {}
-  def upperNextChar(): Unit = {}
-
-  private
-  def consistent(): Bool =
-  {
-    assert(isBetween(0,m_home,getLength))
-    assert(isBetween(m_home,m_saved,getLength))
-    true
-  }
+  def lowerToEndOfWord(): Unit  = {}
+  def upperNextChar(): Unit     = {}
 
   private
   def getModifiers(e: KeyEvent): Symbol =
-  {
+  {//⇧^⌥◆
     var                   s  = ""
     if (e.isShiftDown)    s += '⇧'
     if (e.isControlDown)  s += '^'
     if (e.isAltDown)      s += '⌥'
     if (e.isMetaDown)     s += '◆'
-    //⇧^⌥◆
+
     if (s.isEmpty()) '_ else Symbol(s)
   }
 
@@ -287,6 +295,14 @@ class Console extends TextArea with Logging
   def getDebugString(e: KeyEvent): String =
   {
     (getModifiers(e).toString + e.getCode).substring(1)
+  }
+
+  private
+  def isConsistent(): Bool =
+  {
+    //assert(isBetween(0,m_home,getLength))
+    //assert(isBetween(m_home,m_save,getLength))
+    true
   }
 }
 
