@@ -29,10 +29,6 @@
       <groupId>com.wolery.owl</groupId>
       <artifactId>owl-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.wolery.owl</groupId>
-      <artifactId>owl-macros</artifactId>
-    </dependency>
   </dependencies>
 
   <build>
