@@ -6,7 +6,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wolery.owl.gui.ConsoleView">
    <children>
-      <Console fx:id="m_cons" focusTraversable="false"  onNewline="#onNewline" prefHeight="403.0" prefWidth="600.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Console fx:id="m_cons" focusTraversable="false" onComplete="#onComplete" onNewline="#onNewline" prefHeight="403.0" prefWidth="600.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="DejaVu Sans Mono" size="10.0" />
          </font>

@@ -1,13 +1,16 @@
 //**************************** Copyright © Jonathon Bell. All rights reserved.
 //*
 //*
-//*  Version : Header:
+//*  Version : $Header:$
 //*
 //*
-//*  Purpose : $Header:$
+//*  Purpose : A command line console control implemented as TextArea.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
+//*
+//*
+//*  See Also: https://ss64.com/bash/syntax-keyboard.html
 //*                                                                     0-0
 //*                                                                   (| v |)
 //**********************************************************************w*w***
@@ -15,43 +18,44 @@
 package com.wolery.owl
 package control
 
+//****************************************************************************
+
 import java.io.Writer
 
 import javafx.beans.property.{ObjectProperty,SimpleObjectProperty}
-import javafx.event.{ActionEvent, EventHandler}
+import javafx.event.{ActionEvent,EventHandler}
 import javafx.scene.control.TextArea
-import javafx.scene.input.{KeyCode, KeyEvent}
+import javafx.scene.input.KeyEvent
 
-import util.Logging
-import util.utilities.clamp
-
-//****************************************************************************
-
-class NewlineEvent(val line: String) extends ActionEvent
+import util._
 
 //****************************************************************************
 
 class Console extends TextArea with Logging
 {
-  type Handler = EventHandler[NewlineEvent]
-
-  var m_buff: ℕ = 0
-
-  addEventFilter (KeyEvent.KEY_PRESSED,onKeyPressedFilter(_))
+  private var m_home : ℕ = 0
+  private var m_saved: ℕ = 0
+  
   addEventHandler(KeyEvent.KEY_PRESSED,onKeyPressedHandler(_))
-  addEventFilter (KeyEvent.KEY_TYPED,  onKeyTypedFilter(_))
-  addEventHandler(KeyEvent.KEY_TYPED,  onKeyTypedHandler(_))
+  addEventFilter (KeyEvent.KEY_TYPED,  onKeyTypedFilter   (_))
+  addEventHandler(KeyEvent.KEY_TYPED,  onKeyTypedHandler  (_))
 
-  def getOnNewline                  : Handler   = onNewlineProperty.get()
-  def setOnNewline(handler: Handler): Unit      = onNewlineProperty.set(handler)
+  type Handler = EventHandler[ActionEvent]
+
   val onNewlineProperty:ObjectProperty[Handler] = new SimpleObjectProperty(this,"onNewline")
+  def getOnNewline                              = onNewlineProperty.get
+  def setOnNewline(h: Handler)                  = onNewlineProperty.set(h)
+
+  val onCompleteProperty:ObjectProperty[Handler]= new SimpleObjectProperty(this,"onComplete")
+  def getOnComplete                             = onCompleteProperty.get
+  def setOnComplete(h: Handler)                 = onCompleteProperty.set(h)
 
   override
   def replaceText(start: ℕ,end: ℕ,text: String) =
   {
-  //log.debug("replaceText({})",text)
+    log.debug("replaceText({})",text)
 
-    if (start >= m_buff)
+    if (start >= m_home)
     {
       super.replaceText(start,end,text)
     }
@@ -60,10 +64,10 @@ class Console extends TextArea with Logging
   override
   def appendText(text: String) =
   {
-  //log.debug("appendText({})",text)
+    log.debug("appendText({})",text)
 
     super.appendText(text)
-    m_buff = getLength
+    m_home = getLength
   }
 
   override
@@ -72,79 +76,73 @@ class Console extends TextArea with Logging
     log.debug("selectRange({},{})",anchor,caret)
 
     val n = getLength
-    val a = clamp(m_buff,anchor,n)
-    val c = clamp(m_buff,caret, n)
+    val a = clamp(m_home,anchor,n)
+    val c = clamp(m_home,caret, n)
 
     super.selectRange(a,c)
   }
 
-  def onKeyPressedFilter(e: KeyEvent): Unit =
-  {
-  //log.debug("onKeyPressedFilter({})",e)
-  }
-
   def onKeyPressedHandler(e: KeyEvent): Unit =
   {
-  //log.debug("onKeyPressedHandler({})",e)
+    log.debug("onKeyPressedHandler({})",e)
 
-    (e.getCode,e.getModifiers) match
+    import javafx.scene.input.KeyCode._
+
+    var consumed = true;
+
+    (getModifiers(e),e.getCode) match
     {
    // Cursor Movment:
-      case (KeyCode.A,      CNTRL)      ⇒ println("^a")
-      case (KeyCode.E,      CNTRL)      ⇒ println("^e")
-      case (KeyCode.F,      CNTRL)      ⇒ println("^f")
-      case (KeyCode.B,      CNTRL)      ⇒ println("^b")
 
-      case (KeyCode.B,      ALT)        ⇒ println("⌥b")
-      case (KeyCode.F,      ALT)        ⇒ println("⌥f")
+      case ('^, A     ) ⇒ home()
+      case ('^, E     ) ⇒ end()
+      case ('^, F     ) ⇒ forward()
+      case ('^, B     ) ⇒ backward()
+      case ('⌥, B     ) ⇒ previousWord()
+      case ('⌥, F     ) ⇒ nextWord()
+      case ('^, X     ) ⇒ toggleHome()
 
    // Editing:
-      case (KeyCode.L,      CNTRL)      ⇒ println("^l")
 
-      case (KeyCode.DELETE, ALT)        ⇒ println("⌥⌫") //
-      case (KeyCode.D,      ALT)        ⇒ println("⌥d")
-
-      case (KeyCode.D,      CNTRL)      ⇒ println("^d")
-      case (KeyCode.H,      CNTRL)      ⇒ println("^h")
-
-      case (KeyCode.W,      CNTRL)      ⇒ println("^w")
-      case (KeyCode.K,      CNTRL)      ⇒ println("^k")
-      case (KeyCode.U,      CNTRL)      ⇒ println("^u")
-
-      case (KeyCode.T,      ALT)        ⇒ println("⌥t")
-      case (KeyCode.T,      CNTRL)      ⇒ println("^t")
-    //case (KeyCode.T,      ESC)        ⇒ println("esc-t")
-
-      case (KeyCode.Y,      CNTRL)      ⇒ println("^y")
-
-      case (KeyCode.U,      ALT)        ⇒ println("⌥u") //ß
-      case (KeyCode.L,      ALT)        ⇒ println("⌥l")
-      case (KeyCode.C,      ALT)        ⇒ println("⌥c")
-      case (KeyCode.R,      ALT)        ⇒ println("⌥r")
-
-      case (KeyCode.MINUS,  SHIFT|CNTRL)⇒ println("⇧^_") //
-
-      case (KeyCode.TAB,    NONE)       ⇒ println("TAB")  //
+      case ('^, L     ) ⇒ clearLine()
+      case ('⌥, BACK_SPACE) ⇒ deletePreviousWord()
+      case ('⌥, D     ) ⇒ deleteNextWord()
+      case ('^, D     ) ⇒ deleteNextChar()
+      case ('^, H     ) ⇒ deletePreviousChar()
+      case ('^, W     ) ⇒ cutPreviousWord()
+      case ('^, K     ) ⇒ cutToEnd()
+      case ('^, U     ) ⇒ cutFromHome()
+      case ('⌥, T     ) ⇒ swapPreviousWord()
+      case ('^, T     ) ⇒ swapPreviousChars()
+      case ('⇧^,T     ) ⇒ swapPreviousWords()
+      case ('^, Y     ) ⇒ paste()
+    //case ('⌥, U     ) ⇒ println("⌥U") //
+      case ('⌥, L     ) ⇒ lowerToEndOfWord()
+      case ('⌥, C     ) ⇒ upperNextChar()
+      case ('⌥, R     ) ⇒ cancelEdit()
+      case ('⇧^, MINUS) ⇒ undo()
+      case ('_, TAB   ) ⇒ complete()
 
    // Command History:
 
-      case (KeyCode.UP     ,NONE)       ⇒ println("UP") //
-      case (KeyCode.DOWN   ,NONE)       ⇒ println("DN") //
+      case ('_, UP    ) ⇒ println("UP")
+      case ('_, DOWN  ) ⇒ println("DN")
+      case ('^, R     ) ⇒ println("^R")
+      case ('^, P     ) ⇒ println("^P")
+      case ('^, N     ) ⇒ println("^N")
+      case ('⌥, PERIOD) ⇒ println("⌥.")
+      case ('^, S     ) ⇒ println("^S")
+      case ('^, O     ) ⇒ println("^O")
+      case ('^, G     ) ⇒ println("^G")
 
-      case (KeyCode.R,      CNTRL)      ⇒ println("^r")
-      case (KeyCode.P,      CNTRL)      ⇒ println("^p")
-      case (KeyCode.N,      CNTRL)      ⇒ println("^n")
-      case (KeyCode.PERIOD, ALT)        ⇒ println("⌥.")
-      case (KeyCode.S,      CNTRL)      ⇒ println("^s")
-      case (KeyCode.O,      CNTRL)      ⇒ println("^o")
-      case (KeyCode.G,      CNTRL)      ⇒ println("^g") //
+   // Anything Else...
 
-      case (KeyCode.X,      SHIFT|CNTRL|ALT) ⇒
+      case  _           ⇒ consumed = false
+    }
 
-        println(e)
-        println("⇧^⌥x")
-
-      case  _ ⇒ log.debug("onKeyPressedHandler({})",e)
+    if (consumed)
+    {
+      e.consume()
     }
   }
 
@@ -152,9 +150,9 @@ class Console extends TextArea with Logging
   {
     log.debug("onKeyTypedFilter({})",e)
 
-    if (e.getModifiers == ALT)
+    if (e.isAltDown)
     {
-      e.consume
+      e.consume()
     }
   }
 
@@ -162,27 +160,32 @@ class Console extends TextArea with Logging
   {
     log.debug("onKeyTypedHandler({})",e)
 
-    (e.getCharacter,e.getModifiers) match
+    (getModifiers(e),e.getCharacter) match
     {
-      case ("\r",NONE) ⇒
+      case ('_,"\r") ⇒
       {
-        val b = buffer
-        m_buff = getLength
-        onNewlineProperty.get.handle(new NewlineEvent(b))
+        getOnNewline.handle(new ActionEvent)
+        m_home = getLength
+        m_saved = m_home
       }
-//    case ("\t",NONE) ⇒
-      case  _ ⇒
+      case ('_,"\t") ⇒
+      {
+        getOnComplete.handle(new ActionEvent)
+        m_home = getLength
+        m_saved = m_home
+      }
+      case _ ⇒
     }
   }
 
   def buffer: String =
   {
-    getText.substring(m_buff)
+    getText.substring(m_home)
   }
 
   def buffer_=(text: String): Unit =
   {
-    replaceText(m_buff,getLength,text)
+    replaceText(m_home,getLength,text)
   }
 
   val writer = new Writer
@@ -195,23 +198,95 @@ class Console extends TextArea with Logging
     }
   }
 
-  val NONE : ℕ = 0
-  val SHIFT: ℕ = 1
-  val CNTRL: ℕ = 2
-  val ALT  : ℕ = 4
-//val META : ℕ = 8
+  def onHistoryNext()     = {}
+  def onHistoryPrev()     = {}
+  def onClearScreen()     = {}
+  def onCharachterNext()  = {}
+  def onCharachterPrev()  = {}
+  def onWordNext()        = {}
+  def onWordPrev()        = {}
 
-  implicit class KeyEventEx(e: KeyEvent)
+  def toggleHome(): Unit =
   {
-    def getModifiers: ℕ =
+    log.debug("goOtherEnd({})",m_saved)
+
+    val c = getCaretPosition
+
+    if (c > m_home)
     {
-      var                   m  = NONE
-      if (e.isShiftDown)    m |= SHIFT
-      if (e.isControlDown)  m |= CNTRL
-      if (e.isAltDown)      m |= ALT
-//    if (e.isMetaDown)     m |= META
-      m
+      selectRange(m_home,m_home)
+      m_saved = c
     }
+    else
+    {
+      selectRange(m_saved,m_saved)
+    }
+  }
+
+  def clearLine(): Unit =
+  {
+    log.debug("clearLine()")
+
+    deleteText(m_home,getLength)
+    m_saved = m_home
+  }
+
+  def deletePreviousWord(): Unit =
+  {
+    val e = getCaretPosition
+    previousWord()
+    val s = getCaretPosition
+    deleteText(s,e)
+  }
+
+  def deleteNextWord(): Unit =
+  {
+    val e = getCaretPosition
+    nextWord()
+    val s = getCaretPosition
+    deleteText(s,e)
+  }
+  
+  def complete(): Unit = 
+  {
+    getOnComplete.handle(new ActionEvent)
+  }
+
+  def cutPreviousWord(): Unit = {}
+  def cutToEnd(): Unit = {}
+  def cutFromHome(): Unit = {}
+
+  def swapPreviousWord(): Unit = {}
+  def swapPreviousWords(): Unit = {}
+  def swapPreviousChars(): Unit = {}
+
+  def lowerToEndOfWord(): Unit = {}
+  def upperNextChar(): Unit = {}
+
+  private
+  def consistent(): Bool =
+  {
+    assert(isBetween(0,m_home,getLength))
+    assert(isBetween(m_home,m_saved,getLength))
+    true
+  }
+
+  private
+  def getModifiers(e: KeyEvent): Symbol =
+  {
+    var                   s  = ""
+    if (e.isShiftDown)    s += '⇧'
+    if (e.isControlDown)  s += '^'
+    if (e.isAltDown)      s += '⌥'
+    if (e.isMetaDown)     s += '◆'
+    //⇧^⌥◆
+    if (s.isEmpty()) '_ else Symbol(s)
+  }
+
+  private
+  def getDebugString(e: KeyEvent): String =
+  {
+    (getModifiers(e).toString + e.getCode).substring(1)
   }
 }
 

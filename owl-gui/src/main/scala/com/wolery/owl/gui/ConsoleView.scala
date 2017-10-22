@@ -16,15 +16,19 @@ package com.wolery.owl
 package gui
 
 import scala.tools.nsc.interpreter.Results.Incomplete
-import com.wolery.owl.control.{ Console, NewlineEvent }
+
+import com.wolery.owl.control.Console
 import com.wolery.owl.gui.util.load
-import preferences._
+import com.wolery.owl.util.Logging
+
+import javafx.event.ActionEvent
 import javafx.scene.Scene
 import javafx.stage.Stage
+import preferences.{ prompt1, prompt2 }
 
 //****************************************************************************
 
-class ConsoleView
+class ConsoleView extends Logging
 {
  @fx
   var m_cons : Console = _
@@ -37,9 +41,11 @@ class ConsoleView
     m_cons.appendText(prompt1())
   }
 
-  def onNewline(e: NewlineEvent): Unit =
+  def onNewline(e: ActionEvent): Unit =
   {
-    m_buff += e.line.trim
+    log.info("onNewlinEvent({})",e)
+
+    m_buff += m_cons.buffer.trim
 
     if (m_buff.isEmpty)
     {
@@ -55,6 +61,11 @@ class ConsoleView
       m_cons.appendText(prompt1())
       m_buff = ""
     }
+  }
+
+  def onComplete(e: ActionEvent): Unit =
+  {
+    log.info("onCompleteEvent({})",e)
   }
 
   def onClose(): Unit =
