@@ -114,7 +114,7 @@ class Console extends TextArea with Logging
       case ('^,K)           ⇒ cutToEnd()
       case ('^,U)           ⇒ cutFromHome()
       case ('⌥,T)           ⇒ swapPreviousWord()
-      case ('^,T)           ⇒ swapPreviousChars()
+      case ('^,T)           ⇒ swapChars()
       case ('⇧^,T)          ⇒ swapPreviousWords()
       case ('^,Y)           ⇒ paste()
       case ('⌥,L)           ⇒ lowerToEndOfWord()
@@ -190,13 +190,6 @@ class Console extends TextArea with Logging
     }
   }
 
-//  def onHistoryNext()     = {}
-//  def onHistoryPrev()     = {}
-//  def onCharachterNext()  = {}
-//  def onCharachterPrev()  = {}
-//  def onWordNext()        = {}
-//  def onWordPrev()        = {}
-
   def toggleHome(): Unit =
   {
     log.debug("toggleHome({})",m_save)
@@ -216,7 +209,7 @@ class Console extends TextArea with Logging
 
   def clearLine(): Unit =
   {
-    log.debug("clearLine()")
+    log.debug("clearLine({},{})",m_home,getLength)
 
     deleteText(m_home,getLength)
     m_save = m_home
@@ -265,7 +258,7 @@ class Console extends TextArea with Logging
     cut()
   }
 
-  def cutFromHome(): Unit       =
+  def cutFromHome(): Unit =
   {
     log.debug("cutFromHome()")
 
@@ -273,11 +266,61 @@ class Console extends TextArea with Logging
     cut()
   }
 
-  def swapPreviousWord(): Unit  = {}
+  def swapPreviousWord():  Unit = {}
   def swapPreviousWords(): Unit = {}
-  def swapPreviousChars(): Unit = {}
-  def lowerToEndOfWord(): Unit  = {}
-  def upperNextChar(): Unit     = {}
+
+
+  def swapChars(): Unit =
+  {
+    log.debug("swapChars()")
+
+    var c = getCaretPosition
+    val e = getLength
+
+    if (m_home + 2 <= c)
+    {
+      if (c < e)
+      {
+        c -= 1
+      }
+      else
+      {
+        c -= 2
+      }
+
+      val s = getText(c,c+2)
+      val t = s"${s(1)}${s(0)}"
+
+      replaceText(c,c+2,t)
+    }
+  }
+
+  def lowerToEndOfWord(): Unit =
+  {
+    log.debug("lowerToEndOfWord()")
+
+    val c = getCaretPosition
+
+    if (c < getLength)
+    {
+      endOfNextWord()
+      val e = getCaretPosition
+      replaceText(c,e,getText(c,e).toLowerCase)
+    }
+  }
+
+  def upperNextChar(): Unit =
+  {
+    log.debug("upperNextChar()")
+
+    val c = getCaretPosition
+
+    if (c < getLength)
+    {
+      replaceText(c,c+1,getText(c,c+1).toUpperCase)
+      endOfNextWord()
+    }
+  }
 
   private
   def getModifiers(e: KeyEvent): Symbol =
