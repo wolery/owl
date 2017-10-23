@@ -117,7 +117,7 @@ class Console extends TextArea with Logging
       case ('^,T)           ⇒ swapChars()
       case ('⇧^,T)          ⇒ swapPreviousWords()
       case ('^,Y)           ⇒ paste()
-      case ('⌥,L)           ⇒ lowerToEndOfWord()
+      case ('⌥,L)           ⇒ lowerWord()
       case ('⌥,C)           ⇒ upperNextChar()
       case ('⌥,R)           ⇒ cancelEdit()
       case ('⇧^,MINUS)      ⇒ undo()
@@ -269,7 +269,6 @@ class Console extends TextArea with Logging
   def swapPreviousWord():  Unit = {}
   def swapPreviousWords(): Unit = {}
 
-
   def swapChars(): Unit =
   {
     log.debug("swapChars()")
@@ -295,9 +294,9 @@ class Console extends TextArea with Logging
     }
   }
 
-  def lowerToEndOfWord(): Unit =
+  def lowerWord(): Unit =
   {
-    log.debug("lowerToEndOfWord()")
+    log.debug("lowerWord()")
 
     val c = getCaretPosition
 
