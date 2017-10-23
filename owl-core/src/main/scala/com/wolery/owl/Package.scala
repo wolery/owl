@@ -97,7 +97,7 @@ package object owl
   /**
    * Extends the type Set[ε] with additional syntax.
    *
-   * Enables us to refer to the methods of Set[ε] by their traditional symbolic
+   * Allows us to refer to the methods of Set[ε] by their traditional symbolic
    * names:
    *
    *  - \  set difference
@@ -150,7 +150,7 @@ package object owl
   }
 
   /**
-   * The empty set.
+   * The polymorphic empty set.
    *
    * @tparam ε  The type of an element.
    *
