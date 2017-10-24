@@ -10,7 +10,7 @@
 //*  Comments: This file uses a tab size of 2 spaces.
 //*
 //*
-//*  See Also: https://ss64.com/bash/syntax-keyboard.html
+//*  See Also: https://ss64.com/osx/syntax-bashkeyboard.html
 //*                                                                     0-0
 //*                                                                   (| v |)
 //**********************************************************************w*w***
@@ -29,8 +29,9 @@ import javafx.scene.input.KeyEvent
 
 import util._
 
-//****************************************************************************
-
+/**
+ *  @author Jonathon Bell
+ */
 class Console extends TextArea with Logging
 {
   private var m_home: ℕ = 0
@@ -49,6 +50,26 @@ class Console extends TextArea with Logging
   val onCompleteProperty:ObjectProperty[Handler]= new SimpleObjectProperty(this,"onComplete")
   def getOnComplete                             = onCompleteProperty.get
   def setOnComplete(h: Handler)                 = onCompleteProperty.set(h)
+
+  def buffer: String =
+  {
+    getText.substring(m_home)
+  }
+
+  def buffer_=(text: String): Unit =
+  {
+    replaceText(m_home,getLength,text)
+  }
+
+  val writer: Writer = new Writer
+  {
+    def close: Unit = {}
+    def flush: Unit = {}
+    def write(array: Array[Char],offset: ℕ,length: ℕ): Unit =
+    {
+      appendText(new String(array.slice(offset,offset + length)))
+    }
+  }
 
   override
   def replaceText(start: ℕ,end: ℕ,text: String) =
@@ -83,69 +104,6 @@ class Console extends TextArea with Logging
     super.selectRange(a,c)
   }
 
-  def onKeyPressedHandler(e: KeyEvent): Unit =
-  {
-    log.debug("onKeyPressedHandler({})",e)
-
-    import javafx.scene.input.KeyCode._
-
-    var consumed = true;
-
-    (getModifiers(e),e.getCode) match
-    {
-   // Cursor Movment:
-
-      case ('^,A)           ⇒ home()
-      case ('^,E)           ⇒ end()
-      case ('^,F)           ⇒ forward()
-      case ('^,B)           ⇒ backward()
-      case ('⌥,B)           ⇒ previousWord()
-      case ('⌥,F)           ⇒ nextWord()
-      case ('^,X)           ⇒ toggleHome()
-
-   // Editing:
-
-      case ('^,L)           ⇒ clearLine()
-      case ('⌥,BACK_SPACE)  ⇒ deletePreviousWord()
-      case ('⌥,D)           ⇒ deleteNextWord()
-      case ('^,D)           ⇒ deleteNextChar()
-      case ('^,H)           ⇒ deletePreviousChar()
-      case ('^,W)           ⇒ cutPreviousWord()
-      case ('^,K)           ⇒ cutToEnd()
-      case ('^,U)           ⇒ cutFromHome()
-      case ('⌥,T)           ⇒ swapPreviousWord()
-      case ('^,T)           ⇒ swapChars()
-      case ('⇧^,T)          ⇒ swapPreviousWords()
-      case ('^,Y)           ⇒ paste()
-      case ('⌥,L)           ⇒ lowerWord()
-      case ('⌥,C)           ⇒ upperNextChar()
-      case ('⌥,R)           ⇒ cancelEdit()
-      case ('⇧^,MINUS)      ⇒ undo()
-      case ('_,TAB)         ⇒ complete()
-
-   // Command History:
-
-      case ('_,UP)          ⇒ println("UP")
-      case ('_,DOWN)        ⇒ println("DN")
-      case ('^,R)           ⇒ println("^R")
-      case ('^,P)           ⇒ println("^P")
-      case ('^,N)           ⇒ println("^N")
-      case ('⌥,PERIOD)      ⇒ println("⌥.")
-      case ('^,S)           ⇒ println("^S")
-      case ('^,O)           ⇒ println("^O")
-      case ('^,G)           ⇒ println("^G")
-
-   // Anything Else...
-
-      case  _                ⇒ consumed = false
-    }
-
-    if (consumed)
-    {
-      e.consume()
-    }
-  }
-
   def onKeyTypedFilter(e: KeyEvent): Unit =
   {
     log.debug("onKeyTypedFilter({})",e)
@@ -163,30 +121,107 @@ class Console extends TextArea with Logging
     if (getModifiers(e)=='_ && e.getCharacter=="\r")
     {
       getOnNewline.handle(new ActionEvent)
-      m_home  = getLength
+      m_home = getLength
       m_save = m_home
     }
 
     assert(isConsistent)
   }
 
-  def buffer: String =
+  def onKeyPressedHandler(e: KeyEvent): Unit =
   {
-    getText.substring(m_home)
-  }
+    log.debug("onKeyPressedHandler({})",e)
 
-  def buffer_=(text: String): Unit =
-  {
-    replaceText(m_home,getLength,text)
-  }
+    import javafx.scene.input.KeyCode._
 
-  val writer = new Writer
-  {
-    def close: Unit = {}
-    def flush: Unit = {}
-    def write(array: Array[Char],offset: ℕ,length: ℕ): Unit =
+    var consumed = true;
+
+    (getModifiers(e),e.getCode) match
     {
-      appendText(new String(array.slice(offset,offset + length)))
+   // Cursor Movement:
+
+      case ('^,A)           ⇒ home()
+      case ('^,E)           ⇒ end()
+      case ('^,F)           ⇒ forward()
+      case ('^,B)           ⇒ backward()
+      case ('⌥,F)           ⇒ endOfNextWord()            // And ⌥RIGHT on OS X
+      case ('⌥,B)           ⇒ previousWord()             // And ⌥LEFT  on OS X
+      case ('^,X)           ⇒ toggleHome()
+
+   // Editing:
+
+      case ('^,L)           ⇒ notYetImplemented("^L")    // clear screen
+
+      case ('⌥,BACK_SPACE)  ⇒ deletePreviousWord()
+      case ('⌥,D)           ⇒ deleteNextWord()
+      case ('^,D)           ⇒ deleteNextChar()
+      case ('^,H)           ⇒ deletePreviousChar()
+      case ('^,W)           ⇒ cutPreviousWord()
+      case ('^,K)           ⇒ cutToEnd()
+      case ('^,U)           ⇒ cutToHome()
+      case ('⌥,T)           ⇒ notYetImplemented("⌥T")    // swapWord()
+      case ('^,T)           ⇒ swapChars()
+      case ('^,Y)           ⇒ paste()
+      case ('⌥,U)           ⇒ upperWord()                // unreachable on OSX
+      case ('⌥,L)           ⇒ lowerWord()
+      case ('⌥,C)           ⇒ upperChar()
+      case ('⌥,R)           ⇒ cancelEdit()
+      case ('⇧^,MINUS)      ⇒ undo()
+
+      case ('_,TAB)         ⇒ complete()
+
+   // Command History:
+
+      case ('_,UP)          ⇒ notYetImplemented("UP")//previousHIstory
+      case ('_,DOWN)        ⇒ notYetImplemented("DN")//nextHistory
+      case ('^,R)           ⇒ notYetImplemented("^R")//reverseSearchHostory
+      case ('^,P)           ⇒ notYetImplemented("^P")//previousHistory
+      case ('^,N)           ⇒ notYetImplemented("^N")//nextHistory
+      case ('^,S)           ⇒ notYetImplemented("^S")//go back to next most recent comand
+      case ('^,O)           ⇒ notYetImplemented("^O")//execute command found by ^r or ^s
+      case ('^,G)           ⇒ notYetImplemented("^G")//escape history  searching mode
+      case ('⌥,PERIOD)      ⇒ notYetImplemented("⌥.")//last argument of previous command
+
+   // Anything Else...
+
+      case  _               ⇒ consumed = false
+    }
+
+    if (consumed)
+    {
+      e.consume()
+    }
+  }
+
+  override
+  def home(): Unit =
+  {
+    log.debug("home()")
+
+    m_save = m_home
+
+    positionCaret(m_home)
+  }
+
+  override
+  def forward(): Unit =
+  {
+    log.debug("forward()")
+
+    when (getCaretPosition < getLength)
+    {
+      super.forward()
+    }
+  }
+
+  override
+  def backward(): Unit =
+  {
+    log.debug("backward()")
+
+    when (m_home < getCaretPosition)
+    {
+      super.backward()
     }
   }
 
@@ -196,58 +231,62 @@ class Console extends TextArea with Logging
 
     val c = getCaretPosition
 
-    if (c > m_home)
+    if (m_home < c)
     {
-      selectRange(m_home,m_home)
       m_save = c
+      positionCaret(m_home)
     }
     else
     {
-      selectRange(m_save,m_save)
+      positionCaret(m_save)
     }
-  }
-
-  def clearLine(): Unit =
-  {
-    log.debug("clearLine({},{})",m_home,getLength)
-
-    deleteText(m_home,getLength)
-    m_save = m_home
   }
 
   def deletePreviousWord(): Unit =
   {
     log.debug("deletePreviousWord()")
 
-    val e = getCaretPosition
+    val c = getCaretPosition
     previousWord()
-    val s = getCaretPosition
-    deleteText(s,e)
+    deleteText(getCaretPosition,c)
   }
 
   def deleteNextWord(): Unit =
   {
     log.debug("deleteNextWord()")
 
-    val e = getCaretPosition
-    nextWord()
-    val s = getCaretPosition
-    deleteText(s,e)
+    val c = getCaretPosition
+    endOfNextWord()
+    deleteText(c,getCaretPosition)
   }
 
-  def complete(): Unit =
+  override
+  def deleteNextChar(): Bool =
   {
-    log.debug("onComplete()")
+    log.debug("deleteNextChar()")
 
-    getOnComplete.handle(new ActionEvent)
+    when (super.deleteNextChar())
+    {}
+  }
+
+  override
+  def deletePreviousChar(): Bool =
+  {
+    log.debug("deletePreviousChar()")
+
+    when (super.deletePreviousChar())
+    {}
   }
 
   def cutPreviousWord(): Unit =
   {
     log.debug("cutPreviousWord()")
 
-    selectPreviousWord()
-    cut()
+    when (m_home > getCaretPosition)
+    {
+      selectPreviousWord()
+      cut()
+    }
   }
 
   def cutToEnd(): Unit =
@@ -258,16 +297,18 @@ class Console extends TextArea with Logging
     cut()
   }
 
-  def cutFromHome(): Unit =
+  def cutToHome(): Unit =
   {
-    log.debug("cutFromHome()")
+    log.debug("cutToHome()")
 
     selectRange(m_home,getCaretPosition)
     cut()
   }
 
-  def swapPreviousWord():  Unit = {}
-  def swapPreviousWords(): Unit = {}
+  def swapWord():  Unit =
+  {
+    log.debug("swapWord()")
+  }
 
   def swapChars(): Unit =
   {
@@ -276,7 +317,7 @@ class Console extends TextArea with Logging
     var c = getCaretPosition
     val e = getLength
 
-    if (m_home + 2 <= c)
+    when (m_home + 2 <= c)
     {
       if (c < e)
       {
@@ -294,6 +335,20 @@ class Console extends TextArea with Logging
     }
   }
 
+  def upperWord(): Unit =
+  {
+    log.debug("upperWord()")
+
+    val c = getCaretPosition
+
+    if (c < getLength)
+    {
+      endOfNextWord()
+      val e = getCaretPosition
+      replaceText(c,e,getText(c,e).toUpperCase)
+    }
+  }
+
   def lowerWord(): Unit =
   {
     log.debug("lowerWord()")
@@ -308,7 +363,7 @@ class Console extends TextArea with Logging
     }
   }
 
-  def upperNextChar(): Unit =
+  def upperChar(): Unit =
   {
     log.debug("upperNextChar()")
 
@@ -319,6 +374,43 @@ class Console extends TextArea with Logging
       replaceText(c,c+1,getText(c,c+1).toUpperCase)
       endOfNextWord()
     }
+  }
+
+  def clearLine(): Unit =
+  {
+    log.debug("clearLine({},{})",m_home,getLength)
+
+    deleteText(m_home,getLength)
+    m_save = m_home
+  }
+
+  def complete(): Unit =
+  {
+    log.debug("onComplete()")
+
+    getOnComplete.handle(new ActionEvent)
+  }
+
+  private
+  def when(condition: Bool)(action: ⇒ Unit): Bool =
+  {
+    if (condition)
+    {
+      action
+    }
+    else
+    {
+      beep()
+    }
+
+    condition
+  }
+
+  private
+  def notYetImplemented(s: String): Unit =
+  {
+    log.warn(s)
+    beep()
   }
 
   private
@@ -345,6 +437,16 @@ class Console extends TextArea with Logging
     //assert(isBetween(0,m_home,getLength))
     //assert(isBetween(m_home,m_save,getLength))
     true
+  }
+
+  /**
+    * Emits an audible 'beep' depending on native system settings and hardware
+    * capabilities. Move to utilities.
+    */
+  private
+  def beep(): Unit =
+  {
+    java.awt.Toolkit.getDefaultToolkit.beep()
   }
 }
 
