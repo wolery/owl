@@ -365,12 +365,15 @@ class Console extends TextArea with Logging
 
   def upperChar(): Unit =
   {
-    log.debug("upperNextChar()")
+    log.debug("upperChar()")
 
-    val c = getCaretPosition
+    var c = getCaretPosition
 
     if (c < getLength)
     {
+      endOfNextWord()
+      previousWord()
+      c = getCaretPosition
       replaceText(c,c+1,getText(c,c+1).toUpperCase)
       endOfNextWord()
     }
@@ -437,16 +440,6 @@ class Console extends TextArea with Logging
     //assert(isBetween(0,m_home,getLength))
     //assert(isBetween(m_home,m_save,getLength))
     true
-  }
-
-  /**
-    * Emits an audible 'beep' depending on native system settings and hardware
-    * capabilities. Move to utilities.
-    */
-  private
-  def beep(): Unit =
-  {
-    java.awt.Toolkit.getDefaultToolkit.beep()
   }
 }
 

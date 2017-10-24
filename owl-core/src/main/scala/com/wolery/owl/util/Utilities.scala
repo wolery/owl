@@ -259,6 +259,15 @@ trait utilities
 
     0xFFF & (bits >>> i | bits << 12-i)                  // Rotate, then mask
   }
+
+  /**
+    * Emits an audible 'beep' that depends upon the native system settings and
+    * hardware capabilities.
+    */
+  def beep(): Unit =
+  {
+    java.awt.Toolkit.getDefaultToolkit.beep()            // Delegate to AWT
+  }
 }
 
 /**
