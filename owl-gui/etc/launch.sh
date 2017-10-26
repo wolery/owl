@@ -20,6 +20,8 @@
 #**
 #*****************************************************************************
 
+# formats the given argument string as an error message and exits the script.
+
 error()
 {
    echo $0":"
@@ -36,29 +38,56 @@ error()
    exit 1
 }
 
-if [ "$JAVA_HOME" = "" ]; then
-   JAVA=$(type -p java)
+# returns the path to the java executable.
 
-   if [ $? -ne 0 ]; then
-     error "Can't find the Java executable."
+jvm()
+{
+   if [ "$JAVA_HOME" = "" ]; then
+      JVM=$(type -p java)
+   
+      if [ $? != 0 ]; then
+        error "Can't find the Java executable."
+      fi
+   else
+      JVM=$JAVA_HOME/bin/java
    fi
-else
-   JAVA=$JAVA_HOME/bin/java
-fi
 
-if [ ! -e "$JAVA" ]; then
-   error "Can't find the Java executable at JAVA_HOME=$JAVA_HOME/bin"
-fi
+   if [ ! -e "$JVM" ]; then
+      error "Can't find the Java executable at JAVA_HOME=$JAVA_HOME/bin"
+   fi
+   
+   echo $JVM
+}
 
-if [ "`$JAVA -version 2>&1 | egrep 1\.[89]\.`" == "" ]; then
+# formats the major and minor digits of the version number as an integer.
+
+version()
+{
+   `jvm` -version 2>&1 | sed -n ';s/.* version "\(.*\)\.\(.*\)\..*"/\1\2/p;'
+}
+
+# returns the path to the self executing jar  that is appended to this script.
+
+jar()
+{
+   JAR=$(which "$0" 2>/dev/null)
+   
+   if (( $? > 0 )) && [ -f "$0" ]; then
+      JAR="./$0"
+   fi
+
+   echo $JAR
+}
+
+# verify that we are running on a sufficiently recent JVM.  
+
+if (( `version` < 18 )); then
    error "Can't use the Java executable at JAVA_HOME=${JAVA_HOME}/bin"
 fi
 
-JAR=$(which "$0" 2>/dev/null)
+#*****************************************************************************
 
-[ $? -gt 0 -a -f "$0" ] && JAR="./$0"
-
-exec $JAVA -jar $JAR "$@"
+exec `jvm` -jar `jar` "$@"
 exit $?
 
 #*****************************************************************************
