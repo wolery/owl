@@ -33,6 +33,7 @@ object interpreter
     def write(array: Array[Char],offset: ℕ,length: ℕ): Unit = m_imp.write(array,offset,length)
   }
   val m_set = new Settings(){processArgumentString(preferences.compiler())}
+  m_set.classpath.append(preferences.scala_library.value)
   val m_int = new IMain(m_set,new PrintWriter(m_out))
 
   def writer: Writer                                = m_imp
