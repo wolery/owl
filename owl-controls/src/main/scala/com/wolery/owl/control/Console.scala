@@ -33,7 +33,7 @@ import util._
 /**
  *  @author Jonathon Bell
  */
-class Console extends TextArea with Logging
+class Console extends TextArea with History
 {
   @BeanProperty var onNewline : EventHandler[ActionEvent] = _
   @BeanProperty var onComplete: EventHandler[ActionEvent] = _
@@ -42,10 +42,8 @@ class Console extends TextArea with Logging
   addEventHandler(KeyEvent.KEY_PRESSED,onKeyPressedHandler(_))
   addEventFilter (KeyEvent.KEY_TYPED,  onKeyTypedFilter   (_))
 
-  private lazy val m_hist: History = new History(historySize)
   private      var m_home: ℕ       = 0
   private      var m_save: ℕ       = 0
-
   def buffer: String =
   {
     getText.substring(m_home)
@@ -400,39 +398,7 @@ class Console extends TextArea with Logging
     m_save = m_home
   }
 
-  def previousHistory(): Unit =
-  {
-    log.debug("previousHistory()")
-
-    buffer = m_hist.previous
-  }
-
-  def nextHistory(): Unit =
-  {
-    log.debug("nextHistory()")
-
-    buffer = m_hist.next
-  }
-
-  def loadHistory(path: String): Unit = m_hist.load(path)
-  def saveHistory(path: String): Unit = m_hist.load(path)
-  def showHistory(): Unit           = m_hist.write(writer)
-  def addHistory (command:String): Unit = m_hist.add(command)
-
-  private
-  def when(condition: Bool)(action: ⇒ Unit): Bool =
-  {
-    if (condition)
-    {
-      action
-    }
-    else
-    {
-      beep()
-    }
-
-    condition
-  }
+  def showHistory(): Unit = showHistory(writer)
 
   private
   def notYetImplemented(s: String): Unit =
@@ -470,8 +436,58 @@ class Console extends TextArea with Logging
 
 //****************************************************************************
 
-object ConsoleUtilities
+trait History extends Logging
 {
+  def historySize              : Int
+  def buffer            : String
+  def buffer_=(s:String): Unit
+
+  private lazy val m_buff = collection.mutable.Buffer.fill(historySize)("")
+  private      var m_next: ℕ = 0
+  private      var m_iter: ℕ = 0
+
+  def addHistory(command: String): Unit =
+  {
+    m_buff(m_next % m_buff.size) = command
+    m_next += 1
+    m_iter  = m_next
+  }
+
+  def previousHistory(): Unit =
+  {
+    when (lo <= m_iter -1)
+    {
+      m_iter -=1
+    }
+
+    buffer = get(m_iter)
+  }
+
+  def nextHistory(): Unit =
+  {
+    when (m_iter < hi)
+    {
+      m_iter += 1
+    }
+
+    buffer = if (m_iter < hi) get(m_iter) else ""
+  }
+
+  def showHistory(writer: Writer): Unit =
+  {
+    for (i ← lo until hi)
+    {
+      writer.append(f"${i+1}%5d  ${get(i)}%s\n")
+    }
+  }
+
+  def loadHistory(path: String): Unit =
+  {}
+
+  def saveHistory(path: String): Unit =
+  {}
+
+  protected
   def when(condition: Bool)(action: ⇒ Unit): Bool =
   {
     if (condition)
@@ -485,71 +501,21 @@ object ConsoleUtilities
 
     condition
   }
-}
 
-//****************************************************************************
-
-class History (size: ℕ = 4)
-{
-  import ConsoleUtilities._
-  require(size > 0)
-
-  private var m_buff = collection.mutable.Buffer.fill(size)("")
-  private var m_next: ℕ = 0
-  private var m_iter: ℕ = 0
-
-  def add(command: String): Unit =
-  {
-    m_buff(m_next % size) = command
-    m_next += 1
-    m_iter  = m_next
-  }
-
+  private
   def get(index: ℕ): String =
   {
     m_buff(index % m_buff.size)
   }
 
-  def previous(): String =
-  {
-    when (lo <= m_iter -1)
-    {
-      m_iter -=1
-    }
-
-    get(m_iter)
-  }
-
-  def next(): String =
-  {
-    when (m_iter < hi)
-    {
-      m_iter += 1
-    }
-
-    if (m_iter < hi)
-      get(m_iter)
-    else
-      ""
-  }
-
-  def load(path: String): Unit = {}
-  def save(path: String): Unit = {}
-
-  def write(writer: Writer): Unit =
-  {
-    for (i ← lo until hi)
-    {
-      writer.append(f"${i+1}%5d  ${get(i)}%s\n")
-    }
-  }
-
-  private def hi: ℕ =
+  private
+  def hi: ℕ =
   {
     m_next
   }
 
-  private def lo: ℕ =
+  private
+  def lo: ℕ =
   {
     if (get(m_next).isEmpty)
       0
