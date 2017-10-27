@@ -54,6 +54,7 @@ class ConsoleView extends Logging
     else
     if (m_buff.startsWith(":"))
     {
+      m_cons.addHistory(m_buff)
       onCommand(m_buff)
       m_cons.appendText(prompt1())
       m_buff = ""
@@ -65,6 +66,7 @@ class ConsoleView extends Logging
     }
     else
     {
+      m_cons.addHistory(m_buff)
       m_cons.appendText(prompt1())
       m_buff = ""
     }
@@ -91,6 +93,7 @@ class ConsoleView extends Logging
   {
     log.debug("onHistory()")
 
+//  m_cons.addHistory(m_buff)
     m_cons.showHistory()
   }
 

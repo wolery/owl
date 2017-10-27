@@ -152,23 +152,23 @@ class Console extends TextArea with Logging
 
       case ('_,UP)          ⇒ previousHistory()
       case ('_,DOWN)        ⇒ nextHistory()
-      case ('^,R)           ⇒ notYetImplemented("^R")//reverseSearchHostory
+      case ('^,R)           ⇒ notYetImplemented("^R")    //reverseSearchHostory
       case ('^,P)           ⇒ previousHistory()
       case ('^,N)           ⇒ nextHistory()
-      case ('^,S)           ⇒ notYetImplemented("^S")//go back to next most recent comand
-      case ('^,O)           ⇒ notYetImplemented("^O")//execute command found by ^r or ^s
-      case ('^,G)           ⇒ notYetImplemented("^G")//escape history  searching mode
-      case ('⌥,PERIOD)      ⇒ notYetImplemented("⌥.")//last argument of previous command
+      case ('^,S)           ⇒ notYetImplemented("^S")    //go back to next most recent comand
+      case ('^,O)           ⇒ notYetImplemented("^O")    //execute command found by ^r or ^s
+      case ('^,G)           ⇒ notYetImplemented("^G")    //escape history  searching mode
+      case ('⌥,PERIOD)      ⇒ notYetImplemented("⌥.")    //last argument of previous command
+
+   // Events:
+
+      case ('_,ENTER)       ⇒ newline()
+      case ('_,TAB)         ⇒ complete()
 
    // Disabled:
 
-      case ('◆,Z)           ⇒ notYetImplemented("◆,Z")//undo
-      case ('⇧◆,Z)          ⇒ notYetImplemented("⇧◆,Z")//redo
-
-   // Fire Events:
-
-      case ('_,ENTER)       ⇒ onEnter()
-      case ('_,TAB)         ⇒ complete()
+      case ('◆,Z)           ⇒ notYetImplemented("◆,Z") // undo
+      case ('⇧◆,Z)          ⇒ notYetImplemented("⇧◆,Z")// redo
 
    // Anything Else...
 
@@ -181,18 +181,11 @@ class Console extends TextArea with Logging
     }
   }
 
-  def onEnter(): Unit =
+  def newline(): Unit =
   {
     log.debug("onEnter({})")
 
     super.appendText(System.lineSeparator)
-
-    val s = buffer.trim
-
-    if (s.nonEmpty)
-    {
-      m_hist.add(buffer)
-    }
 
     if (onNewline != null)
     {
@@ -208,7 +201,9 @@ class Console extends TextArea with Logging
     log.debug("onComplete()")
 
     if (onComplete != null)
+    {
       onComplete.handle(new ActionEvent)
+    }
   }
 
   override
@@ -422,6 +417,7 @@ class Console extends TextArea with Logging
   def loadHistory(path: String): Unit = m_hist.load(path)
   def saveHistory(path: String): Unit = m_hist.load(path)
   def showHistory(): Unit           = m_hist.write(writer)
+  def addHistory (command:String): Unit = m_hist.add(command)
 
   private
   def when(condition: Bool)(action: ⇒ Unit): Bool =
@@ -493,92 +489,72 @@ object ConsoleUtilities
 
 //****************************************************************************
 
-class History (size: ℕ = 4) extends Logging
+class History (size: ℕ = 4)
 {
+  import ConsoleUtilities._
   require(size > 0)
 
-  var m_buf = collection.mutable.Buffer.fill(size)("")
-  var m_nxt: ℕ = 0
-  var m_iter: ℕ = 0
+  private var m_buff = collection.mutable.Buffer.fill(size)("")
+  private var m_next: ℕ = 0
+  private var m_iter: ℕ = 0
 
   def add(command: String): Unit =
   {
-    log.debug("add({})",command.trim)
-
-    assert(command.trim.nonEmpty)
-
-    m_buf(m_nxt % size) = command.trim
-    m_iter = m_nxt
-    m_nxt += 1
+    m_buff(m_next % size) = command
+    m_next += 1
+    m_iter  = m_next
   }
 
-  def get(index: ℕ): String  = m_buf(index % m_buf.size)
-
-  def history(): String =
+  def get(index: ℕ): String =
   {
-    val s = new StringBuffer
-
-    for (i ← lo until hi)
-    {
-      s.append(s"   $i  ${get(i)}\n")
-    }
-
-    s.toString
+    m_buff(index % m_buff.size)
   }
 
-  def write(writer: Writer): Unit =
+  def previous(): String =
   {
-    for (i ← lo until hi)
-    {
-      writer.append(f"   ${i+1}%3d  ${get(i)}%s\n")
-    }
-  }
-
-  def search(string: String): String = {???}
-
-  def next()                : String =
-  {
-    if (m_iter + 1 < max)
-    {
-      m_iter +=1
-    }
-    else
-    {
-      beep()
-    }
-    get(m_iter)
-  }
-
-  def previous()            : String =
-  {
-    val s= get(m_iter)
-
-    if (min <= m_iter -1)
+    when (lo <= m_iter -1)
     {
       m_iter -=1
     }
-    else
+
+    get(m_iter)
+  }
+
+  def next(): String =
+  {
+    when (m_iter < hi)
     {
-      beep()
+      m_iter += 1
     }
-    s
+
+    if (m_iter < hi)
+      get(m_iter)
+    else
+      ""
   }
 
   def load(path: String): Unit = {}
   def save(path: String): Unit = {}
 
-  def lo: ℕ = if (get(m_nxt).isEmpty) 0 else m_nxt - m_buf.size
-  def hi: ℕ = m_nxt
-  def min: ℕ = if (get(m_nxt).isEmpty) 0 else m_nxt - m_buf.size
-  def max: ℕ = m_nxt
-  //def range = lo until hi
-
-  private
-  def consistent: Bool =
+  def write(writer: Writer): Unit =
   {
-    assert(m_buf.size == size)
-    assert(isBetween(m_nxt,0,size-1))
-    return true
+    for (i ← lo until hi)
+    {
+      writer.append(f"${i+1}%5d  ${get(i)}%s\n")
+    }
+  }
+
+  private def hi: ℕ =
+  {
+    m_next
+  }
+
+  private def lo: ℕ =
+  {
+    if (get(m_next).isEmpty)
+      0
+    else
+      m_next - m_buff.size
   }
 }
 
