@@ -70,19 +70,24 @@ class ConsoleView extends Logging
     }
   }
 
-  def onCommand(command: String): Unit = command match
+  def onCommand(command: String): Unit =
   {
-    case ":help"    ⇒ onHelp(command)
-    case ":history" ⇒ onHistory(command)
-    case _          ⇒ s"$command: no such command.  Type :help for help."
+    val args = command.split("\\s+")
+
+    args(0) match
+    {
+      case ":help"    ⇒ onHelp(args)
+      case ":history" ⇒ onHistory(args)
+      case   bad      ⇒ s"$bad: no such command.  Type :help for help."
+    }
   }
 
-  def onHelp(command: String): Unit =
+  def onHelp(arguments: Seq[String]): Unit =
   {
     log.debug("onHelp()")
   }
 
-  def onHistory(command: String): Unit =
+  def onHistory(arguments: Seq[String]): Unit =
   {
     log.debug("onHistory()")
     println(m_cons.m_hist.history())
