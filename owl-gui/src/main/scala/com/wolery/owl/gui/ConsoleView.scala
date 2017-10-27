@@ -52,6 +52,13 @@ class ConsoleView extends Logging
       m_cons.appendText(prompt1())
     }
     else
+    if (m_buff.startsWith(":"))
+    {
+      onCommand(m_buff)
+      m_cons.appendText(prompt1())
+      m_buff = ""
+    }
+    else
     if (interpreter.interpret(m_buff) == Incomplete)
     {
       m_cons.appendText(prompt2())
@@ -61,6 +68,24 @@ class ConsoleView extends Logging
       m_cons.appendText(prompt1())
       m_buff = ""
     }
+  }
+
+  def onCommand(command: String): Unit = command match
+  {
+    case ":help"    ⇒ onHelp(command)
+    case ":history" ⇒ onHistory(command)
+    case _          ⇒ s"$command: no such command.  Type :help for help."
+  }
+
+  def onHelp(command: String): Unit =
+  {
+    log.debug("onHelp()")
+  }
+
+  def onHistory(command: String): Unit =
+  {
+    log.debug("onHistory()")
+    println(m_cons.m_hist.history())
   }
 
   def onComplete(e: ActionEvent): Unit =

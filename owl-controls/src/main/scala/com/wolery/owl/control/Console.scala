@@ -22,7 +22,7 @@ package control
 
 import java.io.Writer
 
-import javafx.beans.property.{ObjectProperty,SimpleObjectProperty}
+import javafx.beans.property._//{ObjectProperty,SimpleObjectProperty}
 import javafx.event.{ActionEvent,EventHandler}
 import javafx.scene.control.TextArea
 import javafx.scene.input.KeyEvent
@@ -34,8 +34,9 @@ import util._
  */
 class Console extends TextArea with Logging
 {
-  private var m_home: ℕ = 0
-  private var m_save: ℕ = 0
+  private var m_home: ℕ       = 0
+  private var m_save: ℕ       = 0
+  val m_hist: History = new History
 
   addEventHandler(KeyEvent.KEY_PRESSED,onKeyPressedHandler(_))
   addEventFilter (KeyEvent.KEY_TYPED,  onKeyTypedFilter   (_))
@@ -120,6 +121,9 @@ class Console extends TextArea with Logging
 
     if (getModifiers(e)=='_ && e.getCharacter=="\r")
     {
+      val s = buffer.trim
+      if (s.nonEmpty)
+        m_hist.add(buffer)
       getOnNewline.handle(new ActionEvent)
       m_home = getLength
       m_save = m_home
@@ -166,21 +170,23 @@ class Console extends TextArea with Logging
       case ('⌥,L)           ⇒ lowerWord()
       case ('⌥,C)           ⇒ upperChar()
       case ('⌥,R)           ⇒ cancelEdit()
-      case ('⇧^,MINUS)      ⇒ undo()
-
       case ('_,TAB)         ⇒ complete()
 
    // Command History:
 
-      case ('_,UP)          ⇒ notYetImplemented("UP")//previousHIstory
-      case ('_,DOWN)        ⇒ notYetImplemented("DN")//nextHistory
+      case ('_,UP)          ⇒ previousHistory()
+      case ('_,DOWN)        ⇒ nextHistory()
       case ('^,R)           ⇒ notYetImplemented("^R")//reverseSearchHostory
-      case ('^,P)           ⇒ notYetImplemented("^P")//previousHistory
-      case ('^,N)           ⇒ notYetImplemented("^N")//nextHistory
+      case ('^,P)           ⇒ previousHistory()
+      case ('^,N)           ⇒ nextHistory()
       case ('^,S)           ⇒ notYetImplemented("^S")//go back to next most recent comand
       case ('^,O)           ⇒ notYetImplemented("^O")//execute command found by ^r or ^s
       case ('^,G)           ⇒ notYetImplemented("^G")//escape history  searching mode
       case ('⌥,PERIOD)      ⇒ notYetImplemented("⌥.")//last argument of previous command
+
+   // Disabled:
+      case ('◆,Z)           ⇒ notYetImplemented("◆,Z")//undo
+      case ('⇧◆,Z)          ⇒ notYetImplemented("⇧◆,Z")//redo
 
    // Anything Else...
 
@@ -394,6 +400,20 @@ class Console extends TextArea with Logging
     getOnComplete.handle(new ActionEvent)
   }
 
+  def previousHistory(): Unit =
+  {
+    log.debug("previousHistory()")
+
+    buffer = m_hist.previous
+  }
+
+  def nextHistory(): Unit =
+  {
+    log.debug("nextHistory()")
+
+    buffer = m_hist.next
+  }
+
   private
   def when(condition: Bool)(action: ⇒ Unit): Bool =
   {
@@ -440,6 +460,89 @@ class Console extends TextArea with Logging
     //assert(isBetween(0,m_home,getLength))
     //assert(isBetween(m_home,m_save,getLength))
     true
+  }
+}
+
+//****************************************************************************
+
+class History (size: ℕ = 4) extends Logging
+{
+  require(size > 0)
+
+  var m_buf = collection.mutable.Buffer.fill(size)("")
+  var m_nxt: ℕ = 0
+  var m_iter: ℕ = 0
+
+  def add(command: String): Unit =
+  {
+    log.debug("add({})",command.trim)
+
+    assert(command.trim.nonEmpty)
+
+    m_buf(m_nxt % size) = command.trim
+    m_iter = m_nxt
+    m_nxt += 1
+  }
+
+  def get(index: ℕ): String  = m_buf(index % m_buf.size)
+
+  def history(): String =
+  {
+    val s = new StringBuffer
+
+    for (i ← range)
+    {
+      s.append(s"   $i  ${get(i)}\n")
+    }
+
+    s.toString
+  }
+
+  def search(string: String): String = {???}
+
+  def next()                : String =
+  {
+    if (m_iter + 1 < max)
+    {
+      m_iter +=1
+    }
+    else
+    {
+      beep()
+    }
+    get(m_iter)
+  }
+
+  def previous()            : String =
+  {
+    val s= get(m_iter)
+    
+    if (min <= m_iter -1)
+    {
+      m_iter -=1
+    }
+    else
+    {
+      beep()
+    }
+    s    
+  }
+
+  def load(path: String): Unit = {}
+  def save(path: String): Unit = {}
+
+  def lo: ℕ = if (get(m_nxt).isEmpty) 0 else m_nxt - m_buf.size
+  def hi: ℕ = m_nxt
+  def min: ℕ = if (get(m_nxt).isEmpty) 0 else m_nxt - m_buf.size
+  def max: ℕ = m_nxt
+  def range = lo until hi
+
+  private
+  def consistent: Bool =
+  {
+    assert(m_buf.size == size)
+    assert(isBetween(m_nxt,0,size-1))
+    return true
   }
 }
 
