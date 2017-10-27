@@ -90,7 +90,8 @@ class ConsoleView extends Logging
   def onHistory(arguments: Seq[String]): Unit =
   {
     log.debug("onHistory()")
-    println(m_cons.m_hist.history())
+
+    m_cons.showHistory()
   }
 
   def onComplete(e: ActionEvent): Unit =

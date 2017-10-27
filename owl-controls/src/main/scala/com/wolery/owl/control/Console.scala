@@ -22,7 +22,8 @@ package control
 
 import java.io.Writer
 
-import javafx.beans.property._//{ObjectProperty,SimpleObjectProperty}
+import scala.beans.{BeanProperty,BeanDisplayName}
+
 import javafx.event.{ActionEvent,EventHandler}
 import javafx.scene.control.TextArea
 import javafx.scene.input.KeyEvent
@@ -34,23 +35,16 @@ import util._
  */
 class Console extends TextArea with Logging
 {
-  private var m_home: ℕ       = 0
-  private var m_save: ℕ       = 0
-  val m_hist: History = new History
+  @BeanProperty var onNewline : EventHandler[ActionEvent] = _
+  @BeanProperty var onComplete: EventHandler[ActionEvent] = _
+  @BeanProperty var historySize: ℕ                        = 4
 
   addEventHandler(KeyEvent.KEY_PRESSED,onKeyPressedHandler(_))
   addEventFilter (KeyEvent.KEY_TYPED,  onKeyTypedFilter   (_))
-  addEventHandler(KeyEvent.KEY_TYPED,  onKeyTypedHandler  (_))
 
-  type Handler = EventHandler[ActionEvent]
-
-  val onNewlineProperty:ObjectProperty[Handler] = new SimpleObjectProperty(this,"onNewline")
-  def getOnNewline                              = onNewlineProperty.get
-  def setOnNewline(h: Handler)                  = onNewlineProperty.set(h)
-
-  val onCompleteProperty:ObjectProperty[Handler]= new SimpleObjectProperty(this,"onComplete")
-  def getOnComplete                             = onCompleteProperty.get
-  def setOnComplete(h: Handler)                 = onCompleteProperty.set(h)
+  private lazy val m_hist: History = new History(historySize)
+  private      var m_home: ℕ       = 0
+  private      var m_save: ℕ       = 0
 
   def buffer: String =
   {
@@ -115,23 +109,6 @@ class Console extends TextArea with Logging
     }
   }
 
-  def onKeyTypedHandler(e: KeyEvent): Unit =
-  {
-    log.debug("onKeyTypedHandler({})",e)
-
-    if (getModifiers(e)=='_ && e.getCharacter=="\r")
-    {
-      val s = buffer.trim
-      if (s.nonEmpty)
-        m_hist.add(buffer)
-      getOnNewline.handle(new ActionEvent)
-      m_home = getLength
-      m_save = m_home
-    }
-
-    assert(isConsistent)
-  }
-
   def onKeyPressedHandler(e: KeyEvent): Unit =
   {
     log.debug("onKeyPressedHandler({})",e)
@@ -170,7 +147,6 @@ class Console extends TextArea with Logging
       case ('⌥,L)           ⇒ lowerWord()
       case ('⌥,C)           ⇒ upperChar()
       case ('⌥,R)           ⇒ cancelEdit()
-      case ('_,TAB)         ⇒ complete()
 
    // Command History:
 
@@ -185,8 +161,14 @@ class Console extends TextArea with Logging
       case ('⌥,PERIOD)      ⇒ notYetImplemented("⌥.")//last argument of previous command
 
    // Disabled:
+
       case ('◆,Z)           ⇒ notYetImplemented("◆,Z")//undo
       case ('⇧◆,Z)          ⇒ notYetImplemented("⇧◆,Z")//redo
+
+   // Fire Events:
+
+      case ('_,ENTER)       ⇒ onEnter()
+      case ('_,TAB)         ⇒ complete()
 
    // Anything Else...
 
@@ -197,6 +179,36 @@ class Console extends TextArea with Logging
     {
       e.consume()
     }
+  }
+
+  def onEnter(): Unit =
+  {
+    log.debug("onEnter({})")
+
+    super.appendText(System.lineSeparator)
+
+    val s = buffer.trim
+
+    if (s.nonEmpty)
+    {
+      m_hist.add(buffer)
+    }
+
+    if (onNewline != null)
+    {
+      onNewline.handle(new ActionEvent)
+    }
+
+    m_home = getLength
+    m_save = m_home
+  }
+
+  def complete(): Unit =
+  {
+    log.debug("onComplete()")
+
+    if (onComplete != null)
+      onComplete.handle(new ActionEvent)
   }
 
   override
@@ -393,13 +405,6 @@ class Console extends TextArea with Logging
     m_save = m_home
   }
 
-  def complete(): Unit =
-  {
-    log.debug("onComplete()")
-
-    getOnComplete.handle(new ActionEvent)
-  }
-
   def previousHistory(): Unit =
   {
     log.debug("previousHistory()")
@@ -413,6 +418,10 @@ class Console extends TextArea with Logging
 
     buffer = m_hist.next
   }
+
+  def loadHistory(path: String): Unit = m_hist.load(path)
+  def saveHistory(path: String): Unit = m_hist.load(path)
+  def showHistory(): Unit           = m_hist.write(writer)
 
   private
   def when(condition: Bool)(action: ⇒ Unit): Bool =
@@ -465,6 +474,25 @@ class Console extends TextArea with Logging
 
 //****************************************************************************
 
+object ConsoleUtilities
+{
+  def when(condition: Bool)(action: ⇒ Unit): Bool =
+  {
+    if (condition)
+    {
+      action
+    }
+    else
+    {
+      beep()
+    }
+
+    condition
+  }
+}
+
+//****************************************************************************
+
 class History (size: ℕ = 4) extends Logging
 {
   require(size > 0)
@@ -490,12 +518,20 @@ class History (size: ℕ = 4) extends Logging
   {
     val s = new StringBuffer
 
-    for (i ← range)
+    for (i ← lo until hi)
     {
       s.append(s"   $i  ${get(i)}\n")
     }
 
     s.toString
+  }
+
+  def write(writer: Writer): Unit =
+  {
+    for (i ← lo until hi)
+    {
+      writer.append(f"   ${i+1}%3d  ${get(i)}%s\n")
+    }
   }
 
   def search(string: String): String = {???}
@@ -516,7 +552,7 @@ class History (size: ℕ = 4) extends Logging
   def previous()            : String =
   {
     val s= get(m_iter)
-    
+
     if (min <= m_iter -1)
     {
       m_iter -=1
@@ -525,7 +561,7 @@ class History (size: ℕ = 4) extends Logging
     {
       beep()
     }
-    s    
+    s
   }
 
   def load(path: String): Unit = {}
@@ -535,7 +571,7 @@ class History (size: ℕ = 4) extends Logging
   def hi: ℕ = m_nxt
   def min: ℕ = if (get(m_nxt).isEmpty) 0 else m_nxt - m_buf.size
   def max: ℕ = m_nxt
-  def range = lo until hi
+  //def range = lo until hi
 
   private
   def consistent: Bool =
