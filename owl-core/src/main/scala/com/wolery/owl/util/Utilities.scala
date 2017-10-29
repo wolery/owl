@@ -119,6 +119,58 @@ trait utilities
   }
 
   /**
+   * Returns true if every consecutive pair of elements in the given sequence
+   * satisfies the given binary predicate.
+   *
+   * Generalizes testing that a sequence is sorted for an arbitrary definition
+   * of 'order'.
+   *
+   * @param  iterable  The collection of elements to examine.
+   * @param  compare   The binary predicate with which to compare consecutive
+   * 									pairs of elements.
+   *
+   * @return true if the elements of ''iterable'' are in order with respect to
+   *         the predicate ''compare''.
+   */
+  def isMonotonic[α](iterable: Iterable[α])(compare: (α,α) ⇒ Bool): Bool =
+  {
+    val (i,j) = iterable.iterator.duplicate              // Get two iterators
+
+    def loop(): Bool =                                   // For each element
+    {
+      !j.hasNext || compare(i.next,j.next) && loop()     // ...check next pair
+    }
+
+    !j.hasNext || {j.next;loop()}                        // Skip first element
+  }
+
+  /**
+   * Returns true if each element of the given sequence is less than or equal
+   * to the subsequent element.
+   *
+   * @param  iterable  The collection of elements to examine.
+   *
+   * @return true if the elements of the given sequnce are non-decreasing.
+   */
+  def isIncreasing[α: Ordering](sequence: α*): Bool =
+  {
+    isMonotonic(sequence)(_ <= _)                        // Is non decreasing?
+  }
+
+  /**
+   * Returns true if each element of the given sequence is greater than or
+   * equal to its successor.
+   *
+   * @param  iterable  The collection of elements to examine.
+   *
+   * @return true if the elements of the given sequence are non-increasing.
+   */
+  def isDecreasing[α: Ordering](sequence: α*): Bool =
+  {
+    isMonotonic(sequence)(_ >= _)                        // Is non increasing?
+  }
+
+  /**
    * Returns true if the integer ''i'' is a natural power of 2.
    *
    * @param  i  An arbitrary integer.

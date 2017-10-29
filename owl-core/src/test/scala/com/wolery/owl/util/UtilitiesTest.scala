@@ -42,6 +42,36 @@ class UtiltiesTest extends OwlSuite
     assert((-8 to +8).map(isBetween(_,-2,+2)) == "FFFFFFTTTTTFFFFFF".map(_=='T'))
   }
 
+  test("isIncreasing")
+  {
+    assert( isIncreasing(0))
+    assert( isIncreasing(0,0))
+    assert( isIncreasing(0,1,2))
+    assert( isIncreasing(0,1,2,2))
+    assert(!isIncreasing(1,0))
+
+    assert( isIncreasing(0.0))
+    assert( isIncreasing(0.0,0.0))
+    assert( isIncreasing(0.0,1.0,2.0))
+    assert( isIncreasing(0.0,1.0,2.0,2.0))
+    assert(!isIncreasing(1.0,0.0))
+  }
+
+  test("isDecreasing")
+  {
+    assert( isDecreasing(0))
+    assert( isDecreasing(0,0))
+    assert( isDecreasing(2,1,1))
+    assert( isDecreasing(2,2,1,0))
+    assert(!isDecreasing(0,1))
+
+    assert( isDecreasing(0.0))
+    assert( isDecreasing(0.0,0.0))
+    assert( isDecreasing(2.0,1.0,1.0))
+    assert( isDecreasing(2.0,2.0,1.0,0.0))
+    assert(!isDecreasing(0.0,1.0))
+  }
+
   test("isPowerOf2")
   {
     assert((-8 to +8).map(isPowerOf2)         == "FFFFFFFFFTTFTFFFT".map(_=='T'))

@@ -18,11 +18,9 @@
 package com.wolery.owl
 package control
 
-//****************************************************************************
-
 import java.io.Writer
 
-import scala.beans.{BeanProperty,BeanDisplayName}
+import scala.beans.BeanProperty
 
 import javafx.event.{ActionEvent,EventHandler}
 import javafx.scene.control.TextArea
@@ -31,19 +29,24 @@ import javafx.scene.input.KeyEvent
 import util._
 
 /**
- *  @author Jonathon Bell
+ * A command line console control implemented as TextArea.
+ *
+ * @author Jonathon Bell
  */
-class Console extends TextArea with History
+class Console extends TextArea with Logging
 {
-  @BeanProperty var onNewline : EventHandler[ActionEvent] = _
-  @BeanProperty var onComplete: EventHandler[ActionEvent] = _
-  @BeanProperty var historySize: ℕ                        = 4
+  @BeanProperty var historySize: ℕ                         = 4
+  @BeanProperty var onNewline  : EventHandler[ActionEvent] = _
+  @BeanProperty var onComplete : EventHandler[ActionEvent] = _
+  private       var m_home     : ℕ = 0
+  private       var m_save     : ℕ = 0
+  private       var m_next     : ℕ = 0
+  private       var m_iter     : ℕ = 0
+  private lazy  val m_buff = collection.mutable.Buffer.fill(historySize)("")
 
   addEventHandler(KeyEvent.KEY_PRESSED,onKeyPressedHandler(_))
   addEventFilter (KeyEvent.KEY_TYPED,  onKeyTypedFilter   (_))
 
-  private      var m_home: ℕ       = 0
-  private      var m_save: ℕ       = 0
   def buffer: String =
   {
     getText.substring(m_home)
@@ -123,13 +126,11 @@ class Console extends TextArea with History
       case ('^,E)           ⇒ end()
       case ('^,F)           ⇒ forward()
       case ('^,B)           ⇒ backward()
-      case ('⌥,F)           ⇒ endOfNextWord()            // And ⌥RIGHT on OS X
-      case ('⌥,B)           ⇒ previousWord()             // And ⌥LEFT  on OS X
+      case ('⌥,F)           ⇒ endOfNextWord()
+      case ('⌥,B)           ⇒ previousWord()
       case ('^,X)           ⇒ toggleHome()
 
    // Editing:
-
-      case ('^,L)           ⇒ notYetImplemented("^L")    // clear screen
 
       case ('⌥,BACK_SPACE)  ⇒ deletePreviousWord()
       case ('⌥,D)           ⇒ deleteNextWord()
@@ -138,7 +139,7 @@ class Console extends TextArea with History
       case ('^,W)           ⇒ cutPreviousWord()
       case ('^,K)           ⇒ cutToEnd()
       case ('^,U)           ⇒ cutToHome()
-      case ('⌥,T)           ⇒ notYetImplemented("⌥T")    // swapWord()
+      case ('⌥,T)           ⇒ unimplemented(e)           // swapWord()
       case ('^,T)           ⇒ swapChars()
       case ('^,Y)           ⇒ paste()
       case ('⌥,U)           ⇒ upperWord()                // unreachable on OSX
@@ -150,13 +151,13 @@ class Console extends TextArea with History
 
       case ('_,UP)          ⇒ previousHistory()
       case ('_,DOWN)        ⇒ nextHistory()
-      case ('^,R)           ⇒ notYetImplemented("^R")    //reverseSearchHostory
+      case ('^,R)           ⇒ unimplemented(e)           // reverseSearchHostory
       case ('^,P)           ⇒ previousHistory()
       case ('^,N)           ⇒ nextHistory()
-      case ('^,S)           ⇒ notYetImplemented("^S")    //go back to next most recent comand
-      case ('^,O)           ⇒ notYetImplemented("^O")    //execute command found by ^r or ^s
-      case ('^,G)           ⇒ notYetImplemented("^G")    //escape history  searching mode
-      case ('⌥,PERIOD)      ⇒ notYetImplemented("⌥.")    //last argument of previous command
+      case ('^,S)           ⇒ unimplemented(e)           // go back to next most recent comand
+      case ('^,O)           ⇒ unimplemented(e)           // execute command found by ^r or ^s
+      case ('^,G)           ⇒ unimplemented(e)           // escape history  searching mode
+      case ('⌥,PERIOD)      ⇒ unimplemented(e)           // last argument of previous command
 
    // Events:
 
@@ -165,8 +166,9 @@ class Console extends TextArea with History
 
    // Disabled:
 
-      case ('◆,Z)           ⇒ notYetImplemented("◆,Z") // undo
-      case ('⇧◆,Z)          ⇒ notYetImplemented("⇧◆,Z")// redo
+      case ('◆,Z)           ⇒ unimplemented(e)           // undo
+      case ('⇧◆,Z)          ⇒ unimplemented(e)           // redo
+      case ('^,L)           ⇒ unimplemented(e)           // clear screen
 
    // Anything Else...
 
@@ -398,54 +400,6 @@ class Console extends TextArea with History
     m_save = m_home
   }
 
-  def showHistory(): Unit = showHistory(writer)
-
-  private
-  def notYetImplemented(s: String): Unit =
-  {
-    log.warn(s)
-    beep()
-  }
-
-  private
-  def getModifiers(e: KeyEvent): Symbol =
-  {//⇧^⌥◆
-    var                   s  = ""
-    if (e.isShiftDown)    s += '⇧'
-    if (e.isControlDown)  s += '^'
-    if (e.isAltDown)      s += '⌥'
-    if (e.isMetaDown)     s += '◆'
-
-    if (s.isEmpty()) '_ else Symbol(s)
-  }
-
-  private
-  def getDebugString(e: KeyEvent): String =
-  {
-    (getModifiers(e).toString + e.getCode).substring(1)
-  }
-
-  private
-  def isConsistent(): Bool =
-  {
-    //assert(isBetween(0,m_home,getLength))
-    //assert(isBetween(m_home,m_save,getLength))
-    true
-  }
-}
-
-//****************************************************************************
-
-trait History extends Logging
-{
-  def historySize              : Int
-  def buffer            : String
-  def buffer_=(s:String): Unit
-
-  private lazy val m_buff = collection.mutable.Buffer.fill(historySize)("")
-  private      var m_next: ℕ = 0
-  private      var m_iter: ℕ = 0
-
   def addHistory(command: String): Unit =
   {
     m_buff(m_next % m_buff.size) = command
@@ -473,8 +427,10 @@ trait History extends Logging
     buffer = if (m_iter < hi) get(m_iter) else ""
   }
 
-  def showHistory(writer: Writer): Unit =
+  def showHistory(writer: Writer = this.writer): Unit =
   {
+    log.debug("showHistory({})")
+
     for (i ← lo until hi)
     {
       writer.append(f"${i+1}%5d  ${get(i)}%s\n")
@@ -486,6 +442,47 @@ trait History extends Logging
 
   def saveHistory(path: String): Unit =
   {}
+
+  protected
+  def get(index: ℕ): String =
+  {
+    m_buff(index % m_buff.size)
+  }
+
+  protected
+  def hi: ℕ =
+  {
+    m_next
+  }
+
+  protected
+  def lo: ℕ =
+  {
+    if (get(m_next).isEmpty)
+      0
+    else
+      m_next - m_buff.size
+  }
+
+  protected
+  def getModifiers(e: KeyEvent): Symbol =
+  {//⇧^⌥◆
+    var                   s  = ""
+    if (e.isShiftDown)    s += '⇧'
+    if (e.isControlDown)  s += '^'
+    if (e.isAltDown)      s += '⌥'
+    if (e.isMetaDown)     s += '◆'
+
+    if (s.isEmpty()) '_ else Symbol(s)
+  }
+
+  protected
+  def unimplemented(e: KeyEvent): Unit =
+  {
+    log.debug("unimplemented({}{})",getModifiers(e),e.getCode,"")
+
+    beep()
+  }
 
   protected
   def when(condition: Bool)(action: ⇒ Unit): Bool =
@@ -502,25 +499,12 @@ trait History extends Logging
     condition
   }
 
-  private
-  def get(index: ℕ): String =
+  protected
+  def isConsistent(): Bool =
   {
-    m_buff(index % m_buff.size)
-  }
-
-  private
-  def hi: ℕ =
-  {
-    m_next
-  }
-
-  private
-  def lo: ℕ =
-  {
-    if (get(m_next).isEmpty)
-      0
-    else
-      m_next - m_buff.size
+    assert(isBetween(0,m_home,getLength))
+    assert(isBetween(m_home,m_save,getLength))
+    true
   }
 }
 
