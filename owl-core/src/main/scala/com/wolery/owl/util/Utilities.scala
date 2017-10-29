@@ -119,7 +119,7 @@ trait utilities
   }
 
   /**
-   * Returns true if every consecutive pair of elements in the given sequence
+   * Returns true if every  consecutive pair of elements in the given sequence
    * satisfies the given binary predicate.
    *
    * Generalizes testing that a sequence is sorted for an arbitrary definition
@@ -150,7 +150,7 @@ trait utilities
    *
    * @param  iterable  The collection of elements to examine.
    *
-   * @return true if the elements of the given sequnce are non-decreasing.
+   * @return true if the elements ''iterable'' are non-decreasing.
    */
   def isIncreasing[α: Ordering](sequence: α*): Bool =
   {
@@ -163,7 +163,7 @@ trait utilities
    *
    * @param  iterable  The collection of elements to examine.
    *
-   * @return true if the elements of the given sequence are non-increasing.
+   * @return true if the elements ''iterable'' are non-increasing.
    */
   def isDecreasing[α: Ordering](sequence: α*): Bool =
   {
