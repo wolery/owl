@@ -38,38 +38,43 @@ class ConsoleView extends Logging
   {
     interpreter.bind("xx","Double",7.8)
     interpreter.writer = m_cons.writer
-    m_cons.appendText(prompt1())
+    m_cons.prompt = prompt1()
   }
 
-  def onNewline(e: ActionEvent): Unit =
+  def onAccept(e: ActionEvent): Unit =
   {
-    log.info("onNewlinEvent({})",e)
+    log.info("onAccept({})",e)
 
-    m_buff += m_cons.buffer.trim
+    m_buff += m_cons.input.trim
 
     if (m_buff.isEmpty)
     {
-      m_cons.appendText(prompt1())
+      m_cons.prompt = prompt1()
     }
     else
     if (m_buff.startsWith(":"))
     {
       m_cons.addHistory(m_buff)
       onCommand(m_buff)
-      m_cons.appendText(prompt1())
+      m_cons.prompt = prompt1()
       m_buff = ""
     }
     else
     if (interpreter.interpret(m_buff) == Incomplete)
     {
-      m_cons.appendText(prompt2())
+      m_cons.prompt = prompt2()
     }
     else
     {
       m_cons.addHistory(m_buff)
-      m_cons.appendText(prompt1())
+      m_cons.prompt = prompt1()
       m_buff = ""
     }
+  }
+
+  def onComplete(e: ActionEvent): Unit =
+  {
+    log.info("onCompleteEvent({})",e)
   }
 
   def onCommand(command: String): Unit =
@@ -95,11 +100,6 @@ class ConsoleView extends Logging
 
 //  m_cons.addHistory(m_buff)
     m_cons.showHistory()
-  }
-
-  def onComplete(e: ActionEvent): Unit =
-  {
-    log.info("onCompleteEvent({})",e)
   }
 
   def onClose(): Unit =
