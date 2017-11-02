@@ -52,10 +52,35 @@ class ConsoleView extends Logging
       m_cons.prompt = prompt1()
     }
     else
+    if (m_buff.startsWith(":help"))
+    {
+      println(s"o = |${m_cons.output}|")
+      println(s"p = |${m_cons.prompt}|")
+      println(s"i = |${m_cons.input}|")
+      m_cons.addHistory(m_buff)
+      m_cons.appendText("cool"+System.lineSeparator)
+      m_cons.prompt = prompt1()
+      m_buff = ""
+    }
+    else
+    if (m_buff.startsWith(":history"))
+    {
+      println(s"o = |${m_cons.output}|")
+      println(s"p = |${m_cons.prompt}|")
+      println(s"i = |${m_cons.input}|")
+      m_cons.addHistory(m_buff)
+      m_cons.showHistory()
+      m_cons.prompt = prompt1()
+      m_buff = ""
+    }
+    else
     if (m_buff.startsWith(":"))
     {
+      println(s"o = |${m_cons.output}|")
+      println(s"p = |${m_cons.prompt}|")
+      println(s"i = |${m_cons.input}|")
       m_cons.addHistory(m_buff)
-      onCommand(m_buff)
+      m_cons.appendLine(s"$m_buff: no such command.  Type :help for help.")
       m_cons.prompt = prompt1()
       m_buff = ""
     }
@@ -92,6 +117,7 @@ class ConsoleView extends Logging
   def onHelp(arguments: Seq[String]): Unit =
   {
     log.debug("onHelp()")
+    m_cons.appendText("cool\r")
   }
 
   def onHistory(arguments: Seq[String]): Unit =

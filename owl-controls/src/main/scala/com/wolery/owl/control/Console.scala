@@ -88,8 +88,8 @@ import util._
  */
 class Console extends TextArea with Logging
 {
-  type Action              = EventHandler[ActionEvent]
-  type Filters[α <: Event] = Seq[(EventType[α],EventHandler[α])]
+  type Action  = EventHandler[ActionEvent]
+  type Filters = Seq[(EventType[KeyEvent],EventHandler[KeyEvent])]
 
   @BeanProperty var onAccept  : Action = _
   @BeanProperty var onComplete: Action = _
@@ -128,6 +128,11 @@ class Console extends TextArea with Logging
   }
 
 //****************************************************************************
+//  private var m_outsize : ℕ = 5
+//  def getOutputLines: ℕ = 5
+
+
+//****************************************************************************
 
   private var m_prompt : ℕ = 0                           // Start of prompt
   private var m_input  : ℕ = 0                           // Start of input
@@ -138,8 +143,8 @@ class Console extends TextArea with Logging
   private var m_search : Option[Search]  = None          //
   private val m_history: Buffer[String] = Buffer.fill(10)("")
 
-  private val m_filters: Filters[KeyEvent] = Seq((KEY_PRESSED,onKeyPressed _),
-                                                 (KEY_TYPED,  onKeyTyped   _))
+  private val m_filters: Filters = Seq((KEY_PRESSED,onKeyPressed _),
+                                       (KEY_TYPED,  onKeyTyped   _))
 
   swap(Seq(),m_filters)
 
@@ -191,7 +196,7 @@ class Console extends TextArea with Logging
   override
   def replaceText(start: ℕ,end: ℕ,text: String) =
   {
-    log.trace("replaceText({})",text)
+    log.debug("replaceText({})",text)
 
     if (start >= m_input)
     {
@@ -204,13 +209,22 @@ class Console extends TextArea with Logging
   override
   def appendText(text: String) =
   {
-    log.trace("appendText({})",text)
+    log.debug("appendText({})",text)
 
     super.appendText(text)
 
-    m_prompt = getText.lastIndexOf(EOL) + EOL.size
+    m_prompt = getLength
 
     setInputArea(getLength)
+
+    assert(isConsistent)
+  }
+
+  def appendLine(string: String) =
+  {
+    log.debug("appendLine({})",string)
+
+    appendText(string + EOL)
 
     assert(isConsistent)
   }
@@ -229,7 +243,7 @@ class Console extends TextArea with Logging
 
   def onKeyTyped(e: KeyEvent): Unit =
   {
-    log.debug("onKeyTyped({})",e)
+    log.debug("onKeyTyped  ({})",e)
 
     if (e.isAltDown)
     {
@@ -304,7 +318,7 @@ class Console extends TextArea with Logging
 
   def accept(): Unit =
   {
-    log.debug("onEnter({})")
+    log.debug("accept({})",input)
 
     super.appendText(EOL)
 
@@ -313,12 +327,12 @@ class Console extends TextArea with Logging
       onAccept.handle(new ActionEvent)
     }
 
-    setInputArea(getLength)
+//    setInputArea(getLength)
   }
 
   def complete(): Unit =
   {
-    log.debug("onComplete()")
+    log.debug("complete({})",input)
 
     if (onComplete != null)
     {
@@ -586,17 +600,17 @@ class Console extends TextArea with Logging
     m_latest
   }
 
-  protected
-  def getModifiers(e: KeyEvent): Symbol =
-  {//⇧^⌥◆
-    var                   s  = ""
-    if (e.isShiftDown)    s += '⇧'
-    if (e.isControlDown)  s += '^'
-    if (e.isAltDown)      s += '⌥'
-    if (e.isMetaDown)     s += '◆'
-
-    if (s.isEmpty()) '_ else Symbol(s)
-  }
+//  protected
+//  def getModifiers(e: KeyEvent): Symbol =
+//  {//⇧^⌥◆
+//    var                   s  = ""
+//    if (e.isShiftDown)    s += '⇧'
+//    if (e.isControlDown)  s += '^'
+//    if (e.isAltDown)      s += '⌥'
+//    if (e.isMetaDown)     s += '◆'
+//
+//    if (s.isEmpty()) '_ else Symbol(s)
+//  }
 
   protected
   def getKeyCombo(e: KeyEvent): (Symbol,KeyCode) =
@@ -646,101 +660,103 @@ class Console extends TextArea with Logging
   }
 
   private
-  def swap[α <: Event](was: Filters[α],now: Filters[α]): Unit =
+  def swap(was: Filters,now: Filters): Unit = defer
   {
     was.foreach{case (t,h) ⇒ removeEventFilter(t,h)}
     now.foreach{case (t,h) ⇒ addEventFilter   (t,h)}
   }
 
+  /**
+   *
+   */
+  private
   class Search
   {
-    val filters : Filters[KeyEvent] = Seq((KEY_PRESSED,onKeyPressed _ ),
-                                          (KEY_TYPED,  onKeyTyped   _ ))
-    val anchor  : Int     = getText.lastIndexOf(EOL) + EOL.size
-    val saveprompt:String = getText(anchor,m_input)
-    val saveline: String  = getText(m_input,getLength)
-    val savebuff: Int     = m_input
-    var pattern : String  = ""
+    val filters : Filters = Seq((KEY_PRESSED,onKeyPressed _ ),
+                                (KEY_TYPED,  onKeyTyped   _ ))
+    val m_backup = (prompt,input,m_cursor)
+    var m_pattern: String = ""
+    var m_matches: Seq[String] = Seq()
 
     swap(m_filters,filters)
-    prompt("")
+    refine(input)
 
-    def prompt(line: String = "") : Unit =
+    def cancel(string: String): Unit =
     {
-      val p = s"(reverse-i-search)'$pattern': "
+      log.debug("search.cancel({})",string)
 
-      Console.super.replaceText(anchor,m_input,p + line)
+      prompt   = m_backup._1
+      input    = string
+      m_cursor = m_backup._3
 
-      setInputArea(anchor + p.size)
-    }
-
-    def cancel(line: String): Unit =
-    {
-      log.debug("search.cancel()")
-      Console.super.replaceText(anchor,m_input,saveprompt+line)
       swap(filters,m_filters)
-      setInputArea(savebuff)
       m_search = None
     }
 
-    def previousMatch(): Unit =
+    def update(string: String = "") : Unit =
     {
-      log.debug("previousMatch()")
+      log.debug("search.update({})",string)
+
+      prompt = s"(reverse-i-search)'$m_pattern': "
+      input  = string
     }
 
-    def nextMatch(): Unit =
+    def backspace(): Unit =
     {
-      log.debug("nextMatch()")
+      log.debug("search.backspace()")
+
+      m_pattern = m_pattern.dropRight(1)
+
+      refine()
+    }
+
+   def moveCursor(δ: Int): Unit =
+   {
+      when (isBetween(m_cursor + δ,0,m_matches.size-1))
+      {
+        m_cursor += δ
+        val m = m_matches(m_cursor)
+        update(m)
+        positionCaret(m_input + m.indexOfSlice(m_pattern))
+      }
     }
 
     def refine(chars: String = ""): Unit =
     {
       log.debug("search.refine({})",chars)
 
-      val matches = m_history.filter(_.contains(pattern + chars))
+      m_pattern += chars
 
-      if (matches.nonEmpty)
+      m_matches = m_history.filter(_.contains(m_pattern))
+
+      if (m_matches.nonEmpty)
       {
-        val m = matches.last
-
-        pattern += chars
-
-        prompt(m)
-
-        positionCaret(m_input + m.indexOfSlice(pattern))
+        m_cursor = m_matches.size - 1
+        moveCursor(0)
       }
       else
       {
-        prompt()
+        update()
       }
-    }
-
-    def backspace(): Unit =
-    {
-      log.debug("search.backspace({})")
-
-      pattern = pattern.dropRight(1)
-
-      refine()
     }
 
     def onKeyPressed(e: KeyEvent): Unit =
     {
-      log.debug("onKeyPressed {} [{}]",getKeyCombo(e),e.getCharacter,"")
-      import javafx.scene.input.KeyCode._
+      log.debug("onKeyPressed{}",getKeyCombo(e))
+
+      import KeyCode._
 
       getKeyCombo(e) match
       {
-        case ('^,R)          ⇒ previousMatch()
-        case ('^,S)          ⇒ nextMatch()
-        case ('_,BACK_SPACE) ⇒ backspace()
+        case ('^,R)                      ⇒ moveCursor(-1)
+        case ('^,S)                      ⇒ moveCursor(+1)
+        case ('_,BACK_SPACE)             ⇒ backspace()
 
-        case ('^,G)          ⇒ cancel("")
-        case ('^,A)          ⇒ cancel(saveline)
-        case ('^,Z)          ⇒ cancel(input)
-        case ('_,ENTER)      ⇒ cancel(input);accept()
+        case ('^,G)                      ⇒ cancel(m_backup._2)
+        case ('_,ENTER)                  ⇒ cancel(input);accept()
+        case (_,TAB|UP|DOWN|LEFT|RIGHT)  ⇒ cancel(input)
 
-        case  _              ⇒
+        case  _                          ⇒
       }
 
       e.consume()
@@ -748,11 +764,11 @@ class Console extends TextArea with Logging
 
     def onKeyTyped(e: KeyEvent): Unit =
     {
-      log.debug("onKeyTyped   {} [{}]",getKeyCombo(e),e.getCharacter,"")
+      log.debug("onKeyTyped  ({})",e.getCharacter)
 
       val c = e.getCharacter
 
-      if (!c.isEmpty)
+      if (c.nonEmpty && isPrinting(c(0)))
       {
         refine(c)
       }
@@ -761,16 +777,37 @@ class Console extends TextArea with Logging
     }
   }
 
+  /**
+   *
+   */
+  @inline private
+  def isPrinting(char: Char): Bool =
+  {
+    isBetween(char,0x20,0x7E)
+  }
+
+  /**
+   *
+   */
+  @inline private
+  def defer[α](action: ⇒ α): Unit =
+  {
+    javafx.application.Platform.runLater(() => action)   //
+  }
+
+  /**
+   * Returns true if the object appears to be in a consistent state.
+   *
+   * Centralizes a number of consistency checks that otherwise tend to clutter
+   * up the code.  Since only ever called from within assertions, these can be
+   * eliminated from the release build by the compiler entirely.
+   *
+   * @return true - always.
+   */
   private
   def isConsistent: Bool =
   {
-    val n = getHistorySize
-
-    assert(isIncreasing(0,m_prompt,m_input,m_toggle,getLength),s"$m_prompt $m_input $m_toggle $getLength")
-
-    assert(m_cursor%n <= m_latest%n)
-
- // TODO check input does not contain EOL
+    assert(isIncreasing(0,m_prompt,m_input,m_toggle,getLength))
     true
   }
 }
