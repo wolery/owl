@@ -31,69 +31,44 @@ import preferences.{ prompt1, prompt2 }
 class ConsoleView extends Logging
 {
  @fx
-  var m_cons : Console = _
-  var m_buff : String  = ""
+  var m_console: Console = _
+  var m_partial: String  = ""
 
   def initialize(): Unit =
   {
-    interpreter.bind("xx","Double",7.8)
-    interpreter.writer = m_cons.writer
-    m_cons.prompt = prompt1()
+    interpreter.writer = m_console.writer
+    m_console.prompt   = prompt1()
   }
 
   def onAccept(e: ActionEvent): Unit =
   {
     log.info("onAccept({})",e)
 
-    m_buff += m_cons.input.trim
+    m_partial += m_console.input.trim
 
-    if (m_buff.isEmpty)
+    if (m_partial.isEmpty)
     {
-      m_cons.prompt = prompt1()
+      m_console.appendText(prompt1())
     }
     else
-    if (m_buff.startsWith(":help"))
+    if (m_partial.startsWith(":"))
     {
-      println(s"o = |${m_cons.output}|")
-      println(s"p = |${m_cons.prompt}|")
-      println(s"i = |${m_cons.input}|")
-      m_cons.addHistory(m_buff)
-      m_cons.appendText("cool"+System.lineSeparator)
-      m_cons.prompt = prompt1()
-      m_buff = ""
+      m_console.addHistory(m_partial)
+      onCommand(m_partial)
+      m_console.appendText(prompt1())
+      m_partial = ""
+
     }
     else
-    if (m_buff.startsWith(":history"))
+    if (interpreter.interpret(m_partial) == Incomplete)
     {
-      println(s"o = |${m_cons.output}|")
-      println(s"p = |${m_cons.prompt}|")
-      println(s"i = |${m_cons.input}|")
-      m_cons.addHistory(m_buff)
-      m_cons.showHistory()
-      m_cons.prompt = prompt1()
-      m_buff = ""
-    }
-    else
-    if (m_buff.startsWith(":"))
-    {
-      println(s"o = |${m_cons.output}|")
-      println(s"p = |${m_cons.prompt}|")
-      println(s"i = |${m_cons.input}|")
-      m_cons.addHistory(m_buff)
-      m_cons.appendLine(s"$m_buff: no such command.  Type :help for help.")
-      m_cons.prompt = prompt1()
-      m_buff = ""
-    }
-    else
-    if (interpreter.interpret(m_buff) == Incomplete)
-    {
-      m_cons.prompt = prompt2()
+      m_console.appendText(prompt2())
     }
     else
     {
-      m_cons.addHistory(m_buff)
-      m_cons.prompt = prompt1()
-      m_buff = ""
+      m_console.addHistory(m_partial)
+      m_console.appendText(prompt1())
+      m_partial = ""
     }
   }
 
@@ -104,32 +79,50 @@ class ConsoleView extends Logging
 
   def onCommand(command: String): Unit =
   {
-    val args = command.split("\\s+")
+    val arguments = command.split("\\s+")
 
-    args(0) match
+    arguments(0) match
     {
-      case ":help"    ⇒ onHelp(args)
-      case ":history" ⇒ onHistory(args)
-      case   bad      ⇒ s"$bad: no such command.  Type :help for help."
+      case ":help"    ⇒ onHelp      (arguments)
+      case ":history" ⇒ onHistory   (arguments)
+      case   bad      ⇒ onBadCommand(arguments)
     }
+  }
+
+  def onBadCommand(arguments: Seq[String]): Unit =
+  {
+    log.debug("onBadCommmand({})",arguments)
+
+    m_console.appendText(arguments(0))
+    m_console.appendLine(": no such command.  Type :help for help.")
   }
 
   def onHelp(arguments: Seq[String]): Unit =
   {
-    log.debug("onHelp()")
-    m_cons.appendText("cool\r")
+    log.debug("onHelp({})",arguments)
+
+    val help =
+    """
+      |:help [command]          print this summary or command-specific help
+      |:abc
+      |:abc
+      |:history [num]           show the history (optional num is commands to show)
+    """.stripMargin
+
+    m_console.appendLine(help)
   }
 
   def onHistory(arguments: Seq[String]): Unit =
   {
-    log.debug("onHistory()")
+    log.debug("onHistory({})",arguments)
 
-//  m_cons.addHistory(m_buff)
-    m_cons.showHistory()
+    m_console.showHistory()
   }
 
   def onClose(): Unit =
   {
+    log.debug("onClose()")
+
     interpreter.writer = null
   }
 }

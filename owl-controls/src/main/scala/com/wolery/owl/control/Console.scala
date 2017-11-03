@@ -34,6 +34,13 @@ import util._
  *
  * = Overview =
  *
+ * The Console control partitions the contents of its inherited text area into
+ * three distinct disjoint areas:
+ *
+ *  - Output Area
+ *  - Prompt
+ *  - Input Area
+ *
  * Partitions the contents of the underlying text area into 3 disjoint area:
  *  - output area - a read only view of text previously written
  *  - prompt			 -
@@ -88,11 +95,8 @@ import util._
  */
 class Console extends TextArea with Logging
 {
-  type Action  = EventHandler[ActionEvent]
-  type Filters = Seq[(EventType[KeyEvent],EventHandler[KeyEvent])]
-
-  @BeanProperty var onAccept  : Action = _
-  @BeanProperty var onComplete: Action = _
+  @BeanProperty var onAccept  : EventHandler[ActionEvent] = _
+  @BeanProperty var onComplete: EventHandler[ActionEvent] = _
 
   def getHistorySize: ℕ =
   {
@@ -128,11 +132,7 @@ class Console extends TextArea with Logging
   }
 
 //****************************************************************************
-//  private var m_outsize : ℕ = 5
-//  def getOutputLines: ℕ = 5
-
-
-//****************************************************************************
+  type Filters = Seq[(EventType[KeyEvent],EventHandler[KeyEvent])]
 
   private var m_prompt : ℕ = 0                           // Start of prompt
   private var m_input  : ℕ = 0                           // Start of input
@@ -184,34 +184,34 @@ class Console extends TextArea with Logging
   val writer: Writer = new Writer
   {
     def close: Unit = {}
+
     def flush: Unit = {}
+
     def write(array: Array[Char],offset: ℕ,length: ℕ): Unit =
     {
       appendText(new String(array.slice(offset,offset + length)))
     }
   }
 
-//****************************************************************************
-
   override
-  def replaceText(start: ℕ,end: ℕ,text: String) =
+  def replaceText(start: ℕ,end: ℕ,string: String) =
   {
-    log.debug("replaceText({})",text)
+    log.trace("replaceText({})",s"$start,$end,$string")
 
     if (start >= m_input)
     {
-      super.replaceText(start,end,text)
+      super.replaceText(start,end,string)
     }
 
     assert(isConsistent)
   }
 
   override
-  def appendText(text: String) =
+  def appendText(string: String) =
   {
-    log.debug("appendText({})",text)
+    log.trace("appendText({})",string)
 
-    super.appendText(text)
+    super.appendText(string)
 
     m_prompt = getLength
 
@@ -232,7 +232,7 @@ class Console extends TextArea with Logging
   override
   def selectRange(anchor: ℕ,caret: ℕ): Unit =
   {
-    log.debug("selectRange({},{})",anchor,caret)
+    log.trace("selectRange({},{})",anchor,caret)
 
     val n = getLength
     val a = clamp(m_input,anchor,n)
@@ -241,6 +241,7 @@ class Console extends TextArea with Logging
     super.selectRange(a,c)
   }
 
+  protected
   def onKeyTyped(e: KeyEvent): Unit =
   {
     log.debug("onKeyTyped  ({})",e)
@@ -251,6 +252,7 @@ class Console extends TextArea with Logging
     }
   }
 
+  protected
   def onKeyPressed(e: KeyEvent): Unit =
   {
     log.debug("onKeyPressed({})",e)
@@ -283,15 +285,15 @@ class Console extends TextArea with Logging
     //case ('⌥,T)           ⇒ unimplemented(e)           // swapWord()
       case ('^,T)           ⇒ swapChars()
       case ('^,Y)           ⇒ paste()
-      case ('⌥,U)           ⇒ upperWord()                // unreachable on OSX
-      case ('⌥,L)           ⇒ lowerWord()
-      case ('⌥,C)           ⇒ upperChar()
+      case ('⌥,U)           ⇒ xformWord(_.toUpperCase)   // unreachable on OSX
+      case ('⌥,L)           ⇒ xformWord(_.toLowerCase)
+      case ('⌥,C)           ⇒ xformChar(_.toUpperCase)
       case ('⌥,R)           ⇒ cancelEdit()
 
    // Command History:
 
-      case ('^,P)|('_,UP)   ⇒ previousHistory()
-      case ('^,N)|('_,DOWN) ⇒ nextHistory()
+      case ('^,P)|('_,UP)   ⇒ moveHistory(-1)
+      case ('^,N)|('_,DOWN) ⇒ moveHistory(+1)
       case ('^,R)           ⇒ searchHistory()
       case ('⌥,PERIOD)      ⇒ unimplemented(e)           // last argument of previous command
 
@@ -318,7 +320,7 @@ class Console extends TextArea with Logging
 
   def accept(): Unit =
   {
-    log.debug("accept({})",input)
+    log.info("accept({})",input)
 
     super.appendText(EOL)
 
@@ -327,12 +329,12 @@ class Console extends TextArea with Logging
       onAccept.handle(new ActionEvent)
     }
 
-//    setInputArea(getLength)
+    setInputArea(getLength)
   }
 
   def complete(): Unit =
   {
-    log.debug("complete({})",input)
+    log.info("complete({})",input)
 
     if (onComplete != null)
     {
@@ -389,6 +391,24 @@ class Console extends TextArea with Logging
     }
   }
 
+  override
+  def deletePreviousChar(): Bool =
+  {
+    log.debug("deletePreviousChar()")
+
+    when (super.deletePreviousChar())
+    {}
+  }
+
+  override
+  def deleteNextChar(): Bool =
+  {
+    log.debug("deleteNextChar()")
+
+    when (super.deleteNextChar())
+    {}
+  }
+
   def deletePreviousWord(): Unit =
   {
     log.debug("deletePreviousWord()")
@@ -405,24 +425,6 @@ class Console extends TextArea with Logging
     val c = getCaretPosition
     endOfNextWord()
     deleteText(c,getCaretPosition)
-  }
-
-  override
-  def deleteNextChar(): Bool =
-  {
-    log.debug("deleteNextChar()")
-
-    when (super.deleteNextChar())
-    {}
-  }
-
-  override
-  def deletePreviousChar(): Bool =
-  {
-    log.debug("deletePreviousChar()")
-
-    when (super.deletePreviousChar())
-    {}
   }
 
   def cutPreviousWord(): Unit =
@@ -452,11 +454,6 @@ class Console extends TextArea with Logging
     cut()
   }
 
-  def swapWord():  Unit =
-  {
-    log.debug("swapWord()")
-  }
-
   def swapChars(): Unit =
   {
     log.debug("swapChars()")
@@ -482,37 +479,14 @@ class Console extends TextArea with Logging
     }
   }
 
-  def upperWord(): Unit =
+  def swapWord():  Unit =
   {
-    log.debug("upperWord()")
-
-    val c = getCaretPosition
-
-    if (c < getLength)
-    {
-      endOfNextWord()
-      val e = getCaretPosition
-      replaceText(c,e,getText(c,e).toUpperCase)
-    }
+    log.debug("swapWord()")
   }
 
-  def lowerWord(): Unit =
+  def xformChar(xform: String ⇒ String): Unit =
   {
-    log.debug("lowerWord()")
-
-    val c = getCaretPosition
-
-    if (c < getLength)
-    {
-      endOfNextWord()
-      val e = getCaretPosition
-      replaceText(c,e,getText(c,e).toLowerCase)
-    }
-  }
-
-  def upperChar(): Unit =
-  {
-    log.debug("upperChar()")
+    log.debug("transformChar()")
 
     var c = getCaretPosition
 
@@ -521,46 +495,48 @@ class Console extends TextArea with Logging
       endOfNextWord()
       previousWord()
       c = getCaretPosition
-      replaceText(c,c+1,getText(c,c+1).toUpperCase)
+      replaceText(c,c+1,xform(getText(c,c+1)))
       endOfNextWord()
     }
   }
 
-  def clearLine(): Unit =
+  def xformWord(xform: String ⇒ String): Unit =
   {
-    log.debug("clearLine({},{})",m_input,getLength)
+    log.debug("transformWord()")
 
-    deleteText(m_input,getLength)
-    m_toggle = m_input
+    val c = getCaretPosition
+
+    if (c < getLength)
+    {
+      endOfNextWord()
+      val e = getCaretPosition
+      replaceText(c,e,xform(getText(c,e)))
+    }
   }
 
   def getHistory(index: ℕ): String =
   {
+    log.debug("getHistory({})",index)
+
     m_history(index % m_history.size)
   }
 
   def addHistory(command: String): Unit =
   {
+    log.debug("addHistory({})",command)
+
     m_history(m_latest % m_history.size) = command
     m_latest += 1
     m_cursor  = m_latest
   }
 
-  def previousHistory(): Unit =
+  def moveHistory(δ: Int): Unit =
   {
-    when (lo <= m_cursor -1)
-    {
-      m_cursor -=1
-    }
+    log.debug("moveHistory({})",δ)
 
-    input = getHistory(m_cursor)
-  }
-
-  def nextHistory(): Unit =
-  {
-    when (m_cursor < hi)
+    when (isBetween(m_cursor+δ,lo,hi))
     {
-      m_cursor += 1
+      m_cursor += δ
     }
 
     input = if (m_cursor < hi) getHistory(m_cursor) else ""
@@ -600,18 +576,6 @@ class Console extends TextArea with Logging
     m_latest
   }
 
-//  protected
-//  def getModifiers(e: KeyEvent): Symbol =
-//  {//⇧^⌥◆
-//    var                   s  = ""
-//    if (e.isShiftDown)    s += '⇧'
-//    if (e.isControlDown)  s += '^'
-//    if (e.isAltDown)      s += '⌥'
-//    if (e.isMetaDown)     s += '◆'
-//
-//    if (s.isEmpty()) '_ else Symbol(s)
-//  }
-
   protected
   def getKeyCombo(e: KeyEvent): (Symbol,KeyCode) =
   {//⇧^⌥◆
@@ -633,10 +597,10 @@ class Console extends TextArea with Logging
     beep()
   }
 
-  private
+  protected
   def setInputArea(input: ℕ): Unit =
   {
-    log.trace("setInputArea({})",input)
+    log.trace("setInputArea({},{})",m_prompt,input)
 
     m_input  = input
     m_toggle = input
@@ -712,6 +676,8 @@ class Console extends TextArea with Logging
 
    def moveCursor(δ: Int): Unit =
    {
+      log.debug("search.moveCursor()")
+
       when (isBetween(m_cursor + δ,0,m_matches.size-1))
       {
         m_cursor += δ
@@ -780,7 +746,7 @@ class Console extends TextArea with Logging
   /**
    *
    */
-  @inline private
+  @inline protected
   def isPrinting(char: Char): Bool =
   {
     isBetween(char,0x20,0x7E)
@@ -789,7 +755,7 @@ class Console extends TextArea with Logging
   /**
    *
    */
-  @inline private
+  @inline protected
   def defer[α](action: ⇒ α): Unit =
   {
     javafx.application.Platform.runLater(() => action)   //
@@ -804,7 +770,7 @@ class Console extends TextArea with Logging
    *
    * @return true - always.
    */
-  private
+  protected
   def isConsistent: Bool =
   {
     assert(isIncreasing(0,m_prompt,m_input,m_toggle,getLength))
