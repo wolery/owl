@@ -83,7 +83,6 @@ import util._
  *
  * 	- m_cursor				points into history buffer
  * 	- m_latest				insertion point for next command in hist buff
- * 	- m_search				holds current history search
  *  - m_history
  *
  * = Invariants =
@@ -140,7 +139,6 @@ class Console extends TextArea with Logging
 
   private var m_cursor : ℕ = 0                           // The history cursor
   private var m_latest : ℕ = 0                           //
-  private var m_search : Option[Search]  = None          //
   private val m_history: Buffer[String] = Buffer.fill(10)("")
 
   private val m_filters: Filters = Seq((KEY_PRESSED,onKeyPressed _),
@@ -244,7 +242,7 @@ class Console extends TextArea with Logging
   protected
   def onKeyTyped(e: KeyEvent): Unit =
   {
-    log.debug("onKeyTyped  ({})",e)
+    log.debug("onKeyTyped  {} [{}]",getKeyCombo(e),e.getCharacter,"")
 
     if (e.isAltDown)
     {
@@ -255,7 +253,7 @@ class Console extends TextArea with Logging
   protected
   def onKeyPressed(e: KeyEvent): Unit =
   {
-    log.debug("onKeyPressed({})",e)
+    log.debug("onKeyPressed{} [{}]",getKeyCombo(e),e.getCharacter,"")
 
     import KeyCode._
 
@@ -556,9 +554,7 @@ class Console extends TextArea with Logging
   {
     log.debug("searchHistory()")
 
-    assert(m_search.isEmpty)
-
-    m_search = Some(new Search)
+    new Search
   }
 
   protected
@@ -654,7 +650,6 @@ class Console extends TextArea with Logging
       m_cursor = m_backup._3
 
       swap(filters,m_filters)
-      m_search = None
     }
 
     def update(string: String = "") : Unit =
@@ -674,9 +669,9 @@ class Console extends TextArea with Logging
       refine()
     }
 
-   def moveCursor(δ: Int): Unit =
+   def moveCursor(δ: ℤ): Unit =
    {
-      log.debug("search.moveCursor()")
+      log.debug("search.moveCursor({})",δ)
 
       when (isBetween(m_cursor + δ,0,m_matches.size-1))
       {
@@ -708,7 +703,7 @@ class Console extends TextArea with Logging
 
     def onKeyPressed(e: KeyEvent): Unit =
     {
-      log.debug("onKeyPressed{}",getKeyCombo(e))
+      log.debug("onKeyPressed{} [{}]",getKeyCombo(e),e.getCharacter,"")
 
       import KeyCode._
 
@@ -720,7 +715,7 @@ class Console extends TextArea with Logging
 
         case ('^,G)                      ⇒ cancel(m_backup._2)
         case ('_,ENTER)                  ⇒ cancel(input);accept()
-        case (_,TAB|UP|DOWN|LEFT|RIGHT)  ⇒ cancel(input)
+        case (_,TAB|UP|DOWN|LEFT|RIGHT|ESCAPE)  ⇒ cancel(input)
 
         case  _                          ⇒
       }
@@ -730,7 +725,7 @@ class Console extends TextArea with Logging
 
     def onKeyTyped(e: KeyEvent): Unit =
     {
-      log.debug("onKeyTyped  ({})",e.getCharacter)
+      log.debug("onKeyTyped  {} [{}]",getKeyCombo(e),e.getCharacter,"")
 
       val c = e.getCharacter
 
@@ -746,7 +741,7 @@ class Console extends TextArea with Logging
   /**
    *
    */
-  @inline protected
+  @inline private
   def isPrinting(char: Char): Bool =
   {
     isBetween(char,0x20,0x7E)
@@ -755,10 +750,10 @@ class Console extends TextArea with Logging
   /**
    *
    */
-  @inline protected
+  @inline private
   def defer[α](action: ⇒ α): Unit =
   {
-    javafx.application.Platform.runLater(() => action)   //
+    javafx.application.Platform.runLater(() ⇒ action)   //
   }
 
   /**
@@ -770,7 +765,7 @@ class Console extends TextArea with Logging
    *
    * @return true - always.
    */
-  protected
+  private
   def isConsistent: Bool =
   {
     assert(isIncreasing(0,m_prompt,m_input,m_toggle,getLength))
