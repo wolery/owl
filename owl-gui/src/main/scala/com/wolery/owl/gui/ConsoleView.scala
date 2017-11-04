@@ -25,6 +25,7 @@ import javafx.event.ActionEvent
 import javafx.scene.Scene
 import javafx.stage.Stage
 import preferences.{ prompt1, prompt2 }
+import scala.util.Try
 
 //****************************************************************************
 
@@ -53,7 +54,7 @@ class ConsoleView extends Logging
     else
     if (m_partial.startsWith(":"))
     {
-      m_console.addHistory(m_partial)
+      m_console.addCommand(m_partial)
       onCommand(m_partial)
       m_console.appendText(prompt1())
       m_partial = ""
@@ -66,7 +67,7 @@ class ConsoleView extends Logging
     }
     else
     {
-      m_console.addHistory(m_partial)
+      m_console.addCommand(m_partial)
       m_console.appendText(prompt1())
       m_partial = ""
     }
@@ -80,6 +81,10 @@ class ConsoleView extends Logging
   def onCommand(command: String): Unit =
   {
     val arguments = command.split("\\s+")
+
+// def int   (i: ℕ,default: ℤ)     : ℤ      = Try(arguments(i).toInt)   .getOrElse(default)
+// def real  (i: ℕ,default: ℝ)     : ℝ      = Try(arguments(i).toDouble).getOrElse(default)
+// def string(i: ℕ,default: String): String = Try(arguments(i)).getOrElse(default)
 
     arguments(0) match
     {
@@ -101,11 +106,8 @@ class ConsoleView extends Logging
   {
     log.debug("onHelp({})",arguments)
 
-    val help =
-    """
+    val help = """
       |:help [command]          print this summary or command-specific help
-      |:abc
-      |:abc
       |:history [num]           show the history (optional num is commands to show)
     """.stripMargin
 
@@ -116,7 +118,7 @@ class ConsoleView extends Logging
   {
     log.debug("onHistory({})",arguments)
 
-    m_console.showHistory()
+    m_console.listCommands()
   }
 
   def onClose(): Unit =
