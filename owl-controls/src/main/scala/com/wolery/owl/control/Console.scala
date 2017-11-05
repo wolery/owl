@@ -30,66 +30,94 @@ import scala.collection.mutable.Buffer
 import util._
 
 /**
- * An embeddable command line console control implemented as a TextArea.
+ * A command line console control implemented as a JavaFX TextArea control.
  *
  * = Overview =
  *
  * The Console control partitions the contents of its inherited text area into
- * three distinct disjoint areas:
+ * three disjoint areas:
  *
- *  - Output Area
- *  - Prompt
- *  - Input Area
+ *  - Output Area  A read-only area of text that extends from the beginning of
+ *                 the underlying TextArea up to the prompt. It is intended to
+ *                 record the output of whatever commands have previously been
+ *                 accepted, and is modified by the client either by using the
+ *                 appendText() API,  or by appending to the public ''writer''
+ *                 property.
  *
- * Partitions the contents of the underlying text area into 3 disjoint area:
- *  - output area - a read only view of text previously written
- *  - prompt			 -
- *  - input  		 - an editable buffer in which the user prepares the next
- *  								 command. emacs-like key bindings, history mechanism etc.
+ *  - Prompt       A read-only area of text that  extends from just beyond the
+ *                 output area up to the input area. It is intended to display
+ *                 some sort of short prompt string, and is assigned to by the
+ *                 client either by appending to the output area as above,  or
+ *                 else by assigning to the public ''prompt'' property.
  *
- * Example:
+ *  - Input Area   An editable area of text  that lies  immediately beyond the
+ *                 prompt. The user interacts with the characters in this area
+ *                 directly by entering keystrokes in the usual way, until the
+ *                 input is finally accepted by typing the ENTER key, at which
+ *                 point an ActionEvent is fired. The input area is exposed to
+ *                 the client through the mutable ''input'' property.
  *
- * 	Output|PromptInput
+ * The client - usually a Controller of some sort -  registers interest in the
+ * acceptance of an input line by assigning a handler to the ''onAccept'' bean
+ * property.
  *
- * m_prompt  =  7
- * m_input   = 13
- * getLength = 18
+ * The client would typically respond to the event by processing the new input
+ * string in some way, appending text to the output area, recording the string
+ * in the command history, and finally by updating the prompt string, ready to
+ * edit another line of input.
  *
- * = Events =
+ * An ActionEvent is also fired when the TAB key is pressed. This ''Complete''
+ * event gives the controller an opportunity  to prompt the user with possible
+ * completions of the current partially edited command line.
  *
- *  - Accept					action event fired when command line accepted
- *  - Complete				action event fired when tab completion requested
+ * = History =
+ *
+ * The control maintains an array of strings known as the ''command history''.
+ * Shell-style key bindings manipulate a cursor into this array, and enable an
+ * element to be quickly summoned into the input area for further editing. The
+ * history can also be incrementally searched for strings that match a certain
+ * character pattern.
+ *
+ * The maximum number strings held in the command history can be specified via
+ * the 'History Size' bean property.
  *
  * = Bean Properties =
  *
- * 	 Visible in SceneBuilder
+ * The control exposes a number of bean properties that can be specified from
+ * within the Scene Builder application:
  *
- *  - History Size		size of command history buffer > 0
- *  - onAccept				event handler for Input action event
- *  - onComplete			event handler for Complete action event
+ *  - History Size  The maximum number of elements in the command history.
+ *  - onAccept      The event handler for the ''Accept''   ActionEvent.
+ *  - onComplete    The event handler for the ''Complete'' ActionEvent.
  *
- * = Properties =
+ * = Scala Properties =
  *
- *  - output					current contents of output region (read only)
- *  - prompt					current contents of prompt region
- *  - input					current contents of input  region
- *  - writer
+ * The control also exposes a number of ordinary Scala properties:
  *
- * = State =
+ *  - output        The current contents of the output area (read only).
+ *  - prompt        The current contents of the prompt area.
+ *  - input         The current contents of the input area.
+ *  - writer        A java.io.Writer that appends text to the output area.
  *
- *  - m_prompt				start of prompt region
- *  - m_input				start of input  region
- *  - m_toggle				el of input : m_input<=toggle<=etLength
+ * = Internals =
  *
- * 	- m_cursor				points into history buffer
- * 	- m_latest				insertion point for next command in hist buff
- *  - m_history
+ * The control maintains the following internal state variables:
  *
- * = Invariants =
+ *  - m_prompt      The start of prompt area.
+ *  - m_input       The start of the input area.
+ *  - m_toggle      The position of the caret  within the input area prior to
+ *                  toggling back to the start of the input area.
+ *  - m_period      The position of the caret  within the input area prior to
+ *                  summoning the final word of the previous command into the
+ *                  input area.
+ *  - m_cursor      The index into the command history of the current command.
+ *  - m_latest      The index into the command history of the most recent
+ *                  string to have been added.
+ *  - m_command     A cyclic array of previously accepted command strings.
+ *  - m_filters     The event filters that define the current key bindings and 
+ *                  so the effective behavior of the control.
  *
- *		0 <= m_prompt <= m_input  <= m_toggle <= getLength
- *	  0 <= m_cursor%hsize <= m_latest%hsize
- *
+ * @see    [[https://ss64.com/osx/syntax-bashkeyboard.html Bash Keyboard Shortcuts]]
  * @author Jonathon Bell
  */
 class Console extends TextArea with Logging
@@ -97,11 +125,19 @@ class Console extends TextArea with Logging
   @BeanProperty var onAccept  : EventHandler[ActionEvent] = _
   @BeanProperty var onComplete: EventHandler[ActionEvent] = _
 
+  /**
+   * TODO
+   */
   def getHistorySize: ℕ =
   {
     m_command.size
   }
 
+  /**
+   * TODO
+   *
+   * @param
+   */
   def setHistorySize(size: ℕ): Unit =
   {
     log.debug("setHistorySize({})",size)
@@ -242,94 +278,9 @@ class Console extends TextArea with Logging
     assert(isConsistent)                                 // Check consistency
   }
 
-  private
-  def onKeyTyped(e: KeyEvent): Unit =
-  {
-    log.debug("onKeyTyped  {} [{}]",getKeyCombo(e),e.getCharacter,"")
-
-    if (e.isAltDown)
-    {
-      e.consume()
-    }
-  }
-
-  private
-  def onKeyPressed(e: KeyEvent): Unit =
-  {
-    log.debug("onKeyPressed{} [{}]",getKeyCombo(e),e.getCharacter,"")
-
-    import KeyCode._                                     // For key code names
-
-    var period   = true
-    var consumed = true
-
-    getKeyCombo(e) match
-    {
-   // Cursor Movement:
-
-      case ('^,A|LEFT)      ⇒ home()
-      case ('^,E|RIGHT)     ⇒ end()
-      case ('^,F)           ⇒ forward()
-      case ('^,B)           ⇒ backward()
-      case ('⌥,F)           ⇒ endOfNextWord()
-      case ('⌥,B)           ⇒ previousWord()
-      case ('^,X)           ⇒ toggleHome()
-
-   // Selection
-
-      case ('⇧^,A|LEFT)     ⇒ selectHome()
-      case ('⇧^,E|RIGHT)    ⇒ selectEnd()
-
-   // Input Editing:
-
-      case ('⌥,BACK_SPACE)  ⇒ deletePreviousWord()
-      case ('⌥,D)           ⇒ deleteNextWord()
-      case ('^,D)           ⇒ deleteNextChar()
-      case ('^,H)           ⇒ deletePreviousChar()
-      case ('^,W)           ⇒ cutPreviousWord()
-      case ('^,K)           ⇒ cutToEnd()
-      case ('^,U)           ⇒ cutToHome()
-      case ('^,T)           ⇒ swapChars()
-      case ('^,Y)           ⇒ paste()
-      case ('⌥,U)           ⇒ xformWord(_.toUpperCase)
-      case ('⌥,L)           ⇒ xformWord(_.toLowerCase)
-      case ('⌥,C)           ⇒ xformChar(_.toUpperCase)
-
-   // Command History:
-
-      case ('⌥,R)           ⇒ cursor(0)
-      case ('^,P)|('_,UP)   ⇒ cursor(-1)
-      case ('^,N)|('_,DOWN) ⇒ cursor(+1)
-      case ('^,R)           ⇒ findCommand()
-      case ('⌥,PERIOD)      ⇒ lastWord(-1);period = false
-      case ('⌥,SLASH)       ⇒ lastWord(+1);period = false
-
-   // Events:
-
-      case ('_,ENTER)       ⇒ accept()
-      case ('_,TAB)         ⇒ complete()
-
-   // Disabled:
-
-      case ('◆, Z)          ⇒ unimplemented(e)           // undo
-      case ('⇧◆,Z)          ⇒ unimplemented(e)           // redo
-
-   // Anything Else...
-
-      case  _               ⇒ consumed = false
-    }
-
-    if (period)
-    {
-      m_period = None
-    }
-
-    if (consumed)
-    {
-      e.consume()
-    }
-  }
-
+  /**
+   * TODO
+   */
   def accept(): Unit =
   {
     log.info("accept({})",input)
@@ -344,6 +295,9 @@ class Console extends TextArea with Logging
     setInputArea(getLength)
   }
 
+  /**
+   * TODO
+   */
   def complete(): Unit =
   {
     log.info("complete({})",input)
@@ -354,6 +308,9 @@ class Console extends TextArea with Logging
     }
   }
 
+  /**
+   * TODO
+   */
   override
   def home(): Unit =
   {
@@ -364,6 +321,9 @@ class Console extends TextArea with Logging
     positionCaret(m_input)
   }
 
+  /**
+   * TODO
+   */
   override
   def forward(): Unit =
   {
@@ -377,6 +337,9 @@ class Console extends TextArea with Logging
     positionCaret(getCaretPosition) // clear selection
   }
 
+  /**
+   * TODO
+   */
   override
   def backward(): Unit =
   {
@@ -390,6 +353,9 @@ class Console extends TextArea with Logging
     positionCaret(getCaretPosition) // clear selection
   }
 
+  /**
+   * TODO
+   */
   def toggleHome(): Unit =
   {
     log.debug("toggleHome({})",m_toggle)
@@ -407,6 +373,9 @@ class Console extends TextArea with Logging
     }
   }
 
+  /**
+   * TODO
+   */
   override
   def deletePreviousChar(): Bool =
   {
@@ -416,6 +385,9 @@ class Console extends TextArea with Logging
     {}
   }
 
+  /**
+   * TODO
+   */
   override
   def deleteNextChar(): Bool =
   {
@@ -425,6 +397,9 @@ class Console extends TextArea with Logging
     {}
   }
 
+  /**
+   * TODO
+   */
   def deletePreviousWord(): Unit =
   {
     log.debug("deletePreviousWord()")
@@ -434,6 +409,9 @@ class Console extends TextArea with Logging
     deleteText(getCaretPosition,c)
   }
 
+  /**
+   * TODO
+   */
   def deleteNextWord(): Unit =
   {
     log.debug("deleteNextWord()")
@@ -443,6 +421,9 @@ class Console extends TextArea with Logging
     deleteText(c,getCaretPosition)
   }
 
+  /**
+   * TODO
+   */
   def cutPreviousWord(): Unit =
   {
     log.debug("cutPreviousWord()")
@@ -454,6 +435,9 @@ class Console extends TextArea with Logging
     }
   }
 
+  /**
+   * TODO
+   */
   def cutToEnd(): Unit =
   {
     log.debug("cutToEnd()")
@@ -462,6 +446,9 @@ class Console extends TextArea with Logging
     cut()
   }
 
+  /**
+   * TODO
+   */
   def cutToHome(): Unit =
   {
     log.debug("cutToHome()")
@@ -470,6 +457,9 @@ class Console extends TextArea with Logging
     cut()
   }
 
+  /**
+   * TODO
+   */
   def swapChars(): Unit =
   {
     log.debug("swapChars()")
@@ -495,11 +485,9 @@ class Console extends TextArea with Logging
     }
   }
 
-  def swapWord():  Unit =
-  {
-    log.debug("swapWord()")
-  }
-
+  /**
+   * TODO
+   */
   def xformChar(xform: String ⇒ String): Unit =
   {
     log.debug("transformChar()")
@@ -516,6 +504,9 @@ class Console extends TextArea with Logging
     }
   }
 
+  /**
+   * TODO
+   */
   def xformWord(xform: String ⇒ String): Unit =
   {
     log.debug("transformWord()")
@@ -530,6 +521,9 @@ class Console extends TextArea with Logging
     }
   }
 
+  /**
+   * TODO
+   */
   def addCommand(command: String): Unit =
   {
     log.debug("addCommand({})",command)
@@ -539,6 +533,9 @@ class Console extends TextArea with Logging
     m_cursor  = m_latest
   }
 
+  /**
+   * TODO
+   */
   def getCommand(index: ℕ): String =
   {
     log.debug("getCommand({})",index)
@@ -547,11 +544,11 @@ class Console extends TextArea with Logging
   }
 
   /**
-   *
+   * TODO
    */
   def cursor(δ: ℤ): Unit =
   {
-    log.debug("cursor({})",δ)                            // Trace our progress
+    log.debug("cursor({})",δ)                            // Trace our location
 
     when (commandRange.inclusive.contains(m_cursor + δ)) // Is still in range?
     {
@@ -570,32 +567,12 @@ class Console extends TextArea with Logging
    */
   def listCommands(count: ℕ = m_command.size,writer: Writer = this.writer): Unit =
   {
-    log.debug("listCommands()")                          // Trace our progress
+    log.debug("listCommands()")                          // Trace our location
 
     for (i ← commandRange.takeRight(count))              // For each command
     {
       writer.append(f"${i+1}%5d  ${getCommand(i)}%s\n")  // ...format command
     }
-  }
-
-  /**
-   * TODO
-   */
-  def revertCommand(): Unit =
-  {
-    log.debug("revertCommand({})",m_cursor)
-
-//    coursor()
-  }
-
-  /**
-   * TODO
-   */
-  def findCommand(): Unit =
-  {
-    log.debug("findCommand()")
-
-    new Search(prompt,input,m_filters)
   }
 
   /**
@@ -618,6 +595,16 @@ class Console extends TextArea with Logging
     }
 
     replaceText(m_period.get,c,m_command(m_cursor).split(" ").last)
+  }
+
+  /**
+   * TODO
+   */
+  def findCommand(): Unit =
+  {
+    log.debug("findCommand()")
+
+    new Search(prompt,input,m_filters)
   }
 
   /**
@@ -658,7 +645,7 @@ class Console extends TextArea with Logging
      */
     def cancel(string: String = old_prompt): Unit =
     {
-      log.debug("search.cancel({})",string)              // Trace our progress
+      log.debug("search.cancel({})",string)              // Trace our location
 
       prompt = old_prompt                                // Restore the prompt
       input  = string                                    // Restore the input
@@ -675,7 +662,7 @@ class Console extends TextArea with Logging
      */
     def update(string: String = "") : Unit =
     {
-      log.debug("search.update({})",string)              // Trace our progress
+      log.debug("search.update({})",string)              // Trace our location
 
       prompt = s"(reverse-i-search)'$m_pattern': "       // Update prompt area
       input  = string                                    // Update input area
@@ -689,7 +676,7 @@ class Console extends TextArea with Logging
      */
     def backspace(): Unit =
     {
-      log.debug("search.backspace()")                    // Trace our progress
+      log.debug("search.backspace()")                    // Trace our location
 
       m_pattern = m_pattern.dropRight(1)                 // Drop one character
 
@@ -703,7 +690,7 @@ class Console extends TextArea with Logging
      */
     def cursor(δ: ℤ): Unit =
     {
-      log.debug("search.moveCursor({})",δ)               // Trace our progress
+      log.debug("search.moveCursor({})",δ)               // Trace our location
 
       when (m_matches.isDefinedAt(m_cursor + δ))         // Is still in range?
       {
@@ -722,7 +709,7 @@ class Console extends TextArea with Logging
      */
     def refine(chars: String = ""): Unit =
     {
-      log.debug("search.refine({})",chars)               // Trace our progress
+      log.debug("search.refine({})",chars)               // Trace our location
 
       m_pattern+= chars                                  // Update the pattern
 
@@ -785,15 +772,108 @@ class Console extends TextArea with Logging
 
       e.consume()                                        // We have handled it
     }
+  } /************************************************************************/
+
+  /**
+   * TODO
+   */
+  private
+  def onKeyTyped(e: KeyEvent): Unit =
+  {
+    log.debug("onKeyTyped  {} [{}]",getKeyCombo(e),e.getCharacter,"")
+
+    if (e.isAltDown)
+    {
+      e.consume()
+    }
   }
 
   /**
+   * TODO
+   */
+  private
+  def onKeyPressed(e: KeyEvent): Unit =
+  {
+    log.debug("onKeyPressed{} [{}]",getKeyCombo(e),e.getCharacter,"")
+
+    import KeyCode._                                     // For key code names
+
+    var period   = true
+    var consumed = true
+
+    getKeyCombo(e) match
+    {
+   // Cursor Movement:
+
+      case ('^,A|LEFT)      ⇒ home()
+      case ('^,E|RIGHT)     ⇒ end()
+      case ('^,F)           ⇒ forward()
+      case ('^,B)           ⇒ backward()
+      case ('⌥,F)           ⇒ endOfNextWord()
+      case ('⌥,B)           ⇒ previousWord()
+      case ('^,X)           ⇒ toggleHome()
+
+   // Selection
+
+      case ('⇧^,A|LEFT)     ⇒ selectHome()
+      case ('⇧^,E|RIGHT)    ⇒ selectEnd()
+
+   // Input Editing:
+
+      case ('⌥,BACK_SPACE)  ⇒ deletePreviousWord()
+      case ('⌥,D)           ⇒ deleteNextWord()
+      case ('^,D)           ⇒ deleteNextChar()
+      case ('^,H)           ⇒ deletePreviousChar()
+      case ('^,W)           ⇒ cutPreviousWord()
+      case ('^,K)           ⇒ cutToEnd()
+      case ('^,U)           ⇒ cutToHome()
+      case ('^,T)           ⇒ swapChars()
+      case ('^,Y)           ⇒ paste()
+      case ('⌥,U)           ⇒ xformWord(_.toUpperCase)
+      case ('⌥,L)           ⇒ xformWord(_.toLowerCase)
+      case ('⌥,C)           ⇒ xformChar(_.toUpperCase)
+
+   // Command History:
+
+      case ('⌥,R)           ⇒ cursor(0)
+      case ('^,P)|('_,UP)   ⇒ cursor(-1)
+      case ('^,N)|('_,DOWN) ⇒ cursor(+1)
+      case ('^,R)           ⇒ findCommand()
+      case ('⌥,PERIOD)      ⇒ lastWord(-1);period = false
+      case ('⌥,SLASH)       ⇒ lastWord(+1);period = false
+
+   // Events:
+
+      case ('_,ENTER)       ⇒ accept()
+      case ('_,TAB)         ⇒ complete()
+
+   // Disabled:
+
+      case ('◆ | '⇧◆,Z)     ⇒
+
+   // Anything Else...
+
+      case  _               ⇒ consumed = false
+    }
+
+    if (period)
+    {
+      m_period = None
+    }
+
+    if (consumed)
+    {
+      e.consume()
+    }
+  }
+
+ /**
    * Returns true if the given character is one we consider 'searchable'. This
    * currently includes the ASCII printing characters,  but could be broadened
    * to include other Unicode symbols in the future.
    *
    * @param  character  A character to consider for inclusion in the current
-   * 									 search pattern.
+   *                    search pattern.
    *
    * @return `true` if the given character is on that can be searched for.
    */
@@ -823,7 +903,7 @@ class Console extends TextArea with Logging
   private
   def setInputArea(input: ℕ): Unit =
   {
-    log.trace("setInputArea({},{})",m_prompt,input)      // Trace our progress
+    log.trace("setInputArea({},{})",m_prompt,input)      // Trace our location
 
     m_input  = input                                     // Set up input area
     m_toggle = input                                     // Clear caret toggle
@@ -845,6 +925,9 @@ class Console extends TextArea with Logging
       m_latest - m_command.size until m_latest
   }
 
+  /**
+   * TODO
+   */
   private
   def getKeyCombo(e: KeyEvent): (Symbol,KeyCode) =
   {//⇧^⌥◆
@@ -860,17 +943,7 @@ class Console extends TextArea with Logging
 
   /**
    * TODO
-   *
-   * @param  e  The keystroke to process.
    */
-  private
-  def unimplemented(e: KeyEvent): Unit =
-  {
-    log.debug("unimplemented({})",getKeyCombo(e))        // Trace our location
-
-    beep()                                               //
-  }
-
   private
   def when(condition: Bool)(action: ⇒ Unit): Bool =
   {
