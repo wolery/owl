@@ -136,6 +136,7 @@ class Console extends TextArea with Logging
   private var m_prompt : ℕ = 0                           // Start of prompt
   private var m_input  : ℕ = 0                           // Start of input
   private var m_toggle : ℕ = 0                           // Saved caret point
+  private var m_period : Option[ℕ] = None                           // Saved caret point
 
   private var m_cursor : ℕ = 0                           // The history cursor
   private var m_latest : ℕ = 0                           //
@@ -257,21 +258,27 @@ class Console extends TextArea with Logging
   {
     log.debug("onKeyPressed{} [{}]",getKeyCombo(e),e.getCharacter,"")
 
-    import KeyCode._
+    import KeyCode._                                     // For key code names
 
-    var consumed = true;
+    var period   = true
+    var consumed = true
 
     getKeyCombo(e) match
     {
    // Cursor Movement:
 
-      case ('^,A)           ⇒ home()
-      case ('^,E)           ⇒ end()
+      case ('^,A|LEFT)      ⇒ home()
+      case ('^,E|RIGHT)     ⇒ end()
       case ('^,F)           ⇒ forward()
       case ('^,B)           ⇒ backward()
-      case ('⌥,F)|('^,RIGHT)⇒ endOfNextWord()
-      case ('⌥,B)|('^,LEFT) ⇒ previousWord()
+      case ('⌥,F)           ⇒ endOfNextWord()
+      case ('⌥,B)           ⇒ previousWord()
       case ('^,X)           ⇒ toggleHome()
+
+   // Selection
+
+      case ('⇧^,A|LEFT)     ⇒ selectHome()
+      case ('⇧^,E|RIGHT)    ⇒ selectEnd()
 
    // Input Editing:
 
@@ -284,18 +291,18 @@ class Console extends TextArea with Logging
       case ('^,U)           ⇒ cutToHome()
       case ('^,T)           ⇒ swapChars()
       case ('^,Y)           ⇒ paste()
-      case ('⌥,U)           ⇒ xformWord(_.toUpperCase)   // unreachable on OSX
+      case ('⌥,U)           ⇒ xformWord(_.toUpperCase)
       case ('⌥,L)           ⇒ xformWord(_.toLowerCase)
       case ('⌥,C)           ⇒ xformChar(_.toUpperCase)
-      case ('⌥,R)           ⇒ cancelEdit()
 
    // Command History:
 
+      case ('⌥,R)           ⇒ cursor(0)
       case ('^,P)|('_,UP)   ⇒ cursor(-1)
       case ('^,N)|('_,DOWN) ⇒ cursor(+1)
       case ('^,R)           ⇒ findCommand()
-      case ('⌥,PERIOD)      ⇒ lastArgument(-1)
-      case ('⌥,SLASH)       ⇒ lastArgument(+1)
+      case ('⌥,PERIOD)      ⇒ lastWord(-1);period = false
+      case ('⌥,SLASH)       ⇒ lastWord(+1);period = false
 
    // Events:
 
@@ -310,6 +317,11 @@ class Console extends TextArea with Logging
    // Anything Else...
 
       case  _               ⇒ consumed = false
+    }
+
+    if (period)
+    {
+      m_period = None
     }
 
     if (consumed)
@@ -361,6 +373,8 @@ class Console extends TextArea with Logging
     {
       super.forward()
     }
+
+    positionCaret(getCaretPosition) // clear selection
   }
 
   override
@@ -372,6 +386,8 @@ class Console extends TextArea with Logging
     {
       super.backward()
     }
+
+    positionCaret(getCaretPosition) // clear selection
   }
 
   def toggleHome(): Unit =
@@ -565,6 +581,16 @@ class Console extends TextArea with Logging
   /**
    * TODO
    */
+  def revertCommand(): Unit =
+  {
+    log.debug("revertCommand({})",m_cursor)
+
+//    coursor()
+  }
+
+  /**
+   * TODO
+   */
   def findCommand(): Unit =
   {
     log.debug("findCommand()")
@@ -575,7 +601,7 @@ class Console extends TextArea with Logging
   /**
    * TODO Restore the final argument of the previous
    */
-  def lastArgument(δ: ℤ): Unit =
+  def lastWord(δ: ℤ): Unit =
   {
     log.debug("lastArgument({})",m_cursor)
 
@@ -586,12 +612,12 @@ class Console extends TextArea with Logging
 
     val c = getCaretPosition
 
-    if (m_toggle == m_input)
+    if (m_period.isEmpty)
     {
-      m_toggle = c
+      m_period = Some(c)
     }
 
-    replaceText(m_toggle,c,m_command(m_cursor).split(" ").last)
+    replaceText(m_period.get,c,m_command(m_cursor).split(" ").last)
   }
 
   /**
@@ -801,6 +827,8 @@ class Console extends TextArea with Logging
 
     m_input  = input                                     // Set up input area
     m_toggle = input                                     // Clear caret toggle
+    m_period = None                                      // Clear insert point
+    m_cursor = m_latest
 
     assert(isConsistent)                                 // Check consistency
   }
@@ -830,12 +858,17 @@ class Console extends TextArea with Logging
     if (s.isEmpty()) ('_,c) else (Symbol(s),c)
   }
 
+  /**
+   * TODO
+   *
+   * @param  e  The keystroke to process.
+   */
   private
   def unimplemented(e: KeyEvent): Unit =
   {
-    log.debug("unimplemented({})",getKeyCombo(e))
+    log.debug("unimplemented({})",getKeyCombo(e))        // Trace our location
 
-    beep()
+    beep()                                               //
   }
 
   private
@@ -853,11 +886,17 @@ class Console extends TextArea with Logging
     condition
   }
 
+  /**
+   * Swap the KeyEvent
+   *
+   * @param  was  The current KeyEvent filters handling our key events.
+   * @param  now  The new KeyEvent filters that will handle future key events.
+   */
   private
   def swap(was: Filters,now: Filters): Unit = defer
   {
-    was.foreach{case (t,h) ⇒ removeEventFilter(t,h)}
-    now.foreach{case (t,h) ⇒ addEventFilter   (t,h)}
+    was.foreach{case (t,f) ⇒ removeEventFilter(t,f)}     // Remove old filters
+    now.foreach{case (t,f) ⇒ addEventFilter   (t,f)}     // Append new filters
   }
 
   /**
