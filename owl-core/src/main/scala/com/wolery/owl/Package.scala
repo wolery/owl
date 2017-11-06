@@ -47,7 +47,7 @@ package object owl
   type Name = String
 
   /**
-   * Extends the boolean type with additional syntax.
+   * Extends the boolean type with additional methods.
    *
    * @param  a  A truth value.
    * @param  b  A truth value.
@@ -55,14 +55,14 @@ package object owl
   implicit final
   class BoolEx(val a: Bool) extends AnyVal
   {
-    def iff    (b:  Bool): Bool =  a == b
-    def implies(b: ⇒Bool): Bool = !a || b
+    def iff    (b:   Bool): Bool =  a == b
+    def implies(b: ⇒ Bool): Bool = !a || b
   }
 
   /**
-   * Extends partially ordered types with additional syntax.
+   * Extends partially ordered types with additional methods.
    *
-   * The variable α ranges over instances of the type class PartialOrdering.
+   * The variable `α` ranges over instances of the type class PartialOrdering.
    *
    * @tparam α  An instance of the type class PartialOrdering.
    * @param  a  A value of type α.
@@ -79,9 +79,9 @@ package object owl
   }
 
   /**
-   * Extends ordered types with additional syntax.
+   * Extends ordered types with additional methods.
    *
-   * The variable α ranges over instances of the type class Ordering.
+   * The variable `α` ranges over instances of the type class Ordering.
    *
    * @tparam α  An instance of the type class Ordering.
    * @param  a  A value of type α.
@@ -90,24 +90,25 @@ package object owl
   implicit final
   class OrderingEx[α](a: α)(implicit ε: Ordering[α])
   {
-    def max(b: α): α = ε.max(a,b)
-    def min(b: α): α = ε.min(a,b)
+    def max      (b: α)       : α    = ε.max(a,b)
+    def min      (b: α)       : α    = ε.min(a,b)
+    def isBetween(lo: α,hi: α): Bool = ε.lteq(lo,a) && ε.lteq(a,hi)
   }
 
   /**
-   * Extends the type Set[ε] with additional syntax.
+   * Extends the type `Set[ε]` with additional methods.
    *
-   * Allows us to refer to the methods of Set[ε] by their traditional symbolic
-   * names:
+   * Allows us to refer to the methods of class `Set[ε]` by their traditional
+   * symbolic names:
    *
-   *  - \  set difference
-   *  - ∪  set union
-   *  - ∩  set intersection
-   *  - ⊖  symmetric difference
-   *  - ⊂  set inclusion (proper)
-   *  - ⊆  set inclusion
-   *  - ∈  set membership
-   *  - ∅  the empty set
+   *  - `\`  set difference
+   *  - `∪`  set union
+   *  - `∩`  set intersection
+   *  - `⊖`  symmetric difference
+   *  - `⊂`  set inclusion (proper)
+   *  - `⊆`  set inclusion
+   *  - `∈`  set membership
+   *  - `∅`  the empty set
    *
    * @tparam ε  The type of an element.
    * @param  s  A set of elements.
@@ -134,7 +135,7 @@ package object owl
   }
 
   /**
-   * Extends the element type ε with additional syntax.
+   * Extends the element type `ε` with additional methods.
    *
    * @tparam ε  The type of an element.
    * @param  s  A set of elements.
