@@ -35,6 +35,7 @@ trait utilities
    * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
    *         Unicode subscripts and superscripts (Wikipedia)]]
    */
+  final
   def subscript(c: Char): Char = c match
   {
     case '-'              ⇒ '₋'
@@ -59,6 +60,7 @@ trait utilities
    * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
    *         Unicode subscripts and superscripts (Wikipedia)]]
    */
+  final
   def superscript(c: Char): Char = c match
   {
     case '1'              ⇒ '¹'
@@ -86,6 +88,7 @@ trait utilities
    *
    * @return A superscripted version of the character string `s`.
    */
+  final
   def subscript(s: String): String = s.map(subscript)
 
   /**
@@ -101,6 +104,7 @@ trait utilities
    *
    * @return A superscripted version of the character string `s`.
    */
+  final
   def superscript(s: String): String = s.map(superscript)
 
   /**
@@ -114,6 +118,7 @@ trait utilities
    *
    * @return `true` if `v` lies within the closed interval [`lo`, `hi`].
    */
+  final
   def isBetween[α: Ordering](v: α,lo: α,hi: α): Bool =
   {
     assert(lo <= hi)                                     // Validate arguments
@@ -135,6 +140,7 @@ trait utilities
    * @return `true` if the elements of `iterable` are in order with respect to
    *         the predicate `compare`.
    */
+  final
   def isMonotonic[α](iterable: Iterable[α])(compare: (α,α) ⇒ Bool): Bool =
   {
     val (i,j) = iterable.iterator.duplicate              // Get two iterators
@@ -155,6 +161,7 @@ trait utilities
    *
    * @return `true` if the elements `iterable` are non-decreasing.
    */
+  final
   def isIncreasing[α: Ordering](sequence: α*): Bool =
   {
     isMonotonic(sequence)(_ <= _)                        // Is non decreasing?
@@ -168,6 +175,7 @@ trait utilities
    *
    * @return `true` if the elements `iterable` are non-increasing.
    */
+  final
   def isDecreasing[α: Ordering](sequence: α*): Bool =
   {
     isMonotonic(sequence)(_ >= _)                        // Is non increasing?
@@ -180,6 +188,7 @@ trait utilities
    *
    * @return `true` if the integer `i` is a natural power of 2.
    */
+  final
   def isPowerOf2(i: ℤ): Bool =
   {
     i > 0 && (i & (i-1)) == 0                            // Mask off with i-1
@@ -196,6 +205,7 @@ trait utilities
    *
    * @return The value `v`, clamped to lie within the closed interval [`lo`, `hi`].
    */
+  final
   def clamp[α: Ordering](lo: α,v: α,hi: α): α =
   {
     assert(lo <= hi);                                    // Validate arguments
@@ -223,6 +233,7 @@ trait utilities
    * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation
    *         (Wikipedia)]]
    */
+  final
   def mod(i: ℤ,n: ℕ): ℕ =
   {
     assert(n > 0,"non-positive modulus")                 // Validate argument
@@ -244,6 +255,7 @@ trait utilities
    * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation
    *         (Wikipedia)]]
    */
+  final
   def mod12(i: ℤ): ℕ =
   {
     val r = i % 12;                                      // Compute remainder
@@ -276,6 +288,7 @@ trait utilities
    * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift
    *         (Wikipedia)]]
    */
+  final
   def rol12(bits: Int,by: ℤ): Int =
   {
     assert((bits & ~0xFFF) == 0,"extraneous bits")       // Validate argument
@@ -310,6 +323,7 @@ trait utilities
    * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift
    *         (Wikipedia)]]
    */
+  final
   def ror12(bits: Int,by: ℤ): Int =
   {
     assert((bits & ~0xFFF) == 0,"extraneous bits")       // Validate argument
@@ -323,6 +337,7 @@ trait utilities
     * Emits an audible 'beep' that depends upon the native system settings and
     * hardware capabilities.
     */
+  final
   def beep(): Unit =
   {
     java.awt.Toolkit.getDefaultToolkit.beep()            // Delegate to AWT
