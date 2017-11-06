@@ -23,15 +23,17 @@ package util
 trait utilities
 {
   /**
-   * Returns a subscripted version of the given character ''c'' if such a code
-   * point is present in the Unicode standard, and ''c'' otherwise.
+   * Returns a subscripted version of the given character if such a code point
+   * is present in the Unicode standard, and the given character otherwise.
    *
    * Subscripted versions exist for the full set of Arabic numerals.
    *
    * @param  c  An arbitrary character.
    *
-   * @return The subscripted version of ''c'', if defined by Unicode, otherwise ''c''.
-   * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts Unicode subscripts and superscripts (Wikipedia)]]
+   * @return The subscripted version of `c`, if defined by Unicode, otherwise
+   *         `c`.
+   * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
+   *         Unicode subscripts and superscripts (Wikipedia)]]
    */
   def subscript(c: Char): Char = c match
   {
@@ -45,15 +47,17 @@ trait utilities
   }
 
   /**
-   * Returns a superscripted version of the given character ''c'' if such a code
-   * point is present in the Unicode standard, and ''c'' otherwise.
+   * Returns a superscripted version of the given character if such a code point
+   * is present in the Unicode standard, and the given character otherwise.
    *
    * Superscripted versions exist for the full set of Arabic numerals.
    *
    * @param  c  An arbitrary character.
    *
-   * @return The superscripted version of the character ''c'', if defined by Unicode, otherwise ''c''.
-   * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts Unicode subscripts and superscripts (Wikipedia)]]
+   * @return The superscripted version of the character `c`, if defined by Unicode,
+   *         otherwise `c`.
+   * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
+   *         Unicode subscripts and superscripts (Wikipedia)]]
    */
   def superscript(c: Char): Char = c match
   {
@@ -80,7 +84,7 @@ trait utilities
    *
    * @param  s  A string of characters.
    *
-   * @return A superscripted version of the character string ''s''.
+   * @return A superscripted version of the character string `s`.
    */
   def subscript(s: String): String = s.map(subscript)
 
@@ -93,23 +97,22 @@ trait utilities
    *    superscript("A13")  =  "A¹³"
    * }}}
    *
-   * @param  s A string of characters.
+   * @param  s  A string of characters.
    *
-   * @return A superscripted version of the character string ''s''.
+   * @return A superscripted version of the character string `s`.
    */
   def superscript(s: String): String = s.map(superscript)
 
   /**
-   * Returns true if the value ''v'' lies within the closed interval [''lo'',
-   * ''hi''].
+   * Returns true if the value `v` lies within the closed interval [`lo`, `hi`].
    *
-   * By 'closed' we mean that the interval includes its bounds.
+   * By 'closed' we mean that the interval includes its own bounds.
    *
    * @param  v   The value to test for inclusion in the closed interval.
    * @param  lo  The lower bound of the closed interval.
    * @param  hi  The upper bound of the closed interval.
    *
-   * @return True if ''v'' lies within the closed interval [''lo'',''hi''].
+   * @return `true` if `v` lies within the closed interval [`lo`, `hi`].
    */
   def isBetween[α: Ordering](v: α,lo: α,hi: α): Bool =
   {
@@ -127,10 +130,10 @@ trait utilities
    *
    * @param  iterable  The collection of elements to examine.
    * @param  compare   The binary predicate with which to compare consecutive
-   * 									pairs of elements.
+   *                   pairs of elements.
    *
-   * @return true if the elements of ''iterable'' are in order with respect to
-   *         the predicate ''compare''.
+   * @return `true` if the elements of `iterable` are in order with respect to
+   *         the predicate `compare`.
    */
   def isMonotonic[α](iterable: Iterable[α])(compare: (α,α) ⇒ Bool): Bool =
   {
@@ -150,7 +153,7 @@ trait utilities
    *
    * @param  iterable  The collection of elements to examine.
    *
-   * @return true if the elements ''iterable'' are non-decreasing.
+   * @return `true` if the elements `iterable` are non-decreasing.
    */
   def isIncreasing[α: Ordering](sequence: α*): Bool =
   {
@@ -163,7 +166,7 @@ trait utilities
    *
    * @param  iterable  The collection of elements to examine.
    *
-   * @return true if the elements ''iterable'' are non-increasing.
+   * @return `true` if the elements `iterable` are non-increasing.
    */
   def isDecreasing[α: Ordering](sequence: α*): Bool =
   {
@@ -171,11 +174,11 @@ trait utilities
   }
 
   /**
-   * Returns true if the integer ''i'' is a natural power of 2.
+   * Returns true if the integer `i` is a natural power of 2.
    *
    * @param  i  An arbitrary integer.
    *
-   * @return True if the integer ''i'' is a natural power of 2.
+   * @return `true` if the integer `i` is a natural power of 2.
    */
   def isPowerOf2(i: ℤ): Bool =
   {
@@ -183,14 +186,15 @@ trait utilities
   }
 
   /**
-   * Clamp the given value to lie within the closed interval [''lo'', ''hi''].
+   * Clamp the given value to lie within the closed interval [`lo`, `hi`].
    *
-   * @param lo  The lower bound of the range to which ''v'' is clamped.
+   * By 'closed' we mean that the interval includes its own bounds.
+   *
+   * @param lo  The lower bound of the range to which `v` is clamped.
    * @param v   The value to be clamped.
-   * @param hi  The upper bound of the range to which ''v'' is clamped.
+   * @param hi  The upper bound of the range to which `v` is clamped.
    *
-   * @return The value ''v'', clamped to lie within the closed interval
-   *         [''lo'', ''hi''].
+   * @return The value `v`, clamped to lie within the closed interval [`lo`, `hi`].
    */
   def clamp[α: Ordering](lo: α,v: α,hi: α): α =
   {
@@ -206,17 +210,18 @@ trait utilities
   }
 
   /**
-   * Returns the non-negative remainder of the integer ''i'' upon division by
-   * the positive integer ''n''.
+   * Returns the non-negative remainder of the integer `i` upon division by
+   * the positive integer `n`.
    *
-   * The result is the unique integer 0 ≤ ''r'' < ''n'' such that ''i'' =
-   * ''n''⋅''q'' + ''r'' for some ''q'' in ℤ.
+   * The result is the unique integer 0 ≤ `r` < `n` such that `i` = `n`⋅`q` +
+   * `r` for some `q` in ℤ.
    *
    * @param  i  An integer.
    * @param  n  A positive integer.
    *
-   * @return The non-negative remainder of ''i'' upon division by ''n''.
-   * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation (Wikipedia)]]
+   * @return The non-negative remainder of `i` upon division by `n`.
+   * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation
+   *         (Wikipedia)]]
    */
   def mod(i: ℤ,n: ℕ): ℕ =
   {
@@ -228,16 +233,16 @@ trait utilities
   }
 
   /**
-   * Returns the non-negative remainder of the integer ''i'' upon division by
-   * 12.
+   * Returns the non-negative remainder of the integer `i` upon division by 12.
    *
-   * The result is the unique integer 0 ≤ ''r'' < 12 such that ''i'' = 12⋅''q''
-   * + ''r'' for some ''q'' in ℤ.
+   * The result is the unique integer 0 ≤ `r` < 12 such that `i` = 12⋅`q` + `r`
+   * for some `q` in ℤ.
    *
    * @param  i  An integer.
    *
-   * @return The non-negative remainder of ''i'' upon division by 12.
-   * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation (Wikipedia)]]
+   * @return The non-negative remainder of `i` upon division by 12.
+   * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation
+   *         (Wikipedia)]]
    */
   def mod12(i: ℤ): ℕ =
   {
@@ -251,10 +256,10 @@ trait utilities
    * number of bits as if the operation were being performed within a register
    * exactly 12 bits wide.
    *
-   * If ''by'' is negative then the bits are instead rotated to the right.
+   * If `by` is negative then the bits are instead rotated to the right.
    *
-   * The result is undefined if ''bits'' occupies more than just the 12 lowest
-   * bits of an integer; that is, if `(bits & ~0xFFF0` is non-zero.
+   * The result is undefined if `bits` occupies more than just the 12 lowest
+   * bits of an integer; that is, if `(bits & ~0xFFF0)` is non-zero.
    *
    * For example:
    * {{{
@@ -265,10 +270,11 @@ trait utilities
    * }}}
    *
    * @param  bits  A 12 bit integer.
-   * @param  by    The number of bit positions to rotate ''bits'' by.
+   * @param  by    The number of bit positions to rotate `bits` by.
    *
-   * @return The result of rotating ''bits'' left by ''by'' bits.
-   * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift (Wikipedia)]]
+   * @return The result of rotating `bits` left by `by` bits.
+   * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift
+   *         (Wikipedia)]]
    */
   def rol12(bits: Int,by: ℤ): Int =
   {
@@ -284,9 +290,9 @@ trait utilities
    * number of bits as if the operation were being performed within a register
    * exactly 12 bits wide.
    *
-   * If ''by'' is negative then the bits are instead rotated to the left.
+   * If `by` is negative then the bits are instead rotated to the left.
    *
-   * The result is undefined if ''bits'' occupies more than just the 12 lowest
+   * The result is undefined if `bits` occupies more than just the 12 lowest
    * bits of an integer; that is, if `(bits & ~0xFFF)` is non-zero.
    *
    * For example:
@@ -298,10 +304,11 @@ trait utilities
    * }}}
    *
    * @param  bits  A 12 bit integer.
-   * @param  by    The number of bit positions to rotate ''bits'' by.
+   * @param  by    The number of bit positions to rotate `bits` by.
    *
-   * @return The result of rotating ''bits'' right by ''by'' bits.
-   * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift (Wikipedia)]]
+   * @return The result of rotating `bits` right by `by` bits.
+   * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift
+   *         (Wikipedia)]]
    */
   def ror12(bits: Int,by: ℤ): Int =
   {
