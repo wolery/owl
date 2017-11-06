@@ -15,8 +15,6 @@
 package com.wolery.owl
 package util
 
-//****************************************************************************
-
 import org.slf4j.{Logger,LoggerFactory}
 
 /**
