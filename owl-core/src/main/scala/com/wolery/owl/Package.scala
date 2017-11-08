@@ -60,7 +60,7 @@ package object owl
   }
 
   /**
-   * Extends partially ordered types with additional methods.
+   * Extends all partially ordered types with additional methods.
    *
    * The variable `α` ranges over instances of the type class PartialOrdering.
    *
@@ -79,7 +79,7 @@ package object owl
   }
 
   /**
-   * Extends ordered types with additional methods.
+   * Extends all ordered types with additional methods.
    *
    * The variable `α` ranges over instances of the type class Ordering.
    *
