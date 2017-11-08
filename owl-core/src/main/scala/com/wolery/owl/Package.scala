@@ -179,7 +179,7 @@ package object owl
    * @param  s  A collection of elements.
    * @param  e  A (candidate) set element.
    *
-   * @see    [[SetEx]]
+   * @see    [[SeqEx]] and [SetEx]
    */
   implicit final
   class ElementEx[ε](val e: ε) extends AnyVal
