@@ -41,24 +41,24 @@ import util._
  *                 the underlying TextArea up to the prompt. It is intended to
  *                 record the output of whatever commands have previously been
  *                 accepted, and is modified by the client either by using the
- *                 appendText() API,  or by appending to the public ''writer''
+ *                 appendText() API,  or by appending to the public `writer`
  *                 property.
  *
  *  - Prompt:      A read-only area of text that  extends from just beyond the
  *                 output area up to the input area. It is intended to display
  *                 some sort of short prompt string, and is assigned to by the
  *                 client either by appending to the output area as above,  or
- *                 else by assigning to the public ''prompt'' property.
+ *                 else by assigning to the public `prompt` property.
  *
  *  - Input Area:  An editable area of text  that lies  immediately beyond the
  *                 prompt. The user interacts with the characters in this area
  *                 directly by entering keystrokes in the usual way, until the
  *                 input is finally accepted by typing the ENTER key, at which
  *                 point an ActionEvent is fired. The input area is exposed to
- *                 the client through the mutable ''input'' property.
+ *                 the client through the mutable `input` property.
  *
  * The client - usually a Controller of some sort -  registers interest in the
- * acceptance of an input line by assigning a handler to the ''onAccept'' bean
+ * acceptance of an input line by assigning a handler to the `onAccept` bean
  * property.
  *
  * The client would typically respond to the event by processing the new input
@@ -66,7 +66,7 @@ import util._
  * in the command history, and eventually updating the prompt string, ready to
  * edit another line of input.
  *
- * An ActionEvent is also fired when the TAB key is pressed. This ''Complete''
+ * An ActionEvent is also fired when the TAB key is pressed. This `Complete`
  * event gives the controller an opportunity  to prompt the user with possible
  * completions for the partially edited command waiting in the input area.
  *
@@ -87,8 +87,8 @@ import util._
  * Scene Builder application:
  *
  *  - History Size: The maximum number of elements in the command history.
- *  - onAccept:     The event handler for the ''Accept''   action event.
- *  - onComplete:   The event handler for the ''Complete'' action event.
+ *  - onAccept:     The event handler for the `Accept`   action event.
+ *  - onComplete:   The event handler for the `Complete` action event.
  *
  * == Scala Properties ==
  *
@@ -137,14 +137,14 @@ class Console extends TextArea with Logging
   swap(Seq(),m_filters)                                  // Initialize filters
 
   /**
-   * A bean property that records the current event handler for the ''Accept''
+   * A bean property that records the current event handler for the `Accept`
    * action event.
    */
   @BeanProperty
   var onAccept: EventHandler[ActionEvent] = _
 
   /**
-   * A bean property that records the current event handler for the ''Complete''
+   * A bean property that records the current event handler for the `Complete`
    * action event.
    */
   @BeanProperty
@@ -260,7 +260,7 @@ class Console extends TextArea with Logging
   }
 
   /**
-   * Replaces characters in the range [''start'',''end') with the given text,
+   * Replaces characters in the range [`start`, `end`) with the given text,
    * provided that this region is contained within the input area.
    *
    * @param  start  The index of the first character within the input area to
@@ -323,8 +323,8 @@ class Console extends TextArea with Logging
   }
 
   /**
-   * Selects the characters in the range [''anchor'',''caret'), clamping both
-   * both arguments if necessary to ensure that the region is contained wholly
+   * Selects the characters in the range [`anchor`, `caret`), clamping both of
+   * the arguments if necessary to ensure  that the region is contained wholly
    * within the input area.
    *
    * @param  anchor  The new anchor position.
@@ -384,7 +384,7 @@ class Console extends TextArea with Logging
   {
     log.debug("home()")                                  // Trace our location
 
-    m_toggle = m_input                                   // Update toggle too
+    m_toggle = m_input                                   // Also update toggle
 
     positionCaret(m_input)                               // Reposition caret
   }
@@ -510,26 +510,27 @@ class Console extends TextArea with Logging
   }
 
   /**
-   * Cut the characters between the caret and the end of the input area onto
+   * Cuts the characters between the caret and the end of the input area onto
    * the clipboard.
    */
   def cutToEnd(): Unit =
   {
     log.debug("cutToEnd()")                              // Trace our location
 
-    selectRange(getCaretPosition,getLength)
-    cut()
+    selectRange(getCaretPosition,getLength)              // Select characters
+    cut()                                                // Cut onto clipboard
   }
 
   /**
-   * TODO
+   * Cuts the characters between the caret and the start of the input area onto
+   * the clipboard.
    */
   def cutToHome(): Unit =
   {
     log.debug("cutToHome()")                             // Trace our location
 
-    selectRange(m_input,getCaretPosition)
-    cut()
+    selectRange(m_input,getCaretPosition)                // Select characters
+    cut()                                                // Cut onto clipboard
   }
 
   /**
@@ -655,7 +656,7 @@ class Console extends TextArea with Logging
    */
   def lastWord(δ: ℤ): Unit =
   {
-    log.debug("lastArgument({})",m_cursor)                                  // Trace our location
+    log.debug("lastArgument({})",m_cursor)               // Trace our location
 
     when (commandRange.inclusive.contains(m_cursor + δ)) // Is still in range?
     {
@@ -677,9 +678,9 @@ class Console extends TextArea with Logging
    */
   def findCommand(): Unit =
   {
-    log.debug("findCommand()")                                  // Trace our location
+    log.debug("findCommand()")                           // Trace our location
 
-    new Search(prompt,input,m_filters)
+    new Search(prompt,input,m_filters)                   // Enter search mode
   }
 
   /**
