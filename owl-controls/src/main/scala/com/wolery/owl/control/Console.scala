@@ -444,7 +444,7 @@ class Console extends TextArea with Logging
   }
 
   /**
-   * Delete the character to the immediate left of the caret.
+   * Delete the character that immediately precedes the caret.
    */
   override
   def deletePreviousChar(): Bool =
@@ -458,7 +458,7 @@ class Console extends TextArea with Logging
   }
 
   /**
-   * Delete the character to the immediate right of the caret.
+   * Delete the character that immediately follows the caret.
    */
   override
   def deleteNextChar(): Bool =
@@ -472,7 +472,7 @@ class Console extends TextArea with Logging
   }
 
   /**
-   * Delete the word to the immediate left of the caret.
+   * Delete the word that immediately precedes the caret.
    */
   def deletePreviousWord(): Unit =
   {
@@ -484,7 +484,7 @@ class Console extends TextArea with Logging
   }
 
   /**
-   * Delete the word to the immediate right of the caret.
+   * Delete the word that immediately follows the caret.
    */
   def deleteNextWord(): Unit =
   {
@@ -496,7 +496,7 @@ class Console extends TextArea with Logging
   }
 
   /**
-   * Delete the word to the immediate left of the caret onto the clipboard
+   * Cut the word that immediately precedes the caret onto the clipboard.
    */
   def cutPreviousWord(): Unit =
   {
@@ -510,7 +510,8 @@ class Console extends TextArea with Logging
   }
 
   /**
-   * TODO
+   * Cut the characters between the caret and the end of the input area onto
+   * the clipboard.
    */
   def cutToEnd(): Unit =
   {
@@ -954,7 +955,7 @@ class Console extends TextArea with Logging
   @inline private
   def isSearchable(character: Char): Bool =
   {
-    isBetween(character,0x20,0x7E)                       // Is it printable?
+    character.isBetween(0x20,0x7E)                       // Can it be printed?
   }
 
   /**
