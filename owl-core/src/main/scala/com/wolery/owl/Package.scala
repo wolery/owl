@@ -96,6 +96,44 @@ package object owl
   }
 
   /**
+   * Extends the type `Seq[ε]` with additional methods.
+   *
+   * Allows us to refer to the methods of class `Seq[ε]` by their traditional
+   * symbolic names:
+   *
+   *  - `\`  set difference
+   *  - `∪`  set union
+   *  - `∩`  set intersection
+   *  - `⊖`  symmetric difference
+   *  - `⊂`  set inclusion (proper)
+   *  - `⊆`  set inclusion
+   *  - `∈`  set membership
+   *
+   * @tparam ε  The type of an element.
+   * @param  s  A sequence of elements.
+   * @param  t  A sequence of elements.
+   * @param  e  A (candidate) set element.
+   */
+  implicit final
+  class SeqEx[ε](val s: Seq[ε]) extends AnyVal
+  {
+    def \ (t: Seq[ε]): Seq[ε]  =  s.diff(t)
+    def ∪ (t: Seq[ε]): Seq[ε]  =  s.union(t)
+    def ∩ (t: Seq[ε]): Seq[ε]  =  s.intersect(t)
+    def ⊖ (t: Seq[ε]): Seq[ε]  =  s.union(t) diff s.intersect(t)
+    def ⊂ (t: Seq[ε]): Bool    =  s.containsSlice(t) && !t.containsSlice(s)
+    def ⊃ (t: Seq[ε]): Bool    =  t.containsSlice(s) && !s.containsSlice(t)
+    def ⊄ (t: Seq[ε]): Bool    = !s.containsSlice(t) ||  t.containsSlice(s)
+    def ⊅ (t: Seq[ε]): Bool    = !t.containsSlice(s) ||  s.containsSlice(t)
+    def ⊆ (t: Seq[ε]): Bool    =  s.containsSlice(t)
+    def ⊇ (t: Seq[ε]): Bool    =  t.containsSlice(s)
+    def ⊈ (t: Seq[ε]): Bool    = !s.containsSlice(t)
+    def ⊉ (t: Seq[ε]): Bool    = !t.containsSlice(s)
+    def ∋ (e: ε)     : Bool    =  s.contains(e)
+    def ∌ (e: ε)     : Bool    = !s.contains(e)
+  }
+
+  /**
    * Extends the type `Set[ε]` with additional methods.
    *
    * Allows us to refer to the methods of class `Set[ε]` by their traditional
@@ -138,7 +176,7 @@ package object owl
    * Extends the element type `ε` with additional methods.
    *
    * @tparam ε  The type of an element.
-   * @param  s  A set of elements.
+   * @param  s  A collection of elements.
    * @param  e  A (candidate) set element.
    *
    * @see    [[SetEx]]
@@ -146,8 +184,12 @@ package object owl
   implicit final
   class ElementEx[ε](val e: ε) extends AnyVal
   {
-    def ∈ (s: Set[ε]): Bool =  s.contains(e)
-    def ∉ (s: Set[ε]): Bool = !s.contains(e)
+    def ∈ (s: Seq[ε])  : Bool =  s.contains(e)
+    def ∈ (s: Set[ε])  : Bool =  s.contains(e)
+    def ∈ (s: Map[ε,_]): Bool =  s.contains(e)
+    def ∉ (s: Seq[ε])  : Bool = !s.contains(e)
+    def ∉ (s: Set[ε])  : Bool = !s.contains(e)
+    def ∉ (s: Map[ε,_]): Bool = !s.contains(e)
   }
 
   /**
