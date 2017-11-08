@@ -39,22 +39,22 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.wolery.owl</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>owl-core</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.wolery.owl</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>owl-macros</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.wolery.owl</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>owl-controls</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.wolery.owl</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>owl-gui</artifactId>
         <version>${project.version}</version>
       </dependency>
