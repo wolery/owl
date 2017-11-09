@@ -852,7 +852,7 @@ class Console extends TextArea with Logging
 
       import KeyCode._                                   // For key code names
 
-      getKeyCombination(e) match                               // Which combination?
+      getKeyCombination(e) match                         // Which combination?
       {
         case ('_,BACK_SPACE) ⇒ backspace()               // ...back up a char
         case ('^,G)          ⇒ cancel()                  // ...cancel search
@@ -923,7 +923,7 @@ class Console extends TextArea with Logging
     var period   = true                                  // Assume we reset .
     var consumed = true                                  // Assume we consume
 
-    getKeyCombination(e) match
+    getKeyCombination(e) match                           // Which combination?
     {
    // Cursor Movement:
 
@@ -935,7 +935,7 @@ class Console extends TextArea with Logging
       case ('⌥,B)           ⇒ previousWord()
       case ('^,X)           ⇒ toggleHome()
 
-   // Selection
+   // Character Selection
 
       case ('⇧^,A|LEFT)     ⇒ selectHome()
       case ('⇧^,E|RIGHT)    ⇒ selectEnd()
@@ -969,7 +969,7 @@ class Console extends TextArea with Logging
       case ('_,ENTER)       ⇒ accept()
       case ('_,TAB)         ⇒ complete()
 
-   // Disabled:
+   // Explicitly Disabled:
 
       case ('◆ | '⇧◆,Z)     ⇒
 
@@ -1118,7 +1118,7 @@ class Console extends TextArea with Logging
    * Swaps the KeyEvent filters that define the control's active key bindings.
    *
    * Effects a switch between the control's regular and 'search' modes.
-   * 
+   *
    * @param  was  The current KeyEvent filters handling our key events.
    * @param  now  The new KeyEvent filters that will handle future key events.
    */
