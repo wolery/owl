@@ -155,7 +155,7 @@ trait utilities
 
   /**
    * Returns true if each element of the given sequence is less than or equal
-   * to the subsequent element.
+   * to its successor.
    *
    * @param  iterable  The collection of elements to examine.
    *
