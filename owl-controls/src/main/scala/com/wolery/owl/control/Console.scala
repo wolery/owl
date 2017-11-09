@@ -1062,14 +1062,14 @@ class Console extends TextArea with Logging
    *
    * Encodes the set of modifier keys in effect when the key was pressed as a
    * as one of 8 symbols consisting of the characters:
-   * 
+   *
    *  - `⇧`  The Shift key is depressed.
    *  - `^`  The Control key is depressed.
    *  - `⌥`  The Alt/Option key is depressed.
    *  - `◆`  The Command/Meta key is depressed.
    *
    * For example, we encode key combination `Shift+Cntrl X` as `('⇧^, X)`
-   * 
+   *
    * @param  e  The key event to examine and encode.
    *
    * @return A (Symbol,KeyCode) pair that efficiently encodes the combination
@@ -1115,8 +1115,10 @@ class Console extends TextArea with Logging
   }
 
   /**
-   * Swaps the KeyEvent filters that define the control's key binding. 
+   * Swaps the KeyEvent filters that define the control's current key bindings.
    *
+   * Effects the switch between the regular and 'search' modes.
+   * 
    * @param  was  The current KeyEvent filters handling our key events.
    * @param  now  The new KeyEvent filters that will handle future key events.
    */
