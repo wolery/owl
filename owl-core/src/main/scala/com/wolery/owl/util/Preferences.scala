@@ -95,26 +95,38 @@ trait Preference[α]
 /**
  * Implements a factory for creating preferences of various primitive types.
  *
+ * The class is designed to be extended by an application specific class that
+ * names to each of the preferences it wishes to track.
+ *
+ * For example:
+ * {{{
+ *    object prefs extends Preferences("mypath")
+ *    {
+ *      val enabled: Preference[Bool] = bool("enabled","true")
+ *          ...                                    // and other preferences
+ *    }
+ *
+ *    if (prefs.enabled())                         // get preference 'enabled'
+ *        prefs.enabled() = false                  // set preference 'enabled'
+ *
+ * }}}
  * @author Jonathon Bell
  */
 class Preferences private (private val m_imp: JavaPreferences)
 {
   /**
-   * Returns the named preference node in the same tree as this node, creating
-   * it and any of its ancestors if they do not already exist.
+   * Creates a preference factory whose preferences are persisted to the given
+   * location within the user preference tree.
    *
-   * Accepts a relative or absolute path name. Relative path names (which do
-   * not begin with the slash character `'/'` are interpreted relative to this
-   * preference node.
+   * The location is specified as a `/` delimited path,  given relative to the
+   * the root of the user preference tree.
    *
-   * If the returned node did not exist prior to this call, this node and
-   * any ancestors that were created by this call are not guaranteed
-   * to become permanent until the `flush` method is called on
-   * the returned node (or one of its ancestors or descendants).
+   * Unless the location existed prior to construction, the subtree may not be
+   * committed to disk until once the `flush` method has been called.
    *
-   * @param  path  The path name of the preference node to return.
+   * @param  path  The path to the persisted values, specified relative to the
+   *               root of user preference tree.
    *
-   * @return The specified preference node.
    * @see    `flush()`
    */
   def this(path: String) =
@@ -123,41 +135,21 @@ class Preferences private (private val m_imp: JavaPreferences)
   }
 
   /**
-   * Returns the preference node from the calling user's preference tree
-   * that is associated (by convention) with the specified class's package.
-   * The convention is as follows: the absolute path name of the node is the
-   * fully qualified package name, preceded by a slash ({@code '/'}), and
-   * with each period ({@code '.'}) replaced by a slash.  For example the
-   * absolute path name of the node associated with the class
-   * {@code com.acme.widget.Foo} is {@code /com/acme/widget}.
+   * Creates a preference factory whose preferences are persisted to the given
+   * location within the user preference tree.
    *
-   * <p>This convention does not apply to the unnamed package, whose
-   * associated preference node is {@code <unnamed>}.  This node
-   * is not intended for long term use, but for convenience in the early
-   * development of programs that do not yet belong to a package, and
-   * for "throwaway" programs.  <i>Valuable data should not be stored
-   * at this node as it is shared by all programs that use it.</i>
+   * The location is specified as a `/` delimited path, given relative to the
+   * the root of the user preference tree, and is generated automatically from
+   * the package name of the given class  by replacing `.` characters with `/`
+   * characters.
    *
-   * <p>A class {@code Foo} wishing to access preferences pertaining to its
-   * package can obtain a preference node as follows: <pre>
-   *    static Preferences prefs = Preferences.userNodeForPackage(Foo.class);
-   * </pre>
-   * This idiom obviates the need for using a string to describe the
-   * preferences node and decreases the likelihood of a run-time failure.
-   * (If the class name is misspelled, it will typically result in a
-   * compile-time error.)
+   * Unless the location existed prior to construction, the subtree may not be
+   * committed to disk until once the `flush` method has been called.
    *
-   * <p>Invoking this method will result in the creation of the returned
-   * node and its ancestors if they do not already exist.  If the returned
-   * node did not exist prior to this call, this node and any ancestors that
-   * were created by this call are not guaranteed to become permanent until
-   * the {@code flush} method is called on the returned node (or one of its
-   * ancestors or descendants).
+   * @param  c  The class whose package name specifies the path to the values,
+   *            specified relative to the root of user preference tree.
    *
-   * @param  c  The class for whose package a user preference node is desired.
-
-   * @return The user preference node associated with the package of which `c`
-   *         is a member.
+   * @see    `flush()`
    */
   def this(klass: Class[_]) =
   {
@@ -165,42 +157,42 @@ class Preferences private (private val m_imp: JavaPreferences)
   }
 
   /**
-   * Returns the named preference node in the same tree as this node,
-   * creating it and any of its ancestors if they do not already exist.
-   * Accepts a relative or absolute path name.  Relative path names
-   * (which do not begin with the slash character {@code ('/')}) are
-   * interpreted relative to this preference node.
+   * Creates a preference factory whose preferences are persisted to the given
+   * location within the user preference tree.
    *
-   * <p>If the returned node did not exist prior to this call, this node and
-   * any ancestors that were created by this call are not guaranteed
-   * to become permanent until the {@code flush} method is called on
-   * the returned node (or one of its ancestors or descendants).
+   * The location is specified as a `/` delimited path, given relative to the
+   * the root of the user preference tree.
    *
-   * @param pathName the path name of the preference node to return.
-   * @return the specified preference node.
-   * @see #flush()
+   * Unless the location existed prior to construction, the subtree may not be
+   * committed to disk until once the `flush` method has been called.
+   *
+   * @param  parent  An existing parent preferences factory.
+   * @param  path    The path to the preference values, specficied relative to
+   *                 the root of the given parent's preferences.
+   *
+   * @see    `flush()`
    */
-  def this(preferences: Preferences,path: String) =
+  def this(parent: Preferences,path: String) =
   {
-    this(preferences.m_imp.node(path))
+    this(parent.m_imp.node(path.dropWhile(_ == '/')))    // Strip leading '/'s
   }
 
   /**
    * Returns the named preference node in the same tree as this node, creating
    * it and any of its ancestors if they do not already exist.
    *
-   * Accepts a relative or absolute path name.  Relative path names (which  do
-   * not begin with the slash character `'/'` are interpreted relative to this
-   * preference node.
+   * The location is specified as a `/` delimited path,  given relative to the
+   * the root of the user preference tree.
    *
-   * If the returned node did not exist prior to this call,  this node and any
-   * ancestors  that were created  by this call are  not guaranteed  to become
-   * permanent until the `flush` method is called on the returned node (or one
-   * of its ancestors or descendants).
+   * Unless the location existed prior to construction, the subtree may not be
+   * committed to disk until once the `flush` method has been called.
    *
-   * @param  path  The path name of the preference node to return.
+   * @param  path  The path to the persisted values, specified relative to the
+   *               root of user preference tree if absolute (starts with `/`),
+   *               or this object's preferences if relative (starts with a non
+   *               `/` character).
    *
-   * @return The specified preference node.
+   * @return The specified preference factory.
    * @see    `flush()`
    */
   def node(path: String): Preferences =
@@ -209,10 +201,8 @@ class Preferences private (private val m_imp: JavaPreferences)
   }
 
  /**
-   * Forces any modifications to the contents of this preference node and its
-   * descendants to the persistent store. If this method returns successfully,
-   * it is safe to assume that all changes made in the subtree rooted at this
-   * node prior to the method invocation have become permanent.
+   * Commits any changes that may have been made to our preferences  (or those
+   * of our descendants) to disk.
    *
    * @see    `sync()`
    */
