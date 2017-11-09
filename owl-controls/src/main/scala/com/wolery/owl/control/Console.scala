@@ -142,14 +142,14 @@ class Console extends TextArea with Logging
    * A bean property that records the current event handler for the `Accept`
    * action event.
    */
-  @BeanProperty
+  @BeanProperty final
   var onAccept: EventHandler[ActionEvent] = _
 
   /**
    * A bean property that records the current event handler for the `Complete`
    * action event.
    */
-  @BeanProperty
+  @BeanProperty final
   var onComplete: EventHandler[ActionEvent] = _
 
   /**
@@ -1068,7 +1068,7 @@ class Console extends TextArea with Logging
    *  - `⌥`  The Alt/Option key is depressed.
    *  - `◆`  The Command/Meta key is depressed.
    *
-   * For example, we encode key combination `Shift+Cntrl X` as `('⇧^, X)`
+   * For example, we encode key combination '`Shift + Option X`' as `('⇧⌥, X)`.
    *
    * @param  e  The key event to examine and encode.
    *
@@ -1115,9 +1115,9 @@ class Console extends TextArea with Logging
   }
 
   /**
-   * Swaps the KeyEvent filters that define the control's current key bindings.
+   * Swaps the KeyEvent filters that define the control's active key bindings.
    *
-   * Effects the switch between the regular and 'search' modes.
+   * Effects a switch between the control's regular and 'search' modes.
    * 
    * @param  was  The current KeyEvent filters handling our key events.
    * @param  now  The new KeyEvent filters that will handle future key events.
