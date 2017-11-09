@@ -710,8 +710,6 @@ class Console extends TextArea with Logging
    *
    * Places the console into a 'Search' mode in which the keyboard is remapped
    * so that keystrokes interactively update the search pattern.
-   *
-   * @see [[Search]]
    */
   def findCommand(): Unit =
   {
