@@ -22,12 +22,12 @@ import java.util.prefs.{Preferences ⇒ JavaPreferences}
  * of type `α`.
  *
  * Preferences are persisted transparently in a platform specific manner. Each
- * has a sensible default value and can be reverted back to its default at any
+ * has a sensible default value and can be reverted back to the default at any
  * time.
  *
  * The class supports a number of idiomatic styles for accessing the value:
  * {{{
- *    val p: Preference[Boolean] = ...
+ *    val p: Preference[Boolean] = preferences.bool("enabled",false)
  *
  *    if (p.value)                                        // Get preference
  *      p.value =  ...                                    // Set preference
@@ -39,10 +39,12 @@ import java.util.prefs.{Preferences ⇒ JavaPreferences}
  *
  * @tparam α  The type of value being managed by the preference.
  *
- * @see    [[Preferences]]
- * @see    [[http://apps.tempel.org/PrefsEditor Mac OS X Prefs Editor]]
+ * @see    [[Preferences]] for a factory that creates the preferences.
+ * @see    [[http://apps.tempel.org/PrefsEditor Mac OS X Prefs Editor]] for a
+ *         utility that edits and manipulates preference settings on OS X.
  * @see    [[https://docs.oracle.com/javase/8/docs/technotes/guides/preferences/index.html
- *         Core Java Preferences API]]
+ *         Core Java Preferences API]] for details of the underlying API that
+ *         this interface wraps.
  * @author Jonathon Bell
  */
 trait Preference[α]
@@ -96,7 +98,7 @@ trait Preference[α]
  * Implements a factory for creating preferences of various primitive types.
  *
  * The class is designed to be extended by an application specific class that
- * names to each of the preferences it wishes to track.
+ * binds names to each of the preferences it wishes to track.
  *
  * For example:
  * {{{
@@ -110,6 +112,13 @@ trait Preference[α]
  *        prefs.enabled() = false                  // set preference 'enabled'
  *
  * }}}
+ *
+ * @see    [[Preference]] for the interface to the preferences themselves.
+ * @see    [[http://apps.tempel.org/PrefsEditor Mac OS X Prefs Editor]] for a
+ *         utility that edits and manipulates preference settings on OS X.
+ * @see    [[https://docs.oracle.com/javase/8/docs/technotes/guides/preferences/index.html
+ *         Core Java Preferences API]] for details of the underlying API that
+ *         this interface wraps.
  * @author Jonathon Bell
  */
 class Preferences private (private val m_imp: JavaPreferences)
@@ -356,42 +365,56 @@ class Preferences private (private val m_imp: JavaPreferences)
   val strings: Sequence[String] = sequence(_.toString)
 
   /**
-   * TODO
+   * Creates a factory function for preferences of type `α` that use the given
+   * parser and printer functions to serialize values to and from a string.
    *
-   * @tparam α        TODO
-   * @param  parse    TODO
-   * @param  print    TODO
-   * @param  key      TODO
-   * @param  default  TODO
+   * The functions should be mutual inverses of one anther. That is:
+   * {{{
+   *    parse ∘ print  ==  identity[α]
+   * }}}
+   * where `∘` denotes function composition, and `identity[α]` is the identity
+   * function for values of type `α`.
+   *
+   * @tparam α        The type of value being managed by the preference.
+   * @param  parse    Parses the preference value from a string.
+   * @param  print    Formats the preference value as a string.
+   * @param  key      The name of the preference.
+   * @param  default  The default value for the preference.
+   *
+   * @return A function that constructs a `Preference[α]` from a name and
+   *         default value pair of type `(Name,α)`.
    */
   private
-  def atomic[α](parse: String ⇒ α,
-                print: α ⇒ String = (a: α) ⇒ a.toString)
-                (key: Name,default: α)
-                : Preference[α] =
+  def atomic[α](parse: String ⇒ α,print: α ⇒ String = (a: α) ⇒ a.toString)
+               (key: Name,default: α) : Preference[α] = new Preference[α]
   {
-    new Preference[α]
-    {
-      val name              = key
-      val dflt              = print(default)
-      def value             = parse(m_imp.get(key,dflt))
-      def value_=(value: α) = m_imp.put(key,print(value))
-      def revert()          = m_imp.remove(name)
-      override
-      def toString          = s"{$name = $value [$default]}"
-    }
+    val name          = key                              // The preference key
+    val dflt          = print(default)                   // The default value
+    def value         = parse(m_imp.get(key,dflt))       // Get the preference
+    def value_=(v: α) = m_imp.put(key,print(v))          // Set the preference
+    def revert()      = m_imp.remove(name)               // Remove saved value
+    override
+    def toString      = s"{$name = $value [$default]}"   // Format as a string
   }
 
   /**
-   * TODO
+   * Creates a  factory function for  preferences of type `Preference[Seq[α]]`
+   * that use the given parser to retrieve each element from a string.
    *
-   * @tparam α      TODO
-   * @param  parse  TODO
+   * The resulting preference  persists a sequence by serializing each element
+   * as a string and concatenating these with a  delimiting `◇` character, and
+   * delegates to the given parser to read the elements back again.
+   *
+   * @tparam α      The type of a sequence element.
+   * @param  parse  A parser for elements of type `α`.
+   *
+   * @return A function that constructs a `Preference[Seq[α]]` from a name and
+   *         default value pair of type `(Name,Seq[α])`.
    */
   private
   def sequence[α](parse: String ⇒ α): Sequence[α] =
   {
-    atomic(_.split("◇").map(parse),_.mkString("◇"))
+    atomic(_.split("◇").map(parse),_.mkString("◇"))      // The factory method
   }
 }
 
