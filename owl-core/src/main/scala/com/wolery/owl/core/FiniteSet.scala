@@ -108,9 +108,9 @@ object FiniteSet
    */
   def full[α](implicit ε: Finite[α]): FiniteSet[α] =
   {
-    val n = ε.size >> 6             // size / 64
+    val n = ε.size >> 6               // size / 64
     val a = Array.fill(1 + n)(~0L)
-    a(n) &= (1 << ε.size & 63) - 1  // size % 64
+    a(n) &= (1 << (ε.size & 63)) - 1  // size % 64
     FiniteSet(a)
   }
 
