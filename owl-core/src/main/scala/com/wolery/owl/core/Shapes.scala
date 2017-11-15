@@ -58,21 +58,21 @@ object Shapes
    * Returns additional information about the scale shape with the given name.
    *
    * Not every shape ''has'' such additional information - there are thousands
-   * of them, after all - so we return the result in the Maybe monad.
+   * of them, after all - so we return the result in the Option monad.
    *
    * @param  name  The name by which a scale shape is commonly known.
    */
-  def info(name: Name): Maybe[Info] = byNames.get(normalize(name))
+  def info(name: Name): Option[Info] = byNames.get(normalize(name))
 
   /**
    * Returns additional information about the given scale shape.
    *
    * Not every shape ''has'' such additional information - there are thousands
-   * of them, after all - so we return the result in the Maybe monad.
+   * of them, after all - so we return the result in the Option monad.
    *
    * @param  shape  A scale shape.
    */
-  def info(shape: Shape): Maybe[Info] = byShape.get(shape)
+  def info(shape: Shape): Option[Info] = byShape.get(shape)
 
   /**
    * Adds a scale shape to the database.

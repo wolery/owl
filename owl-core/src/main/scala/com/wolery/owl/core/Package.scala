@@ -21,7 +21,6 @@ package object core
   type Bits                           = Int
   type Midi                           = Int
   type Octave                         = Int
-  type Maybe[α]                       = Option[α]
 
   def Hz (r: ℝ): Frequency            = Frequency(r)
   def kHz(r: ℝ): Frequency            = Frequency(r * 1e3)

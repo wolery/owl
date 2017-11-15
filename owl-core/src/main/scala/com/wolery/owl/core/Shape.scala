@@ -60,9 +60,9 @@ final class Shape private (set: Int,seq: Long) extends Serializable
    * The preferred name of the scale shape.
    *
    * Not every shape ''has'' a name - there are thousands of them, after all -
-   * so we return the result in the Maybe monad.
+   * so we return the result in the Option monad.
    */
-  def name: Maybe[Name] =
+  def name: Option[Name] =
   {
     info(this).map(_.name)
   }
@@ -136,7 +136,7 @@ final class Shape private (set: Int,seq: Long) extends Serializable
   /**
    *
    */
-  def indexOf(interval: ℤ): Maybe[ℕ] =
+  def indexOf(interval: ℤ): Option[ℕ] =
   {
     val i = mod12(interval)
 
@@ -225,7 +225,7 @@ object Shape
    *
    * @example Shape("lydian")  ≡  Some(Shape(0,2,4,6,7,9,11))
    */
-  def apply(name: Name): Maybe[Shape] =
+  def apply(name: Name): Option[Shape] =
   {
     info(name).map(_.shape)
   }

@@ -26,7 +26,7 @@ package core
  */
 final case class Scale (val root: Note,val shape: Shape)
 {
-  def name:  Maybe[Name]                  = shape.name .map(n ⇒ s"$root $n")
+  def name:  Option[Name]                 = shape.name .map(n ⇒ s"$root $n")
   def names: Seq[Name]                    = shape.names.map(n ⇒ s"$root $n")
 
   def size:  ℕ                            = shape.size
@@ -37,7 +37,7 @@ final case class Scale (val root: Note,val shape: Shape)
   def modes:         Seq[Scale]           = toSeq.map(Scale(_,toSet))
 
   def note    (index: ℤ):   Note          = root + shape.interval(index)
-  def indexOf (note: Note): Maybe[ℕ]      = shape.indexOf (note - root)
+  def indexOf (note: Note): Option[ℕ]     = shape.indexOf (note - root)
   def contains(note: Note): Bool          = shape.contains(note - root)
 
   override def toString: String           = name.getOrElse(toSeq.mkString("Scale(",", ",")"))
@@ -47,7 +47,7 @@ final case class Scale (val root: Note,val shape: Shape)
 
 object Scale
 {
-  def apply(r: Note,n: Name): Maybe[Scale]= Shape(n).map(Scale(r,_))
+  def apply(r: Note,n: Name): Option[Scale]= Shape(n).map(Scale(r,_))
   def apply(r: Note,s: Note*): Scale      = Scale(r,Notes(s:_*))
   def apply(r: Note,s: Traversable[Note]): Scale  = Scale(r,Shape(s.map(_-r)))
 
