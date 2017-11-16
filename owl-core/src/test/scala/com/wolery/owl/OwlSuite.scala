@@ -14,8 +14,6 @@
 
 package com.wolery.owl
 
-//****************************************************************************
-
 import org.scalactic.{Prettifier,source}
 import org.scalatest.{Assertion,FunSuite}
 import org.scalatest.prop.PropertyChecks
@@ -28,22 +26,19 @@ import org.scalatest.prop.PropertyChecks
 trait OwlSuite extends FunSuite with PropertyChecks
 {
   /**
-   * Asserts the given value is false, and throws an exception if not.
+   * Asserts that the given value is false, and throws an exception if not.
    *
    * @param bool  A boolean value to test.
-   * @param clue  A value whose toString() method returns a message to include
-   *              in the failure report.
    *
-   * @throws TestFailedException   if ''bool'' is `false`.
-   * @throws NullArgumentException if ''clue'' is `null`.
+   * @throws TestFailedException   if `bool` is `false`.
    */
-  def reject(bool: Boolean)(implicit α: Prettifier,β: source.Position): Assertion =
+  def reject(bool: Bool)(implicit α: Prettifier,β: source.Position): Assertion =
   {
     assert(!bool)(α,β)
   }
 
   /**
-   * Asserts the given value is false, and throws an exception if not.
+   * Asserts that the given value is false, and throws an exception if not.
    *
    * This variant includes the given clue in the generated failure report.
    *
@@ -51,10 +46,10 @@ trait OwlSuite extends FunSuite with PropertyChecks
    * @param clue  A value whose toString() method returns a message to include
    *              in the failure report.
    *
-   * @throws TestFailedException   if ''bool'' is `false`.
-   * @throws NullArgumentException if ''clue'' is `null`.
+   * @throws TestFailedException   if `bool` is `false`.
+   * @throws NullArgumentException if `clue` is `null`.
    */
-  def reject(bool: Boolean,clue: Any)(implicit α: Prettifier,β: source.Position): Assertion =
+  def reject(bool: Bool,clue: Any)(implicit α: Prettifier,β: source.Position): Assertion =
   {
     assert(!bool,clue)(α,β)
   }
