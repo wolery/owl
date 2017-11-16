@@ -39,7 +39,7 @@ class UtiltiesTest extends OwlSuite
 
   test("isBetween")
   {
-    assert((-8 to +8).map(isBetween(_,-2,+2)) == "FFFFFFTTTTTFFFFFF".map(_=='T'))
+    assert((-8 to +8).map(_.isBetween(-2,+2)) == "FFFFFFTTTTTFFFFFF".map(_=='T'))
   }
 
   test("isIncreasing")
