@@ -37,21 +37,21 @@ package object core
 
   implicit final class MonoidEx[M](m: M)(implicit α: Monoid[M])
   {
-    def unary_+ : M                   = m
-    def + (n: M): M                   = α.operate(m,n)
     def ⋅ (n: M): M                   = α.operate(m,n)
+    def + (n: M): M                   = α.operate(m,n)
+    def unary_+ : M                   = m
   }
 
   implicit final class GroupEx[G](f: G)(implicit α: Group[G])
   {
-    def unary_- : G                   = α.inverse(f)
     def - (g: G): G                   = α.operate(f,α.inverse(g))
+    def unary_- : G                   = α.inverse(f)
   }
 
   implicit final class ActionEx[S,G](s: S)(implicit α: Action[S,G])
   {
-    def + (g: G): S                   = α.apply(s,g)
-    def - (g: G): S                   = α.apply(s,α.γ.inverse(g))
+    def + (g: G): S                   = α(s,g)
+    def - (g: G): S                   = α(s,α.group.inverse(g))
   }
 
   implicit final class TorsorEx[S,G](s: S)(implicit α: Torsor[S,G])
@@ -59,31 +59,11 @@ package object core
     def - (t: S): G                   = α.delta(t,s)
   }
 
-  implicit final class TranspostionEx[S](s: S)(implicit α: Action[S,ℤ])
+  implicit final class ℤActionEx[S](s: S)(implicit α: Action[S,ℤ])
   {
-    def ♭                             = α.apply(s,-1)
+    def ♭                             = α(s,-1)
     def ♮                             = s
-    def ♯                             = α.apply(s,1)
-  }
-
-//****************************************************************************
-
-  implicit object ℤisℤTorsor extends Group[ℤ] with ℤTorsor[ℤ]
-  {
-    val e                 : ℤ         = 0
-    def inverse(i: ℤ)     : ℤ         = -i
-    def operate(i: ℤ,j: ℤ): ℤ         = i + j
-    def apply (i: ℤ,j: ℤ) : ℤ         = i + j
-    def delta (i: ℤ,j: ℤ) : ℤ         = j - i
-  }
-
-  implicit object ℝisℝTorsor extends Group[ℝ] with ℝTorsor[ℝ]
-  {
-    val e                 : ℝ         = 0
-    def inverse(i: ℝ)     : ℝ         = -i
-    def operate(i: ℝ,j: ℝ): ℝ         = i + j
-    def apply  (r: ℝ,s: ℝ): ℝ         = r + s
-    def delta  (r: ℝ,s: ℝ): ℝ         = s - r
+    def ♯                             = α(s,+1)
   }
 }
 

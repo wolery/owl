@@ -105,7 +105,7 @@ trait Action[S,G]
    * TODO
    */
   implicit
-  val γ: Group[G]
+  val group: Group[G]
 
   /**
    * Applies an element of the group to an element of the carrier set, whatever
@@ -171,7 +171,7 @@ trait Torsor[S,G] extends Action[S,G]
  *
  * @tparam S  A non-empty set acted upon by the integers via the mapping `apply`.
  */
-trait ℤSpace[S] extends Action[S,ℤ]  {val γ: Group[ℤ] = ℤisℤTorsor}
+trait ℤSpace[S] extends Action[S,ℤ]  {val group: Group[ℤ] = ℤTorsor.isℤTorsor}
 
 /**TODO
  * Describes a regular (right) action of the integers ℤ upon the carrier set
@@ -183,7 +183,35 @@ trait ℤSpace[S] extends Action[S,ℤ]  {val γ: Group[ℤ] = ℤisℤTorsor}
  *
  * @tparam S  A non-empty set acted upon regularly by the integers via the mapping `apply`.
  */
-trait ℤTorsor[S] extends Torsor[S,ℤ] {val γ: Group[ℤ] = ℤisℤTorsor}
-trait ℝTorsor[S] extends Torsor[S,ℝ] {val γ: Group[ℝ] = ℝisℝTorsor}
+trait ℤTorsor[S] extends Torsor[S,ℤ] {val group: Group[ℤ] = ℤTorsor.isℤTorsor}
+trait ℝTorsor[S] extends Torsor[S,ℝ] {val group: Group[ℝ] = ℝTorsor.isℝTorsor}
+
+//****************************************************************************
+
+object ℤTorsor
+{
+  implicit
+  object isℤTorsor extends Group[ℤ] with ℤTorsor[ℤ]
+  {
+    val e                 : ℤ         = 0
+    def inverse(i: ℤ)     : ℤ         = -i
+    def operate(i: ℤ,j: ℤ): ℤ         = i + j
+    def apply  (i: ℤ,j: ℤ): ℤ         = i + j
+    def delta  (i: ℤ,j: ℤ): ℤ         = j - i
+  }
+}
+
+object ℝTorsor
+{
+  implicit
+  object isℝTorsor extends Group[ℝ] with ℝTorsor[ℝ]
+  {
+    val e                 : ℝ         = 0
+    def inverse(i: ℝ)     : ℝ         = -i
+    def operate(i: ℝ,j: ℝ): ℝ         = i + j
+    def apply  (r: ℝ,s: ℝ): ℝ         = r + s
+    def delta  (r: ℝ,s: ℝ): ℝ         = s - r
+  }
+}
 
 //****************************************************************************

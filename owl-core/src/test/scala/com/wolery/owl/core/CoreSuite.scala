@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose : Custom test suite trait for testing the core package.
+//*  Purpose : Custom test suite for testing the core package.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -25,99 +25,106 @@ import org.scalacheck.Gen._
 trait CoreSuite extends OwlSuite
 {
   /**
-   * Check that the monoid operation for ''M'' is commutative.
+   * Checks that the monoid operator `⋅ : M → M` is commutative.
    *
-   * @see [[https://en.wikipedia.org/wiki/Commutative_property Commutativity (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Commutative_property Commutativity
+   *         (Wikipedia)]]
    */
   def isCommutative[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
   {
     forAll("a","b") {(a: M,b: M) ⇒
     {
-      assert(a + b == b + a,              "[commutative]")
+      assert(a ⋅ b == b ⋅ a,                             "[commutative]")
     }}
   }
 
   /**
-   * Check that ''M'' satisfies the axioms of a monoid.
+   * Checks that `M` satisfies the axioms of a monoid.
    *
-   * @see [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
    */
   def isMonoid[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
   {
+    import α._
+
     forAll("a") {(a: M) ⇒
     {
-      assert(α.e + a == a,             "[left identity]")
-      assert(a + α.e == a,             "[right identity]")
+      assert(e ⋅ a == a,                                 "[left identity]")
+      assert(a ⋅ e == a,                                 "[right identity]")
     }}
 
     forAll("a","b","c") {(a: M,b: M,c: M) ⇒
     {
-      assert(a + (b + c) == (a + b) + c,  "[associative]")
+      assert(a ⋅ (b ⋅ c) == (a ⋅ b) ⋅ c,                 "[associative]")
     }}
   }
 
   /**
-   * Check that ''G'' satisfies the axioms of a group; namely that it is a
-   * monoid in which every element possesses an additive inverse.
+   * Checks that `G` satisfies the axioms of a group;  that is, it is a monoid
+   * in which every element possesses an inverse.
    *
-   * @see [[https://en.wikipedia.org/wiki/Group_(mathematics) Group (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Group_(mathematics) Group
+   *         (Wikipedia)]]
    */
   def isGroup[G]()(implicit α: Group[G],β: Arbitrary[G]): Unit =
   {
-    isMonoid[G]()                         // group ⇒ monoid
+    import α._
+
+    isMonoid[G]()                                        // Group ⇒ Monoid
 
     forAll("g") {(g: G) ⇒
     {
-      assert(g + -g == α.e,            "[negation]")
+      assert(g + -g == e,                                "[negation]")
     }}
   }
 
   /**
-   * Check that ''S'' satisfies the axioms of a ''G''-set; namely that `apply`
-   * effects a homomorphism from ''G'' into Aut(''S'').
+   * Checks that `apply` is a homomorphism from `G` into Aut(`S`).
    *
-   * @see [[https://en.wikipedia.org/wiki/Group_action Group action (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Group_action Group action
+   *         (Wikipedia)]]
    */
-  def isAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ2: Arbitrary[G]) : Unit =
+  def isAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
   {
     import α._
-    import α.γ._
+    import α.group._
 
-    isGroup[G]()                          // action ⇒ group
+    isGroup[G]()                                         // Action ⇒ Group
 
     forAll("s") {(s: S) ⇒
     {
-      assert(s + e == s,             "[identity]")
+      assert(s + e == s,                                 "[identity]")
     }}
 
     forAll("s","f","g") {(s: S,f: G,g: G) ⇒
     {
-      assert(s + (f + g) == (s + f) + g,  "[homomorphism +]")
-      assert(s - (f + g) == (s - f) - g,  "[homomorphism -]")
-      assert(s + f == s - -f,             "[negation +]")
-      assert(s - f == s + -f,             "[negation -]")
+      assert(s + (f + g) == (s + f) + g,                 "[homomorphism +]")
+      assert(s - (f + g) == (s - f) - g,                 "[homomorphism -]")
+      assert(s + f == s - -f,                            "[negation +]")
+      assert(s - f == s + -f,                            "[negation -]")
     }}
   }
 
   /**
-   * Check that ''S'' satisfies the axioms of a ''G''-torsor, namely that the
-   * action of ''G'' upon ''S'' is sharply transitive.
+   * Checks that `S` satisfies the axioms of a torsor for `G`; namely that the
+   * action of `G` upon `S` is sharply transitive.
    *
-   * @see [[https://en.wikipedia.org/wiki/Principal_homogeneous_space Torsor (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Principal_homogeneous_space
+   *         Torsor (Wikipedia)]]
    */
   def isTorsor[S,G]()(implicit α: Torsor[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
   {
-    isAction[S,G]()                       // torsor ⇒ action
+    isAction[S,G]()                                      // Torsor ⇒ Action
 
     forAll("s","t") {(s: S,t: S) ⇒
     {
-      assert(s + (t - s) == t,            "[interval]")
+      assert(s + (t - s) == t,                           "[interval]")
     }}
   }
 
   /**
    * TODO
-   * Check that ''S'' satisfies the axioms of a transposing set; namely that
+   * Check that `S` satisfies the axioms of a transposing set; namely that
    * it is a ℤ-space.
    */
   def isTransposing[S]()(implicit α: Action[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
@@ -127,7 +134,7 @@ trait CoreSuite extends OwlSuite
 
   /**
    * TODO
-   * Check that ''S'' satisfies the axioms of an intervallic set; namely, that
+   * Check that `S` satisfies the axioms of an intervallic set; namely, that
    * it is a transposing ℤ-torsor.
    */
   def isIntervallic[S]()(implicit α: Torsor[S,ℤ],β: Arbitrary[S],γ2: Arbitrary[ℤ]) : Unit =
@@ -146,8 +153,8 @@ trait CoreSuite extends OwlSuite
   }
 
   /**
-   * Check that the mapping ''f'' satisfies the axioms of an equivariant map;
-   * namely that it commutes with the action of ''G'' on both ''S'' and ''T''.
+   * Check that the mapping `f` satisfies the axioms of an equivariant map;
+   * namely that it commutes with the action of `G` on both `S` and `T`.
    *
    * @see [[https://en.wikipedia.org/wiki/Equivariant_map Equivarient map (Wikipedia)]]
    */
@@ -163,7 +170,7 @@ trait CoreSuite extends OwlSuite
   }
 
   /**
-   * Check that ''S'' satisfies the axioms of a partial ordering; namely that
+   * Check that `S` satisfies the axioms of a partial ordering; namely that
    * the relation <= is reflexive, antisymmetric, and transitive.
    *
    * @see [[https://en.wikipedia.org/wiki/Partially_ordered_set Partial order (Wikipedia)]]
@@ -179,7 +186,7 @@ trait CoreSuite extends OwlSuite
   }
 
   /**
-   * Check that ''S'' satisfies the axioms of a total ordering; namely that it
+   * Check that `S` satisfies the axioms of a total ordering; namely that it
    * is partially ordered and, moreover, that the ordering <= is total.
    *
    * @see [[https://en.wikipedia.org/wiki/Total_order Total order (Wikipedia)]]

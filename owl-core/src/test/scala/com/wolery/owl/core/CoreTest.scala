@@ -17,13 +17,18 @@ package core
 
 //****************************************************************************
 
+import ℤTorsor._
+import ℝTorsor._
+
+//****************************************************************************
+
 class CoreTest extends CoreSuite
 {
   /* ℝ only satisfies the axioms exactly for limited subsets of its values due
-   	 to the inherent limitations of floating point representation. We are only
-   	 interested in audible frequencies, however, so restrict the set of values
-   	 that we test for rather than thread a  custom comparison function through
-   	 the entire test suite...*/
+      to the inherent limitations of floating point representation. We are only
+      interested in audible frequencies, however, so restrict the set of values
+      that we test for rather than thread a  custom comparison function through
+      the entire test suite...*/
 
   implicit val r = Arbitrary(generate.real)              // For r ∈ [-128,128]
 
