@@ -15,7 +15,7 @@
 package com.wolery.owl
 
 /**
- * Package object for package 'util'.
+ * Package object for package `util`.
  *
  * @author Jonathon Bell
  */
