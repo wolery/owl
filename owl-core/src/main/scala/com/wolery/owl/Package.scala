@@ -96,9 +96,9 @@ package object owl
   }
 
   /**
-   * Extends the type `Seq[ε]` with additional methods.
+   * Extends the type `Seq[α]` with additional methods.
    *
-   * Allows us to refer to the methods of class `Seq[ε]` by their traditional
+   * Enables us to refer to the methods of class `Seq[α]` by their traditional
    * symbolic names:
    *
    *  - `\`  set difference
@@ -109,34 +109,34 @@ package object owl
    *  - `⊆`  set inclusion
    *  - `∈`  set membership
    *
-   * @tparam ε  The type of an element.
+   * @tparam α  The type of an element.
    * @param  s  A sequence of elements.
    * @param  t  A sequence of elements.
    * @param  e  A (candidate) set element.
    */
   implicit final
-  class SeqEx[ε](val s: Seq[ε]) extends AnyVal
+  class SeqEx[α](val s: Seq[α]) extends AnyVal
   {
-    def \ (t: Seq[ε]): Seq[ε]  =  s.diff(t)
-    def ∪ (t: Seq[ε]): Seq[ε]  =  s.union(t)
-    def ∩ (t: Seq[ε]): Seq[ε]  =  s.intersect(t)
-    def ⊖ (t: Seq[ε]): Seq[ε]  =  s.union(t) diff s.intersect(t)
-    def ⊂ (t: Seq[ε]): Bool    =  s.containsSlice(t) && !t.containsSlice(s)
-    def ⊃ (t: Seq[ε]): Bool    =  t.containsSlice(s) && !s.containsSlice(t)
-    def ⊄ (t: Seq[ε]): Bool    = !s.containsSlice(t) ||  t.containsSlice(s)
-    def ⊅ (t: Seq[ε]): Bool    = !t.containsSlice(s) ||  s.containsSlice(t)
-    def ⊆ (t: Seq[ε]): Bool    =  s.containsSlice(t)
-    def ⊇ (t: Seq[ε]): Bool    =  t.containsSlice(s)
-    def ⊈ (t: Seq[ε]): Bool    = !s.containsSlice(t)
-    def ⊉ (t: Seq[ε]): Bool    = !t.containsSlice(s)
-    def ∋ (e: ε)     : Bool    =  s.contains(e)
-    def ∌ (e: ε)     : Bool    = !s.contains(e)
+    def \ (t: Seq[α]): Seq[α]  =  s.diff(t)
+    def ∪ (t: Seq[α]): Seq[α]  =  s.union(t)
+    def ∩ (t: Seq[α]): Seq[α]  =  s.intersect(t)
+    def ⊖ (t: Seq[α]): Seq[α]  =  s.union(t) diff s.intersect(t)
+    def ⊂ (t: Seq[α]): Bool    =  s.containsSlice(t) && !t.containsSlice(s)
+    def ⊃ (t: Seq[α]): Bool    =  t.containsSlice(s) && !s.containsSlice(t)
+    def ⊄ (t: Seq[α]): Bool    = !s.containsSlice(t) ||  t.containsSlice(s)
+    def ⊅ (t: Seq[α]): Bool    = !t.containsSlice(s) ||  s.containsSlice(t)
+    def ⊆ (t: Seq[α]): Bool    =  s.containsSlice(t)
+    def ⊇ (t: Seq[α]): Bool    =  t.containsSlice(s)
+    def ⊈ (t: Seq[α]): Bool    = !s.containsSlice(t)
+    def ⊉ (t: Seq[α]): Bool    = !t.containsSlice(s)
+    def ∋ (e: α)     : Bool    =  s.contains(e)
+    def ∌ (e: α)     : Bool    = !s.contains(e)
   }
 
   /**
-   * Extends the type `Set[ε]` with additional methods.
+   * Extends the type `Set[α]` with additional methods.
    *
-   * Allows us to refer to the methods of class `Set[ε]` by their traditional
+   * Enables us to refer to the methods of class `Set[α]` by their traditional
    * symbolic names:
    *
    *  - `\`  set difference
@@ -148,59 +148,59 @@ package object owl
    *  - `∈`  set membership
    *  - `∅`  the empty set
    *
-   * @tparam ε  The type of an element.
+   * @tparam α  The type of an element.
    * @param  s  A set of elements.
    * @param  t  A set of elements.
    * @param  e  A (candidate) set element.
    */
   implicit final
-  class SetEx[ε](val s: Set[ε]) extends AnyVal
+  class SetEx[α](val s: Set[α]) extends AnyVal
   {
-    def \ (t: Set[ε]): Set[ε]  =  s.diff(t)
-    def ∪ (t: Set[ε]): Set[ε]  =  s.union(t)
-    def ∩ (t: Set[ε]): Set[ε]  =  s.intersect(t)
-    def ⊖ (t: Set[ε]): Set[ε]  =  s.union(t) diff s.intersect(t)
-    def ⊂ (t: Set[ε]): Bool    =  s.subsetOf(t) && !t.subsetOf(s)
-    def ⊃ (t: Set[ε]): Bool    =  t.subsetOf(s) && !s.subsetOf(t)
-    def ⊄ (t: Set[ε]): Bool    = !s.subsetOf(t) ||  t.subsetOf(s)
-    def ⊅ (t: Set[ε]): Bool    = !t.subsetOf(s) ||  s.subsetOf(t)
-    def ⊆ (t: Set[ε]): Bool    =  s.subsetOf(t)
-    def ⊇ (t: Set[ε]): Bool    =  t.subsetOf(s)
-    def ⊈ (t: Set[ε]): Bool    = !s.subsetOf(t)
-    def ⊉ (t: Set[ε]): Bool    = !t.subsetOf(s)
-    def ∋ (e: ε)     : Bool    =  s.contains(e)
-    def ∌ (e: ε)     : Bool    = !s.contains(e)
+    def \ (t: Set[α]): Set[α]  =  s.diff(t)
+    def ∪ (t: Set[α]): Set[α]  =  s.union(t)
+    def ∩ (t: Set[α]): Set[α]  =  s.intersect(t)
+    def ⊖ (t: Set[α]): Set[α]  =  s.union(t) diff s.intersect(t)
+    def ⊂ (t: Set[α]): Bool    =  s.subsetOf(t) && !t.subsetOf(s)
+    def ⊃ (t: Set[α]): Bool    =  t.subsetOf(s) && !s.subsetOf(t)
+    def ⊄ (t: Set[α]): Bool    = !s.subsetOf(t) ||  t.subsetOf(s)
+    def ⊅ (t: Set[α]): Bool    = !t.subsetOf(s) ||  s.subsetOf(t)
+    def ⊆ (t: Set[α]): Bool    =  s.subsetOf(t)
+    def ⊇ (t: Set[α]): Bool    =  t.subsetOf(s)
+    def ⊈ (t: Set[α]): Bool    = !s.subsetOf(t)
+    def ⊉ (t: Set[α]): Bool    = !t.subsetOf(s)
+    def ∋ (e: α)     : Bool    =  s.contains(e)
+    def ∌ (e: α)     : Bool    = !s.contains(e)
   }
 
   /**
-   * Extends the element type `ε` with additional methods.
+   * Extends the element type `α` with additional methods.
    *
-   * @tparam ε  The type of an element.
+   * @tparam α  The type of an element.
    * @param  s  A collection of elements.
    * @param  e  A (candidate) set element.
    *
    * @see    [[SeqEx]] and [SetEx]
    */
   implicit final
-  class ElementEx[ε](val e: ε) extends AnyVal
+  class ElementEx[α](val e: α) extends AnyVal
   {
-    def ∈ (s: Seq[ε])  : Bool =  s.contains(e)
-    def ∈ (s: Set[ε])  : Bool =  s.contains(e)
-    def ∈ (s: Map[ε,_]): Bool =  s.contains(e)
-    def ∉ (s: Seq[ε])  : Bool = !s.contains(e)
-    def ∉ (s: Set[ε])  : Bool = !s.contains(e)
-    def ∉ (s: Map[ε,_]): Bool = !s.contains(e)
+    def ∈ (s: Seq[α])  : Bool =  s.contains(e)
+    def ∈ (s: Set[α])  : Bool =  s.contains(e)
+    def ∈ (s: Map[α,_]): Bool =  s.contains(e)
+    def ∉ (s: Seq[α])  : Bool = !s.contains(e)
+    def ∉ (s: Set[α])  : Bool = !s.contains(e)
+    def ∉ (s: Map[α,_]): Bool = !s.contains(e)
   }
 
   /**
    * The polymorphic empty set.
    *
-   * @tparam ε  The type of an element.
+   * @tparam α  The type of an element.
    *
-   * @return An empty set of type Set[ε].
+   * @return An empty set of type Set[α].
    * @see    [[SetEx]]
    */
-  def ∅[ε]: Set[ε] = Set[ε]()
+  def ∅[α]: Set[α] = Set[α]()
 }
 
 //****************************************************************************
