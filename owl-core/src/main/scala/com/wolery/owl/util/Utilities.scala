@@ -30,7 +30,7 @@ trait utilities
    *
    * @param  c  An arbitrary character.
    *
-   * @return The subscripted version of `c`, if defined by Unicode, otherwise
+   * @return The subscripted version of `c`, if defined by Unicode,  otherwise
    *         `c`.
    * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
    *         Unicode subscripts and superscripts (Wikipedia)]]
@@ -77,7 +77,7 @@ trait utilities
 
   /**
    * Returns a copy of the given string in which  characters with  subscripted
-   * versions defined by Unicode are replaced with subscripted variants.
+   * versions defined by Unicode are replaced with their subscripted variants.
    *
    * For example:
    * {{{
@@ -93,7 +93,7 @@ trait utilities
 
   /**
    * Returns a copy of the given string in which characters with superscripted
-   * versions defined by Unicode are replaced with superscripted variants.
+   * versions defined by Unicode are replaced with their superscripted variants.
    *
    * For example:
    * {{{
