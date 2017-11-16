@@ -46,8 +46,8 @@ trait CoreSuite extends OwlSuite
   {
     forAll("a") {(a: M) ⇒
     {
-      assert(α.zero + a == a,             "[left identity]")
-      assert(a + α.zero == a,             "[right identity]")
+      assert(α.e + a == a,             "[left identity]")
+      assert(a + α.e == a,             "[right identity]")
     }}
 
     forAll("a","b","c") {(a: M,b: M,c: M) ⇒
@@ -68,7 +68,7 @@ trait CoreSuite extends OwlSuite
 
     forAll("g") {(g: G) ⇒
     {
-      assert(g + -g == α.zero,            "[negation]")
+      assert(g + -g == α.e,            "[negation]")
     }}
   }
 
@@ -78,13 +78,16 @@ trait CoreSuite extends OwlSuite
    *
    * @see [[https://en.wikipedia.org/wiki/Group_action Group action (Wikipedia)]]
    */
-  def isAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
+  def isAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ2: Arbitrary[G]) : Unit =
   {
+    import α._
+    import α.γ._
+
     isGroup[G]()                          // action ⇒ group
 
     forAll("s") {(s: S) ⇒
     {
-      assert(s + α.zero == s,             "[identity]")
+      assert(s + e == s,             "[identity]")
     }}
 
     forAll("s","f","g") {(s: S,f: G,g: G) ⇒
@@ -113,20 +116,24 @@ trait CoreSuite extends OwlSuite
   }
 
   /**
+   * TODO
    * Check that ''S'' satisfies the axioms of a transposing set; namely that
-   * it is a ℤ-set.
+   * it is a ℤ-space.
    */
-  def isTransposing[S]()(implicit α: Transposing[S],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
+  def isTransposing[S]()(implicit α: Action[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
   {
-    isAction[S,ℤ]()                       // transposing ⇒ ℤ-action
+    isAction[S,ℤ]()                       // ℤ-space ⇒ ℤ-action
   }
 
   /**
+   * TODO
    * Check that ''S'' satisfies the axioms of an intervallic set; namely, that
    * it is a transposing ℤ-torsor.
    */
-  def isIntervallic[S]()(implicit α: Intervallic[S],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
+  def isIntervallic[S]()(implicit α: Torsor[S,ℤ],β: Arbitrary[S],γ2: Arbitrary[ℤ]) : Unit =
   {
+    import α._
+
     isTransposing[S]()                    // intervallic ⇒ transposing
     isTorsor[S,ℤ]()                       // intervallic ⇒ ℤ-torsor
 

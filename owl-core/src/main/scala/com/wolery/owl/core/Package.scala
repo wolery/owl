@@ -35,30 +35,31 @@ package object core
 
 //****************************************************************************
 
-  implicit final class MonoidSyntax[M](m: M)(implicit α: Monoid[M])
+  implicit final class MonoidEx[M](m: M)(implicit α: Monoid[M])
   {
     def unary_+ : M                   = m
-    def + (n: M): M                   = α.plus(m,n)
+    def + (n: M): M                   = α.operate(m,n)
+    def ⋅ (n: M): M                   = α.operate(m,n)
   }
 
-  implicit final class GroupSyntax[G](f: G)(implicit α: Group[G])
+  implicit final class GroupEx[G](f: G)(implicit α: Group[G])
   {
-    def unary_- : G                   = α.negate(f)
-    def - (g: G): G                   = α.plus(f,α.negate(g))
+    def unary_- : G                   = α.inverse(f)
+    def - (g: G): G                   = α.operate(f,α.inverse(g))
   }
 
-  implicit final class ActionSyntax[S,G](s: S)(implicit α: Action[S,G])
+  implicit final class ActionEx[S,G](s: S)(implicit α: Action[S,G])
   {
     def + (g: G): S                   = α.apply(s,g)
-    def - (g: G): S                   = α.apply(s,α.negate(g))
+    def - (g: G): S                   = α.apply(s,α.γ.inverse(g))
   }
 
-  implicit final class TorsorSyntax[S,G](s: S)(implicit α: Torsor[S,G])
+  implicit final class TorsorEx[S,G](s: S)(implicit α: Torsor[S,G])
   {
     def - (t: S): G                   = α.delta(t,s)
   }
 
-  implicit final class TransposingSyntax[S](s: S)(implicit α: Action[S,ℤ])
+  implicit final class TranspostionEx[S](s: S)(implicit α: Action[S,ℤ])
   {
     def ♭                             = α.apply(s,-1)
     def ♮                             = s
@@ -67,22 +68,22 @@ package object core
 
 //****************************************************************************
 
-  implicit object torsorℤℤ extends Torsor[ℤ,ℤ]
+  implicit object ℤisℤTorsor extends Group[ℤ] with ℤTorsor[ℤ]
   {
-    def zero             : ℤ          = 0
-    def negate(i: ℤ)     : ℤ          = -i
-    def plus  (i: ℤ,j: ℤ): ℤ          = i + j
-    def apply (i: ℤ,j: ℤ): ℤ          = i + j
-    def delta (i: ℤ,j: ℤ): ℤ          = j - i
+    val e                 : ℤ         = 0
+    def inverse(i: ℤ)     : ℤ         = -i
+    def operate(i: ℤ,j: ℤ): ℤ         = i + j
+    def apply (i: ℤ,j: ℤ) : ℤ         = i + j
+    def delta (i: ℤ,j: ℤ) : ℤ         = j - i
   }
 
-  implicit object torsorℝℝ extends Torsor[ℝ,ℝ]
+  implicit object ℝisℝTorsor extends Group[ℝ] with ℝTorsor[ℝ]
   {
-    def zero             : ℝ          = 0
-    def negate(i: ℝ)     : ℝ          = -i
-    def plus  (i: ℝ,j: ℝ): ℝ          = i + j
-    def apply (r: ℝ,s: ℝ): ℝ          = r + s
-    def delta (r: ℝ,s: ℝ): ℝ          = s - r
+    val e                 : ℝ         = 0
+    def inverse(i: ℝ)     : ℝ         = -i
+    def operate(i: ℝ,j: ℝ): ℝ         = i + j
+    def apply  (r: ℝ,s: ℝ): ℝ         = r + s
+    def delta  (r: ℝ,s: ℝ): ℝ         = s - r
   }
 }
 

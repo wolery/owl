@@ -25,7 +25,7 @@
 package com.wolery.owl
 package core
 
-/**
+/**TODO
  * Describes the operations that endow the type ''M'' with the structure of an
  * additive monoid.
  *
@@ -43,20 +43,20 @@ package core
  */
 trait Monoid[M]
 {
-  /**
+  /**TODO
    * The identity element; that is, the unique element 0 in ''M'' such that
    * ''0 + m = m = m + 0'' for all ''m'' in ''M''.
    */
-  def zero: M
+  val e: M
 
-  /**
+  /**TODO
    * Returns the 'sum' of the given elements, whatever this might mean for the
    * actual algebraic structure in question.
    */
-  def plus(m: M,n: M): M
+  def operate(m: M,n: M): M
 }
 
-/**
+/**TODO
  * Describes the operations that endow the type ''G'' with the structure of an
  * additive group.
  *
@@ -76,14 +76,14 @@ trait Monoid[M]
  */
 trait Group[G] extends Monoid[G]
 {
-  /**
+  /**TODO
    * Returns the inverse of the element ''g''; that is, the unique element
    * ''-g'' in ''G'' such that ''g + -g = 0 = -g + g''.
    */
-  def negate(g: G): G
+  def inverse(g: G): G
 }
 
-/**
+/**TODO
  * Describes a (right) action of the group ''G'' upon the carrier set ''S''.
  *
  * Instances satisfy the axioms:
@@ -99,8 +99,14 @@ trait Group[G] extends Monoid[G]
  *
  * @see    [[http://en.wikipedia.org/wiki/Group_action Group action (Wikipedia)]]
  */
-trait Action[S,G] extends Group[G]
+trait Action[S,G]
 {
+  /**
+   * TODO
+   */
+  implicit
+  val γ: Group[G]
+
   /**
    * Applies an element of the group to an element of the carrier set, whatever
    * this might mean for the actual group action in question.
@@ -113,7 +119,7 @@ trait Action[S,G] extends Group[G]
   def apply(s: S,g: G): S
 }
 
-/**
+/**TODO
  * Describes a regular (right) action of the group ''G'' upon the carrier set
  * ''S''.
  *
@@ -141,7 +147,7 @@ trait Action[S,G] extends Group[G]
  */
 trait Torsor[S,G] extends Action[S,G]
 {
-  /**
+  /**TODO
    * Returns the 'delta' between any pair of elements of the carrier set; that
    * is,  the unique group element that when applied to the first element maps
    * it into the second.
@@ -153,7 +159,7 @@ trait Torsor[S,G] extends Action[S,G]
   def delta(s: S,t: S): G
 }
 
-/**
+/**TODO
  * Describes a (right) action of the integers ℤ upon the carrier set ''S''.
  *
  * Transposing sets are of central importance within Owl because they allow us
@@ -165,25 +171,9 @@ trait Torsor[S,G] extends Action[S,G]
  *
  * @tparam S  A non-empty set acted upon by the integers via the mapping `apply`.
  */
-trait Transposing[S] extends Action[S,ℤ]
-{
-  /**
-   * 0, the additive identity.
-   */
-  def zero: ℤ = 0
+trait ℤSpace[S] extends Action[S,ℤ]  {val γ: Group[ℤ] = ℤisℤTorsor}
 
-  /**
-   * ''-a'', the negation of the integer ''a''.
-   */
-  def negate(a: ℤ): ℤ = -a
-
-  /**
-   * ''a'' + ''b'', the sum of the integers ''a'' and ''b''.
-   */
-  def plus  (a: ℤ,b: ℤ): ℤ = a + b
-}
-
-/**
+/**TODO
  * Describes a regular (right) action of the integers ℤ upon the carrier set
  * ''S''.
  *
@@ -193,6 +183,7 @@ trait Transposing[S] extends Action[S,ℤ]
  *
  * @tparam S  A non-empty set acted upon regularly by the integers via the mapping `apply`.
  */
-trait Intervallic[S] extends Torsor[S,ℤ] with Transposing[S]
+trait ℤTorsor[S] extends Torsor[S,ℤ] {val γ: Group[ℤ] = ℤisℤTorsor}
+trait ℝTorsor[S] extends Torsor[S,ℝ] {val γ: Group[ℝ] = ℝisℝTorsor}
 
 //****************************************************************************

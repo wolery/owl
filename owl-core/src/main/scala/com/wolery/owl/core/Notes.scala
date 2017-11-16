@@ -118,7 +118,7 @@ object Notes
   }
 
   implicit
-  object transposing extends Transposing[Notes]
+  object isℤSpace extends ℤSpace[Notes]
   {
     def apply(s: Notes,i: ℤ)              = new Notes(rol12(s.bits,i))
   }

@@ -119,11 +119,8 @@ object Frequency
    * Frequencies are acted upon by the reals via transposition in half-steps.
    */
   implicit
-  val torsor: Torsor[Frequency,ℝ]= new Torsor[Frequency,ℝ]
+  object isℝTorsor extends ℝTorsor[Frequency]
   {
-     val zero                             = 0.0
-     def negate(r: ℝ)                     = -r
-     def plus  (r: ℝ,s: ℝ)                = r + s
      def apply (f: Frequency,r: ℝ)        = Hz (pow(2,r/12.0) * f.Hz)
      def delta (f: Frequency,g: Frequency)= log(g.Hz / f.Hz) / log_α
      val log_α                            = log(pow(2,1/12.0))

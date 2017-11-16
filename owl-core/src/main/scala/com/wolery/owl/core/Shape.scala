@@ -344,7 +344,7 @@ object Shape
   /**
    * The integers act upon the set of shapes via modal interchange.
    */
-  implicit val transposing: Transposing[Shape] = new Transposing[Shape]
+  implicit object isℤSpace extends ℤSpace[Shape]
   {
     def apply(shape: Shape,i: ℤ): Shape = shape.mode(i)
   }

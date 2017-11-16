@@ -149,7 +149,7 @@ object Pitch
   /**
    * Pitches are acted upon by integers via transposition by half-steps.
    */
-  implicit object intervallic extends Intervallic[Pitch]
+  implicit object isℤTorsor extends ℤTorsor[Pitch]
   {
     def apply(p: Pitch,i: ℤ): Pitch   = new Pitch(p.midi + i)
     def delta(p: Pitch,q: Pitch): ℤ   = q.midi - p.midi

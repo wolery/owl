@@ -51,7 +51,10 @@ object Scale
   def apply(r: Note,s: Note*): Scale      = Scale(r,Notes(s:_*))
   def apply(r: Note,s: Traversable[Note]): Scale  = Scale(r,Shape(s.map(_-r)))
 
-  implicit val transposing = new Transposing[Scale]
+  /**
+   * The integers act upon the set of scales via transposition.
+   */
+  implicit object isℤSpace extends ℤSpace[Scale]
   {
     def apply(s: Scale,i: ℤ): Scale       = new Scale(s.root + i,s.shape)
   }
