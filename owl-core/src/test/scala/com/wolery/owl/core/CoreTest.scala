@@ -17,11 +17,6 @@ package core
 
 //****************************************************************************
 
-import ℤTorsor._
-import ℝTorsor._
-
-//****************************************************************************
-
 class CoreTest extends CoreSuite
 {
   /* ℝ only satisfies the axioms exactly for limited subsets of its values due

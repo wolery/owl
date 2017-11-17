@@ -342,9 +342,10 @@ object Shape
   }
 
   /**
-   * The integers act upon the set of shapes via modal interchange.
+   * The additive group of integers ℤ acts upon the set of shapes via modal
+   * interchange.
    */
-  implicit object isℤSpace extends ℤSpace[Shape]
+  implicit object isℤSet extends Action[Shape,ℤ]
   {
     def apply(shape: Shape,i: ℤ): Shape = shape.mode(i)
   }

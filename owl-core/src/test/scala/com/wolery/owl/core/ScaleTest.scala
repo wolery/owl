@@ -81,7 +81,7 @@ class ScaleTest extends CoreSuite
   test("mode is a ℤ-action")
   {
     implicit val i = Arbitrary(generate.int)             // For i ∈ [-128,128]
-    implicit val t = new ℤSpace[Scale]
+    implicit val t = new Action[Scale,ℤ]
     {
       def apply(s: Scale,i: ℤ): Scale = s.mode(i)        // ...i'th mode of s
     }

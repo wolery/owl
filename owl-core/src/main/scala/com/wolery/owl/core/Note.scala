@@ -34,7 +34,7 @@ object Note
 {
   def apply(p: Pitch): Note               = new Note(mod12(p.midi))
 
-  implicit object isℤTorsor extends ℤTorsor[Note]
+  implicit object isℤTorsor extends Torsor[Note,ℤ]
   {
     def apply(n: Note,i: ℤ)               = new Note(mod12(n.n + i))
     def delta(m: Note,n: Note)            = mod12(n.n - m.n)

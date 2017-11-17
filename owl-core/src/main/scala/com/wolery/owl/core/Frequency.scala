@@ -116,10 +116,11 @@ object Frequency
   }
 
   /**
-   * Frequencies are acted upon by the reals via transposition in half-steps.
+   * The additive group of real numbers ℝ acts regularly on the frequencies by
+   * transposition in half-steps.
    */
   implicit
-  object isℝTorsor extends ℝTorsor[Frequency]
+  object isℝTorsor extends Torsor[Frequency,ℝ]
   {
      def apply (f: Frequency,r: ℝ)        = Hz (pow(2,r/12.0) * f.Hz)
      def delta (f: Frequency,g: Frequency)= log(g.Hz / f.Hz) / log_α

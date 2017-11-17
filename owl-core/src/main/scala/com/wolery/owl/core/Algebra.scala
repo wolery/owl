@@ -99,14 +99,8 @@ trait Group[G] extends Monoid[G]
  *
  * @see    [[http://en.wikipedia.org/wiki/Group_action Group action (Wikipedia)]]
  */
-trait Action[S,G]
+abstract class Action[S,G](implicit val group: Group[G])
 {
-  /**
-   * TODO
-   */
-  implicit
-  val group: Group[G]
-
   /**
    * Applies an element of the group to an element of the carrier set, whatever
    * this might mean for the actual group action in question.
@@ -157,61 +151,6 @@ trait Torsor[S,G] extends Action[S,G]
    * @return The unique group element that maps ''s'' to ''t''.
    */
   def delta(s: S,t: S): G
-}
-
-/**TODO
- * Describes a (right) action of the integers ℤ upon the carrier set ''S''.
- *
- * Transposing sets are of central importance within Owl because they allow us
- * to model transpositions of set elements - notes, pitches, scales, and so on
- * - using simple integer arithmetic.
- *
- * Notice that because ℤ is a unital ring, its action upon ''S'' is completely
- * determined by the mapping `apply(_,1)`.
- *
- * @tparam S  A non-empty set acted upon by the integers via the mapping `apply`.
- */
-trait ℤSpace[S] extends Action[S,ℤ]  {val group: Group[ℤ] = ℤTorsor.isℤTorsor}
-
-/**TODO
- * Describes a regular (right) action of the integers ℤ upon the carrier set
- * ''S''.
- *
- * In an intervallic set, each pair of elements is uniquely associated with an
- * ''interval'' - the unique integer that when applied to the first element of
- * the pair ''transposes'' it to the second.
- *
- * @tparam S  A non-empty set acted upon regularly by the integers via the mapping `apply`.
- */
-trait ℤTorsor[S] extends Torsor[S,ℤ] {val group: Group[ℤ] = ℤTorsor.isℤTorsor}
-trait ℝTorsor[S] extends Torsor[S,ℝ] {val group: Group[ℝ] = ℝTorsor.isℝTorsor}
-
-//****************************************************************************
-
-object ℤTorsor
-{
-  implicit
-  object isℤTorsor extends Group[ℤ] with ℤTorsor[ℤ]
-  {
-    val e                 : ℤ         = 0
-    def inverse(i: ℤ)     : ℤ         = -i
-    def operate(i: ℤ,j: ℤ): ℤ         = i + j
-    def apply  (i: ℤ,j: ℤ): ℤ         = i + j
-    def delta  (i: ℤ,j: ℤ): ℤ         = j - i
-  }
-}
-
-object ℝTorsor
-{
-  implicit
-  object isℝTorsor extends Group[ℝ] with ℝTorsor[ℝ]
-  {
-    val e                 : ℝ         = 0
-    def inverse(i: ℝ)     : ℝ         = -i
-    def operate(i: ℝ,j: ℝ): ℝ         = i + j
-    def apply  (r: ℝ,s: ℝ): ℝ         = r + s
-    def delta  (r: ℝ,s: ℝ): ℝ         = s - r
-  }
 }
 
 //****************************************************************************

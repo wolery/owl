@@ -147,9 +147,10 @@ object Pitch
   }
 
   /**
-   * Pitches are acted upon by integers via transposition by half-steps.
+   * The additive group of integers ℤ acts upon the pitches via transposition
+   * in half-steps.
    */
-  implicit object isℤTorsor extends ℤTorsor[Pitch]
+  implicit object isℤTorsor extends Torsor[Pitch,ℤ]
   {
     def apply(p: Pitch,i: ℤ): Pitch   = new Pitch(p.midi + i)
     def delta(p: Pitch,q: Pitch): ℤ   = q.midi - p.midi

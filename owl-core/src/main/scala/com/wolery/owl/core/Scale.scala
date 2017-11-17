@@ -52,9 +52,10 @@ object Scale
   def apply(r: Note,s: Traversable[Note]): Scale  = Scale(r,Shape(s.map(_-r)))
 
   /**
-   * The integers act upon the set of scales via transposition.
+   * The additive group of integers ℤ acts upon the scales by transposition in
+   * half steps.
    */
-  implicit object isℤSpace extends ℤSpace[Scale]
+  implicit object isℤSet extends Action[Scale,ℤ]
   {
     def apply(s: Scale,i: ℤ): Scale       = new Scale(s.root + i,s.shape)
   }

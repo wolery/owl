@@ -118,7 +118,7 @@ object Notes
   }
 
   implicit
-  object isℤSpace extends ℤSpace[Notes]
+  object isℤSet extends Action[Notes,ℤ]
   {
     def apply(s: Notes,i: ℤ)              = new Notes(rol12(s.bits,i))
   }

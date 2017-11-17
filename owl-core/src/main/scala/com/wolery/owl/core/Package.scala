@@ -65,6 +65,58 @@ package object core
     def ♮                             = s
     def ♯                             = α(s,+1)
   }
+
+  /**TODO
+   * Describes a (right) action of the integers ℤ upon the carrier set ''S''.
+   *
+   * Transposing sets are of central importance within Owl because they allow us
+   * to model transpositions of set elements - notes, pitches, scales, and so on
+   * - using simple integer arithmetic.
+   *
+   * Notice that because ℤ is a unital ring, its action upon ''S'' is completely
+   * determined by the mapping `apply(_,1)`.
+   *
+   * @tparam S  A non-empty set acted upon by the integers via the mapping `apply`.
+   */
+
+  /**TODO
+   * Describes a regular (right) action of the integers ℤ upon the carrier set
+   * ''S''.
+   *
+   * In an intervallic set, each pair of elements is uniquely associated with an
+   * ''interval'' - the unique integer that when applied to the first element of
+   * the pair ''transposes'' it to the second.
+   *
+   * @tparam S  A non-empty set acted upon regularly by the integers via the mapping `apply`.
+   */
+
+//****************************************************************************
+
+  implicit object isℤGroup extends Group[ℤ]
+  {
+    val e                 : ℤ         = 0
+    def inverse(i: ℤ)     : ℤ         = -i
+    def operate(i: ℤ,j: ℤ): ℤ         = i + j
+  }
+
+  implicit object isℝGroup extends Group[ℝ]
+  {
+    val e                 : ℝ         = 0
+    def inverse(i: ℝ)     : ℝ         = -i
+    def operate(i: ℝ,j: ℝ): ℝ         = i + j
+  }
+
+  implicit object isℤTorsor extends Torsor[ℤ,ℤ]
+  {
+    def apply  (i: ℤ,j: ℤ): ℤ         = i + j
+    def delta  (i: ℤ,j: ℤ): ℤ         = j - i
+  }
+
+  implicit object isℝTorsor extends Torsor[ℝ,ℝ]
+  {
+    def apply  (r: ℝ,s: ℝ): ℝ         = r + s
+    def delta  (r: ℝ,s: ℝ): ℝ         = s - r
+  }
 }
 
 //****************************************************************************
