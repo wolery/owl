@@ -23,9 +23,9 @@ class NoteTest extends CoreSuite
 
   implicit val i = Arbitrary(generate.int)               // For i ∈ [-128,128]
 
-  test("Note is intervallic")
+  test("Note is a ℤ₁₂-torsor")
   {
-    isIntervallic[Note]()                                // Verify the axioms
+    isℤTorsor[Note]()                                    // Verify the axioms
   }
 
   test("Note invariants")

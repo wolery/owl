@@ -23,9 +23,9 @@ class PitchTest extends CoreSuite
 
   implicit val i = Arbitrary(generate.int)               // For i ∈ [-128,128]
 
-  test("Pitch is intervallic")
+  test("Pitch is ℤ₁₂₈-torsor")
   {
-    isIntervallic[Pitch]()                               // Verify the axioms
+    isℤTorsor[Pitch]()                                   // Verify the axioms
   }
 
   test("Pitch is totally ordered")

@@ -22,11 +22,11 @@ class ShapeTest extends CoreSuite
   import arbitrary._                                     // For owl implicits
   import util.utilities._                                // For utilities
 
-  test("Shape is transposing")
+  test("Shape is a ℤ-set")
   {
     implicit val i = Arbitrary(generate.int)             // For i ∈ [-128,128]
 
-    isTransposing[Shape]()                               // Verify the axioms
+    isℤSet[Shape]()                                      // Verify the axioms
   }
 
   test("Shape construction")

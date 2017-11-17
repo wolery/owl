@@ -22,11 +22,11 @@ class ScaleTest extends CoreSuite
   import arbitrary._                                     // For owl implicits
   import util.utilities._                                // For utilities
 
-  test("Scale is transposing")
+  test("Scale is a ℤ-set")
   {
     implicit val i = Arbitrary(generate.int)             // For i ∈ [-128,128]
 
-    isTransposing[Scale]()                               // Verify the axioms
+    isℤSet[Scale]()                                      // Verify the axioms
   }
 
   test("Scale construction")

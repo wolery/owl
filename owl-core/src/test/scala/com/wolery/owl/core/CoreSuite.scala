@@ -127,7 +127,7 @@ trait CoreSuite extends OwlSuite
    * Check that `S` satisfies the axioms of a transposing set; namely that
    * it is a ℤ-space.
    */
-  def isTransposing[S]()(implicit α: Action[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
+  def isℤSet[S]()(implicit α: Action[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
   {
     isAction[S,ℤ]()                       // ℤ-space ⇒ ℤ-action
   }
@@ -137,11 +137,11 @@ trait CoreSuite extends OwlSuite
    * Check that `S` satisfies the axioms of an intervallic set; namely, that
    * it is a transposing ℤ-torsor.
    */
-  def isIntervallic[S]()(implicit α: Torsor[S,ℤ],β: Arbitrary[S],γ2: Arbitrary[ℤ]) : Unit =
+  def isℤTorsor[S]()(implicit α: Torsor[S,ℤ],β: Arbitrary[S],γ2: Arbitrary[ℤ]) : Unit =
   {
     import α._
 
-    isTransposing[S]()                    // intervallic ⇒ transposing
+    isℤSet[S]()                    // intervallic ⇒ transposing
     isTorsor[S,ℤ]()                       // intervallic ⇒ ℤ-torsor
 
     forAll("s") {(s: S) ⇒

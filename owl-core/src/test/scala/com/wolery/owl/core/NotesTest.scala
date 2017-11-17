@@ -21,11 +21,11 @@ class NotesTest extends CoreSuite
 {
   import arbitrary._                                     // For owl implicits
 
-  test("Notes is transposing")
+  test("Notes is a ℤ-set")
   {
     implicit val i = Arbitrary(generate.int)             // For i ∈ [-128,128]
 
-    isTransposing[Notes]()                               // Verify the axioms
+    isℤSet[Notes]()                                      // Verify the axioms
   }
 
   test("Notes(⊆) is a partial ordering")
