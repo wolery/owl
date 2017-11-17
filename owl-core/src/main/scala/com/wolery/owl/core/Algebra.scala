@@ -25,77 +25,82 @@
 package com.wolery.owl
 package core
 
-/**TODO
- * Describes the operations that endow the type ''M'' with the structure of an
- * additive monoid.
+/**
+ * Describes the operations that endow the data type `M` with the structure of
+ * a monoid.
  *
  * Instances satisfy the axioms:
  * {{{
- *            0 + m = m = m + 0                          identity
- *     (m₁ + m₂) + m₃ = m₁ + (m₂ + m₃)                   associativity
+ *            e ⋅ m = m = m ⋅ e                          identity
+ *     (m₁ ⋅ m₂) ⋅ m₃ = m₁ ⋅ (m₂ ⋅ m₃)                   associativity
  * }}}
- * for all ''m'' in ''M'', where 0 and + denote the members `zero` and `plus`
- * respectively. In other words, ''M'' is a semigroup with an identity element.
+ * for all `m` in `M`, where ⋅ denotes the function `operate`. In other words,
+ * `M` is a semigroup with an identity element.
  *
- * @tparam M The underlying set on which the monoid operation acts.
+ * @tparam M  The underlying set on which the monoid operation acts.
  *
  * @see    [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
+ * @author Jonathon Bell
  */
 trait Monoid[M]
 {
-  /**TODO
-   * The identity element; that is, the unique element 0 in ''M'' such that
-   * ''0 + m = m = m + 0'' for all ''m'' in ''M''.
+  /**
+   * The identity element; that is, the unique element `e` in `M` such that
+   * `e ⋅ m = m = m ⋅ e` for all `m` in `M`.
    */
   val e: M
 
-  /**TODO
-   * Returns the 'sum' of the given elements, whatever this might mean for the
-   * actual algebraic structure in question.
+  /**
+   * Returns the product of the given elements, whatever this may mean for the
+   * specific algebraic structure in question.
+   *
+   * The function is associative; that is, `(m₁ ⋅ m₂) ⋅ m₃ = m₁ ⋅ (m₂ ⋅ m₃)`
+   * for all `m` in `M`.
    */
   def operate(m: M,n: M): M
 }
 
-/**TODO
- * Describes the operations that endow the type ''G'' with the structure of an
- * additive group.
+/**
+ * Describes the operations that endow the data type `G` with the structure of
+ * a group.
  *
  * Instances satisfy the axioms:
  * {{{
- *            0 + g = g = g + 0                          identity
- *     (g₁ + g₂) + g₃ = g₁ + (g₂ + g₃)                   associativity
- *           g + -g = 0 = -g + g                         invertability
+ *            e ⋅ g = g = g ⋅ e                          identity
+ *     (g₁ ⋅ g₂) ⋅ g₃ = g₁ ⋅ (g₂ ⋅ g₃)                   associativity
+ *           g ⋅ -g = e = -g ⋅ g                         invertability
  * }}}
- * for all ''g'' in ''G'', where 0, +, and - denote the members `zero`, `plus`
- * and `negate` respectively. In other words, ''G'' is a monoid in which every
- * element has an additive inverse.
+ * for all `g` in `G`, where ⋅ and - denote the functions `operate` and `inverse`
+ * respectively. In other words, `G` is a monoid in which every element has an
+ * inverse.
  *
- * @tparam G The underlying set on which the group operation acts.
+ * @tparam G  The underlying set on which the group operation acts.
  *
  * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics) Group (Wikipedia)]]
+ * @author Jonathon Bell
  */
 trait Group[G] extends Monoid[G]
 {
-  /**TODO
-   * Returns the inverse of the element ''g''; that is, the unique element
-   * ''-g'' in ''G'' such that ''g + -g = 0 = -g + g''.
+  /**
+   * Returns the inverse of the element `g`; that is, the unique element `-g`
+   * in `G` such that `g + -g = e = -g + g`.
    */
   def inverse(g: G): G
 }
 
-/**TODO
- * Describes a (right) action of the group ''G'' upon the carrier set ''S''.
+/**
+ * Describes a (right) action of the group `G` upon the carrier set `S`.
  *
  * Instances satisfy the axioms:
  * {{{
- *            s + 0 = s                                  identity
- *    s + (g₁ + g₂) = (s + g₁) + g₂                      compatability
+ *            s ⋅ e = s                                  identity
+ *    s ⋅ (g₁ ⋅ g₂) = (s ⋅ g₁) + g₂                      compatability
  * }}}
- * for all ''s'' in ''S'' and ''g'' in ''G'', where 0 and + denote the members
+ * for all `s` in `S` and `g` in `G`, where ⋅ denotes the members
  * `zero` and `plus` respectively.
  *
- * @tparam G  A group that acts upon the carrier set ''S'' via the mapping `apply`.
- * @tparam S  A non-empty set acted upon by the group ''G'' via the mapping `apply`.
+ * @tparam G  A group that acts upon the carrier set `S` via the mapping `apply`.
+ * @tparam S  A non-empty set acted upon by the group `G` via the mapping `apply`.
  *
  * @see    [[http://en.wikipedia.org/wiki/Group_action Group action (Wikipedia)]]
  */
@@ -106,35 +111,35 @@ abstract class Action[S,G](implicit val group: Group[G])
    * this might mean for the actual group action in question.
    *
    * Notice that the map `(_ + g)` is necessarily a permutation of the carrier
-   * set ''S'', and thus `apply` is a homomorphism from ''G'' into Aut(''S''),
-   * the set of permutations of ''S'' regarded as a group under composition of
+   * set `S`, and thus `apply` is a homomorphism from `G` into Aut(`S`),
+   * the set of permutations of `S` regarded as a group under composition of
    * mappings.
    */
   def apply(s: S,g: G): S
 }
 
 /**TODO
- * Describes a regular (right) action of the group ''G'' upon the carrier set
- * ''S''.
+ * Describes a regular (right) action of the group `G` upon the carrier set
+ * `S`.
  *
- * Here the term ''regular'' means that the action is ''sharply transitive'';
- * that is, for every pair of elements ''s₁'' and ''s₂'' in ''S'' there exists
- * a unique element ''s₂ - s₁'' in ''G'' such that ''s₁'' + (''s₂'' - ''s₁'') =
- * ''s₂'', where + and - denote the members `apply` and `delta` respectively.
+ * Here the term `regular` means that the action is `sharply transitive`;
+ * that is, for every pair of elements `s₁` and `s₂` in `S` there exists
+ * a unique element `s₂ - s₁` in `G` such that `s₁` + (`s₂` - `s₁`) =
+ * `s₂`, where + and - denote the members `apply` and `delta` respectively.
  *
  * Thus in addition to the axioms for a group action, instances also satisfy
  * the axiom:
  * {{{
  *    s₁ + (s₂ - s₁) = s₂                                regularity
  * }}}
- * for all ''s'' in ''S'', where + and - denote the members `apply` and `delta`
+ * for all `s` in `S`, where + and - denote the members `apply` and `delta`
  * respectively.
  *
- * We say that ''S'' is a ''torsor'' for the group ''G'', or simply that ''S''
- * is a ''G-torsor''.
+ * We say that `S` is a `torsor` for the group `G`, or simply that `S`
+ * is a `G-torsor`.
  *
- * @tparam G  A group that acts regularly upon the carrier set ''S'' via the mapping `apply`.
- * @tparam S  A non-empty set acted upon regularly by the group ''G'' via the mapping `apply`.
+ * @tparam G  A group that acts regularly upon the carrier set `S` via the mapping `apply`.
+ * @tparam S  A non-empty set acted upon regularly by the group `G` via the mapping `apply`.
  *
  * @see    [[http://en.wikipedia.org/wiki/Principal_homogeneous_space Torsor (Wikipedia)]]
  * @see    [[http://math.ucr.edu/home/baez/torsors.html Torsors Made Easy (John Baez)]]
@@ -146,9 +151,9 @@ trait Torsor[S,G] extends Action[S,G]
    * is,  the unique group element that when applied to the first element maps
    * it into the second.
    *
-   * @param  s An element of the carrier set ''S''.
-   * @param  t An element of the carrier set ''S''.
-   * @return The unique group element that maps ''s'' to ''t''.
+   * @param  s An element of the carrier set `S`.
+   * @param  t An element of the carrier set `S`.
+   * @return The unique group element that maps `s` to `t`.
    */
   def delta(s: S,t: S): G
 }
