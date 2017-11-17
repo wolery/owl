@@ -25,7 +25,7 @@ import java.util.prefs.{Preferences ⇒ JavaPreferences}
  * has a sensible default value and can be reverted back to the default at any
  * time.
  *
- * The class supports a number of idiomatic styles for accessing the value:
+ * The class supports a number of idiomatic styles for accessing its value:
  * {{{
  *    val p: Preference[Boolean] = preferences.bool("enabled",false)
  *
@@ -43,8 +43,8 @@ import java.util.prefs.{Preferences ⇒ JavaPreferences}
  * @see    [[http://apps.tempel.org/PrefsEditor Mac OS X Prefs Editor]] for a
  *         utility that edits and manipulates preference settings on OS X.
  * @see    [[https://docs.oracle.com/javase/8/docs/technotes/guides/preferences/index.html
- *         Core Java Preferences API]] for details of the underlying API that
- *         this interface wraps.
+ *         Core Java Preferences API]] for details of the underlying API this
+ *         interface wraps.
  * @author Jonathon Bell
  */
 trait Preference[α]
@@ -52,10 +52,10 @@ trait Preference[α]
   /**
    * The name of the preference.
    */
-  def name: String
+  val name: String
 
   /**
-   * The current value of the preference.
+   * Returns the current value of the preference.
    */
   def value: α
 
@@ -105,11 +105,11 @@ trait Preference[α]
  *    object prefs extends Preferences("mypath")
  *    {
  *      val enabled: Preference[Bool] = bool("enabled","true")
- *          ...                                    // and other preferences
+ *          ...                                    // ...and other preferences
  *    }
  *
- *    if (prefs.enabled())                         // get preference 'enabled'
- *        prefs.enabled() = false                  // set preference 'enabled'
+ *    if (prefs.enabled())                         // Get preference 'enabled'
+ *        prefs.enabled() = false                  // Set preference 'enabled'
  *
  * }}}
  *

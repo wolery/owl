@@ -20,6 +20,8 @@ import org.slf4j.{Logger,LoggerFactory}
 /**
  * Initializes a dedicated logger that instances of this class can write to.
  *
+ * @see    [[https://www.slf4j.org SL4FJ]] for more details on using the SLF4J
+ *         logging framework.
  * @author Jonathon Bell
  */
 trait Logging
