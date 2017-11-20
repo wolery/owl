@@ -52,11 +52,13 @@ package object core
   {
     def + (g: G): S                   = α(s,g)
     def - (g: G): S                   = α(s,α.group.inverse(g))
+    def apply(g:G):S                  = α(s,g)
   }
 
   implicit final class TorsorSyntax[S,G](s: S)(implicit α: Torsor[S,G])
   {
     def - (t: S): G                   = α.delta(t,s)
+    def --(t: S): G                   = α.delta(t,s)
   }
 
   implicit final class ℤActionSyntax[S](s: S)(implicit α: Action[S,ℤ])
@@ -80,17 +82,8 @@ package object core
     def operate(i: ℝ,j: ℝ): ℝ         = i + j
   }
 
-  implicit object isℤTorsor extends Torsor[ℤ,ℤ]
-  {
-    def apply  (i: ℤ,j: ℤ): ℤ         = i + j
-    def delta  (i: ℤ,j: ℤ): ℤ         = j - i
-  }
+  implicit object isℤTorsor extends RegularAction[ℤ]
 
-  implicit object isℝTorsor extends Torsor[ℝ,ℝ]
-  {
-    def apply  (r: ℝ,s: ℝ): ℝ         = r + s
-    def delta  (r: ℝ,s: ℝ): ℝ         = s - r
-  }
+  implicit object isℝTorsor extends RegularAction[ℝ]
 }
-
 //****************************************************************************
