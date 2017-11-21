@@ -53,14 +53,14 @@ package object owl
    * @param  b  A truth value.
    */
   implicit final
-  class BoolEx(val a: Bool) extends AnyVal
+  class BoolSyntax(val a: Bool) extends AnyVal
   {
     def iff    (b:   Bool): Bool =  a == b
     def implies(b: ⇒ Bool): Bool = !a || b
   }
 
   /**
-   * Extends all partially ordered types with additional methods.
+   * Extends partially ordered types with additional methods.
    *
    * The variable `α` ranges over instances of the type class PartialOrdering.
    *
@@ -69,17 +69,18 @@ package object owl
    * @param  b  A value of type α.
    */
   implicit final
-  class PartialOrderingEx[α](a: α)(implicit ε: PartialOrdering[α])
+  class PartialOrderingSyntax[α](a: α)(implicit ε: PartialOrdering[α])
   {
-    def <    (b: α): Bool = ε.lt(a,b)
-    def <=   (b: α): Bool = ε.lteq(a,b)
-    def >    (b: α): Bool = ε.gt(a,b)
-    def >=   (b: α): Bool = ε.gteq(a,b)
-    def equiv(b: α): Bool = ε.equiv(a,b)
+    def <        (b: α)       : Bool = ε.lt(a,b)
+    def <=       (b: α)       : Bool = ε.lteq(a,b)
+    def >        (b: α)       : Bool = ε.gt(a,b)
+    def >=       (b: α)       : Bool = ε.gteq(a,b)
+    def equiv    (b: α)       : Bool = ε.equiv(a,b)
+    def isBetween(lo: α,hi: α): Bool = ε.lteq(lo,a) && ε.lteq(a,hi)
   }
 
   /**
-   * Extends all ordered types with additional methods.
+   * Extends ordered types with additional methods.
    *
    * The variable `α` ranges over instances of the type class Ordering.
    *
@@ -88,7 +89,7 @@ package object owl
    * @param  b  A value of type α.
    */
   implicit final
-  class OrderingEx[α](a: α)(implicit ε: Ordering[α])
+  class OrderingSyntax[α](a: α)(implicit ε: Ordering[α])
   {
     def max      (b: α)       : α    = ε.max(a,b)
     def min      (b: α)       : α    = ε.min(a,b)
@@ -115,7 +116,7 @@ package object owl
    * @param  e  A (candidate) set element.
    */
   implicit final
-  class SeqEx[α](val s: Seq[α]) extends AnyVal
+  class SeqSyntax[α](val s: Seq[α]) extends AnyVal
   {
     def \ (t: Seq[α]): Seq[α]  =  s.diff(t)
     def ∪ (t: Seq[α]): Seq[α]  =  s.union(t)
@@ -154,7 +155,7 @@ package object owl
    * @param  e  A (candidate) set element.
    */
   implicit final
-  class SetEx[α](val s: Set[α]) extends AnyVal
+  class SetSyntax[α](val s: Set[α]) extends AnyVal
   {
     def \ (t: Set[α]): Set[α]  =  s.diff(t)
     def ∪ (t: Set[α]): Set[α]  =  s.union(t)
@@ -179,10 +180,10 @@ package object owl
    * @param  s  A collection of elements.
    * @param  e  A (candidate) set element.
    *
-   * @see    [[SeqEx]] and [SetEx]
+   * @see    [[SeqSyntax]] and [SetSyntax]
    */
   implicit final
-  class ElementEx[α](val e: α) extends AnyVal
+  class ElementSyntax[α](val e: α) extends AnyVal
   {
     def ∈ (s: Seq[α])  : Bool =  s.contains(e)
     def ∈ (s: Set[α])  : Bool =  s.contains(e)
@@ -198,7 +199,7 @@ package object owl
    * @tparam α  The type of an element.
    *
    * @return An empty set of type Set[α].
-   * @see    [[SetEx]]
+   * @see    [[SetSyntax]]
    */
   def ∅[α]: Set[α] = Set[α]()
 }
