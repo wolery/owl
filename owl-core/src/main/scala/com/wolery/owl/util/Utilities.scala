@@ -108,7 +108,7 @@ trait utilities
   def superscript(s: String): String = s.map(superscript)
 
   /**
-   * Returns true if the value `v` lies within the closed interval [`lo`, `hi`].
+   * Returns true if the value `v` lies within the closed interval `[lo, hi]`.
    *
    * By 'closed' we mean that the interval includes its own bounds.
    *
@@ -116,7 +116,7 @@ trait utilities
    * @param  lo  The lower bound of the closed interval.
    * @param  hi  The upper bound of the closed interval.
    *
-   * @return `true` if `v` lies within the closed interval [`lo`, `hi`].
+   * @return `true` if `v` lies within the closed interval `[lo, hi]`.
    */
   final
   def isBetween[α: Ordering](v: α,lo: α,hi: α): Bool =
@@ -195,7 +195,7 @@ trait utilities
   }
 
   /**
-   * Clamp the given value to lie within the closed interval [`lo`, `hi`].
+   * Clamp the given value to lie within the closed interval `[lo, hi]`.
    *
    * By 'closed' we mean that the interval includes its own bounds.
    *
@@ -203,7 +203,7 @@ trait utilities
    * @param v   The value to be clamped.
    * @param hi  The upper bound of the range to which `v` is clamped.
    *
-   * @return The value `v`, clamped to lie within the closed interval [`lo`, `hi`].
+   * @return The value `v`, clamped to lie within the closed interval `[lo, hi]`.
    */
   final
   def clamp[α: Ordering](lo: α,v: α,hi: α): α =
@@ -223,8 +223,8 @@ trait utilities
    * Returns the non-negative remainder of the integer `i` upon division by
    * the positive integer `n`.
    *
-   * The result is the unique integer 0 ≤ `r` < `n` such that `i` = `n`⋅`q` +
-   * `r` for some `q` in ℤ.
+   * The result is the unique integer `0 ≤ r < n` such that `i = n⋅q + r` for
+   * some `q` in `ℤ`.
    *
    * @param  i  An integer.
    * @param  n  A positive integer.
@@ -246,8 +246,8 @@ trait utilities
   /**
    * Returns the non-negative remainder of the integer `i` upon division by 12.
    *
-   * The result is the unique integer 0 ≤ `r` < 12 such that `i` = 12⋅`q` + `r`
-   * for some `q` in ℤ.
+   * The result is the unique integer `0 ≤ r < 12` such that `i = 12⋅q + r`
+   * for some `q` in `ℤ`.
    *
    * @param  i  An integer.
    *
