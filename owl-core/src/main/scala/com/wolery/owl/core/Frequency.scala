@@ -21,15 +21,14 @@ import Frequency.{A4,A440}
 /**
  * Represents an audio frequency as a positive real number of hertz.
  *
- * Frequencies form a torsor for `ℝ(+)`, the set of real numbers regarded as a
- * group under addition, via the group action `+ = r ⇒ f ⇒ (¹²√2)`^`r`^ ` ⋅ f`
- * for all real numbers `r` and frequencies `f`.
+ * Frequencies form a torsor for `ℝ(+)` under the regular group action `(r, f)
+ * ⇒ (¹²√2)`^`r`^`⋅f` for all real numbers `r` and frequencies `f`.
  *
  * Informally,  this action captures the notion of ''transposition'', with `r`
  * representing a (possibly fractional) number of half-steps to raise or lower
  * the frequency `f` by. Notice for example that:
  * {{{
- *    f + 12  ≡  2 ⋅ f
+ *    f+12  ≡  2⋅f
  * }}}
  * for any frequency `f`, which corresponds to the transposition of `f` by one
  * octave.
@@ -40,16 +39,15 @@ import Frequency.{A4,A440}
  * the familiar musical notion of the interval between two frequencies - hence
  * the name.
  *
- * @constructor Creates a frequency from a positive real number of cycles per
- *              second.
- *
  * @param  Hz  The underlying frequency in hertz.
  *
  * @see    [[https://en.wikipedia.org/wiki/Hertz Hertz (Wikipedia)]]
  * @see    [[https://en.wikipedia.org/wiki/Frequency Frequency (Wikipedia)]]
+ * @see    [[http://en.wikipedia.org/wiki/Principal_homogeneous_space Torsor
+ *         (Wikipedia)]]
  * @author Jonathon Bell
  */
-final class Frequency (val Hz: ℝ)
+final class Frequency private (val Hz: ℝ)
 {
   require(Hz > 0,"non-positive Hz")                      // Validate argument
 
@@ -67,8 +65,7 @@ final class Frequency (val Hz: ℝ)
   }
 
   /**
-   * True if the given frequency sounds within one cent of a half-step of this
-   * one.
+   * Compares this frequency with the given object for semantic equality.
    *
    * @param  any  Any object whatsoever.
    *
@@ -79,14 +76,20 @@ final class Frequency (val Hz: ℝ)
   def equals(any: Any) = any match
   {
     case f: Frequency ⇒ close(f)                         // A close frequency?
-    case _            ⇒ false                            // No, I guess not...
+    case _            ⇒ false                            // They are different
   }
 
   /**
    * Returns a string representation of this frequency in hertz.
    */
   override
-  def toString: String = if (kHz >= 1) f"$kHz%.2fkHz" else f"$Hz%.2fHz"
+  def toString: String =
+  {
+    if (kHz >= 1)                                        // In the kHz range?
+      f"$kHz%.2fkHz"                                     // ...express in kHz
+    else                                                 // In the  Hz range
+      f"$Hz%.2fHz"                                       // ...express in  Hz
+  }
 
   /**
    * Returns `true` if the given frequency sounds within once cent of a half-
@@ -111,11 +114,11 @@ object Frequency
    *
    * @param  hertz  The underlying frequency in hertz..
    *
-   * @return TODO
+   * @return The given frequency in hertz.
    */
   def apply(hertz: ℝ): Frequency =
   {
-    new Frequency(hertz)
+    new Frequency(hertz)                                 // Create frequency
   }
 
   /**
@@ -123,11 +126,11 @@ object Frequency
    *
    * @param  pitch  An even tempered pitch.
    *
-   * @return TODO
+   * @return The frequency corresponding to the given even tempered pitch.
    */
   def apply(pitch: Pitch): Frequency =
   {
-    A440 + (pitch - A4).toDouble
+    A440 + (pitch - A4).toDouble                         // A₄ ≡ A₄₄₀
   }
 
   /**
@@ -142,10 +145,10 @@ object Frequency
   {
     def compare(f: Frequency,g: Frequency): ℤ =
     {
-      if (f close g)
-        0
+      if (f close g)                                     // Are they 'close'?
+        0                                                // ...call them same
       else
-        f.Hz compare g.Hz
+        f.Hz compare g.Hz                                // ...compare reals
     }
   }
 
