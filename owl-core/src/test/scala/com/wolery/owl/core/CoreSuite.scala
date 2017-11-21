@@ -25,7 +25,8 @@ import org.scalacheck.Gen._
 trait CoreSuite extends OwlSuite
 {
   /**
-   * Checks that the binary operator `⋅ : M → M` is associative.
+   * Checks that `(M, ⋅)` satisfies the axioms of a semigroup; that is, the
+   * function `⋅ : M → M` is associative.
    *
    * @see    [[https://en.wikipedia.org/wiki/Semigroup Semigroup (Wikipedia)]]
    */
@@ -38,7 +39,8 @@ trait CoreSuite extends OwlSuite
   }
 
   /**
-   * Checks that the binary operator `⋅ : M → M` is commutative.
+   * Checks that `(M, ⋅)` is a commutative magma; that is, the function `⋅ :
+   * M → M` is commutative.
    *
    * @see    [[https://en.wikipedia.org/wiki/Commutative_property
    *         Commutativity (Wikipedia)]]
@@ -52,7 +54,8 @@ trait CoreSuite extends OwlSuite
   }
 
   /**
-   * Checks that `M` satisfies the axioms of a monoid.
+   * Checks that `(M, ⋅, e)` satisfies the axioms of a monoid; that it, it is
+   * a semigroup with an identity element `e`.
    *
    * @see    [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
    */
@@ -60,29 +63,29 @@ trait CoreSuite extends OwlSuite
   {
     import α._                                           // For identity e
 
-    isSemigroup[M]()                                     // Check the axioms
+    isSemigroup[M]()                                     // Semigroup axioms
 
-    forAll("a") {(a: M) ⇒
+    forAll("a") {(m: M) ⇒                                // ∀ m ∈ M
     {
-      assert(e ⋅ a == a,                                 "[left identity]")
-      assert(a ⋅ e == a,                                 "[right identity]")
+      assert(e ⋅ m == m,                                 "[left identity]")
+      assert(m ⋅ e == m,                                 "[right identity]")
     }}
   }
 
   /**
-   * Checks that `G` satisfies the axioms of a group;  that is, it is a monoid
-   * in which every element possesses an inverse.
+   * Checks that `(G, ⋅, e)` satisfies the axioms of a group;  that is, it is
+   * a monoid in which every element possesses an inverse.
    *
    * @see    [[https://en.wikipedia.org/wiki/Group_(mathematics) Group
    *         (Wikipedia)]]
    */
   def isGroup[G]()(implicit α: Group[G],β: Arbitrary[G]): Unit =
   {
-    import α._
+    import α._                                           // For identity e
 
-    isMonoid[G]()                                        // Group ⇒ Monoid
+    isMonoid[G]()                                        // Monoid axioms
 
-    forAll("g") {(g: G) ⇒
+    forAll("g") {(g: G) ⇒                                // ∀ g ∈ G
     {
       assert(-g ⋅  g == e,                               "[left inverse]")
       assert( g ⋅ -g == e,                               "[right inverse]")
@@ -90,55 +93,60 @@ trait CoreSuite extends OwlSuite
   }
 
   /**
-   * Checks that `apply` is a homomorphism from `G` into `Sym(S)`.
+   * Checks that `G` acts upon the carrier set `S`; that is, `apply` effects a
+   * group homomorphism from `G` into `Sym(S)`.
    *
    * @see    [[https://en.wikipedia.org/wiki/Group_action Group action
    *         (Wikipedia)]]
    */
-  def isAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
+  def isAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ: Arbitrary[G]): Unit =
   {
     import α._                                           // For action ops
     import α.group._                                     // For group  ops
 
-    isGroup[G]()                                         // Action ⇒ Group
+    isGroup[G]()                                         // Group axioms
 
-    forAll("s") {(s: S) ⇒
+    forAll("s") {(s: S) ⇒                                // ∀ s ∈ S
     {
       assert(s + e == s,                                 "[identity]")
     }}
 
-    forAll("s","f","g") {(s: S,f: G,g: G) ⇒
+    forAll("s","f","g") {(s: S,f: G,g: G) ⇒              // ∀ s ∈ S, f,g ∈ G
     {
       assert(s + (f ⋅ g) == (s + f) + g,                 "[compatability +]")
-      assert(s - (f ⋅ g) == (s - f) - g,                 "[compatability -]")
-      assert(s + f == s - -f,                            "[negation +]")
-      assert(s - f == s + -f,                            "[negation -]")
+      assert(s - (f ⋅ g) == (s - g) - f,                 "[compatability -]")
+      assert(s + f       == s - -f,                      "[negation +]")
+      assert(s - f       == s + -f,                      "[negation -]")
     }}
   }
 
   /**
-   * Checks that `S` satisfies the axioms of a torsor for `G`; namely that the
-   * action of `G` upon `S` is regular (well, at least ``transitive``).
+   * Checks that `G` acts regularly upon the carrier set `S`; that is, `apply`
+   * effects a group isomorphism from `G` into `Sym(S)`.
    *
    * @see    [[https://en.wikipedia.org/wiki/Principal_homogeneous_space
    *         Torsor (Wikipedia)]]
    */
-  def isTorsor[S,G]()(implicit α: Torsor[S,G],β: Arbitrary[S],γ: Arbitrary[G]) : Unit =
+  def isTorsor[S,G]()(implicit α: Torsor[S,G],β: Arbitrary[S],γ: Arbitrary[G]): Unit =
   {
-    isAction[S,G]()                                      // Torsor ⇒ Action
+    import α._                                           // For action ops
 
-    forAll("s","t") {(s: S,t: S) ⇒
+    isAction[S,G]()                                      // Action axioms
+
+    forAll("s","t") {(s: S,t: S) ⇒                       // ∀ s,t ∈ S
     {
-      assert(s + (t - s) == t,                           "[interval]")
+      assert(s + delta(s,t) == t,                        "[transitive]")
+      assert(s + (t - s)    == t,                        "[transitive]")
     }}
   }
 
   /**
-   * Check that `ℤ` acts upon the carrier set `S`.
+   * Checks that `ℤ` acts upon the carrier set `S`; that is, `apply` effects a
+   * group homomorphism from `ℤ into `Sym(S)`.
    */
-  def isℤSet[S]()(implicit α: Action[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
+  def isℤSet[S]()(implicit α: Action[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]): Unit =
   {
-    isAction[S,ℤ]()                                      // Check the axioms
+    isAction[S,ℤ]()                                      // Action axioms
 
     forAll("s") {(s: S) ⇒                                // ∀ s ∈ S
     {
@@ -149,23 +157,30 @@ trait CoreSuite extends OwlSuite
   }
 
   /**
-   * Check that `ℤ` acts upon the carrier set `S` regularly.
+   * Checks that `ℤ` acts regularly upon the carrier set `S`; that is, `apply`
+   * effects a group homomorphism from `ℤ into `Sym(S)`.
    */
-  def isℤTorsor[S]()(implicit α: Torsor[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]) : Unit =
+  def isℤTorsor[S]()(implicit α: Torsor[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]): Unit =
   {
-    import α._                                           // For TODO
+    isTorsor[S,ℤ]()                                      // Torsor axioms
 
-    isℤSet[S]()                                          // TODO
-    isTorsor[S,ℤ]()                                      // TODO
+    forAll("s") {(s: S) ⇒                                // ∀ s ∈ S
+    {
+      assert(s.♭ == s - 1,                               "[flat]")
+      assert(s.♮ == s    ,                               "[natural]")
+      assert(s.♯ == s + 1,                               "[sharp]")
+    }}
   }
 
   /**
-   * Check that the mapping `f` satisfies the axioms of an equivariant map;
-   * namely that it commutes with the action of `G` on both `S` and `T`.
+   * Checks that `f: S ⇒ T` is equivariant with respect to the actions of `G`
+   * upon `S` and `T`; that is, it commutes with the action of `G` on both `S`
+   * and `T`.
    *
-   * @see [[https://en.wikipedia.org/wiki/Equivariant_map Equivarient map (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Equivariant_map Equivarient map
+   *         (Wikipedia)]]
    */
-  def isEquivariant[S,T,G](f: S ⇒ T)(implicit α: Action[S,G], β:Action[T,G],γ : Arbitrary[S],δ: Arbitrary[T],ε: Arbitrary[G]): Unit =
+  def isEquivariant[S,T,G](f: S ⇒ T)(implicit α: Action[S,G],β: Action[T,G],γ: Arbitrary[S],δ: Arbitrary[T],ε: Arbitrary[G]): Unit =
   {
     isAction[S,G]()                                      // G acts upon S
     isAction[T,G]()                                      // G acts upon T
@@ -177,12 +192,13 @@ trait CoreSuite extends OwlSuite
   }
 
   /**
-   * Check that `S` satisfies the axioms of a partial ordering; namely that
-   * the relation <= is reflexive, antisymmetric, and transitive.
+   * Checks that `S` satisfies the axioms of a partial ordering; that is, the
+   * relation `<=` is ''reflexive'', ''antisymmetric', and ''transitive''.
    *
-   * @see [[https://en.wikipedia.org/wiki/Partially_ordered_set Partial order (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Partially_ordered_set Partial
+   *         order (Wikipedia)]]
    */
-  def isPartiallyOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]) : Unit =
+  def isPartiallyOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]): Unit =
   {
     forAll("s","t","u") {(s: S,t: S,u: S) ⇒              // ∀ s,t,u ∈ S
     {
@@ -193,14 +209,14 @@ trait CoreSuite extends OwlSuite
   }
 
   /**
-   * Check that `S` satisfies the axioms of a total ordering; namely that it
-   * is partially ordered and, moreover, that the ordering <= is total.
+   * Checks that `S` satisfies the axioms of a total ordering; namely that it
+   * is partially ordered and, moreover, that the ordering `<=` is ''total''.
    *
    * @see [[https://en.wikipedia.org/wiki/Total_order Total order (Wikipedia)]]
    */
-  def isOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]) : Unit =
+  def isOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]): Unit =
   {
-    isPartiallyOrdered[S]()                              // TODO
+    isPartiallyOrdered[S]()                              // Check the axioms
 
     forAll("s","t") {(s: S,t: S) ⇒                       // ∀ s,t ∈ S
     {
