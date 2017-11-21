@@ -48,7 +48,7 @@ trait Monoid[M]
 {
   /**
    * The identity element of the monoid `M`;  that is,  the unique element `e`
-   * of `M` such that `e ⋅ m = m = m ⋅ e` for all `m` in `M`, where ⋅  denotes
+   * in `M` such that `e ⋅ m = m = m ⋅ e` for all `m` in `M`, where ⋅  denotes
    * the binary function `operate`.
    */
   val e: M
@@ -59,6 +59,9 @@ trait Monoid[M]
    *
    * The function is ''associative''; that is, `(m₁ ⋅ m₂) ⋅ m₃ = m₁ ⋅ (m₂ ⋅ m₃)`
    * for all `m` in `M`, where `⋅` denotes the binary function `operate`.
+   *
+   * @see    [[https://en.wikipedia.org/wiki/Associative_property Associative
+   *         property (Wikipedia)]]
    */
   def operate(m: M,n: M): M
 }
@@ -88,7 +91,7 @@ trait Group[G] extends Monoid[G]
 {
   /**
    * Returns the inverse of the element `g`;  that is, the unique element `-g`
-   * of  `G` such  that  `g ⋅ -g = e = -g ⋅ g`,  where `⋅` denotes  the binary
+   * in  `G` such  that  `g ⋅ -g = e = -g ⋅ g`,  where `⋅` denotes  the binary
    * function `operate`.
    */
   def inverse(g: G): G
@@ -153,14 +156,14 @@ abstract class Action[S,G](implicit val group: Group[G])
  *    s₁ + (s₂ - s₁) = s₂                                regularity
  * }}}
  * for all `s` in `S`, where `+` and `-` denote the binary functions `apply`
- * and`delta` respectively.
+ * and `delta` respectively.
  *
  * We say that `S` is a ''torsor'' for the group `G`,  or simply that `S` is a
  * ''`G`-torsor''.
  *
- * Torsors,  especially those of `(ℤ,+),  the integers regarded as an additive
+ * Torsors,  especially those of `(ℤ,+)`, the integers regarded as an additive
  * group, and ℤ/''n''ℤ,  the integers modulo ''n'', are of special interest to
- * us in Owl because they they make precise the musical notion of ''interval''
+ * us in Owl because they make precise the musical notion of the ''interval''
  * between notes, pitches, frequencies, and so on.
  *
  * @tparam G  A group that acts regularly upon the carrier set  `S` via the mapping `apply`.
@@ -176,7 +179,7 @@ trait Torsor[S,G] extends Action[S,G]
   /**
    * Returns the 'delta' between the given pair of elements of the carrier set
    * `S`; that is, the unique element `g` in `G` such that `s + g = t`,  where
-   * `+`, denotes the binary function `apply`.
+   * `+` denotes the binary function `apply`.
    *
    * @param  s An element of the carrier set `S`.
    * @param  t An element of the carrier set `S`.
@@ -188,14 +191,14 @@ trait Torsor[S,G] extends Action[S,G]
 /**
  * Implements the regular action of the group `G` upon itself.
  *
- * Every group `G` is isomorphic to a subgroup of the symmetric group `Sym(G)`
- * that acts upon `G`, a result known as ''Cayley's Theorem''.
+ * Every group `G` is  isomorphic to a  subgroup of the symmetric group acting
+ * on `G`, a result known as ''Cayley's Theorem''.
  *
  * Equivalently, and restating in the language of group actions, `G` acts upon
- * itself regularly, and thus is a `G-torsor`.
+ * itself regularly, thus is a `G-torsor`.
  *
  * This class exploits this fact to automatically instantiate a `G-torsor` for
- * the group, so simplifying the task of adding a new group to the Owl system.
+ * `G`, so simplifying the task of adding new groups to the Owl system.
  *
  * For example:
  * {{{
