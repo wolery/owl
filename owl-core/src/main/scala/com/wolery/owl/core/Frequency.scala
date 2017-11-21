@@ -15,40 +15,36 @@
 package com.wolery.owl
 package core
 
-//****************************************************************************
-
 import Math.{log,pow,abs,round}
 import Frequency.{A4,A440}
 
 /**
  * Represents an audio frequency as a positive real number of hertz.
  *
- * Frequencies form a torsor for ℝ(0,+), the set of real numbers regarded as a
- * group under addition, via the group action:
- * {{{
- *    f Hz + r  =  pow(2,r/12) * f Hz
- * }}}
- * for all ''f'' and ''r'' in ℝ. Each pair of frequencies ''(f,g)'' identifies
- * an ''interval'',  the unique real that  when applied to ''f'' transposes it
- * to ''g''. Moreover, this definition of interval as the delta function for a
- * torsor coincides with the more familiar notion of musical interval -  hence
- * the name.
+ * Frequencies form a torsor for `ℝ(+)`, the set of real numbers regarded as a
+ * group under addition, via the group action `+ = r ⇒ f ⇒ (¹²√2)`^`r`^ ` ⋅ f`
+ * for all `r` in `ℝ` and frequencies `f`.
  *
- * Informally, this action captures the notion of ''transposition'',  with the
- * real number ''r'' representing a (possibly fractional) number of half-steps
- * to raise or lower the frequency ''f'' by. Notice, for example, that:
+ * Informally, this action captures the notion of ''transposition'',  with `r`
+ * representing a (possibly fractional) number of half-steps to raise or lower
+ * the frequency `f` by. Notice, for example, that:
  * {{{
- *    f + 12  =  2 * f
+ *    f + 12  =  2 ⋅ f
  * }}}
- * for any frequency ''f'', which corresponds to the transposition of ''f'' by
- * an interval of one octave.
+ * for any frequency `f`, which corresponds to the transposition of `f` by the
+ * interval of an octave.
+ *
+ * Each pair of frequencies `(f, g)` gives rise to an ''interval'', the unique
+ * real number that when applied to `f` transposes it to `g`.  Moreover,  this
+ * definition of interval - as the delta function of a torsor - coincides with
+ * the more familiar notion of a musical interval - hence the name.
  *
  * @param  Hz  The underlying frequency in hertz.
  *
  * @see   [[https://en.wikipedia.org/wiki/Hertz Hertz (Wikipedia)]]
  * @see   [[https://en.wikipedia.org/wiki/Frequency Frequency (Wikipedia)]]
  */
-final class Frequency private (val Hz: ℝ)
+final class Frequency (val Hz: ℝ)
 {
   assert(Hz > 0,"non-positive Hz")
 
@@ -63,7 +59,7 @@ final class Frequency private (val Hz: ℝ)
   def pitch: Pitch = A4 + round(this - A440).toInt
 
   /**
-   * True if ''any'' is a frequency that sounds within one cent of a half-step
+   * True if `any` is a frequency that sounds within one cent of a half-step
    * of this one.
    */
   override
@@ -95,36 +91,48 @@ object Frequency
   /**
    * Returns the given frequency in hertz.
    */
-  def apply(real: ℝ): Frequency = new Frequency(real)
+  def apply(real: ℝ): Frequency =
+  {
+    new Frequency(real)
+  }
 
   /**
    * Returns the underlying frequency of an even tempered pitch.
    */
-  def apply(pitch: Pitch): Frequency = A440 + (pitch - A4).toDouble
+  def apply(pitch: Pitch): Frequency =
+  {
+    A440 + (pitch - A4).toDouble
+  }
 
   /**
    * Frequencies are ordered by the underlying real number that they wrap, but
    * compare equal when within one cent of a half-step of one another.
    *
-   * Note that this behavior is not quite consistent with the implementation
+   * Notice that this behavior is not quite consistent with the implementation
    * of [[hashCode]] they currently inherit.
    */
   implicit
   object ordering extends Ordering[Frequency]
   {
-    def compare(f: Frequency,g: Frequency)= if (f close g) 0 else f.Hz compare g.Hz
+    def compare(f: Frequency,g: Frequency): ℤ =
+    {
+      if (f close g)
+        0
+      else
+        f.Hz compare g.Hz
+    }
   }
 
   /**
-   * The additive group of real numbers ℝ acts regularly on the frequencies by
-   * transposition in half-steps.
+   * The reals `(ℝ,+)` act regularly upon the frequencies by transposition in
+   * half-steps.
    */
   implicit
   object isℝTorsor extends Torsor[Frequency,ℝ]
   {
-     def apply (f: Frequency,r: ℝ)        = Hz (pow(2,r/12.0) * f.Hz)
-     def delta (f: Frequency,g: Frequency)= log(g.Hz / f.Hz) / log_α
-     val log_α                            = log(pow(2,1/12.0))
+    def apply(f: Frequency,r: ℝ)         = Hz (pow(2,r/12.0) * f.Hz)
+    def delta(f: Frequency,g: Frequency) = log(g.Hz / f.Hz) / log_α
+    val log_α                            = log(pow(2,1/12.0))
   }
 
   private val A4                          = Pitch(A,4)
