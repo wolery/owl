@@ -20,18 +20,18 @@ package core
 class ShapeTest extends CoreSuite
 {
   import arbitrary._                                     // For owl implicits
-  import util.utilities._                                // For utilities
+  import util.utilities.{mod,mod12}                      // For utilities
 
   test("Shape is a ℤ-set")
   {
-    implicit val i = Arbitrary(generate.int)             // For i ∈ [-128,128]
+    implicit val i = Arbitrary(generate.int)             // ∀ i ∈ [-128,128]
 
-    isℤSet[Shape]()                                      // Verify the axioms
+    assertℤSet[Shape]()                                  // Verify the axioms
   }
 
   test("Shape construction")
   {
-    forAll("s") {(s: Shape) ⇒
+    forAll("s") {(s: Shape) ⇒                            // ∀ s ∈ Shape
     {
       assert(s == Shape(s.toSet),                        "[Set[ℤ]]")
       assert(s == Shape(s.toSeq:_*),                     "[Seq[ℤ]]")
@@ -40,15 +40,15 @@ class ShapeTest extends CoreSuite
 
   test("Shape invariants")
   {
-    forAll("s") {(s: Shape) ⇒
+    forAll("s") {(s: Shape) ⇒                            // ∀ s ∈ Shape
     {
       assert(s.contains(0),                              "[0 ∈ s]")
-      assert(0 == s.interval(0),                         "[0 = s[0]]")
+      assert(s.interval(0) == 0,                         "[s[0] = 0]")
       assert(s.toSet == s.toSeq.toSet,                   "[toSet = toSeq]")
-      assert(1<=s.size && s.size<=12,                    "[1 ≤ |s| ≤ 12]")
+      assert(s.size.isBetween(1,12),                     "[1 ≤ |s| ≤ 12]")
     }}
 
-    forAll("s","i") {(s: Shape,i: ℤ) ⇒
+    forAll("s","i") {(s: Shape,i: ℤ) ⇒                   // ∀ s ∈ Shape, i ∈ ℤ
     {
       val n = mod12(i)                                   // Convert to interval
 
@@ -56,27 +56,27 @@ class ShapeTest extends CoreSuite
       assert(s.indexOf(n).getOrElse(-1)==s.toSeq.indexOf(n),"[indexOf = toSeq.indexOf]")
     }}
 
-    forAll("s","i") {(s: Shape,i: ℤ) ⇒
+    forAll("s","i") {(s: Shape,i: ℤ) ⇒                   // ∀ s ∈ Shape, i ∈ ℤ
     {
-      val n = mod(i,s.size)                              // The n'th interval
+      val n = mod(i,s.size)                              // ...n'th interval
 
-      assert(s.interval(n) == s.toSeq(n),                "[s[] = toSeq[]]")
+      assert(s.interval(n)            == s.toSeq(n),     "[s[] = toSeq[]]")
       assert(s.indexOf(s.interval(n)) == Some(n),        "[indexOf∘interval = id]")
     }}
 
-    forAll("s","i") {(s: Shape,i: ℤ) ⇒
+    forAll("s","i") {(s: Shape,i: ℤ) ⇒                   // ∀ s ∈ Shape, i ∈ ℤ
     {
-      assert(0<=s.interval(i) && s.interval(i)<=12,      "[1 ≤ s[i] ≤ 12]")
+      assert(s.interval(i).isBetween(0,11),              "[0 ≤ s[i] ≤ 11]")
     }}
   }
 
   test("Mode names are consistent")
   {
-    /*
+    /**
      * Verify that the names in the ':' delimited list each name a consecutive
      * mode of the first shape to be named in the list.
      *
-     * @param  string A ':' delimited list of mode names.
+     * @param  string  A colon delimited list of mode names.
      */
     def modes(string: String): Unit =
     {

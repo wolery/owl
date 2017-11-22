@@ -23,14 +23,14 @@ class FrequencyTest extends CoreSuite
 
   test("Frequency is an ℝ-Torsor")
   {
-    implicit val r = Arbitrary(generate.real)            // For r ∈ [-128,128]
+    implicit val r = Arbitrary(generate.real)            // ∀ r ∈ [-128,128]
 
-    isTorsor[Frequency,ℝ]()                              // Verify the axioms
+    assertTorsor[Frequency,ℝ]()                          // Verify the axioms
   }
 
   test("Frequency is totally ordered")
   {
-    isOrdered[Frequency]()                               // Verify the axioms
+    assertOrdered[Frequency]()                           // Verify the axioms
   }
 }
 

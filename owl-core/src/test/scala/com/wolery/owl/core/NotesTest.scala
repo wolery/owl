@@ -23,9 +23,9 @@ class NotesTest extends CoreSuite
 
   test("Notes is a ℤ-set")
   {
-    implicit val i = Arbitrary(generate.int)             // For i ∈ [-128,128]
+    implicit val i = Arbitrary(generate.int)             // ∀ i ∈ [-128,128]
 
-    isℤSet[Notes]()                                      // Verify the axioms
+    assertℤSet[Notes]()                                  // Verify the axioms
   }
 
   test("Notes(⊆) is a partial ordering")
@@ -36,7 +36,7 @@ class NotesTest extends CoreSuite
       def tryCompare(x: Notes,y: Notes) = ???
     }
 
-    isPartiallyOrdered[Notes]()                          // Verify the axioms
+    assertPartiallyOrdered[Notes]()                      // Verify the axioms
   }
 
   // @see [[https://en.wikipedia.org/wiki/Boolean_algebra_(structure) Boolean algebra (Wikipedia)]]
@@ -45,7 +45,7 @@ class NotesTest extends CoreSuite
   {
     val (nil,one) = (Notes(),~Notes())
 
-    forAll("a","b","c") {(a: Notes,b: Notes,c: Notes) =>
+    forAll("a","b","c") {(a: Notes,b: Notes,c: Notes) => // ∀ a,b,c ∈ Notes
     {
       assert(a ∪ (b ∪ c)  == (a ∪ b) ∪ c,                "[∪ associativity]")
       assert(a ∩ (b ∩ c)  == (a ∩ b) ∩ c,                "[∩ associativity]")
@@ -64,10 +64,8 @@ class NotesTest extends CoreSuite
 
   test("C major looks ok")
   {
-    import scala.language.postfixOps
-
-    val Cmaj = Notes(C,D,E,F,G,A,B)
-    val Gmaj = Notes(G,A,B,C,D,E,F♯)
+    val Cmaj = Notes(C,D,E,F,G,A,B)                      // C ionian
+    val Gmaj = Notes(G,A,B,C,D,E,F.♯)                    // G ionian
 
     assert(Cmaj.size == 7,                               "[size = 7]")
 
@@ -89,8 +87,8 @@ class NotesTest extends CoreSuite
     assert(Cmaj \ Gmaj == Notes(F),                      "[\\]")
     assert(Cmaj ∪ Gmaj == Cmaj + F.♯,                    "[∪]")
     assert(Cmaj ∩ Gmaj == Cmaj - F,                      "[∩]")
-    assert(Cmaj ⊖ Gmaj == Notes(F,F♯),                   "[⊖]")
-    assert(~Cmaj == Notes(C♯,D♯,F♯,G♯,A♯),               "[~]")
+    assert(Cmaj ⊖ Gmaj == Notes(F,F.♯),                  "[⊖]")
+    assert(~Cmaj == Notes(C.♯,D.♯,F.♯,G.♯,A.♯),          "[~]")
   }
 }
 

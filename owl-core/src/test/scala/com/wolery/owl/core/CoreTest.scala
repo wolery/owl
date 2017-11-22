@@ -25,15 +25,15 @@ class CoreTest extends CoreSuite
     that we test for rather than thread a  custom comparison function through
     the entire test suite...*/
 
-  implicit val isℝArbitrary= Arbitrary(generate.real)    // For r ∈ [-128,128]
+  implicit val isArbitrary  = Arbitrary(generate.real)   // For r ∈ [-128,128]
 
-  implicit val isℤTorsor   = new RegularAction[ℤ]
-  implicit val isℝTorsor   = new RegularAction[ℝ]
+  implicit val isℤTorsor    = new RegularAction[ℤ]       // ℤ is a ℤ-torsor
+  implicit val isℝTorsor    = new RegularAction[ℝ]       // ℝ is a ℝ-torsor
 
-  test("ℤ is a ℤ-torsor")  {isTorsor[ℤ,ℤ]()}             // Verify the axioms
-  test("ℤ is Abelian")     {isCommutative[ℤ]()}          // Verify the axioms
-  test("ℝ is an ℝ-torsor") {isTorsor[ℝ,ℝ]()}             // Verify the axioms
-  test("ℝ is Abelian")     {isCommutative[ℝ]()}          // Verify the axioms
+  test("ℤ is a ℤ-torsor")   {assertTorsor[ℤ,ℤ]()}        // Verify the axioms
+  test("ℤ is Abelian")      {assertCommutative[ℤ]()}     // Verify the axioms
+  test("ℝ is an ℝ-torsor")  {assertTorsor[ℝ,ℝ]()}        // Verify the axioms
+  test("ℝ is Abelian")      {assertCommutative[ℝ]()}     // Verify the axioms
 }
 
 //****************************************************************************

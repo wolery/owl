@@ -21,16 +21,16 @@ class NoteTest extends CoreSuite
 {
   import arbitrary._                                     // For owl implicits
 
-  implicit val i = Arbitrary(generate.int)               // For i ∈ [-128,128]
+  implicit val i = Arbitrary(generate.int)               // ∀ i ∈ [-128,128]
 
-  test("Note is a ℤ₁₂-torsor")
+  test("Note is a ℤ/12ℤ-torsor")
   {
-    isℤTorsor[Note]()                                    // Verify the axioms
+    assertℤTorsor[Note]()                                // Verify the axioms
   }
 
   test("Note invariants")
   {
-    forAll("n") {(n: Note) ⇒
+    forAll("n") {(n: Note) ⇒                             // ∀ n ∈ Note
     {
       assert(n == n,                                     "[n = n]")
       assert(n != n + 1,                                 "[n != n + 1]")
