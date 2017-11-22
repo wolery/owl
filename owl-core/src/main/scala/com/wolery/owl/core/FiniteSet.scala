@@ -127,7 +127,7 @@ object FiniteSet
   private
   def builder[α](implicit ε: Finite[α]): Builder[α,FiniteSet[α]] = new Builder[α,FiniteSet[α]]
   {
-    val m_mask            = new Array[Long](ε.size >> 6)
+    val m_mask            = new Array[Long](1 + (ε.size >> 6))
     val m_bits            = mBitSet.fromBitMaskNoCopy(m_mask)
 
     def +=(n: α)          = {m_bits += ε.toℕ(n); this}
