@@ -43,7 +43,8 @@ class NotesTest extends CoreSuite
 
   test("Notes(∅,~∅,~,∩,∪) is a boolean algebra")
   {
-    val (nil,one) = (Notes(),~Notes())
+    val ⊥ =  Notes.empty
+    val ⊤ = ~Notes.empty
 
     forAll("a","b","c") {(a: Notes,b: Notes,c: Notes) => // ∀ a,b,c ∈ Notes
     {
@@ -53,12 +54,12 @@ class NotesTest extends CoreSuite
       assert(     a ∩ b   ==  b ∩ a,                     "[∩ commutativity]")
       assert(a ∪ (a ∩ b)  == a,                          "[∪ absorption]")
       assert(a ∩ (a ∪ b)  == a,                          "[∩ absorption]")
-      assert(     a ∪ nil ==  a,                         "[∪ identity]")
-      assert(     a ∩ one ==  a,                         "[∩ identity]")
+      assert(     a ∪ ⊥   ==  a,                         "[∪ identity]")
+      assert(     a ∩ ⊤   ==  a,                         "[∩ identity]")
       assert(a ∪ (b ∩ c)  == (a ∪ b) ∩ (a ∪ c),          "[∪ distributivity]")
       assert(a ∩ (b ∪ c)  == (a ∩ b) ∪ (a ∩ c),          "[∩ distributivity]")
-      assert(     a ∪ ~a  == one,                        "[∪ complements]")
-      assert(     a ∩ ~a  == nil,                        "[∩ complements]")
+      assert(     a ∪ ~a  == ⊤,                          "[∪ complements]")
+      assert(     a ∩ ~a  == ⊥,                          "[∩ complements]")
     }}
   }
 
