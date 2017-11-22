@@ -155,6 +155,21 @@ object Pitch
     def apply(p: Pitch,i: ℤ): Pitch   = new Pitch(p.midi + i)
     def delta(p: Pitch,q: Pitch): ℤ   = q.midi - p.midi
   }
+
+  /**
+   * TODO
+   */
+  implicit
+  object isFinite extends Finite[Pitch]
+  {
+    val size              = 128
+    def toℕ(pitch: Pitch) = pitch.midi
+    def fromℕ(midi: ℕ)    =
+    {
+      require(midi.isBetween(0,127))
+      Pitch(midi)
+    }
+  }
 }
 
 //****************************************************************************

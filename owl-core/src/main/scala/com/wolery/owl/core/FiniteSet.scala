@@ -33,7 +33,7 @@ final
 class FiniteSet[α] private (private val m_imp: BitSet)(implicit ε: Finite[α])
 extends Set[α] with SetLike[α,FiniteSet[α]]
 {
-  assert(m_imp.isEmpty || m_imp.last<ε.size)                            //
+  assert(m_imp.isEmpty || m_imp.last<ε.size)
 
   def iterator: Iterator[α] = new Iterator[α]
   {
@@ -103,9 +103,6 @@ extends Set[α] with SetLike[α,FiniteSet[α]]
  */
 object FiniteSet
 {
-  /**
-   * TODO
-   */
   def full[α](implicit ε: Finite[α]): FiniteSet[α] =
   {
     val n = ε.size >> 6               // size / 64
@@ -121,10 +118,10 @@ object FiniteSet
   def apply[α: Finite](s: Traversable[α]): FiniteSet[α] = (builder[α] ++= s).result
 
   implicit
-  def canBuildFrom[α: Finite] = new CanBuildFrom[Traversable[α],α,FiniteSet[α]]
+  def canBuildFrom[α: Finite] = new CanBuildFrom[Set[_],α,FiniteSet[α]]
   {
-    def apply()                  = builder[α]
-    def apply(s: Traversable[α]) = builder[α]
+    def apply()            = builder[α]
+    def apply(s: Set[_])   = builder[α]
   }
 
   private
