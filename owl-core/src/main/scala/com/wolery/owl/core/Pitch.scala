@@ -172,8 +172,8 @@ object Pitch
     }
   }
 
-  implicit
-  val canBuildFrom = FiniteSet.canBuildFrom[Pitch]
+  implicit val canBuildFrom       = FiniteSet.canBuildFrom
+  implicit val isPartiallyOrdered = FiniteSet.isPartiallyOrdered
 }
 
 //****************************************************************************

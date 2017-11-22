@@ -124,6 +124,13 @@ object FiniteSet
     def apply(s: Set[_])  = builder[α]
   }
 
+  implicit
+  def isPartiallyOrdered[α: Finite] = new PartialOrdering[FiniteSet[α]]
+  {
+    def lteq(s: FiniteSet[α],t: FiniteSet[α]): Bool = s ⊆ t
+    def tryCompare(x: FiniteSet[α],y: FiniteSet[α]) = ???
+  }
+
   private
   def builder[α](implicit ε: Finite[α]): Builder[α,FiniteSet[α]] = new Builder[α,FiniteSet[α]]
   {
