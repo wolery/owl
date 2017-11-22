@@ -21,8 +21,11 @@ import Frequency.{A4,A440}
 /**
  * Represents an audio frequency as a positive real number of hertz.
  *
- * Frequencies form a torsor for `ℝ(+)` under the regular group action `(r, f)
- * ⇒ (¹²√2)`^`r`^`⋅f` for all real numbers `r` and frequencies `f`.
+ * Frequencies form a torsor for `ℝ(+)` under the mapping:
+ * {{{
+ *    + : (r,f) ⇒ (¹²√2)ʳ⋅f
+ * }}}
+ * for all real numbers `r` and frequencies `f`.
  *
  * Informally,  this action captures the notion of ''transposition'', with `r`
  * representing a (possibly fractional) number of half-steps to raise or lower
