@@ -90,7 +90,7 @@ extends Set[α] with SetLike[α,FiniteSet[α]]
   }
 
   override def size: ℕ                            = m_imp.size
-  override def empty: FiniteSet[α]                = FiniteSet()
+  override def empty: FiniteSet[α]                = FiniteSet.empty
   override def hashCode: ℕ                        = m_imp.hashCode
   override def newBuilder: Builder[α,FiniteSet[α]]= builder[α]
   override def toString: String                   = mkString("{",", ","}")
@@ -120,18 +120,19 @@ object FiniteSet
   implicit
   def canBuildFrom[α: Finite] = new CanBuildFrom[Set[_],α,FiniteSet[α]]
   {
-    def apply()            = builder[α]
-    def apply(s: Set[_])   = builder[α]
+    def apply()           = builder[α]
+    def apply(s: Set[_])  = builder[α]
   }
 
   private
   def builder[α](implicit ε: Finite[α]): Builder[α,FiniteSet[α]] = new Builder[α,FiniteSet[α]]
   {
-    val m_imp = mBitSet()                                //
+    val m_mask            = new Array[Long](ε.size >> 6)
+    val m_bits            = mBitSet.fromBitMaskNoCopy(m_mask)
 
-    override def +=(n: α)  = {m_imp += ε.toℕ(n); this}
-    override def clear()   = m_imp.clear()
-    override def result()  = FiniteSet(m_imp.toBitMask)
+    def +=(n: α)          = {m_bits += ε.toℕ(n); this}
+    def clear()           = java.util.Arrays.fill(m_mask,0L)
+    def result()          = FiniteSet(m_mask)
   }
 
   @inline private
