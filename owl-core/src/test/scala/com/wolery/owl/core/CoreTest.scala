@@ -25,7 +25,10 @@ class CoreTest extends CoreSuite
     that we test for rather than thread a  custom comparison function through
     the entire test suite...*/
 
-  implicit val r = Arbitrary(generate.real)              // For r ∈ [-128,128]
+  implicit val isℝArbitrary= Arbitrary(generate.real)    // For r ∈ [-128,128]
+
+  implicit val isℤTorsor   = new RegularAction[ℤ]
+  implicit val isℝTorsor   = new RegularAction[ℝ]
 
   test("ℤ is a ℤ-torsor")  {isTorsor[ℤ,ℤ]()}             // Verify the axioms
   test("ℤ is Abelian")     {isCommutative[ℤ]()}          // Verify the axioms

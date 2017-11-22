@@ -178,7 +178,7 @@ object Pitch
 
 //****************************************************************************
 
-object Pitches extends FiniteSetBase[Pitch]
+object Pitches extends FiniteSetLike[Pitch]
 {}
 
 //****************************************************************************

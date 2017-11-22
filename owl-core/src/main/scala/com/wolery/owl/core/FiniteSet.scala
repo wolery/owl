@@ -150,10 +150,12 @@ object FiniteSet
 
 //****************************************************************************
 
-abstract class FiniteSetBase[α: Finite]
+abstract class FiniteSetLike[α: Finite]
 {
   def full: FiniteSet[α]                     = FiniteSet.full
   def empty: FiniteSet[α]                    = FiniteSet.empty
   def apply(s: α*)            : FiniteSet[α] = FiniteSet.apply(s:_*)
   def apply(s: Traversable[α]): FiniteSet[α] = FiniteSet.apply(s)
 }
+
+//****************************************************************************
