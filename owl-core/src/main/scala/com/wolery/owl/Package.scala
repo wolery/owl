@@ -75,6 +75,7 @@ package object owl
     def <=       (b: α)       : Bool = ε.lteq(a,b)
     def >        (b: α)       : Bool = ε.gt(a,b)
     def >=       (b: α)       : Bool = ε.gteq(a,b)
+    def ≡        (b: α)       : Bool = ε.equiv(a,b)
     def equiv    (b: α)       : Bool = ε.equiv(a,b)
     def isBetween(lo: α,hi: α): Bool = ε.lteq(lo,a) && ε.lteq(a,hi)
   }

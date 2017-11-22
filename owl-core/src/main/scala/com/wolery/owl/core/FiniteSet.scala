@@ -128,7 +128,14 @@ object FiniteSet
   def isPartiallyOrdered[α: Finite] = new PartialOrdering[FiniteSet[α]]
   {
     def lteq(s: FiniteSet[α],t: FiniteSet[α]): Bool = s ⊆ t
-    def tryCompare(x: FiniteSet[α],y: FiniteSet[α]) = ???
+
+    def tryCompare(s: FiniteSet[α],t: FiniteSet[α]) = (s ⊆ t,s ⊇ t) match
+    {
+      case (true, true)  ⇒ Some( 0)
+      case (true, false) ⇒ Some(-1)
+      case (false,true)  ⇒ Some(+1)
+      case (fasle,false) ⇒ None
+    }
   }
 
   private
