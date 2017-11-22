@@ -25,6 +25,8 @@ package object core
   def Hz (r: ℝ): Frequency            = Frequency(r)
   def kHz(r: ℝ): Frequency            = Frequency(r * 1e3)
 
+  type Pitches                        = FiniteSet[Pitch]
+
   val C: Note                         = Note(Pitch(0))
   val D: Note                         = Note(Pitch(2))
   val E: Note                         = Note(Pitch(4))
@@ -86,4 +88,5 @@ package object core
 
   implicit object isℝTorsor extends RegularAction[ℝ]
 }
+
 //****************************************************************************

@@ -156,6 +156,7 @@ object Pitch
     def delta(p: Pitch,q: Pitch): ℤ   = q.midi - p.midi
   }
 
+
   /**
    * TODO
    */
@@ -170,6 +171,15 @@ object Pitch
       Pitch(midi)
     }
   }
+
+  implicit
+  val canBuildFrom = FiniteSet.canBuildFrom[Pitch]
 }
 
 //****************************************************************************
+
+object Pitches extends FiniteSetBase[Pitch]
+{}
+
+//****************************************************************************
+

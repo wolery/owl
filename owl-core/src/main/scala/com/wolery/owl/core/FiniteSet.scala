@@ -111,7 +111,7 @@ object FiniteSet
     FiniteSet(a)
   }
 
-  def empty[α: Finite]                   : FiniteSet[α] = FiniteSet(BitSet())
+  def empty[α: Finite]                   : FiniteSet[α] = FiniteSet(Array(0L))
 
   def apply[α: Finite](s: α*)            : FiniteSet[α] = (builder[α] ++= s).result
 
@@ -142,10 +142,18 @@ object FiniteSet
   }
 
   @inline private[core]
-  def apply[α: Finite](mask: Array[Long]): FiniteSet[α] =
+  def apply[α: Finite](bitmask: Array[Long]): FiniteSet[α] =
   {
-    new FiniteSet[α](BitSet.fromBitMaskNoCopy(mask))
+    new FiniteSet[α](BitSet.fromBitMaskNoCopy(bitmask))
   }
 }
 
 //****************************************************************************
+
+abstract class FiniteSetBase[α: Finite]
+{
+  def full: FiniteSet[α]                     = FiniteSet.full
+  def empty: FiniteSet[α]                    = FiniteSet.empty
+  def apply(s: α*)            : FiniteSet[α] = FiniteSet.apply(s:_*)
+  def apply(s: Traversable[α]): FiniteSet[α] = FiniteSet.apply(s)
+}
