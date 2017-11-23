@@ -156,7 +156,6 @@ object Pitch
     def delta(p: Pitch,q: Pitch): ℤ   = q.midi - p.midi
   }
 
-
   /**
    * TODO
    */
@@ -172,14 +171,19 @@ object Pitch
     }
   }
 
-  implicit val canBuildFrom       = FiniteSet.canBuildFrom
-  implicit val isPartiallyOrdered = FiniteSet.isPartiallyOrdered
+  implicit
+  object canBuildFrom extends FiniteSet.CanBuildFrom[Pitch]
+
+  implicit
+  object isPartiallyOrdered extends FiniteSet.isPartiallyOrdered[Pitch]
 }
 
 //****************************************************************************
 
-object Pitches extends FiniteSetLike[Pitch]
-{}
+object Pitches extends FiniteSet.Factory[Pitch]
+{
+  def fromBitMask(lo: Long,hi: Long): Pitches = FiniteSet.fromBitMask(Array(lo,hi))
+}
 
 //****************************************************************************
 

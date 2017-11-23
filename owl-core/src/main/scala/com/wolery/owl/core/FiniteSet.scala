@@ -17,7 +17,7 @@ package core
 
 import scala.collection.{GenSet,SetLike}
 import scala.collection.mutable.{Builder,BitSet ⇒ mBitSet}
-import scala.collection.generic.CanBuildFrom
+import scala.collection.generic.{CanBuildFrom ⇒ CBF}
 import scala.collection.immutable.BitSet
 
 import FiniteSet._
@@ -42,13 +42,13 @@ extends Set[α] with SetLike[α,FiniteSet[α]]
     def next() : α    = ε.fromℕ(i.next())
   }
 
-  def + (a: α)           : FiniteSet[α]  = FiniteSet(m_imp +  ε.toℕ(a))
-  def - (a: α)           : FiniteSet[α]  = FiniteSet(m_imp -  ε.toℕ(a))
-  def \ (s: FiniteSet[α]): FiniteSet[α]  = FiniteSet(m_imp &~ s.m_imp)
-  def ∪ (s: FiniteSet[α]): FiniteSet[α]  = FiniteSet(m_imp |  s.m_imp)
-  def ∩ (s: FiniteSet[α]): FiniteSet[α]  = FiniteSet(m_imp &  s.m_imp)
-  def ⊖ (s: FiniteSet[α]): FiniteSet[α]  = FiniteSet(m_imp ^  s.m_imp)
-  def unary_~            : FiniteSet[α]  = FiniteSet(full.m_imp &~ m_imp)
+  def + (a: α)           : FiniteSet[α]  = fromBitSet(m_imp +  ε.toℕ(a))
+  def - (a: α)           : FiniteSet[α]  = fromBitSet(m_imp -  ε.toℕ(a))
+  def \ (s: FiniteSet[α]): FiniteSet[α]  = fromBitSet(m_imp &~ s.m_imp)
+  def ∪ (s: FiniteSet[α]): FiniteSet[α]  = fromBitSet(m_imp |  s.m_imp)
+  def ∩ (s: FiniteSet[α]): FiniteSet[α]  = fromBitSet(m_imp &  s.m_imp)
+  def ⊖ (s: FiniteSet[α]): FiniteSet[α]  = fromBitSet(m_imp ^  s.m_imp)
+  def unary_~            : FiniteSet[α]  = fromBitSet(full.m_imp &~ m_imp)
   def ⊆ (s: FiniteSet[α]): Bool          = m_imp.subsetOf(s.m_imp)
   def contains(a: α)     : Bool          = m_imp.contains(ε.toℕ(a))
   def complement         : FiniteSet[α]  = ~this
@@ -92,8 +92,8 @@ extends Set[α] with SetLike[α,FiniteSet[α]]
   override def size: ℕ                            = m_imp.size
   override def empty: FiniteSet[α]                = FiniteSet.empty
   override def hashCode: ℕ                        = m_imp.hashCode
-  override def newBuilder: Builder[α,FiniteSet[α]]= builder[α]
-  override def toString: String                   = mkString("{",", ","}")
+  override def newBuilder: Builder[α,FiniteSet[α]]= FiniteSet.newBuilder
+  override def toString: String                   = mkString("{",",","}")
 }
 
 /**
@@ -108,24 +108,29 @@ object FiniteSet
     val n = ε.size >> 6               // size / 64
     val a = Array.fill(1 + n)(~0L)
     a(n) &= (1 << (ε.size & 63)) - 1  // size % 64
-    FiniteSet(a)
+    fromBitMask(a)
   }
 
-  def empty[α: Finite]                   : FiniteSet[α] = FiniteSet(Array(0L))
+  def empty[α: Finite]                   : FiniteSet[α] = fromBitMask(Array())
 
-  def apply[α: Finite](s: α*)            : FiniteSet[α] = (builder[α] ++= s).result
+  def apply[α: Finite](s: α*)            : FiniteSet[α] = (newBuilder ++= s).result
 
-  def apply[α: Finite](s: Traversable[α]): FiniteSet[α] = (builder[α] ++= s).result
+  def apply[α: Finite](s: Traversable[α]): FiniteSet[α] = (newBuilder ++= s).result
 
-  implicit
-  def canBuildFrom[α: Finite] = new CanBuildFrom[Set[_],α,FiniteSet[α]]
+  def fromBitMask[α](mask: Array[Long])(implicit ε: Finite[α]): FiniteSet[α] =
   {
-    def apply()           = builder[α]
-    def apply(s: Set[_])  = builder[α]
+    val size = ε.size
+    val words = size / 64
+    new FiniteSet(BitSet.fromBitMaskNoCopy(mask))
   }
 
-  implicit
-  def isPartiallyOrdered[α: Finite] = new PartialOrdering[FiniteSet[α]]
+  class CanBuildFrom[α: Finite] extends CBF[Set[_],α,FiniteSet[α]]
+  {
+    def apply()         : Builder[α,FiniteSet[α]] = newBuilder
+    def apply(s: Set[_]): Builder[α,FiniteSet[α]] = newBuilder
+  }
+
+  class isPartiallyOrdered[α: Finite] extends PartialOrdering[FiniteSet[α]]
   {
     def lteq(s: FiniteSet[α],t: FiniteSet[α]): Bool = s ⊆ t
 
@@ -139,37 +144,30 @@ object FiniteSet
   }
 
   private
-  def builder[α](implicit ε: Finite[α]): Builder[α,FiniteSet[α]] = new Builder[α,FiniteSet[α]]
+  def newBuilder[α](implicit ε: Finite[α]) = new Builder[α,FiniteSet[α]]
   {
     val m_mask            = new Array[Long](1 + (ε.size >> 6))
     val m_bits            = mBitSet.fromBitMaskNoCopy(m_mask)
 
     def +=(n: α)          = {m_bits += ε.toℕ(n); this}
     def clear()           = java.util.Arrays.fill(m_mask,0L)
-    def result()          = FiniteSet(m_mask)
+    def result()          = fromBitMask(m_mask)
   }
 
-  @inline private
-  def apply[α: Finite](bitset: BitSet): FiniteSet[α] =
+  private
+  def fromBitSet[α](bits: BitSet)(implicit ε: Finite[α]): FiniteSet[α] =
   {
-    new FiniteSet[α](bitset)
+    new FiniteSet(bits)
   }
 
-  @inline private[core]
-  def apply[α: Finite](bitmask: Array[Long]): FiniteSet[α] =
+  private[core]
+  class Factory[α: Finite]
   {
-    new FiniteSet[α](BitSet.fromBitMaskNoCopy(bitmask))
+    val full                    : FiniteSet[α] = FiniteSet.full
+    val empty                   : FiniteSet[α] = FiniteSet.empty
+    def apply(s: α*)            : FiniteSet[α] = FiniteSet.apply(s:_*)
+    def apply(s: Traversable[α]): FiniteSet[α] = FiniteSet.apply(s)
   }
-}
-
-//****************************************************************************
-
-abstract class FiniteSetLike[α: Finite]
-{
-  def full: FiniteSet[α]                     = FiniteSet.full
-  def empty: FiniteSet[α]                    = FiniteSet.empty
-  def apply(s: α*)            : FiniteSet[α] = FiniteSet.apply(s:_*)
-  def apply(s: Traversable[α]): FiniteSet[α] = FiniteSet.apply(s)
 }
 
 //****************************************************************************
