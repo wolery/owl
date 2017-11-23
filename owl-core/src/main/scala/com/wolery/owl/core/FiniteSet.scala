@@ -15,10 +15,10 @@
 package com.wolery.owl
 package core
 
-import scala.collection.{GenSet,SetLike}
-import scala.collection.mutable.{Builder,BitSet ⇒ mBitSet}
+import scala.collection.{BitSet,GenSet,SetLike}
 import scala.collection.generic.{CanBuildFrom ⇒ CBF}
-import scala.collection.immutable.BitSet
+import scala.collection.mutable.{Builder,BitSet ⇒ mBitSet}
+import scala.collection.immutable.{      BitSet ⇒ iBitSet}
 
 import FiniteSet._
 
@@ -30,10 +30,11 @@ import FiniteSet._
  * @author Jonathon Bell
  */
 final
-class FiniteSet[α] private (private val m_imp: BitSet)(implicit ε: Finite[α])
-extends Set[α] with SetLike[α,FiniteSet[α]]
+class FiniteSet[α](private val m_imp: BitSet)(implicit ε: Finite[α])
+    extends Set[α]
+   with SetLike[α,FiniteSet[α]]
 {
-  assert(m_imp.isEmpty || m_imp.last<ε.size)
+  require(m_imp.isEmpty || m_imp.last<ε.size)
 
   def iterator: Iterator[α] = new Iterator[α]
   {
@@ -103,13 +104,7 @@ extends Set[α] with SetLike[α,FiniteSet[α]]
  */
 object FiniteSet
 {
-  def full[α](implicit ε: Finite[α]): FiniteSet[α] =
-  {
-    val n = ε.size >> 6               // size / 64
-    val a = Array.fill(1 + n)(~0L)
-    a(n) &= (1 << (ε.size & 63)) - 1  // size % 64
-    fromBitMask(a)
-  }
+  def full[α: Finite]                    : FiniteSet[α] = fromBitMask(newMask(~0L))
 
   def empty[α: Finite]                   : FiniteSet[α] = fromBitMask(Array())
 
@@ -117,11 +112,15 @@ object FiniteSet
 
   def apply[α: Finite](s: Traversable[α]): FiniteSet[α] = (newBuilder ++= s).result
 
-  def fromBitMask[α](mask: Array[Long])(implicit ε: Finite[α]): FiniteSet[α] =
+  def fromBitSet [α: Finite](bits: BitSet): FiniteSet[α]      = new FiniteSet(bits)
+  def fromBitMask[α: Finite](mask: Array[Long]): FiniteSet[α] = new FiniteSet(iBitSet.fromBitMaskNoCopy(mask))
+
+  class Factory[α: Finite]
   {
-    val size = ε.size
-    val words = size / 64
-    new FiniteSet(BitSet.fromBitMaskNoCopy(mask))
+    val full                    : FiniteSet[α] = FiniteSet.full
+    val empty                   : FiniteSet[α] = FiniteSet.empty
+    def apply(s: α*)            : FiniteSet[α] = FiniteSet.apply(s:_*)
+    def apply(s: Traversable[α]): FiniteSet[α] = FiniteSet.apply(s)
   }
 
   class CanBuildFrom[α: Finite] extends CBF[Set[_],α,FiniteSet[α]]
@@ -146,7 +145,7 @@ object FiniteSet
   private
   def newBuilder[α](implicit ε: Finite[α]) = new Builder[α,FiniteSet[α]]
   {
-    val m_mask            = new Array[Long](1 + (ε.size >> 6))
+    val m_mask            = newMask(0L)
     val m_bits            = mBitSet.fromBitMaskNoCopy(m_mask)
 
     def +=(n: α)          = {m_bits += ε.toℕ(n); this}
@@ -155,18 +154,15 @@ object FiniteSet
   }
 
   private
-  def fromBitSet[α](bits: BitSet)(implicit ε: Finite[α]): FiniteSet[α] =
+  def newMask[α](filler: Long)(implicit ε: Finite[α]) =
   {
-    new FiniteSet(bits)
-  }
+    assert(ε.size > 0)
 
-  private[core]
-  class Factory[α: Finite]
-  {
-    val full                    : FiniteSet[α] = FiniteSet.full
-    val empty                   : FiniteSet[α] = FiniteSet.empty
-    def apply(s: α*)            : FiniteSet[α] = FiniteSet.apply(s:_*)
-    def apply(s: Traversable[α]): FiniteSet[α] = FiniteSet.apply(s)
+    val n = 1 + (ε.size - 1 >> 6)
+    val a = Array.fill(n)(filler)
+
+    a(n-1) = (1 << (ε.size & 63)) - 1
+    a
   }
 }
 
