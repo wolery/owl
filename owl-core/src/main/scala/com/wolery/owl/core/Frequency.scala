@@ -175,9 +175,9 @@ object Frequency
     def delta(f: Frequency,g: Frequency)    = log(g.Hz / f.Hz) * α
   }
 
-  private val α        = 12 / log(2)                     // 1 / ln(¹²√2)
-  private val A4       = Pitch(A,4)                      // Concert pitch
-  private val A440     = Frequency(440.0)                // Concert pitch
+  private val α   : ℝ         = 12 / log(2)              // 1 / ln(¹²√2)
+  private val A4  : Pitch     = Pitch(A,4)               // Concert pitch
+  private val A440: Frequency = Frequency(440.0)         // Concert pitch
 }
 
 //****************************************************************************
