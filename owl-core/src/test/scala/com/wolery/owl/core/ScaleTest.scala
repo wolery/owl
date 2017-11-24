@@ -19,13 +19,11 @@ package core
 
 class ScaleTest extends CoreSuite
 {
-  import arbitrary._                                     // For owl implicits
+  import arbitrary._                                     // For Owl implicits
   import util.utilities.{mod}                            // For utilities
 
   test("Scale is a ℤ-set")
   {
-    implicit val i = Arbitrary(generate.int)             // ∀ i ∈ [-128,128]
-
     assertℤSet[Scale]()                                  // Verify the axioms
   }
 
@@ -78,10 +76,9 @@ class ScaleTest extends CoreSuite
     }}
   }
 
-  test("mode is a ℤ-action")
+  test("modal interchange is a ℤ-action")
   {
-    implicit val i = Arbitrary(generate.int)             // ∀ i ∈ [-128,128]
-    implicit val t = new Action[Scale,ℤ]
+    implicit object isℤset extends Action[Scale,ℤ]       // Modal interchange
     {
       def apply(s: Scale,i: ℤ): Scale = s.mode(i)        // ...i'th mode of s
     }

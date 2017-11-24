@@ -19,9 +19,7 @@ package core
 
 class NoteTest extends CoreSuite
 {
-  import arbitrary._                                     // For owl implicits
-
-  implicit val i = Arbitrary(generate.int)               // ∀ i ∈ [-128,128]
+  import arbitrary._                                     // For Owl implicits
 
   test("Note is a ℤ/12ℤ-torsor")
   {

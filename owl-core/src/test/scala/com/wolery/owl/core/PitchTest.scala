@@ -19,9 +19,7 @@ package core
 
 class PitchTest extends CoreSuite
 {
-  import arbitrary._                                     // For owl implicits
-
-  implicit val i = Arbitrary(generate.int)               // ∀ i ∈ [-128,128]
+  import arbitrary._                                     // For Owl implicits
 
   test("Pitch is a ℤ/128ℤ-torsor")
   {

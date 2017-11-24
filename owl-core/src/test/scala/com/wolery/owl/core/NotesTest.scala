@@ -19,12 +19,10 @@ package core
 
 class NotesTest extends CoreSuite
 {
-  import arbitrary._                                     // For owl implicits
+  import arbitrary._                                     // For Owl implicits
 
   test("Notes is a ℤ-set")
   {
-    implicit val i = Arbitrary(generate.int)             // ∀ i ∈ [-128,128]
-
     assertℤSet[Notes]()                                  // Verify the axioms
   }
 

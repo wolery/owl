@@ -19,13 +19,7 @@ package core
 
 class CoreTest extends CoreSuite
 {
- /* ℝ only satisfies the axioms exactly for limited subsets of its values due
-    to the inherent limitations of floating point representation. We are only
-    interested in audible frequencies, however, so restrict the set of values
-    that we test for rather than thread a  custom comparison function through
-    the entire test suite...*/
-
-  implicit val isArbitrary  = Arbitrary(generate.real)   // For r ∈ [-128,128]
+  import arbitrary._                                     // For Owl implicits
 
   implicit val isℤTorsor    = new RegularAction[ℤ]       // ℤ is a ℤ-torsor
   implicit val isℝTorsor    = new RegularAction[ℝ]       // ℝ is a ℝ-torsor

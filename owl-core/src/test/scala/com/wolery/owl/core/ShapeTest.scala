@@ -19,13 +19,11 @@ package core
 
 class ShapeTest extends CoreSuite
 {
-  import arbitrary._                                     // For owl implicits
+  import arbitrary._                                     // For Owl implicits
   import util.utilities.{mod,mod12}                      // For utilities
 
   test("Shape is a ℤ-set")
   {
-    implicit val i = Arbitrary(generate.int)             // ∀ i ∈ [-128,128]
-
     assertℤSet[Shape]()                                  // Verify the axioms
   }
 

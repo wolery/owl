@@ -19,12 +19,10 @@ package core
 
 class FrequencyTest extends CoreSuite
 {
-  import arbitrary._                                     // For owl implicits
+  import arbitrary._                                     // For Owl implicits
 
   test("Frequency is an ℝ-Torsor")
   {
-    implicit val r = Arbitrary(generate.real)            // ∀ r ∈ [-128,128]
-
     assertTorsor[Frequency,ℝ]()                          // Verify the axioms
   }
 
