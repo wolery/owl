@@ -20,7 +20,6 @@ package core
 class NotesTest extends CoreSuite
 {
   import arbitrary._                                     // For owl implicits
-  import Notes._
 
   test("Notes is a ℤ-set")
   {
@@ -40,12 +39,13 @@ class NotesTest extends CoreSuite
     assertPartiallyOrdered[Notes]()                      // Verify the axioms
   }
 
-  // @see [[https://en.wikipedia.org/wiki/Boolean_algebra_(structure) Boolean algebra (Wikipedia)]]
+  // @see  [[https://en.wikipedia.org/wiki/Boolean_algebra_(structure) Boolean
+  //       algebra (Wikipedia)]]
 
   test("Notes(∅,~∅,~,∩,∪) is a boolean algebra")
   {
+    val ⊤ =  Notes.full
     val ⊥ =  Notes.empty
-    val ⊤ = ~Notes.empty
 
     forAll("a","b","c") {(a: Notes,b: Notes,c: Notes) => // ∀ a,b,c ∈ Notes
     {
