@@ -20,24 +20,35 @@ import util.utilities.mod12
 /**
  * TODO
  *
- * @author Jonathon Bell
+ * @see    [[https://en.wikipedia.org/wiki/Pitch_class Pitch Class (Wikipedia)]]
  *
- * https://en.wikipedia.org/wiki/Pitch_class
+ * @author Jonathon Bell
  */
-final
-class Note private (private val m_imp: ℕ) extends AnyVal
+final class Note private (private val m_imp: ℕ) extends AnyVal
 {
+  /**
+   * TODO
+   *
+   * @param  octave  TODO
+   *
+   * @return TODO
+   */
   def apply(octave: Octave): Pitch =
   {
     Pitch(octave*12 +12 + m_imp)
   }
 
+  /**
+   * TODO
+   *
+   * @return TODO
+   */
   override
   def toString: String =
   {
-    val i = 2 * m_imp                                    //
+    val i = 2 * m_imp                                    // Index into literal
 
-    "C C♯D D♯E F F♯G G♯A A♯B ".substring(i,i + 2).trim   //
+    "C C♯D D♯E F F♯G G♯A A♯B ".substring(i,i + 2).trim   // Index into literal
   }
 }
 
@@ -48,23 +59,32 @@ class Note private (private val m_imp: ℕ) extends AnyVal
  */
 object Note
 {
+  /**
+   * TODO
+   *
+   * @param  pitch  TODO
+   *
+   * @return TODO
+   */
   def apply(pitch: Pitch): Note =
   {
     new Note(mod12(pitch.midi))
   }
 
+  /**
+   * TODO
+   */
   implicit
   object isFinite extends Finite[Note]
   {
-    val size              = 12
-    def toℕ(note: Note) = note.m_imp
-    def fromℕ(n: ℕ)      =
-    {
-      require(n.isBetween(0,11))
-      new Note(n)
-    }
+    val size: ℕ              = 12
+    def toℕ(note: Note): ℕ   = note.m_imp
+    def fromℕ(i: ℕ): Note    = {require(i.isBetween(0,11));new Note(i)}
   }
 
+  /**
+   * TODO
+   */
   implicit
   object isℤTorsor extends Torsor[Note,ℤ]
   {
@@ -72,28 +92,50 @@ object Note
     def delta(m: Note,n: Note)            = mod12(n.m_imp - m.m_imp)
   }
 
-// Finite Set support
-
+  /**
+   * TODO
+   */
   implicit
   object canBuildFrom extends FiniteSet.CanBuildFrom[Note]
 
+  /**
+   * TODO
+   */
   implicit
   object isPartiallyOrdered extends FiniteSet.isPartiallyOrdered[Note]
 
+  /**
+   * TODO
+   */
   implicit
   object isℤSet extends Action[Notes,ℤ]
   {
-/// def apply(s: Notes,i: ℤ)              = new Notes(rol12(s.bits,i))
-    def apply(s: Notes,i: ℤ)              = s.map(_ + i)
+    def apply(notes: Notes,i: ℤ): Notes   = notes.map(_ + i)
   }
 }
 
-//****************************************************************************
-//https://en.wikipedia.org/wiki/Set_theory_(music)
+/**
+ * TODO
+ *
+ * @see    [https://en.wikipedia.org/wiki/Set_theory_(music) Music Set Theory
+ *         (Wikipedia)]
+ *
+ * @author Jonathon Bell
+ */
 object Notes extends FiniteSet.Factory[Note]
 {
+  /**
+   * TODO
+   *
+   * @param  mask  TODO
+   *
+   * @return TODO
+   */
   private[core]
-  def fromBitMask(mask: Long): Pitches = FiniteSet.fromBitMask(Array(mask))
+  def fromBitMask(mask: Long): Pitches =
+  {
+    FiniteSet.fromBitMask(Array(mask))
+  }
 }
 
 //****************************************************************************

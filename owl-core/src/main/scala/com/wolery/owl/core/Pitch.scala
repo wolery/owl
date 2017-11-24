@@ -35,14 +35,16 @@ import util.utilities.subscript
  * for all ''p'' and ''i'' in ℤ. Each pair of pitches ''(p, q)'' identifies an
  * ''interval'',  the unique integer that when  applied to ''p'' transposes it
  * to ''q''. Moreover, this definition of interval as the delta function for a
- * torsor coincides with the more familiar notion of musical interval -  hence
+ * torsor coincides with the more familiar musical notion of interval -  hence
  * the name.
  *
  * @param  midi  The note number assigned to this pitch by the MIDI Tuning Standard.
  *
- * @see   [[https://en.wikipedia.org/wiki/Equal_temperament Equal temperament (Wikipedia)]]
- * @see   [[https://en.wikipedia.org/wiki/A440_(pitch_standard) A440 (pitch standard) (Wikipedia)]]
- * @see   [[https://en.wikipedia.org/wiki/MIDI_Tuning_Standard MIDI Tuning Standard (Wikipedia)]]
+ * @see    [[https://en.wikipedia.org/wiki/Equal_temperament Equal temperament (Wikipedia)]]
+ * @see    [[https://en.wikipedia.org/wiki/A440_(pitch_standard) A440 (pitch standard) (Wikipedia)]]
+ * @see    [[https://en.wikipedia.org/wiki/MIDI_Tuning_Standard MIDI Tuning Standard (Wikipedia)]]
+ *
+ * @author Jonathon Bell
  */
 final class Pitch private (val midi: Midi) extends AnyVal
 {
@@ -50,30 +52,30 @@ final class Pitch private (val midi: Midi) extends AnyVal
    * The pitch class, or ''note'', assigned to this pitch in scientific pitch
    * notation.
    *
-   * Notice that for any pitch ''p'' and and integer ''i'' we have that:
+   * Notice that for any pitch ''p'' and integer ''i'' we have that:
    * {{{
    *    (p + i).note  =  p.note + i
    * }}}
-   * In other words, `note` is an equivariant mapping from the intervallic set
-   * of pitches to the transposing set of notes.
+   * In other words, `note` is an equivariant mapping from the Pitch and Note
+   * ℤ-sets.
    *
-   * @see [[https://en.wikipedia.org/wiki/Pitch_class Pitch class (Wikipedia)]]
-   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
-   * @see [[https://en.wikipedia.org/wiki/Equivariant_map Equivarient map (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Pitch_class Pitch class (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Equivariant_map Equivarient map (Wikipedia)]]
    */
   def note: Note = Note(this)
 
   /**
    * The octave number assigned to this pitch in scientific pitch notation.
    *
-   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
    */
   def octave: Octave = midi/12 - 1
 
   /**
    * The frequency of this pitch in hertz.
    *
-   * @see [[https://en.wikipedia.org/wiki/Frequency Frequency (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Frequency Frequency (Wikipedia)]]
    */
   def frequency: Frequency = Frequency(this)
 
@@ -90,7 +92,7 @@ final class Pitch private (val midi: Midi) extends AnyVal
    */
   def to(end: Pitch,step: ℤ = +1): Seq[Pitch] =
   {
-    for (i ← midi to end.midi by step) yield Pitch(i)
+    (midi to end.midi).map(Pitch(_))
   }
 
   /**
@@ -106,8 +108,7 @@ final class Pitch private (val midi: Midi) extends AnyVal
    */
   def until(end: Pitch,step: ℤ = +1): Seq[Pitch] =
   {
-    for (i ← midi until end.midi by step) yield
-      Pitch(i)
+    (midi until end.midi by step).map(Pitch(_))
   }
 
   /**
@@ -121,13 +122,15 @@ final class Pitch private (val midi: Midi) extends AnyVal
 
 /**
  * The companion object for class [[Pitch]].
+ *
+ * @author Jonathon Bell
  */
 object Pitch
 {
   /**
    * Returns the pitch specified by the given MIDI note number.
    *
-   * @see [[https://en.wikipedia.org/wiki/MIDI_Tuning_Standard MIDI Tuning Standard (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/MIDI_Tuning_Standard MIDI Tuning Standard (Wikipedia)]]
    */
   def apply(midi: Midi): Pitch = new Pitch(midi)
 
@@ -140,7 +143,7 @@ object Pitch
    * Returns the pitch specified by the given note and octave number in
    * scientific pitch notation.
    *
-   * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
+   * @see    [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
    */
   def apply(note: Note,octave: Octave): Pitch = note(octave)
 
@@ -150,13 +153,9 @@ object Pitch
   implicit
   object isFinite extends Finite[Pitch]
   {
-    val size              = 128
-    def toℕ(pitch: Pitch) = pitch.midi
-    def fromℕ(midi: ℕ)    =
-    {
-      require(midi.isBetween(0,127))
-      Pitch(midi)
-    }
+    val size: ℕ                 = 128
+    def toℕ(pitch: Pitch): ℕ    = pitch.midi
+    def fromℕ(midi: ℕ): Pitch   = {require(midi.isBetween(0,127));Pitch(midi)}
   }
 
   /**
@@ -179,19 +178,32 @@ object Pitch
     def delta(p: Pitch,q: Pitch): ℤ   = q.midi - p.midi
   }
 
-//FiniteSet support
-
+  /**
+   * TODO
+   */
   implicit
   object canBuildFrom extends FiniteSet.CanBuildFrom[Pitch]
 
+  /**
+   * TODO
+   */
   implicit
   object isPartiallyOrdered extends FiniteSet.isPartiallyOrdered[Pitch]
+
+  /**
+   * TODO
+   */
+  implicit
+  object isℤSet extends Action[Pitches,ℤ]
+  {
+    def apply(pitches: Pitches,i: ℤ): Pitches = pitches.map(_ + i)
+  }
 }
 
 /**
  * TODO
  *
- * Jonathon
+ * @author Jonathon Bell
  */
 object Pitches extends FiniteSet.Factory[Pitch]
 {
