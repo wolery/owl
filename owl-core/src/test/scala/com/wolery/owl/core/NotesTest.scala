@@ -20,6 +20,7 @@ package core
 class NotesTest extends CoreSuite
 {
   import arbitrary._                                     // For owl implicits
+  import Notes._
 
   test("Notes is a ℤ-set")
   {

@@ -42,6 +42,38 @@ object Note
 
   private
   val names = Array("C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B")
+
+  implicit
+  object isFinite extends Finite[Note]
+  {
+    val size              = 12
+    def toℕ(note: Note) = note.n
+    def fromℕ(n: ℕ)      =
+    {
+      require(n.isBetween(0,11))
+      new Note(n)
+    }
+  }
+
+  implicit
+  object canBuildFrom extends FiniteSet.CanBuildFrom[Note]
+
+  implicit
+  object isPartiallyOrdered extends FiniteSet.isPartiallyOrdered[Note]
+
+  implicit
+  object isℤSet extends Action[Notes,ℤ]
+  {
+/// def apply(s: Notes,i: ℤ)              = new Notes(rol12(s.bits,i))
+    def apply(s: Notes,i: ℤ) =s.map(_+i)
+  }
+}
+
+//****************************************************************************
+
+object Notes extends FiniteSet.Factory[Note]
+{
+  def fromBitMask(mask: Long): Pitches = FiniteSet.fromBitMask(Array(mask))
 }
 
 //****************************************************************************

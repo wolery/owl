@@ -34,7 +34,7 @@ class FiniteSet[α](private val m_imp: BitSet)(implicit ε: Finite[α])
     extends Set[α]
    with SetLike[α,FiniteSet[α]]
 {
-  require(m_imp.isEmpty || m_imp.last<ε.size)
+  require(m_imp.isEmpty || m_imp.last<ε.size,"bad mask") //
 
   def iterator: Iterator[α] = new Iterator[α]
   {
@@ -113,6 +113,7 @@ object FiniteSet
   def apply[α: Finite](s: Traversable[α]): FiniteSet[α] = (newBuilder ++= s).result
 
   def fromBitSet [α: Finite](bits: BitSet): FiniteSet[α]      = new FiniteSet(bits)
+
   def fromBitMask[α: Finite](mask: Array[Long]): FiniteSet[α] = new FiniteSet(iBitSet.fromBitMaskNoCopy(mask))
 
   class Factory[α: Finite]
@@ -161,7 +162,7 @@ object FiniteSet
     val n = 1 + (ε.size - 1 >> 6)
     val a = Array.fill(n)(filler)
 
-    a(n-1) = (1 << (ε.size & 63)) - 1
+    a(n-1) &= (1 << (ε.size & 63)) - 1
     a
   }
 }

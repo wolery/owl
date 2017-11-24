@@ -25,6 +25,7 @@ package object core
   def Hz (r: ℝ): Frequency          = Frequency(r)
   def kHz(r: ℝ): Frequency          = Frequency(r * 1e3)
 
+  type Notes                        = FiniteSet[Note]
   type Pitches                      = FiniteSet[Pitch]
 
   val C: Note                       = Note(Pitch(0))
