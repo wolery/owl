@@ -226,18 +226,26 @@ trait CoreSuite extends OwlSuite
 
   /**
    * Defines generators for many of the core data types.
+   *
+   * Notice in particular the bounds we place upon integers and real numbers:
+   * ℝ and ℤ only satisfy the torsor axioms exactly for limited subsets of the
+   * total possible range of  representable values due to inherent limitations
+   * of the floating point representation.  We are only  interested in audible
+   * frequencies and pitches,  however,  so restrict the set of values that we
+   * test over rather than thread custom comparison functions through the test
+   * suite.
    */
   object generate
   {
     def gen[α: Choose,β](l: α,h: α,f: α ⇒ β): Gen[β] = choose(l,h) map f
 
-    val int   = gen(-128  ,  128  ,(x: ℤ) ⇒ x)
-    val real  = gen(-128.0,  128.0,(x: ℝ) ⇒ x)
-    val hertz = gen(   2.0,   10.0,(x: ℝ) ⇒ Hz(Math.exp(x)))
-    val pitch = gen(   0  ,  128  ,(x: ℕ) ⇒ Pitch(x))
-    val note  = gen(   0  ,  128  ,(x: ℕ) ⇒ Note(Pitch(x)))
-    val notes = gen(   0  ,0xFFF  ,(x: ℕ) ⇒ Notes.fromBitMask(x))
-    val shape = gen(   0  ,0xFFF  ,(x: ℕ) ⇒ Shape(x | 1))
+    val int   = gen(-4096,  4096, (x: ℤ) ⇒ x)
+    val real  = gen(-4096,  4096, (x: ℤ) ⇒ x * 1.0)
+    val hertz = gen(    2,    10, (x: ℕ) ⇒ Hz(Math.exp(x)))
+    val pitch = gen(    0,   128, (x: ℕ) ⇒ Pitch(x))
+    val note  = gen(    0,   128, (x: ℕ) ⇒ Note(Pitch(x)))
+    val notes = gen(    0, 0xFFF, (x: ℕ) ⇒ Notes.fromBitMask(x))
+    val shape = gen(    0, 0xFFF, (x: ℕ) ⇒ Shape(x | 1))
     val scale = for(r ←note;s ←shape) yield Scale(r,s)
   }
 
@@ -246,12 +254,14 @@ trait CoreSuite extends OwlSuite
    */
   object arbitrary
   {
-    implicit val α = Arbitrary(generate.hertz)
-    implicit val β = Arbitrary(generate.pitch)
-    implicit val γ = Arbitrary(generate.note)
-    implicit val δ = Arbitrary(generate.notes)
-    implicit val ε = Arbitrary(generate.shape)
-    implicit val ζ = Arbitrary(generate.scale)
+    implicit val α = Arbitrary(generate.int)
+    implicit val β = Arbitrary(generate.real)
+    implicit val γ = Arbitrary(generate.hertz)
+    implicit val δ = Arbitrary(generate.pitch)
+    implicit val ε = Arbitrary(generate.note)
+    implicit val ζ = Arbitrary(generate.notes)
+    implicit val η = Arbitrary(generate.shape)
+    implicit val θ = Arbitrary(generate.scale)
   }
 
   /**
