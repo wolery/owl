@@ -55,7 +55,7 @@ trait CoreSuite extends OwlSuite
 
   /**
    * Checks that `(M, ⋅, e)` satisfies the axioms of a monoid; that it, it is
-   * a semigroup with an identity element `e`.
+   * a semigroup with a two sided identity element `e`.
    *
    * @see    [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
    */
@@ -158,11 +158,11 @@ trait CoreSuite extends OwlSuite
 
   /**
    * Checks that `ℤ` acts regularly upon the carrier set `S`; that is, `apply`
-   * effects a group homomorphism from `ℤ into `Sym(S)`.
+   * effects a group isomorphism from `ℤ into `Sym(S)`.
    */
   def assertℤTorsor[S]()(implicit α: Torsor[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]): Unit =
   {
-     assertTorsor[S,ℤ]()                                      // Torsor axioms
+    assertTorsor[S,ℤ]()                                  // Torsor axioms
 
     forAll("s") {(s: S) ⇒                                // ∀ s ∈ S
     {
@@ -254,8 +254,8 @@ trait CoreSuite extends OwlSuite
     implicit val ζ = Arbitrary(generate.scale)
   }
 
-  /*
-   * Import on the behalf of our subclasses...
+  /**
+   * Import on the behalf of our subclasses.
    */
   val Arbitrary = org.scalacheck.Arbitrary
 }
