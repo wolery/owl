@@ -18,15 +18,13 @@ package com.wolery.owl
 
 package object core
 {
-  type Bits                         = Int
-  type Midi                         = Int
-  type Octave                       = Int
+  type Midi                         = ℕ
+  type Octave                       = ℤ
+  type Notes                        = FiniteSet[Note]
+  type Pitches                      = FiniteSet[Pitch]
 
   def Hz (r: ℝ): Frequency          = Frequency(r)
   def kHz(r: ℝ): Frequency          = Frequency(r * 1e3)
-
-  type Notes                        = FiniteSet[Note]
-  type Pitches                      = FiniteSet[Pitch]
 
   val C: Note                       = Note(Pitch(0))
   val D: Note                       = Note(Pitch(2))
