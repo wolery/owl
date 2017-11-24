@@ -171,13 +171,13 @@ object Frequency
   implicit
   object isℝTorsor extends Torsor[Frequency,ℝ]
   {
-    def apply(f: Frequency,r: ℝ)            = Frequency(pow(2,r/12.0) * f.Hz)
-    def delta(f: Frequency,g: Frequency)    = log(g.Hz / f.Hz) * α
+    def apply(f: Frequency,r: ℝ): Frequency  = Frequency(pow(2,r/12.0) * f.Hz)
+    def delta(f: Frequency,g: Frequency): ℝ  = log(g.Hz / f.Hz) * α
   }
 
-  private val α   : ℝ         = 12 / log(2)              // 1 / ln(¹²√2)
-  private val A4  : Pitch     = Pitch(A,4)               // Concert pitch
-  private val A440: Frequency = Frequency(440.0)         // Concert pitch
+  private val α    : ℝ         = 12 / log(2)              // 1 / ln(¹²√2)
+  private val A4 /*: Pitch */  = Pitch(A,4)               // Concert pitch
+  private val A440 : Frequency = Frequency(440.0)         // Concert pitch
 }
 
 //****************************************************************************
