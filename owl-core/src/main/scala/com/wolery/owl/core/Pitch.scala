@@ -15,8 +15,6 @@
 package com.wolery.owl
 package core
 
-//****************************************************************************
-
 import util.utilities.subscript
 
 /**
@@ -80,19 +78,6 @@ final class Pitch private (val midi: Midi) extends AnyVal
   def frequency: Frequency = Frequency(this)
 
   /**
-   * Returns the sequence of pitches  ranging from  this to ''end'' exclusive,
-   * and skipping ''step''  half-steps between each consecutive element of the
-   * resulting range.
-   *
-   * @param  end   The bounding element of the resulting range.
-   * @param  step  The number of half-steps between consecutive elements of the
-   *               resulting range.
-   *
-   * @return The range `[this, this + step, ... , end)`
-   */
-  def until(end: Pitch,step: ℤ = +1): Seq[Pitch] = for (i ← midi until end.midi by step) yield Pitch(i)
-
-  /**
    * Returns the sequence of pitches  ranging from  this to ''end'' inclusive,
    * and skipping ''step''  half-steps between each consecutive element of the
    * resulting range.
@@ -103,14 +88,35 @@ final class Pitch private (val midi: Midi) extends AnyVal
    *
    * @return The range `[this, this + step, ... , end]`
    */
-  def to(end: Pitch,step: ℤ = +1): Seq[Pitch] = for (i ← midi to end.midi by step) yield Pitch(i)
+  def to(end: Pitch,step: ℤ = +1): Seq[Pitch] =
+  {
+    for (i ← midi to end.midi by step) yield Pitch(i)
+  }
+
+  /**
+   * Returns the sequence of pitches  ranging from  this to ''end'' exclusive,
+   * and skipping ''step''  half-steps between each consecutive element of the
+   * resulting range.
+   *
+   * @param  end   The bounding element of the resulting range.
+   * @param  step  The number of half-steps between consecutive elements of the
+   *               resulting range.
+   *
+   * @return The range `[this, this + step, ... , end)`
+   */
+  def until(end: Pitch,step: ℤ = +1): Seq[Pitch] =
+  {
+    for (i ← midi until end.midi by step) yield
+      Pitch(i)
+  }
 
   /**
    * The name assigned to this pitch in scientific pitch notation.
    *
    * @see [[https://en.wikipedia.org/wiki/Scientific_pitch_notation Scientific pitch notation (Wikipedia)]]
    */
-  override def toString() = subscript(s"$note$octave")
+  override
+  def toString() = subscript(s"$note$octave")
 }
 
 /**
@@ -139,24 +145,6 @@ object Pitch
   def apply(note: Note,octave: Octave): Pitch = note(octave)
 
   /**
-   * Pitches are ordered by their pitch number.
-   */
-  implicit object ordering extends Ordering[Pitch]
-  {
-    def compare(p: Pitch,q: Pitch): ℤ  = p.midi - q.midi
-  }
-
-  /**
-   * The additive group of integers ℤ acts upon the pitches via transposition
-   * in half-steps.
-   */
-  implicit object isℤTorsor extends Torsor[Pitch,ℤ]
-  {
-    def apply(p: Pitch,i: ℤ): Pitch   = new Pitch(p.midi + i)
-    def delta(p: Pitch,q: Pitch): ℤ   = q.midi - p.midi
-  }
-
-  /**
    * TODO
    */
   implicit
@@ -171,6 +159,28 @@ object Pitch
     }
   }
 
+  /**
+   * Pitches are ordered by their pitch number.
+   */
+  implicit
+  object ordering extends Ordering[Pitch]
+  {
+    def compare(p: Pitch,q: Pitch): ℤ  = p.midi - q.midi
+  }
+
+  /**
+   * The additive group of integers ℤ acts upon the pitches via transposition
+   * in half-steps.
+   */
+  implicit
+  object isℤTorsor extends Torsor[Pitch,ℤ]
+  {
+    def apply(p: Pitch,i: ℤ): Pitch   = new Pitch(p.midi + i)
+    def delta(p: Pitch,q: Pitch): ℤ   = q.midi - p.midi
+  }
+
+//FiniteSet support
+
   implicit
   object canBuildFrom extends FiniteSet.CanBuildFrom[Pitch]
 
@@ -178,10 +188,14 @@ object Pitch
   object isPartiallyOrdered extends FiniteSet.isPartiallyOrdered[Pitch]
 }
 
-//****************************************************************************
-
+/**
+ * TODO
+ *
+ * Jonathon
+ */
 object Pitches extends FiniteSet.Factory[Pitch]
 {
+  private[core]
   def fromBitMask(lo: Long,hi: Long): Pitches = FiniteSet.fromBitMask(Array(lo,hi))
 }
 

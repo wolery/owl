@@ -30,12 +30,6 @@ class NotesTest extends CoreSuite
 
   test("Notes(⊆) is a partial ordering")
   {
-    implicit object isPartiallyOrdered extends PartialOrdering[Notes]
-    {
-      def lteq(s: Notes,t: Notes)       = s ⊆ t
-      def tryCompare(x: Notes,y: Notes) = ???
-    }
-
     assertPartiallyOrdered[Notes]()                      // Verify the axioms
   }
 

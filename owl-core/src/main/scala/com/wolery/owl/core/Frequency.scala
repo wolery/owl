@@ -52,8 +52,6 @@ import Frequency.{A4,A440}
  */
 final class Frequency private (val Hz: ℝ)
 {
-  require(Hz > 0,"non-positive Hz")                      // Validate argument
-
   /**
    * The underlying frequency in kilohertz.
    */
@@ -121,6 +119,8 @@ object Frequency
    */
   def apply(hertz: ℝ): Frequency =
   {
+    require(hertz > 0,"non-positive Hz")                 // Validate argument
+
     new Frequency(hertz)                                 // Create frequency
   }
 
@@ -144,7 +144,7 @@ object Frequency
    * of [[hashCode]] they currently inherit.
    */
   implicit
-  object isOrdering extends Ordering[Frequency]
+  object isOrdered extends Ordering[Frequency]
   {
     def compare(f: Frequency,g: Frequency): ℤ =
     {
@@ -162,13 +162,13 @@ object Frequency
   implicit
   object isℝTorsor extends Torsor[Frequency,ℝ]
   {
-    def apply(f: Frequency,r: ℝ)          = Hz (pow(2,r/12.0) * f.Hz)
-    def delta(f: Frequency,g: Frequency)  = log(g.Hz / f.Hz) / log_α
+    def apply(f: Frequency,r: ℝ)          = Frequency(pow(2,r/12.0) * f.Hz)
+    def delta(f: Frequency,g: Frequency)  = log(g.Hz / f.Hz) * α
   }
 
   private val A4       = Pitch(A,4)                      // Concert pitch
-  private val A440     = Hz(440.0)                       // Concert pitch
-  private val log_α    = log(pow(2,1/12.0))              // ln (¹²√2)
+  private val A440     = Frequency(440.0)                // Concert pitch
+  private val α        = 12 / log(2)                     // 1 / ln(¹²√2)
 }
 
 //****************************************************************************
