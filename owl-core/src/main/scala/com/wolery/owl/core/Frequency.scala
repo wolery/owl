@@ -42,6 +42,8 @@ import Frequency.{A4,A440}
  * the familiar musical notion of the interval between two frequencies - hence
  * the name.
  *
+ * @constructor  Creates a frequency from a positive real number of hertz.
+ *
  * @param  Hz  The underlying frequency in hertz.
  *
  * @see    [[https://en.wikipedia.org/wiki/Hertz Hertz (Wikipedia)]]
@@ -78,7 +80,7 @@ final class Frequency private (val Hz: ℝ)
   def equals(any: Any) = any match
   {
     case f: Frequency ⇒ close(f)                         // A close frequency?
-    case _            ⇒ false                            // They are different
+    case _            ⇒ false                            // No, thus different
   }
 
   /**
@@ -97,7 +99,7 @@ final class Frequency private (val Hz: ℝ)
    * Returns `true` if the given frequency sounds within once cent of a half-
    * step of this one.
    *
-   * Provides the underlying implementation of the `equals` function.
+   * Provides the underlying implementation for the function `equals`.
    */
   private
   def close(that: Frequency): Bool =
@@ -112,11 +114,13 @@ final class Frequency private (val Hz: ℝ)
 object Frequency
 {
   /**
-   * Creates a frequency from a positive real number of cycles per second.
+   * Creates a frequency from a positive real number of hertz.
    *
-   * @param  hertz  The underlying frequency in hertz..
+   * @param  hertz  The underlying frequency in hertz.
    *
    * @return The given frequency in hertz.
+   *
+   * @see    [[Hz]], a synonym for this function.
    */
   def apply(hertz: ℝ): Frequency =
   {
@@ -126,7 +130,7 @@ object Frequency
   }
 
   /**
-   * Returns the underlying frequency of an even tempered pitch.
+   * Returns the frequency corresponding to the given even tempered pitch.
    *
    * @param  pitch  An even tempered pitch.
    *
@@ -157,19 +161,23 @@ object Frequency
   }
 
   /**
-   * The reals `(ℝ,+)` act regularly upon the frequencies by transposition in
-   * half-steps.
+   * The reals `(ℝ,+)` act regularly upon the frequencies via the mapping:
+   * {{{
+   *    + : (r,f) ⇒ (¹²√2)ʳ⋅f
+   * }}}
+   * for all real numbers `r` and frequencies `f`,  which captures the musical
+   * notion of ''transposition in half-steps''.
    */
   implicit
   object isℝTorsor extends Torsor[Frequency,ℝ]
   {
-    def apply(f: Frequency,r: ℝ)          = Frequency(pow(2,r/12.0) * f.Hz)
-    def delta(f: Frequency,g: Frequency)  = log(g.Hz / f.Hz) * α
+    def apply(f: Frequency,r: ℝ)            = Frequency(pow(2,r/12.0) * f.Hz)
+    def delta(f: Frequency,g: Frequency)    = log(g.Hz / f.Hz) * α
   }
 
+  private val α        = 12 / log(2)                     // 1 / ln(¹²√2)
   private val A4       = Pitch(A,4)                      // Concert pitch
   private val A440     = Frequency(440.0)                // Concert pitch
-  private val α        = 12 / log(2)                     // 1 / ln(¹²√2)
 }
 
 //****************************************************************************
