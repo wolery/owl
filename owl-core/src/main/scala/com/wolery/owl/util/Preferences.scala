@@ -45,6 +45,7 @@ import java.util.prefs.{Preferences ⇒ JavaPreferences}
  * @see    [[https://docs.oracle.com/javase/8/docs/technotes/guides/preferences/index.html
  *         Core Java Preferences API]] for details of the underlying API this
  *         interface wraps.
+ *
  * @author Jonathon Bell
  */
 trait Preference[α]
@@ -119,6 +120,7 @@ trait Preference[α]
  * @see    [[https://docs.oracle.com/javase/8/docs/technotes/guides/preferences/index.html
  *         Core Java Preferences API]] for details of the underlying API that
  *         this interface wraps.
+ *
  * @author Jonathon Bell
  */
 class Preferences private (private val m_imp: JavaPreferences)

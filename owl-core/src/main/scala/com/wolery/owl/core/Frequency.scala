@@ -48,6 +48,7 @@ import Frequency.{A4,A440}
  * @see    [[https://en.wikipedia.org/wiki/Frequency Frequency (Wikipedia)]]
  * @see    [[http://en.wikipedia.org/wiki/Principal_homogeneous_space Torsor
  *         (Wikipedia)]]
+ *
  * @author Jonathon Bell
  */
 final class Frequency private (val Hz: ℝ)

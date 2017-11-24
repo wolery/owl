@@ -22,6 +22,7 @@ import org.slf4j.{Logger,LoggerFactory}
  *
  * @see    [[https://www.slf4j.org SL4FJ]] for more details on using the SLF4J
  *         logging framework.
+ *
  * @author Jonathon Bell
  */
 trait Logging

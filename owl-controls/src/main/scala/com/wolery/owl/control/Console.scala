@@ -120,6 +120,7 @@ import util._
  *                     and thus the overall behavior of the control.
  *
  * @see    [[https://ss64.com/osx/syntax-bashkeyboard.html Bash Keyboard Shortcuts]]
+ *
  * @author Jonathon Bell
  */
 class Console extends TextArea with Logging

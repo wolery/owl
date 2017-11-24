@@ -42,6 +42,7 @@ package core
  *
  * @see    [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
  * @see    [[MonoidSyntax]]
+ *
  * @author Jonathon Bell
  */
 trait Monoid[M]
@@ -85,6 +86,7 @@ trait Monoid[M]
  *
  * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics) Group (Wikipedia)]]
  * @see    [[GroupSyntax]]
+ *
  * @author Jonathon Bell
  */
 trait Group[G] extends Monoid[G]
@@ -126,6 +128,7 @@ trait Group[G] extends Monoid[G]
  *
  * @see    [[http://en.wikipedia.org/wiki/Group_action Group action (Wikipedia)]]
  * @see    [[ActionSyntax]]
+ *
  * @author Jonathon Bell
  */
 abstract class Action[S,G](implicit val group: Group[G])
@@ -172,6 +175,7 @@ abstract class Action[S,G](implicit val group: Group[G])
  * @see    [[http://en.wikipedia.org/wiki/Principal_homogeneous_space Torsor (Wikipedia)]]
  * @see    [[http://math.ucr.edu/home/baez/torsors.html Torsors Made Easy (John Baez)]]
  * @see    [[TorsorSyntax]]
+ *
  * @author Jonathon Bell
  */
 trait Torsor[S,G] extends Action[S,G]
@@ -210,6 +214,7 @@ trait Torsor[S,G] extends Action[S,G]
  *
  * @see    [[https://en.wikipedia.org/wiki/Cayley%27s_theorem Cayley's Theorem
  *         (Wikipedia)]]
+ *
  * @author Jonathon Bell
  */
 class RegularAction[G: Group] extends Torsor[G,G]
