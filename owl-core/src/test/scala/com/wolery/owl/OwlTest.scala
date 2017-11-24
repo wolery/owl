@@ -26,7 +26,7 @@ class OwlTest extends OwlSuite
     assert(false iff false,           "[iff 4]")
 
     assert(true  implies true,        "[implies 1]")
-    reject(true  implies false,       "implies [2]")
+    reject(true  implies false,       "[implies 2]")
     assert(false implies true,        "[implies 3]")
     assert(false implies false,       "[implies 4]")
   }
