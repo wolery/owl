@@ -193,22 +193,31 @@ trait Torsor[S,G] extends Action[S,G]
 }
 
 /**
- * Implements the regular action of the group `G` upon itself.
+ * Implements the regular (right) action of the group `G` upon itself.
  *
  * Every group `G` is  isomorphic to a  subgroup of the symmetric group acting
  * on `G`, a result known as ''Cayley's Theorem''.
  *
  * Equivalently, and restating in the language of group actions, `G` acts upon
- * itself regularly, thus is a `G-torsor`.
+ * itself regularly by (right) multiplication, This action is known as the
+ * ''regular action'' of `G` upon itself.
+ *
+ *
+ *
+ * , thus is a `G-torsor`.
+ *
+ * This action of `G` upon itself by (right) multiplication is regular, and is
+ * known as the ''regular action''.
  *
  * This class exploits this fact to automatically instantiate a `G-torsor` for
  * `G`, so simplifying the task of adding new groups to the Owl system.
  *
  * For example:
  * {{{
- *    implicit object isℤTorsor extents RegularAction[ℤ]
+ *    implicit object isℤTorsor extends RegularAction[ℤ]
  * }}}
- * implements the regular action of the group `(ℤ,+)` upon itself.
+ * implements the regular action of the additive group of integers `(ℤ,+)` on
+ * itself via (right) addition.
  *
  * @tparam G  An instance of the type class `Group`.
  *
@@ -221,6 +230,30 @@ class RegularAction[G: Group] extends Torsor[G,G]
 {
   def apply(f: G,g: G): G   = f ⋅  g
   def delta(g: G,f: G): G   = f ⋅ -g
+}
+
+/**
+ * Derives the induced action of `G` upon the power set of `S` from the given
+ * action of `G` upon `S`.
+ *
+ * For any action `⋅` of the group `G` on the set `S` we may define the map:
+ * {{{
+ *    T⋅g  =  {t⋅g : t ∈ T}
+ * }}}
+ * for all `g` in `G` and `T` in `P(S)`, the power set of `S`. This mapping is
+ * an action of `G` upon `P(S)`, and is known as the ''induced action upon the
+ * power set''.
+ *
+ * @tparam S  A non-empty set acted upon by the group `G` via the mapping `apply`.
+ * @tparam G  A group that acts upon the carrier set  `S` via the mapping `apply`.
+ *
+ * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics) Group (Wikipedia)]]
+ *
+ * @author Jonathon Bell
+ */
+class PowerSetAction[S,G: Group](implicit ε: Action[S,G]) extends Action[Set[S],G]
+{
+  def apply(s: Set[S],g: G): Set[S] = s.map(ε(_,g))
 }
 
 //****************************************************************************

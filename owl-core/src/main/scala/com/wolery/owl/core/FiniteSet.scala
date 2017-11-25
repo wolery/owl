@@ -143,6 +143,22 @@ object FiniteSet
     }
   }
 
+  /**
+   * Derives the induced action of `G` upon the power set of `S` in the special
+   * case that `S` is finite.
+   *
+   * @tparam S  A non-empty finite set acted upon by the group `G` via the mapping `apply`.
+   * @tparam G  A group that acts upon the finite carrier set  `S` via the mapping `apply`.
+   *
+   * @author Jonathon Bell
+   */
+  class PowerSetAction[S: Finite,G: Group](implicit ε: Action[S,G]) extends Action[FiniteSet[S],G]
+  {
+    implicit val ζ = new FiniteSet.CanBuildFrom[S]
+
+    def apply(s: FiniteSet[S],g: G): FiniteSet[S] = s.map(ε(_,g))
+  }
+
   private
   def newBuilder[α](implicit ε: Finite[α]) = new Builder[α,FiniteSet[α]]
   {
