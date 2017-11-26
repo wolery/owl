@@ -39,7 +39,7 @@ class NotesTest extends CoreSuite
     val ⊤ =  Notes.full
     val ⊥ =  Notes.empty
 
-    forAll("a","b","c") {(a: Notes,b: Notes,c: Notes) => // ∀ a,b,c ∈ Notes
+    forAll("a","b","c") {(a: Notes,b: Notes,c: Notes) ⇒  // ∀ a,b,c ∈ Notes
     {
       assert(a ∪ (b ∪ c)  == (a ∪ b) ∪ c,                "[∪ associativity]")
       assert(a ∩ (b ∩ c)  == (a ∩ b) ∩ c,                "[∩ associativity]")
