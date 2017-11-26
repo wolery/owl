@@ -177,8 +177,10 @@ object FiniteSet
 
     val n = 1 + (ε.size - 1 >> 6)
     val a = Array.fill(n)(filler)
+    val r = ε.size & 63
 
-    a(n-1) &= (1 << (ε.size & 63)) - 1
+    if (r > 0)
+      a(n-1) &= (1 << r) - 1
     a
   }
 }
