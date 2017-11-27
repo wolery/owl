@@ -578,11 +578,11 @@ class Console extends TextArea with Logging
    * Applies the given function to the first character of the word following
    * the caret.
    *
-   * @param  xform  The function to apply to the character.
+   * @param  change  The function to apply to the character.
    */
-  def xformChar(xform: String ⇒ String): Unit =
+  def changeChar(change: String ⇒ String): Unit =
   {
-    log.debug("transformChar()")                         // Trace our location
+    log.debug("changeChar()")                            // Trace our location
 
     var c = getCaretPosition                             // The caret position
 
@@ -591,7 +591,7 @@ class Console extends TextArea with Logging
       endOfNextWord()                                    // ...jump forward
       previousWord()                                     // ...then back again
       c = getCaretPosition                               // ...so at next word
-      replaceText(c,c+1,xform(getText(c,c+1)))           // ...transform char
+      replaceText(c,c+1,change(getText(c,c+1)))          // ...transform char
       endOfNextWord()                                    // ...advance caret
     }
   }
@@ -600,11 +600,11 @@ class Console extends TextArea with Logging
    * Applies the given function to each character of the word following the
    * caret.
    *
-   * @param  xform  The function to apply to each character of the word.
+   * @param  change  The function to apply to each character of the word.
    */
-  def xformWord(xform: String ⇒ String): Unit =
+  def changeWord(change: String ⇒ String): Unit =
   {
-    log.debug("transformWord()")                         // Trace our location
+    log.debug("changeWord()")                            // Trace our location
 
     var c = getCaretPosition                             // The caret position
 
@@ -612,7 +612,7 @@ class Console extends TextArea with Logging
     {
       endOfNextWord()                                    // ...jump forward
       val e = getCaretPosition                           // ...found the end
-      replaceText(c,e,xform(getText(c,e)))               // ...transform chars
+      replaceText(c,e,change(getText(c,e)))              // ...transform chars
     }
   }
 
@@ -950,9 +950,9 @@ class Console extends TextArea with Logging
       case ('^,U)           ⇒ cutToHome()
       case ('^,T)           ⇒ swapChars()
       case ('^,Y)           ⇒ paste()
-      case ('⌥,U)           ⇒ xformWord(_.toUpperCase)
-      case ('⌥,L)           ⇒ xformWord(_.toLowerCase)
-      case ('⌥,C)           ⇒ xformChar(_.toUpperCase)
+      case ('⌥,U)           ⇒ changeWord(_.toUpperCase)
+      case ('⌥,L)           ⇒ changeWord(_.toLowerCase)
+      case ('⌥,C)           ⇒ changeChar(_.toUpperCase)
 
    // Command History:
 
