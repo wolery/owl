@@ -118,10 +118,12 @@ object FiniteSet
 
   class Factory[α: Finite]
   {
-    val full                    : FiniteSet[α] = FiniteSet.full
-    val empty                   : FiniteSet[α] = FiniteSet.empty
-    def apply(s: α*)            : FiniteSet[α] = FiniteSet.apply(s:_*)
-    def apply(s: Traversable[α]): FiniteSet[α] = FiniteSet.apply(s)
+    val full                       : FiniteSet[α] = FiniteSet.full
+    val empty                      : FiniteSet[α] = FiniteSet.empty
+    def apply(s: α*)               : FiniteSet[α] = FiniteSet.apply(s:_*)
+    def apply(s: Traversable[α])   : FiniteSet[α] = FiniteSet.apply(s)
+    def fromBitSet (s: BitSet)     : FiniteSet[α] = FiniteSet.fromBitSet(s)
+    def fromBitMask(m: Array[Long]): FiniteSet[α] = FiniteSet.fromBitMask(m)
   }
 
   class CanBuildFrom[α: Finite] extends CBF[Set[_],α,FiniteSet[α]]

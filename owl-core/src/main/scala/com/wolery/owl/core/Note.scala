@@ -137,11 +137,7 @@ object Notes extends FiniteSet.Factory[Note]
    *
    * @return TODO
    */
-  private[core]
-  def fromBitMask(mask: Long): Notes =
-  {
-    FiniteSet.fromBitMask(Array(mask))
-  }
+  def fromBitMask(mask: Long): Notes = FiniteSet.fromBitMask(Array(mask))
 }
 
 //****************************************************************************

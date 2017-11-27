@@ -204,7 +204,6 @@ object Pitch
  */
 object Pitches extends FiniteSet.Factory[Pitch]
 {
-  private[core]
   def fromBitMask(lo: Long,hi: Long): Pitches = FiniteSet.fromBitMask(Array(lo,hi))
 }
 
