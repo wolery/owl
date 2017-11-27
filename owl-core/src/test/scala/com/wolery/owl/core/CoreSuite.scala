@@ -263,11 +263,6 @@ trait CoreSuite extends OwlSuite
     implicit val η = Arbitrary(generate.shape)
     implicit val θ = Arbitrary(generate.scale)
   }
-
-  /**
-   * Import on the behalf of our subclasses.
-   */
-  val Arbitrary = org.scalacheck.Arbitrary
 }
 
 //****************************************************************************
