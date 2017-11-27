@@ -21,10 +21,10 @@ class PitchesTest extends CoreSuite
 {
   import arbitrary._                                     // For Owl implicits
 
-//test("Pitches is a ℤ-set")
-//{
-//  assertℤSet[Pitches]()                                // Verify the axioms
-//}
+  test("Set[Pitch] is a ℤ-set")
+  {
+    assertℤSet[Set[Pitch]]()                             // Verify the axioms
+  }
 
   test("Pitches(⊆) is a partial ordering")
   {

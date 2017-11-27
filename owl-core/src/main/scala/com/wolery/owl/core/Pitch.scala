@@ -194,10 +194,7 @@ object Pitch
    * TODO
    */
   implicit
-  object isℤSet extends Action[Pitches,ℤ]
-  {
-    def apply(pitches: Pitches,i: ℤ): Pitches = pitches.map(_ + i)
-  }
+  object isℤSet extends PowerSetAction[Pitch,ℤ]
 }
 
 /**

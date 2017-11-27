@@ -108,6 +108,12 @@ object Note
    * TODO
    */
   implicit
+  object ℤSet extends PowerSetAction[Note,ℤ]
+
+  /**
+   * TODO
+   */
+  implicit
   object isℤSet extends Action[Notes,ℤ]
   {
     def apply(notes: Notes,i: ℤ): Notes   = notes.map(_ + i)
