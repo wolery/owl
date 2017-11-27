@@ -16,7 +16,7 @@ package com.wolery.owl
 package core
 
 import scala.collection.{BitSet,GenSet,SetLike}
-import scala.collection.generic.{CanBuildFrom ⇒ CBF}
+import scala.collection.generic.{CanBuildFrom}
 import scala.collection.mutable.{Builder,BitSet ⇒ mBitSet}
 import scala.collection.immutable.{      BitSet ⇒ iBitSet}
 
@@ -126,13 +126,13 @@ object FiniteSet
     def fromBitMask(m: Array[Long]): FiniteSet[α] = FiniteSet.fromBitMask(m)
   }
 
-  class CanBuildFrom[α: Finite] extends CBF[Set[_],α,FiniteSet[α]]
+  def canBuildFrom[α: Finite] = new CanBuildFrom[Set[_],α,FiniteSet[α]]
   {
     def apply()         : Builder[α,FiniteSet[α]] = newBuilder
     def apply(s: Set[_]): Builder[α,FiniteSet[α]] = newBuilder
   }
 
-  class isPartiallyOrdered[α: Finite] extends PartialOrdering[FiniteSet[α]]
+  def partialOrdering[α: Finite] = new PartialOrdering[FiniteSet[α]]
   {
     def lteq(s: FiniteSet[α],t: FiniteSet[α]): Bool = s ⊆ t
 
@@ -154,12 +154,12 @@ object FiniteSet
    *
    * @author Jonathon Bell
    */
-  class PowerSetAction[S: Finite,G: Group](implicit ε: Action[S,G]) extends Action[FiniteSet[S],G]
-  {
-    implicit val ζ = new FiniteSet.CanBuildFrom[S]
-
-    def apply(s: FiniteSet[S],g: G): FiniteSet[S] = s.map(ε(_,g))
-  }
+//  class PowerSetAction[S: Finite,G: Group](implicit ε: Action[S,G]) extends Action[FiniteSet[S],G]
+//  {
+//    implicit val ζ = new FiniteSet.CanBuildFrom[S]
+//
+//    def apply(s: FiniteSet[S],g: G): FiniteSet[S] = s.map(ε(_,g))
+//  }
 
   private
   def newBuilder[α](implicit ε: Finite[α]) = new Builder[α,FiniteSet[α]]
@@ -173,7 +173,7 @@ object FiniteSet
   }
 
   private
-  def newMask[α](filler: Long)(implicit ε: Finite[α]) =
+  def newMask[α](filler: Long)(implicit ε: Finite[α]): Array[Long] =
   {
     assert(ε.size > 0)
 

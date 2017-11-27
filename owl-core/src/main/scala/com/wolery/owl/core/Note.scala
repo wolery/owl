@@ -96,13 +96,13 @@ object Note
    * TODO
    */
   implicit
-  object canBuildFrom extends FiniteSet.CanBuildFrom[Note]
+  val canBuildFrom = FiniteSet.canBuildFrom[Note]
 
   /**
    * TODO
    */
   implicit
-  object isPartiallyOrdered extends FiniteSet.isPartiallyOrdered[Note]
+  val partialOrdering = FiniteSet.partialOrdering[Note]
 
   /**
    * TODO

@@ -182,13 +182,13 @@ object Pitch
    * TODO
    */
   implicit
-  object canBuildFrom extends FiniteSet.CanBuildFrom[Pitch]
+  val canBuildFrom = FiniteSet.canBuildFrom[Pitch]
 
   /**
    * TODO
    */
   implicit
-  object isPartiallyOrdered extends FiniteSet.isPartiallyOrdered[Pitch]
+  val partialOrdering = FiniteSet.partialOrdering[Pitch]
 
   /**
    * TODO
