@@ -16,9 +16,9 @@
 #**
 #**
 #**  Comments: This file uses a tab size of 3 spaces.
-#**
-#**
-#*****************************************************************************
+#**                                                                     0-0
+#**                                                                   (| v |)
+#***********************************************************************w*w***
 
 # formats the given argument string as an error message and exits the script.
 
