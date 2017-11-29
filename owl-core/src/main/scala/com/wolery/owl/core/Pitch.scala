@@ -193,8 +193,7 @@ object Pitch
   /**
    * TODO
    */
-  implicit
-  object isℤSet extends PowerSetAction[Pitch,ℤ]
+  implicit val PitchIsAℤSet = isℤTorsor.lift[Set]
 }
 
 /**

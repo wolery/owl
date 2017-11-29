@@ -107,8 +107,7 @@ object Note
   /**
    * TODO
    */
-  implicit
-  object ℤSet extends PowerSetAction[Note,ℤ]
+  implicit val NoteIsAℤSet = isℤTorsor.lift[Set]
 
   /**
    * TODO

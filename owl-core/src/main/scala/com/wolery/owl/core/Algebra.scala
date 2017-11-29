@@ -216,7 +216,7 @@ abstract class Action[S,G](implicit val group: Group[G])
    */
   def lift[F[_]](implicit φ: cats.Functor[F]) = new Action[F[S],G]
   {
-    def apply(fs: F[S],g: G): F[S] = φ.map(fs)(ε(_:S,g))
+    def apply(fs: F[S],g: G): F[S] = φ.map(fs)(ε(_,g))
   }
 }
 
@@ -268,30 +268,6 @@ abstract class Torsor[S,G: Group] extends Action[S,G]
    * @return The unique element of `G` that maps `s` into `t`.
    */
   def delta(s: S,t: S): G
-}
-
-/**
- * Derives the induced action of `G` upon the power set of `S` from the given
- * action of `G` upon `S`.
- *
- * For any action `⋅` of the group `G` on the set `S` we may define the map:
- * {{{
- *    T⋅g  =  {t⋅g : t ∈ T}
- * }}}
- * for all `g` in `G` and `T` in `P(S)`, the power set of `S`. This mapping is
- * an action of `G` upon `P(S)`, and is known as the ''induced action upon the
- * power set''.
- *
- * @tparam S  A non-empty set acted upon by the group `G` via the mapping `apply`.
- * @tparam G  A group that acts upon the carrier set  `S` via the mapping `apply`.
- *
- * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics) Group (Wikipedia)]]
- *
- * @author Jonathon Bell
- */
-class PowerSetAction[S,G: Group](implicit ε: Action[S,G]) extends Action[Set[S],G]
-{
-  def apply(s: Set[S],g: G): Set[S] = s.map(ε(_,g))
 }
 
 //****************************************************************************

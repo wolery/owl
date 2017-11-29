@@ -14,6 +14,8 @@
 
 package com.wolery.owl
 
+import scala.collection.generic.{CanBuildFrom => CBF}
+
 //****************************************************************************
 
 package object core
@@ -79,6 +81,12 @@ package object core
     val e                 : ℝ       = 0
     def inverse(i: ℝ)     : ℝ       = -i
     def operate(i: ℝ,j: ℝ): ℝ       = i + j
+  }
+//αβγδεζηθικλμνξοπρστυφχψω
+  implicit
+  def setIsAFunctor[α,β](implicit ε: CBF[Set[_],α,Set[β]]) = new cats.Functor[Set]
+  {
+    def map[α,β](set: Set[α])(f: α ⇒ β): Set[β] = set.map(f)
   }
 }
 
