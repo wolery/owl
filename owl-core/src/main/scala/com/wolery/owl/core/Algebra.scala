@@ -26,6 +26,40 @@ package com.wolery.owl
 package core
 
 /**
+ * Describes the operations that endow the data type `S` with the structure of
+ * a semigroup.
+ *
+ * Instances satisfy the axiom:
+ * {{{
+ *     (s₁ ⋅ s₂) ⋅ s₃ = s₁ ⋅ (s₂ ⋅ s₃)                   associativity
+ * }}}
+ * for all `sᵢ` in `S`, where `⋅` denotes the binary function `operate`.
+ *
+ * In other words, `S` is an associative magma.
+ *
+ * @tparam S  The carrier set on which the binary operator `⋅` acts.
+ *
+ * @see    [[https://en.wikipedia.org/wiki/Semigroup Semigroup (Wikipedia)]]
+ * @see    [[SemigroupSyntax]]
+ *
+ * @author Jonathon Bell
+ */
+trait Semigroup[S]
+{
+  /**
+   * Returns the product of the given pair of elements, whatever this may mean
+   * for the specific algebraic structure in question.
+   *
+   * The function is ''associative''; that is, `(s₁ ⋅ s₂) ⋅ s₃ = s₁ ⋅ (s₂ ⋅ s₃)`
+   * for all `sᵢ` in `S`, where `⋅` denotes the binary function `operate`.
+   *
+   * @see    [[https://en.wikipedia.org/wiki/Associative_property Associative
+   *         property (Wikipedia)]]
+   */
+  def operate(s: S,t: S): S
+}
+
+/**
  * Describes the operations that endow the data type `M` with the structure of
  * a monoid.
  *
@@ -34,37 +68,24 @@ package core
  *            e ⋅ m = m = m ⋅ e                          identity
  *     (m₁ ⋅ m₂) ⋅ m₃ = m₁ ⋅ (m₂ ⋅ m₃)                   associativity
  * }}}
- * for all `m` in `M`, where `⋅` denotes the binary function `operate`.
+ * for all `mᵢ` in `M`, where `⋅` denotes the binary function `operate`.
  *
  * In other words, `M` is a semigroup with an identity element.
  *
- * @tparam M  The underlying set on which the binary monoid operation acts.
+ * @tparam M  The carrier set on which the binary operator `⋅` acts.
  *
  * @see    [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
- * @see    [[MonoidSyntax]]
  *
  * @author Jonathon Bell
  */
-trait Monoid[M]
+trait Monoid[M] extends Semigroup[M]
 {
   /**
    * The identity element of the monoid `M`;  that is,  the unique element `e`
-   * in `M` such that `e ⋅ m = m = m ⋅ e` for all `m` in `M`, where ⋅  denotes
+   * in `M` such that `e ⋅ m = m = m ⋅ e` for all `m` in `M` where `⋅` denotes
    * the binary function `operate`.
    */
   val e: M
-
-  /**
-   * Returns the product of the given pair of elements, whatever this may mean
-   * for the specific algebraic structure in question.
-   *
-   * The function is ''associative''; that is, `(m₁ ⋅ m₂) ⋅ m₃ = m₁ ⋅ (m₂ ⋅ m₃)`
-   * for all `m` in `M`, where `⋅` denotes the binary function `operate`.
-   *
-   * @see    [[https://en.wikipedia.org/wiki/Associative_property Associative
-   *         property (Wikipedia)]]
-   */
-  def operate(m: M,n: M): M
 }
 
 /**
@@ -77,12 +98,13 @@ trait Monoid[M]
  *     (g₁ ⋅ g₂) ⋅ g₃ = g₁ ⋅ (g₂ ⋅ g₃)                   associativity
  *           g ⋅ -g = e = -g ⋅ g                         invertability
  * }}}
- * for all `g` in `G`,  where `⋅` and  `-` denote the  functions `operate` and
+ * for all `gᵢ` in `G`, where `⋅` and  `-` denote the  functions `operate` and
  * `inverse` respectively.
  *
- * In other words, `G` is a monoid in which every element possesses an inverse.
+ * In other words, `G` is a monoid in which every element possesses an inverse
+ * element.
  *
- * @tparam G  The underlying set on which the binary group operation acts.
+ * @tparam G  The carrier set on which the binary operator `⋅` acts.
  *
  * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics) Group (Wikipedia)]]
  * @see    [[GroupSyntax]]
@@ -107,7 +129,7 @@ trait Group[G] extends Monoid[G]
  *            s + e = s                                  identity
  *    s + (g₁ ⋅ g₂) = (s + g₁) + g₂                      compatability
  * }}}
- * for all `s` in `S` and `g` in `G`,  where `⋅` and  `+` denote the functions
+ * for all `sᵢ` in `S` and `g` in `G`, where `⋅` and  `+` denote the functions
  * `operate` and `apply` respectively.
  *
  * In other words, `+` is a homomorphism from `G` into `Sym(S)`, the symmetric
@@ -141,6 +163,12 @@ abstract class Action[S,G](implicit val group: Group[G])
    * the carrier set `S`,  and furthermore that `apply` is a homomorphism from
    * `G` into `Sym(S)`,  the symmetric group consisting of all of permutations
    * of `S`, regarded as a group under the composition of mappings.
+   *
+   * @param  s  An element of the carrier set `S`.
+   * @param  f  An element of the acting group `G`.
+   *
+   * @return The result of applying the permutation denoted by `g` to the set
+   *         element `s`.
    */
   def apply(s: S,g: G): S
 }
@@ -154,11 +182,13 @@ abstract class Action[S,G](implicit val group: Group[G])
  * element `s₂ - s₁` in `G` such that `s₁ + (s₂ - s₁) = s₂`, where `+` and `-`
  * denote the functions `apply` and `delta` respectively.
  *
- * Instances satisfy the axiom:
+ * Instances satisfy the axioms:
  * {{{
- *    s₁ + (s₂ - s₁) = s₂                                regularity
+ *            s + e = s                                  identity
+ *    s + (g₁ ⋅ g₂) = (s + g₁) + g₂                      compatability
+ *         s₁ + (s₂ - s₁) = s₂                           regularity
  * }}}
- * for all `s` in `S`, where `+` and `-` denote the binary functions `apply`
+ * for all `sᵢ` in `S`,  where `+` and `-` denote the binary functions `apply`
  * and `delta` respectively.
  *
  * We say that `S` is a ''torsor'' for the group `G`,  or simply that `S` is a
@@ -166,8 +196,8 @@ abstract class Action[S,G](implicit val group: Group[G])
  *
  * Torsors,  especially those of `(ℤ,+)`, the integers regarded as an additive
  * group, and ℤ/''n''ℤ,  the integers modulo ''n'', are of special interest to
- * us in Owl because they make precise the musical notion of the ''interval''
- * between notes, pitches, frequencies, and so on.
+ * us in Owl  because they make precise the musical notion of the ''interval''
+ * between two notes, pitches, frequencies, and so on.
  *
  * @tparam G  A group that acts regularly upon the carrier set  `S` via the mapping `apply`.
  * @tparam S  A non-empty set acted upon regularly by the group `G` via the mapping `apply`.
@@ -185,8 +215,9 @@ trait Torsor[S,G] extends Action[S,G]
    * `S`; that is, the unique element `g` in `G` such that `s + g = t`,  where
    * `+` denotes the binary function `apply`.
    *
-   * @param  s An element of the carrier set `S`.
-   * @param  t An element of the carrier set `S`.
+   * @param  s  An element of the carrier set `S`.
+   * @param  t  An element of the carrier set `S`.
+   *
    * @return The unique element of `G` that maps `s` into `t`.
    */
   def delta(s: S,t: S): G

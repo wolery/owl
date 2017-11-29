@@ -22,6 +22,8 @@ package object core
   type Octave                       = ℤ
   type Notes                        = FiniteSet[Note]
   type Pitches                      = FiniteSet[Pitch]
+  type ℤSet[S]                      = Action[S,ℤ]
+  type ℤTorsor[S]                   = Torsor[S,ℤ]
 
   def Hz (r: ℝ): Frequency          = Frequency(r)
   def kHz(r: ℝ): Frequency          = Frequency(r * 1e3)
@@ -36,33 +38,33 @@ package object core
 
 //****************************************************************************
 
-  implicit final class MonoidSyntax[M](m: M)(implicit α: Monoid[M])
+  implicit final class SemigroupSyntax[S](s: S)(implicit ε: Semigroup[S])
   {
-    def ⋅ (n: M): M                 = α.operate(m,n)
+    def ⋅ (t: S): S                 = ε.operate(s,t)
   }
 
-  implicit final class GroupSyntax[G](f: G)(implicit α: Group[G])
+  implicit final class GroupSyntax[G](f: G)(implicit ε: Group[G])
   {
-    def unary_- : G                 = α.inverse(f)
+    def unary_- : G                 = ε.inverse(f)
   }
 
-  implicit final class ActionSyntax[S,G](s: S)(implicit α: Action[S,G])
+  implicit final class ActionSyntax[S,G](s: S)(implicit ε: Action[S,G])
   {
-    def +    (g: G): S              = α(s,g)
-    def -    (g: G): S              = α(s,α.group.inverse(g))
-    def apply(g: G): S              = α(s,g)
+    def +    (g: G): S              = ε(s,g)
+    def -    (g: G): S              = ε(s,ε.group.inverse(g))
+    def apply(g: G): S              = ε(s,g)
   }
 
-  implicit final class TorsorSyntax[S,G](s: S)(implicit α: Torsor[S,G])
+  implicit final class TorsorSyntax[S,G](s: S)(implicit ε: Torsor[S,G])
   {
-    def - (t: S): G                 = α.delta(t,s)
+    def - (t: S): G                 = ε.delta(t,s)
   }
 
-  implicit final class ℤActionSyntax[S](s: S)(implicit α: Action[S,ℤ])
+  implicit final class ℤActionSyntax[S](s: S)(implicit ε: Action[S,ℤ])
   {
-    def ♭ : S                       = α(s,-1)
+    def ♭ : S                       = ε(s,-1)
     def ♮ : S                       = s
-    def ♯ : S                       = α(s,+1)
+    def ♯ : S                       = ε(s,+1)
   }
 
   implicit object isℤGroup extends Group[ℤ]
