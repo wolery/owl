@@ -21,8 +21,8 @@ class CoreTest extends CoreSuite
 {
   import arbitrary._                                     // For Owl implicits
 
-  implicit val isℤTorsor    = new RegularAction[ℤ]       // ℤ is a ℤ-torsor
-  implicit val isℝTorsor    = new RegularAction[ℝ]       // ℝ is a ℝ-torsor
+  implicit val isℤTorsor    = isℤGroup.regularAction     // ℤ is a ℤ-torsor
+  implicit val isℝTorsor    = isℝGroup.regularAction     // ℝ is a ℝ-torsor
 
   test("ℤ is a ℤ-torsor")   {assertTorsor[ℤ,ℤ]()}        // Verify the axioms
   test("ℤ is Abelian")      {assertCommutative[ℤ]()}     // Verify the axioms

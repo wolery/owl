@@ -119,6 +119,32 @@ trait Group[G] extends Monoid[G]
    * function `operate`.
    */
   def inverse(g: G): G
+
+  /**
+   * Implements the regular (right) action of the group `G` upon itself.
+   *
+   * Every group `G` is isomorphic to a subgroup of the symmetric group acting
+   * on `G`, a result known as ''Cayley's Theorem''.
+   *
+   * Equivalently, and rephrased in the language of group actions, `G` acts on
+   * itself regularly by (right) multiplication. This action is known as the
+   * ''regular action'' of `G` upon itself.
+   *
+   * For example:
+   * {{{
+   *    implicit object isℤTorsor = isℤGroup.regularAction
+   * }}}
+   * implements the regular action of the additive group of integers `(ℤ,+)` on
+   * itself via (right) addition.
+   *
+   * @see    [[https://en.wikipedia.org/wiki/Cayley%27s_theorem Cayley's Theorem
+   *         (Wikipedia)]]
+   */
+  def regularAction = new Torsor[G,G]()(this)
+  {
+    def apply(f: G,g: G): G = f ⋅  g
+    def delta(g: G,f: G): G = f ⋅ -g
+  }
 }
 
 /**
@@ -208,7 +234,7 @@ abstract class Action[S,G](implicit val group: Group[G])
  *
  * @author Jonathon Bell
  */
-trait Torsor[S,G] extends Action[S,G]
+abstract class Torsor[S,G: Group] extends Action[S,G]
 {
   /**
    * Returns the 'delta' between the given pair of elements of the carrier set
@@ -221,46 +247,6 @@ trait Torsor[S,G] extends Action[S,G]
    * @return The unique element of `G` that maps `s` into `t`.
    */
   def delta(s: S,t: S): G
-}
-
-/**
- * Implements the regular (right) action of the group `G` upon itself.
- *
- * Every group `G` is  isomorphic to a  subgroup of the symmetric group acting
- * on `G`, a result known as ''Cayley's Theorem''.
- *
- * Equivalently, and restating in the language of group actions, `G` acts upon
- * itself regularly by (right) multiplication, This action is known as the
- * ''regular action'' of `G` upon itself.
- *
- *
- *
- * , thus is a `G-torsor`.
- *
- * This action of `G` upon itself by (right) multiplication is regular, and is
- * known as the ''regular action''.
- *
- * This class exploits this fact to automatically instantiate a `G-torsor` for
- * `G`, so simplifying the task of adding new groups to the Owl system.
- *
- * For example:
- * {{{
- *    implicit object isℤTorsor extends RegularAction[ℤ]
- * }}}
- * implements the regular action of the additive group of integers `(ℤ,+)` on
- * itself via (right) addition.
- *
- * @tparam G  An instance of the type class `Group`.
- *
- * @see    [[https://en.wikipedia.org/wiki/Cayley%27s_theorem Cayley's Theorem
- *         (Wikipedia)]]
- *
- * @author Jonathon Bell
- */
-class RegularAction[G: Group] extends Torsor[G,G]
-{
-  def apply(f: G,g: G): G   = f ⋅  g
-  def delta(g: G,f: G): G   = f ⋅ -g
 }
 
 /**
