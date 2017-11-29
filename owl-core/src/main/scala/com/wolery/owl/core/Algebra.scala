@@ -121,7 +121,7 @@ trait Group[G] extends Monoid[G]
   def inverse(g: G): G
 
   /**
-   * Implements the regular (right) action of the group `G` upon itself.
+   * Derives the regular (right) action of the group `G` upon itself.
    *
    * Every group `G` is isomorphic to a subgroup of the symmetric group acting
    * on `G`, a result known as ''Cayley's Theorem''.
@@ -180,7 +180,7 @@ trait Group[G] extends Monoid[G]
  * @author Jonathon Bell
  */
 abstract class Action[S,G](implicit val group: Group[G])
-{
+{ε ⇒
   /**
    * Applies an element of the group `G` to an element of the carrier set `S`,
    * whatever this may mean for the specific algebraic structure in question.
@@ -197,6 +197,27 @@ abstract class Action[S,G](implicit val group: Group[G])
    *         element `s`.
    */
   def apply(s: S,g: G): S
+
+  /**
+   * Derives an induced action of `G` upon the power set of `S` from the given
+   * action of `G` upon `S`.
+   * TODO
+   * For any action `⋅` of the group `G` on the set `S` we may define the map:
+   * {{{
+   *    T⋅g  =  {t⋅g : t ∈ T}
+   * }}}
+   * for all `g` in `G` and `T` in `P(S)`, the power set of `S`. This mapping is
+   * an action of `G` upon `P(S)`, and is known as the ''induced action upon the
+   * power set''.
+   *
+   * @tparam F  A functor.
+   *
+   * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics) Group (Wikipedia)]]
+   */
+  def lift[F[_]](implicit φ: cats.Functor[F]) = new Action[F[S],G]
+  {
+    def apply(fs: F[S],g: G): F[S] = φ.map(fs)(ε(_:S,g))
+  }
 }
 
 /**
