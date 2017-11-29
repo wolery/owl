@@ -23,19 +23,7 @@
   <dependencies>
     <dependency>
       <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.scala-lang</groupId>
       <artifactId>scala-compiler</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_2.12</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.scalacheck</groupId>
-      <artifactId>scalacheck_2.12</artifactId>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -48,7 +36,6 @@
     <dependency>
       <groupId>org.backuity</groupId>
       <artifactId>ansi-interpolator_2.12</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.wolery.owl</groupId>

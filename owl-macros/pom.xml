@@ -27,7 +27,7 @@
     </dependency>
     <dependency>
       <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
+      <artifactId>scala-reflect</artifactId>
     </dependency>
     <dependency>
       <groupId>com.wolery.owl</groupId>
