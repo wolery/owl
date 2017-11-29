@@ -34,6 +34,10 @@
       <artifactId>scalacheck_2.12</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.typelevel</groupId>
+      <artifactId>cats-core_2.12</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.github.mpilquist</groupId>
       <artifactId>simulacrum_2.12</artifactId>
     </dependency>
