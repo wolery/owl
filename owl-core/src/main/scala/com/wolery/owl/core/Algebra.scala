@@ -70,7 +70,7 @@ trait Semigroup[S]
  * }}}
  * for all `mᵢ` in `M`, where `⋅` denotes the binary function `operate`.
  *
- * In other words, `M` is a semigroup with an identity element.
+ * In other words, `M` is a [[Semigroup]] with an identity element.
  *
  * @tparam M  The carrier set on which the binary operator `⋅` acts.
  *
@@ -82,7 +82,7 @@ trait Monoid[M] extends Semigroup[M]
 {
   /**
    * The identity element of the monoid `M`;  that is,  the unique element `e`
-   * in `M` such that `e ⋅ m = m = m ⋅ e` for all `m` in `M` where `⋅` denotes
+   * in `M` such that `e ⋅ m = m = m ⋅ e` for all `m` in `M`, where `⋅`denotes
    * the binary function `operate`.
    */
   val e: M
@@ -101,8 +101,8 @@ trait Monoid[M] extends Semigroup[M]
  * for all `gᵢ` in `G`, where `⋅` and  `-` denote the  functions `operate` and
  * `inverse` respectively.
  *
- * In other words, `G` is a monoid in which every element possesses an inverse
- * element.
+ * In other words, `G` is a [[Monoid]] in which every element possesses an
+ * inverse element.
  *
  * @tparam G  The carrier set on which the binary operator `⋅` acts.
  *
@@ -127,23 +127,19 @@ trait Group[G] extends Monoid[G]
    * on `G`, a result known as ''Cayley's Theorem''.
    *
    * Equivalently, and rephrased in the language of group actions, `G` acts on
-   * itself regularly by (right) multiplication. This action is known as the
+   * itself regularly by (right) multiplication.  This action is known as  the
    * ''regular action'' of `G` upon itself.
    *
-   * For example:
-   * {{{
-   *    implicit object isℤTorsor = isℤGroup.regularAction
-   * }}}
-   * implements the regular action of the additive group of integers `(ℤ,+)` on
-   * itself via (right) addition.
+   * @return An instance of the [[Torsor]] type class implementing the regular
+   *         action of `G` upon itself.
    *
    * @see    [[https://en.wikipedia.org/wiki/Cayley%27s_theorem Cayley's Theorem
    *         (Wikipedia)]]
    */
   def regularAction = new Torsor[G,G]()(this)
   {
-    def apply(f: G,g: G): G = f ⋅  g
-    def delta(g: G,f: G): G = f ⋅ -g
+    def apply(f: G,g: G): G   = operate(f,g)             // That is ,f ⋅  g
+    def delta(g: G,f: G): G   = operate(f,inverse(g))    // That is, f ⋅ -g
   }
 }
 
@@ -199,8 +195,23 @@ abstract class Action[S,G](implicit val group: Group[G])
   def apply(s: S,g: G): S
 
   /**
+   * Derives the induced action of `G` upon `F[S]` for the given function `F`.
+   *
+   * For any functor `F` there is a natural action of `G` upon `F[S]` obtained
+   * by 'mapping' the action `+ : G ⇒ Sym(S)` across the members of `F[S]`. To
+   * see this, observe that:
+   *
+   *  1. `G` can be regarded as a single object category whose arrows are all
+   *  isomorphisms.
+   *
+   *  2. The set `S` is, in a essence, a single object category whose arrows
+   *  are the permutation
+   *  2. The action of `G` upon `S` is, in essence, a functor `+` from `G` to
+   *
+   *
    * Derives an induced action of `G` upon the power set of `S` from the given
    * action of `G` upon `S`.
+   *
    * TODO
    * For any action `⋅` of the group `G` on the set `S` we may define the map:
    * {{{
