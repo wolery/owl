@@ -115,6 +115,8 @@ package object owl
    * @param  s  A sequence of elements.
    * @param  t  A sequence of elements.
    * @param  e  A (candidate) set element.
+   *
+   * @see    [[ElementSyntax]]
    */
   implicit final
   class SeqSyntax[α](val s: Seq[α]) extends AnyVal
@@ -154,6 +156,8 @@ package object owl
    * @param  s  A set of elements.
    * @param  t  A set of elements.
    * @param  e  A (candidate) set element.
+   *
+   * @see    [[ElementSyntax]]
    */
   implicit final
   class SetSyntax[α](val s: Set[α]) extends AnyVal
@@ -181,7 +185,7 @@ package object owl
    * @param  s  A collection of elements.
    * @param  e  A (candidate) set element.
    *
-   * @see    [[SeqSyntax]] and [SetSyntax]
+   * @see    [[SeqSyntax]] and [[SetSyntax]]
    */
   implicit final
   class ElementSyntax[α](val e: α) extends AnyVal
