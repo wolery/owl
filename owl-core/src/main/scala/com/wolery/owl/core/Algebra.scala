@@ -207,8 +207,8 @@ abstract class Action[S,G](implicit val group: Group[G])
    *  1. `G` can be regarded as a single object category whose arrows are all
    *  isomorphisms.
    *
-   *  1. `S` can be regarded as a single object category whose arrows are its
-   *  permutations.
+   *  1. `S` can be regarded as a single object category whose arrows are the
+   *  permutations of `S`.
    *
    *  1. From this point of view, the action `+` is just a functor from `G` to
    *  `S`.
@@ -223,7 +223,7 @@ abstract class Action[S,G](implicit val group: Group[G])
    *         action of `G` upon `F[S]`.
    *
    * @see    [[http://en.wikipedia.org/wiki/Group_action#Variants_and_generalizations
-   *         Group action (Wikipedia)]]
+   *         Group action (Wikipedia)]] - group action as functor
    * @see    [[https://typelevel.org/cats/typeclasses/functor.html Functor (Cats)]]
    */
   def lift[F[_]](implicit φ: cats.Functor[F]) = new Action[F[S],G]
