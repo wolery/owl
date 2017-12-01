@@ -195,7 +195,7 @@ abstract class Action[S,G](implicit val group: Group[G])
   def apply(s: S,g: G): S
 
   /**
-   * Derives the induced action of `G` upon `F[S]` for the given function `F`.
+   * Derives the natural action of `G` upon `F[S]` for the given function `F`.
    *
    * For any functor `F` there is a natural action of `G` upon `F[S]` obtained
    * by 'mapping' the action `+ : G ⇒ Sym(S)` across the members of `F[S]`. To
@@ -204,26 +204,20 @@ abstract class Action[S,G](implicit val group: Group[G])
    *  1. `G` can be regarded as a single object category whose arrows are all
    *  isomorphisms.
    *
-   *  2. The set `S` is, in a essence, a single object category whose arrows
-   *  are the permutation
-   *  2. The action of `G` upon `S` is, in essence, a functor `+` from `G` to
+   *  1. `S` can be regarded as a single object category whose arrows are its
+   *  permutations.
    *
+   *  1. From this point of view, the action `+` is just a functor from `G` to
+   *  `S`.
    *
-   * Derives an induced action of `G` upon the power set of `S` from the given
-   * action of `G` upon `S`.
-   *
-   * TODO
-   * For any action `⋅` of the group `G` on the set `S` we may define the map:
-   * {{{
-   *    T⋅g  =  {t⋅g : t ∈ T}
-   * }}}
-   * for all `g` in `G` and `T` in `P(S)`, the power set of `S`. This mapping is
-   * an action of `G` upon `P(S)`, and is known as the ''induced action upon the
-   * power set''.
+   *  1. The composition of functors `F` and `+` is again a functor, and so is
+   *  itself an action of `G` upon `F[S]`.
    *
    * @tparam F  A functor.
    *
-   * @see    [[http://en.wikipedia.org/wiki/Group_(mathematics) Group (Wikipedia)]]
+   * @see    [[http://en.wikipedia.org/wiki/Group_action#Variants_and_generalizations
+   *         Group action (Wikipedia)]]
+   * @see    [[https://typelevel.org/cats/typeclasses/functor.html Functor (Cats)]]
    */
   def lift[F[_]](implicit φ: cats.Functor[F]) = new Action[F[S],G]
   {
