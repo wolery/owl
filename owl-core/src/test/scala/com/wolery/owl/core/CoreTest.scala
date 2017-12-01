@@ -25,9 +25,9 @@ class CoreTest extends CoreSuite
   implicit val r =          `Group[ℝ]`.regularAction     // ℝ is a ℝ-torsor
 
   test("ℤ is a ℤ-torsor")   {isTorsor[ℤ,ℤ]()}            // Verify the axioms
-  test("ℤ is Abelian")      {isCommutative[ℤ]()}         // Verify the axioms
+  test("ℤ is commutative")  {isCommutative[ℤ]()}         // Verify the axioms
   test("ℝ is an ℝ-torsor")  {isTorsor[ℝ,ℝ]()}            // Verify the axioms
-  test("ℝ is Abelian")      {isCommutative[ℝ]()}         // Verify the axioms
+  test("ℝ is commutative")  {isCommutative[ℝ]()}         // Verify the axioms
 }
 
 //****************************************************************************
