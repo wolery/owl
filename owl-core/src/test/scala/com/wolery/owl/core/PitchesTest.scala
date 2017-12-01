@@ -23,12 +23,12 @@ class PitchesTest extends CoreSuite
 
   test("Set[Pitch] is a ℤ-set")
   {
-    assertℤSet[Set[Pitch]]()                             // Verify the axioms
+    isℤSet[Set[Pitch]]()                                 // Verify the axioms
   }
 
   test("Pitches(⊆) is a partial ordering")
   {
-    assertPartiallyOrdered[Pitches]()                    // Verify the axioms
+    isPartiallyOrdered[Pitches]()                        // Verify the axioms
   }
 
   // @see  [[https://en.wikipedia.org/wiki/Boolean_algebra_(structure) Boolean

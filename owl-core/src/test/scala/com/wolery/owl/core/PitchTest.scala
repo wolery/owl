@@ -23,17 +23,17 @@ class PitchTest extends CoreSuite
 
   test("Pitch is a ℤ/128ℤ-torsor")
   {
-    assertℤTorsor[Pitch]()                               // Verify the axioms
+    isℤTorsor[Pitch]()                                   // Verify the axioms
   }
 
   test("Pitch is totally ordered")
   {
-    assertOrdered[Pitch]()                               // Verify the axioms
+    isOrdered[Pitch]()                                   // Verify the axioms
   }
 
   test("Pitch ⇒ Note is equivarient")
   {
-    assertEquivariant[Pitch,Note,ℤ](_.note)              // Verify the axioms
+    isEquivariant[Pitch,Note,ℤ](_.note)                  // Verify the axioms
   }
 
   test("Pitch construction")

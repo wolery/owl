@@ -23,7 +23,7 @@ class NoteTest extends CoreSuite
 
   test("Note is a ℤ/12ℤ-torsor")
   {
-    assertℤTorsor[Note]()                                // Verify the axioms
+    isℤTorsor[Note]()                                    // Verify the axioms
   }
 
   test("Note invariants")

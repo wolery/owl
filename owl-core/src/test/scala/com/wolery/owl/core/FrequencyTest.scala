@@ -23,12 +23,12 @@ class FrequencyTest extends CoreSuite
 
   test("Frequency is an ℝ-Torsor")
   {
-    assertTorsor[Frequency,ℝ]()                          // Verify the axioms
+    isTorsor[Frequency,ℝ]()                              // Verify the axioms
   }
 
   test("Frequency is totally ordered")
   {
-    assertOrdered[Frequency]()                           // Verify the axioms
+    isOrdered[Frequency]()                               // Verify the axioms
   }
 }
 

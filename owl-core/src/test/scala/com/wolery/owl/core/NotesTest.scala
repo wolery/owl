@@ -23,17 +23,17 @@ class NotesTest extends CoreSuite
 
   test("Set[Note] is a ℤ-set")
   {
-    assertℤSet[Set[Note]]()                              // Verify the axioms
+    isℤSet[Set[Note]]()                                  // Verify the axioms
   }
 
   test("Notes is a ℤ-set")
   {
-    assertℤSet[Notes]()                                  // Verify the axioms
+    isℤSet[Notes]()                                      // Verify the axioms
   }
 
   test("Notes(⊆) is a partial ordering")
   {
-    assertPartiallyOrdered[Notes]()                      // Verify the axioms
+    isPartiallyOrdered[Notes]()                          // Verify the axioms
   }
 
   // @see  [[https://en.wikipedia.org/wiki/Boolean_algebra_(structure) Boolean

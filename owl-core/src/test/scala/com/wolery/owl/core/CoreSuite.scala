@@ -30,7 +30,7 @@ trait CoreSuite extends OwlSuite
    *
    * @see    [[https://en.wikipedia.org/wiki/Semigroup Semigroup (Wikipedia)]]
    */
-  def assertSemigroup[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
+  def isSemigroup[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
   {
     forAll("a","b","c") {(a: M,b: M,c: M) ⇒              // ∀ a,b,c ∈ M
     {
@@ -45,7 +45,7 @@ trait CoreSuite extends OwlSuite
    * @see    [[https://en.wikipedia.org/wiki/Commutative_property
    *         Commutativity (Wikipedia)]]
    */
-  def assertCommutative[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
+  def isCommutative[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
   {
     forAll("a","b") {(a: M,b: M) ⇒                       // ∀ a,b ∈ M
     {
@@ -59,11 +59,11 @@ trait CoreSuite extends OwlSuite
    *
    * @see    [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
    */
-  def assertMonoid[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
+  def isMonoid[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
   {
     import α._                                           // For identity e
 
-    assertSemigroup[M]()                                 // Semigroup axioms
+    isSemigroup[M]()                                     // Semigroup axioms
 
     forAll("a") {(m: M) ⇒                                // ∀ m ∈ M
     {
@@ -79,11 +79,11 @@ trait CoreSuite extends OwlSuite
    * @see    [[https://en.wikipedia.org/wiki/Group_(mathematics) Group
    *         (Wikipedia)]]
    */
-  def assertGroup[G]()(implicit α: Group[G],β: Arbitrary[G]): Unit =
+  def isGroup[G]()(implicit α: Group[G],β: Arbitrary[G]): Unit =
   {
     import α._                                           // For identity e
 
-    assertMonoid[G]()                                    // Monoid axioms
+    isMonoid[G]()                                        // Monoid axioms
 
     forAll("g") {(g: G) ⇒                                // ∀ g ∈ G
     {
@@ -99,12 +99,12 @@ trait CoreSuite extends OwlSuite
    * @see    [[https://en.wikipedia.org/wiki/Group_action Group action
    *         (Wikipedia)]]
    */
-  def assertAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ: Arbitrary[G]): Unit =
+  def isAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ: Arbitrary[G]): Unit =
   {
     import α._                                           // For action ops
     import α.group._                                     // For group  ops
 
-    assertGroup[G]()                                     // Group axioms
+    isGroup[G]()                                         // Group axioms
 
     forAll("s") {(s: S) ⇒                                // ∀ s ∈ S
     {
@@ -127,11 +127,11 @@ trait CoreSuite extends OwlSuite
    * @see    [[https://en.wikipedia.org/wiki/Principal_homogeneous_space
    *         Torsor (Wikipedia)]]
    */
-  def assertTorsor[S,G]()(implicit α: Torsor[S,G],β: Arbitrary[S],γ: Arbitrary[G]): Unit =
+  def isTorsor[S,G]()(implicit α: Torsor[S,G],β: Arbitrary[S],γ: Arbitrary[G]): Unit =
   {
     import α._                                           // For action ops
 
-    assertAction[S,G]()                                  // Action axioms
+    isAction[S,G]()                                      // Action axioms
 
     forAll("s","t") {(s: S,t: S) ⇒                       // ∀ s,t ∈ S
     {
@@ -144,9 +144,9 @@ trait CoreSuite extends OwlSuite
    * Checks that `ℤ` acts upon the carrier set `S`; that is, `apply` effects a
    * group homomorphism from `ℤ into `Sym(S)`.
    */
-  def assertℤSet[S]()(implicit α: Action[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]): Unit =
+  def isℤSet[S]()(implicit α: Action[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]): Unit =
   {
-    assertAction[S,ℤ]()                                  // Action axioms
+    isAction[S,ℤ]()                                      // Action axioms
 
     forAll("s") {(s: S) ⇒                                // ∀ s ∈ S
     {
@@ -160,9 +160,9 @@ trait CoreSuite extends OwlSuite
    * Checks that `ℤ` acts regularly upon the carrier set `S`; that is, `apply`
    * effects a group isomorphism from `ℤ into `Sym(S)`.
    */
-  def assertℤTorsor[S]()(implicit α: Torsor[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]): Unit =
+  def isℤTorsor[S]()(implicit α: Torsor[S,ℤ],β: Arbitrary[S],γ: Arbitrary[ℤ]): Unit =
   {
-    assertTorsor[S,ℤ]()                                  // Torsor axioms
+    isTorsor[S,ℤ]()                                      // Torsor axioms
 
     forAll("s") {(s: S) ⇒                                // ∀ s ∈ S
     {
@@ -180,10 +180,10 @@ trait CoreSuite extends OwlSuite
    * @see    [[https://en.wikipedia.org/wiki/Equivariant_map Equivarient map
    *         (Wikipedia)]]
    */
-  def assertEquivariant[S,T,G](f: S ⇒ T)(implicit α: Action[S,G],β: Action[T,G],γ: Arbitrary[S],δ: Arbitrary[T],ε: Arbitrary[G]): Unit =
+  def isEquivariant[S,T,G](f: S ⇒ T)(implicit α: Action[S,G],β: Action[T,G],γ: Arbitrary[S],δ: Arbitrary[T],ε: Arbitrary[G]): Unit =
   {
-    assertAction[S,G]()                                  // G acts upon S
-    assertAction[T,G]()                                  // G acts upon T
+    isAction[S,G]()                                      // G acts upon S
+    isAction[T,G]()                                      // G acts upon T
 
     forAll("s","g") {(s: S,g: G) ⇒                       // ∀ s ∈ S, g ∈ G
     {
@@ -198,7 +198,7 @@ trait CoreSuite extends OwlSuite
    * @see    [[https://en.wikipedia.org/wiki/Partially_ordered_set Partial
    *         order (Wikipedia)]]
    */
-  def assertPartiallyOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]): Unit =
+  def isPartiallyOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]): Unit =
   {
     forAll("s","t","u") {(s: S,t: S,u: S) ⇒              // ∀ s,t,u ∈ S
     {
@@ -214,9 +214,9 @@ trait CoreSuite extends OwlSuite
    *
    * @see [[https://en.wikipedia.org/wiki/Total_order Total order (Wikipedia)]]
    */
-  def assertOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]): Unit =
+  def isOrdered[S]()(implicit α: PartialOrdering[S],β: Arbitrary[S]): Unit =
   {
-    assertPartiallyOrdered[S]()                          // Check the axioms
+    isPartiallyOrdered[S]()                              // Check the axioms
 
     forAll("s","t") {(s: S,t: S) ⇒                       // ∀ s,t ∈ S
     {

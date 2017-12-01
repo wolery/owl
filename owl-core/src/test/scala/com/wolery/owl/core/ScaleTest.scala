@@ -24,7 +24,7 @@ class ScaleTest extends CoreSuite
 
   test("Scale is a ℤ-set")
   {
-    assertℤSet[Scale]()                                  // Verify the axioms
+    isℤSet[Scale]()                                      // Verify the axioms
   }
 
   test("Scale construction")
@@ -83,7 +83,7 @@ class ScaleTest extends CoreSuite
       def apply(s: Scale,i: ℤ): Scale = s.mode(i)        // ...i'th mode of s
     }
 
-    assertℤSet[Scale]()                                  // Verify the axioms
+    isℤSet[Scale]()                                      // Verify the axioms
   }
 }
 

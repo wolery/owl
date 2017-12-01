@@ -24,7 +24,7 @@ class ShapeTest extends CoreSuite
 
   test("Shape is a ℤ-set")
   {
-    assertℤSet[Shape]()                                  // Verify the axioms
+    isℤSet[Shape]()                                      // Verify the axioms
   }
 
   test("Shape construction")
