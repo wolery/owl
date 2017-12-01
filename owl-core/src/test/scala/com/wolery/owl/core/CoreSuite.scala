@@ -25,37 +25,37 @@ import org.scalacheck.Gen._
 trait CoreSuite extends OwlSuite
 {
   /**
-   * Checks that `(M,⋅)` satisfies the axioms of a semigroup; that is, the
-   * function `⋅ : M → M` is associative.
+   * Checks that `(S,⋅)` satisfies the axioms of a [[Semigroup]]; that is, the
+   * mapping `⋅ : S → S` is associative.
    *
    * @see    [[https://en.wikipedia.org/wiki/Semigroup Semigroup (Wikipedia)]]
    */
-  def isSemigroup[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
+  def isSemigroup[S]()(implicit α: Semigroup[S],β: Arbitrary[S]): Unit =
   {
-    forAll("a","b","c") {(a: M,b: M,c: M) ⇒              // ∀ a,b,c ∈ M
+    forAll("a","b","c") {(a: S,b: S,c: S) ⇒              // ∀ a,b,c ∈ S
     {
       assert(a ⋅ (b ⋅ c) == (a ⋅ b) ⋅ c,                 "[associativity]")
     }}
   }
 
   /**
-   * Checks that `(M, ⋅)` is a commutative magma; that is, the function `⋅ :
-   * M → M` is commutative.
+   * Checks that `(S,⋅)` satisfies the axioms of a commutative magma; that is,
+   * the mapping `⋅ : S → S` is commutative.
    *
    * @see    [[https://en.wikipedia.org/wiki/Commutative_property
    *         Commutativity (Wikipedia)]]
    */
-  def isCommutative[M]()(implicit α: Monoid[M],β: Arbitrary[M]): Unit =
+  def isCommutative[S]()(implicit α: Semigroup[S],β: Arbitrary[S]): Unit =
   {
-    forAll("a","b") {(a: M,b: M) ⇒                       // ∀ a,b ∈ M
+    forAll("a","b") {(a: S,b: S) ⇒                       // ∀ a,b ∈ S
     {
       assert(a ⋅ b == b ⋅ a,                             "[commutativity]")
     }}
   }
 
   /**
-   * Checks that `(M, ⋅, e)` satisfies the axioms of a monoid; that it, it is
-   * a semigroup with a two sided identity element `e`.
+   * Checks that `(M, ⋅, e)` satisfies the axioms of a [[Monoid]]; that is, it
+   * is a [[Semigroup]] with a two sided identity element `e`.
    *
    * @see    [[https://en.wikipedia.org/wiki/Monoid Monoid (Wikipedia)]]
    */
@@ -73,8 +73,8 @@ trait CoreSuite extends OwlSuite
   }
 
   /**
-   * Checks that `(G, ⋅, e)` satisfies the axioms of a group;  that is, it is
-   * a monoid in which every element possesses an inverse.
+   * Checks that `(G, ⋅, e)` satisfies the axioms of a [[Group]];  that is, it
+   * is a [[Monoid]] in which every element possesses an inverse element.
    *
    * @see    [[https://en.wikipedia.org/wiki/Group_(mathematics) Group
    *         (Wikipedia)]]
@@ -94,7 +94,7 @@ trait CoreSuite extends OwlSuite
 
   /**
    * Checks that `G` acts upon the carrier set `S`; that is, `apply` effects a
-   * group homomorphism from `G` into `Sym(S)`.
+   * group isomorphism from `G` into `Sym(S)`.
    *
    * @see    [[https://en.wikipedia.org/wiki/Group_action Group action
    *         (Wikipedia)]]
@@ -102,7 +102,7 @@ trait CoreSuite extends OwlSuite
   def isAction[S,G]()(implicit α: Action[S,G],β: Arbitrary[S],γ: Arbitrary[G]): Unit =
   {
     import α._                                           // For action ops
-    import α.group._                                     // For group  ops
+    import α.group._                                     // For identity e
 
     isGroup[G]()                                         // Group axioms
 
