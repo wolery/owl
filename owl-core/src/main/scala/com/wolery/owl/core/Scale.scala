@@ -55,7 +55,8 @@ object Scale
    * The additive group of integers ℤ acts upon the scales by transposition in
    * half steps.
    */
-  implicit object isℤSet extends Action[Scale,ℤ]
+  implicit
+  val `ℤSet[Scale]` = new ℤSet[Scale]
   {
     def apply(s: Scale,i: ℤ): Scale       = new Scale(s.root + i,s.shape)
   }

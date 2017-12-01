@@ -172,7 +172,7 @@ object Pitch
    * in half-steps.
    */
   implicit
-  val `ℤTorsor[Pitch]` = new Torsor[Pitch,ℤ]
+  val `ℤTorsor[Pitch]` = new ℤTorsor[Pitch]
   {
     def apply(p: Pitch,i: ℤ): Pitch   = new Pitch(p.midi + i)
     def delta(p: Pitch,q: Pitch): ℤ   = q.midi - p.midi

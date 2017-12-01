@@ -149,7 +149,7 @@ object Frequency
    * of [[hashCode]] they currently inherit.
    */
   implicit
-  object isOrdered extends Ordering[Frequency]
+  val `Ordering[Frequency]` = new Ordering[Frequency]
   {
     def compare(f: Frequency,g: Frequency): ℤ =
     {
@@ -169,7 +169,7 @@ object Frequency
    * notion of ''transposition in half-steps''.
    */
   implicit
-  object isℝTorsor extends Torsor[Frequency,ℝ]
+  val `Torsor[Frequency,R]` = new Torsor[Frequency,ℝ]
   {
     def apply(f: Frequency,r: ℝ): Frequency  = Frequency(pow(2,r/12.0) * f.Hz)
     def delta(f: Frequency,g: Frequency): ℝ  = log(g.Hz / f.Hz) * α

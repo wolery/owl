@@ -345,7 +345,8 @@ object Shape
    * The additive group of integers ℤ acts upon the set of shapes via modal
    * interchange.
    */
-  implicit object isℤSet extends Action[Shape,ℤ]
+  implicit
+  val `ℤSet[Shape` = new ℤSet[Shape]
   {
     def apply(shape: Shape,i: ℤ): Shape = shape.mode(i)
   }
