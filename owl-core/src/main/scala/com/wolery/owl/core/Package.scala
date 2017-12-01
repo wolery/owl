@@ -77,7 +77,7 @@ package object core
     def ♯ : S                       = ε(s,+1)
   }
 
-  implicit 
+  implicit
   lazy val `Group[ℤ]` = new Group[ℤ]
   {
     val e                 : ℤ       = 0
@@ -85,7 +85,7 @@ package object core
     def operate(i: ℤ,j: ℤ): ℤ       = i + j
   }
 
-  implicit 
+  implicit
   lazy val `Group[ℝ]` = new Group[ℝ]
   {
     val e                 : ℝ       = 0
@@ -93,21 +93,26 @@ package object core
     def operate(i: ℝ,j: ℝ): ℝ       = i + j
   }
 
-  implicit 
-  def `PartialOrdering[α,C[α] <: Set[α]]`[α,C[α] <: Set[α]] = new PartialOrdering[C[α]]
+  implicit
+  def `PartialOrdering[Set[α]]`[α,S[α] <: Set[α]]: PartialOrdering[S[α]] =
   {
-    def lteq(s: C[α],t: C[α]): Bool = s ⊆ t
-
-    def tryCompare(s: C[α],t: C[α]) = (s ⊆ t,s ⊇ t) match
+    object instance extends PartialOrdering[Set[Any]]
     {
-      case (true, true)  ⇒ Some( 0)
-      case (true, false) ⇒ Some(-1)
-      case (false,true)  ⇒ Some(+1)
-      case (fasle,false) ⇒ None
-    }
-  }
+      def lteq(s: Set[Any],t: Set[Any]): Bool = s ⊆ t
 
-  implicit 
+      def tryCompare(s: Set[Any],t: Set[Any]) = (s ⊆ t,s ⊇ t) match
+      {
+        case (true, true)  ⇒ Some( 0)
+        case (true, false) ⇒ Some(-1)
+        case (false,true)  ⇒ Some(+1)
+        case (fasle,false) ⇒ None
+      }
+    }
+
+    instance
+  }.asInstanceOf[PartialOrdering[S[α]]]
+
+  implicit
   lazy val `Functor[Set]` = new cats.Functor[Set]
   {
     def map[α,β](set: Set[α])(f: α ⇒ β): Set[β] = set.map(f)
