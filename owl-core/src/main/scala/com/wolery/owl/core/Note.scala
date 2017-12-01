@@ -102,7 +102,7 @@ object Note
    * TODO
    */
   implicit
-  val `PartialOrdering[Note]` = FiniteSet.partialOrdering[Note]
+  val `PartialOrdering[Notes]` = FiniteSet.partialOrdering[Note]
 
   /**
    * TODO

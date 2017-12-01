@@ -188,7 +188,7 @@ object Pitch
    * TODO
    */
   implicit
-  val `PartialOrdering[Pitch]` = FiniteSet.partialOrdering[Pitch]
+  val `PartialOrdering[Pitches]` = FiniteSet.partialOrdering[Pitch]
 
   /**
    * TODO

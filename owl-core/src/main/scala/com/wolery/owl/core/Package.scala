@@ -91,6 +91,19 @@ package object core
     def operate(i: ℝ,j: ℝ): ℝ       = i + j
   }
 
+  implicit def `PartialOrdering[α]`[α] = new PartialOrdering[Set[α]]
+  {
+    def lteq(s: Set[α],t: Set[α]): Bool = s ⊆ t
+
+    def tryCompare(s: Set[α],t: Set[α]) = (s ⊆ t,s ⊇ t) match
+    {
+      case (true, true)  ⇒ Some( 0)
+      case (true, false) ⇒ Some(-1)
+      case (false,true)  ⇒ Some(+1)
+      case (fasle,false) ⇒ None
+    }
+  }
+
   implicit lazy val `Functor[Set]` = new cats.Functor[Set]
   {
     def map[α,β](set: Set[α])(f: α ⇒ β): Set[β] = set.map(f)

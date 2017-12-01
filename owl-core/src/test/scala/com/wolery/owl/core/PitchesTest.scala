@@ -21,6 +21,11 @@ class PitchesTest extends CoreSuite
 {
   import arbitrary._                                     // For Owl implicits
 
+  test("Set[Pitch](⊆) is a partial ordering")
+  {
+    isPartiallyOrdered[Set[Pitch]]()                     // Verify the axioms
+  }
+
   test("Set[Pitch] is a ℤ-set")
   {
     isℤSet[Set[Pitch]]()                                 // Verify the axioms
@@ -30,6 +35,11 @@ class PitchesTest extends CoreSuite
   {
     isPartiallyOrdered[Pitches]()                        // Verify the axioms
   }
+
+//test("Pitches is a ℤ-set")                             // Because it isn't!
+//{
+//  isℤSet[Pitches]()                                    // Verify the axioms
+//}
 
   // @see  [[https://en.wikipedia.org/wiki/Boolean_algebra_(structure) Boolean
   //       algebra (Wikipedia)]]
