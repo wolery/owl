@@ -32,6 +32,7 @@ trait utilities
    *
    * @return The subscripted version of `c`, if defined by Unicode,  otherwise
    *         `c`.
+   *
    * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
    *         Unicode subscripts and superscripts (Wikipedia)]]
    */
@@ -57,6 +58,7 @@ trait utilities
    *
    * @return The superscripted version of the character `c`, if defined by Unicode,
    *         otherwise `c`.
+   *
    * @see    [[https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
    *         Unicode subscripts and superscripts (Wikipedia)]]
    */
@@ -230,6 +232,7 @@ trait utilities
    * @param  n  A positive integer.
    *
    * @return The non-negative remainder of `i` upon division by `n`.
+   *
    * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation
    *         (Wikipedia)]]
    */
@@ -252,6 +255,7 @@ trait utilities
    * @param  i  An integer.
    *
    * @return The non-negative remainder of `i` upon division by 12.
+   *
    * @see    [[https://en.wikipedia.org/wiki/Modulo_operation Modulo operation
    *         (Wikipedia)]]
    */
@@ -285,6 +289,7 @@ trait utilities
    * @param  by    The number of bit positions to rotate `bits` by.
    *
    * @return The result of rotating `bits` left by `by` bits.
+   *
    * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift
    *         (Wikipedia)]]
    */
@@ -320,6 +325,7 @@ trait utilities
    * @param  by    The number of bit positions to rotate `bits` by.
    *
    * @return The result of rotating `bits` right by `by` bits.
+   *
    * @see    [[https://en.wikipedia.org/wiki/Circular_shift Circular shift
    *         (Wikipedia)]]
    */

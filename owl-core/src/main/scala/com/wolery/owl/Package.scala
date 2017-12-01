@@ -204,6 +204,7 @@ package object owl
    * @tparam α  The type of an element.
    *
    * @return An empty set of type Set[α].
+   *
    * @see    [[SetSyntax]]
    */
   def ∅[α]: Set[α] = Set[α]()
