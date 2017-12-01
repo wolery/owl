@@ -188,13 +188,7 @@ object Pitch
    * TODO
    */
   implicit
-  val `PartialOrdering[Pitches]` = FiniteSet.partialOrdering[Pitch]
-
-  /**
-   * TODO
-   */
-  implicit
-  val `ℤSet[Set[Pitch]]` = `ℤTorsor[Pitch]`.lift[Set]
+  val `ℤSet[Set[Pitch]]` : ℤSet[Set[Pitch]] = `ℤTorsor[Pitch]`.lift[Set]
 }
 
 /**

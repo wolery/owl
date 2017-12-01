@@ -122,8 +122,6 @@ object FiniteSet
     val empty                      : FiniteSet[α] = FiniteSet.empty
     def apply(s: α*)               : FiniteSet[α] = FiniteSet.apply(s:_*)
     def apply(s: Traversable[α])   : FiniteSet[α] = FiniteSet.apply(s)
-//  private[core]
-//  def fromBitSet (s: BitSet)     : FiniteSet[α] = FiniteSet.fromBitSet(s)
     private[core]
     def fromBitMask(m: Array[Long]): FiniteSet[α] = FiniteSet.fromBitMask(m)
   }
@@ -132,19 +130,6 @@ object FiniteSet
   {
     def apply()         : Builder[α,FiniteSet[α]] = newBuilder
     def apply(s: Set[_]): Builder[α,FiniteSet[α]] = newBuilder
-  }
-
-  def partialOrdering[α: Finite] = new PartialOrdering[FiniteSet[α]]
-  {
-    def lteq(s: FiniteSet[α],t: FiniteSet[α]): Bool = s ⊆ t
-
-    def tryCompare(s: FiniteSet[α],t: FiniteSet[α]) = (s ⊆ t,s ⊇ t) match
-    {
-      case (true, true)  ⇒ Some( 0)
-      case (true, false) ⇒ Some(-1)
-      case (false,true)  ⇒ Some(+1)
-      case (fasle,false) ⇒ None
-    }
   }
 
   private

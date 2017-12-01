@@ -102,12 +102,6 @@ object Note
    * TODO
    */
   implicit
-  val `PartialOrdering[Notes]` = FiniteSet.partialOrdering[Note]
-
-  /**
-   * TODO
-   */
-  implicit
   val `ℤSet[Set[Note]]`:ℤSet[Set[Note]] = `ℤTorsor[Note]`.lift[Set]
 
   /**
