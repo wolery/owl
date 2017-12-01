@@ -167,8 +167,11 @@ trait Group[G] extends Monoid[G]
  * of `G` upon `S` is completely determined by the permutation  `_ + g`. Thus,
  * in particular, a `ℤ`-set is uniquely determined by the function `_ + 1`.
  *
- * @tparam G  A group that acts upon the carrier set  `S` via the mapping `apply`.
- * @tparam S  A non-empty set acted upon by the group `G` via the mapping `apply`.
+ * @tparam G      A group that acts upon the carrier set  `S` via the mapping
+ *                `apply`.
+ * @tparam S      A non-empty set acted upon by the group `G` via the mapping
+ *                `apply`.
+ * @param  group  Evidence of the fact that `G` is a group.
  *
  * @see    [[http://en.wikipedia.org/wiki/Group_action Group action (Wikipedia)]]
  * @see    [[ActionSyntax]]
@@ -195,7 +198,7 @@ abstract class Action[S,G](implicit val group: Group[G])
   def apply(s: S,g: G): S
 
   /**
-   * Derives the natural action of `G` upon `F[S]` for the given function `F`.
+   * Derives the natural action of `G` upon `F[S]` for the given functor `F`.
    *
    * For any functor `F` there is a natural action of `G` upon `F[S]` obtained
    * by 'mapping' the action `+ : G ⇒ Sym(S)` across the members of `F[S]`. To
@@ -214,6 +217,10 @@ abstract class Action[S,G](implicit val group: Group[G])
    *  itself an action of `G` upon `F[S]`.
    *
    * @tparam F  A functor.
+   * @param  φ  Evidence of the fact that `F` is a functor.
+   *
+   * @return Evidence of the fact that the action `+` extends naturally to an
+   *         action of `G` upon `F[S]`.
    *
    * @see    [[http://en.wikipedia.org/wiki/Group_action#Variants_and_generalizations
    *         Group action (Wikipedia)]]
@@ -221,7 +228,7 @@ abstract class Action[S,G](implicit val group: Group[G])
    */
   def lift[F[_]](implicit φ: cats.Functor[F]) = new Action[F[S],G]
   {
-    def apply(fs: F[S],g: G): F[S] = φ.map(fs)(ε(_,g))
+    def apply(fs: F[S],g: G): F[S] = φ.map(fs)(ε(_,g))   // Lift '+' to F[S]
   }
 }
 
@@ -251,8 +258,10 @@ abstract class Action[S,G](implicit val group: Group[G])
  * us in Owl  because they make precise the musical notion of the ''interval''
  * between two notes, pitches, frequencies, and so on.
  *
- * @tparam G  A group that acts regularly upon the carrier set  `S` via the mapping `apply`.
- * @tparam S  A non-empty set acted upon regularly by the group `G` via the mapping `apply`.
+ * @tparam G  A group that acts regularly upon the carrier set  `S` via the
+ *            mapping `apply`.
+ * @tparam S  A non-empty set acted upon regularly by the group `G` via the
+ *            mapping `apply`.
  *
  * @see    [[http://en.wikipedia.org/wiki/Principal_homogeneous_space Torsor (Wikipedia)]]
  * @see    [[http://math.ucr.edu/home/baez/torsors.html Torsors Made Easy (John Baez)]]
