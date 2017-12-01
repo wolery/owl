@@ -75,7 +75,7 @@ object Note
    * TODO
    */
   implicit
-  object isFinite extends Finite[Note]
+  val `Finite[Note]` = new Finite[Note]
   {
     val size: ℕ              = 12
     def toℕ(note: Note): ℕ   = note.m_imp
@@ -86,7 +86,7 @@ object Note
    * TODO
    */
   implicit
-  object isℤTorsor extends Torsor[Note,ℤ]
+  val `ℤTorsor[Note]` = new ℤTorsor[Note]
   {
     def apply(n: Note,i: ℤ)               = new Note(mod12(n.m_imp + i))
     def delta(m: Note,n: Note)            = mod12(n.m_imp - m.m_imp)
@@ -96,24 +96,25 @@ object Note
    * TODO
    */
   implicit
-  val canBuildFrom = FiniteSet.canBuildFrom[Note]
+  val `CanBuildFrom[Set[_],Note,Notes]` = FiniteSet.canBuildFrom[Note]
 
   /**
    * TODO
    */
   implicit
-  val partialOrdering = FiniteSet.partialOrdering[Note]
-
-  /**
-   * TODO
-   */
-  implicit val NoteIsAℤSet = isℤTorsor.lift[Set]
+  val `PartialOrdering[Note]` = FiniteSet.partialOrdering[Note]
 
   /**
    * TODO
    */
   implicit
-  object isℤSet extends Action[Notes,ℤ]
+  val `ℤSet[Set[Note]]`:ℤSet[Set[Note]] = `ℤTorsor[Note]`.lift[Set]
+
+  /**
+   * TODO
+   */
+  implicit
+  val `ℤSet[Notes]` = new ℤSet[Notes]
   {
     def apply(notes: Notes,i: ℤ): Notes   = notes.map(_ + i)
   }
@@ -136,6 +137,7 @@ object Notes extends FiniteSet.Factory[Note]
    *
    * @return TODO
    */
+  private[core]
   def fromBitMask(mask: Long): Notes = FiniteSet.fromBitMask(Array(mask))
 }
 

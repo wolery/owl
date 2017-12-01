@@ -151,7 +151,7 @@ object Pitch
    * TODO
    */
   implicit
-  object isFinite extends Finite[Pitch]
+  val `Finite[Pitch]` = new Finite[Pitch]
   {
     val size: ℕ                 = 128
     def toℕ(pitch: Pitch): ℕ    = pitch.midi
@@ -162,7 +162,7 @@ object Pitch
    * Pitches are ordered by their pitch number.
    */
   implicit
-  object ordering extends Ordering[Pitch]
+  val `Ordering[Pitch]` = new Ordering[Pitch]
   {
     def compare(p: Pitch,q: Pitch): ℤ  = p.midi - q.midi
   }
@@ -172,7 +172,7 @@ object Pitch
    * in half-steps.
    */
   implicit
-  object isℤTorsor extends Torsor[Pitch,ℤ]
+  val `ℤTorsor[Pitch]` = new Torsor[Pitch,ℤ]
   {
     def apply(p: Pitch,i: ℤ): Pitch   = new Pitch(p.midi + i)
     def delta(p: Pitch,q: Pitch): ℤ   = q.midi - p.midi
@@ -182,18 +182,19 @@ object Pitch
    * TODO
    */
   implicit
-  val canBuildFrom = FiniteSet.canBuildFrom[Pitch]
+  val `CanBuildFrom[Set[_],Pitch,Pitches]` = FiniteSet.canBuildFrom[Pitch]
 
   /**
    * TODO
    */
   implicit
-  val partialOrdering = FiniteSet.partialOrdering[Pitch]
+  val `PartialOrdering[Pitch]` = FiniteSet.partialOrdering[Pitch]
 
   /**
    * TODO
    */
-  implicit val PitchIsAℤSet = isℤTorsor.lift[Set]
+  implicit
+  val `ℤSet[Set[Pitch]]` = `ℤTorsor[Pitch]`.lift[Set]
 }
 
 /**
@@ -203,6 +204,7 @@ object Pitch
  */
 object Pitches extends FiniteSet.Factory[Pitch]
 {
+  private[core]
   def fromBitMask(lo: Long,hi: Long): Pitches = FiniteSet.fromBitMask(Array(lo,hi))
 }
 

@@ -40,51 +40,58 @@ package object core
 
 //****************************************************************************
 
-  implicit final class SemigroupSyntax[S](s: S)(implicit ε: Semigroup[S])
+  implicit final
+  class SemigroupSyntax[S](s: S)(implicit ε: Semigroup[S])
   {
-    def ⋅ (t: S): S                 = ε.operate(s,t)
+    def operate (t: S): S           = ε.operate(s,t)
+    def ⋅       (t: S): S           = ε.operate(s,t)
   }
 
-  implicit final class GroupSyntax[G](f: G)(implicit ε: Group[G])
+  implicit final
+  class GroupSyntax[G](f: G)(implicit ε: Group[G])
   {
+    def inverse : G                 = ε.inverse(f)
     def unary_- : G                 = ε.inverse(f)
   }
 
-  implicit final class ActionSyntax[S,G](s: S)(implicit ε: Action[S,G])
+  implicit final
+  class ActionSyntax[S,G](s: S)(implicit ε: Action[S,G])
   {
+    def apply(g: G): S              = ε(s,g)
     def +    (g: G): S              = ε(s,g)
     def -    (g: G): S              = ε(s,ε.group.inverse(g))
-    def apply(g: G): S              = ε(s,g)
   }
 
-  implicit final class TorsorSyntax[S,G](s: S)(implicit ε: Torsor[S,G])
+  implicit final
+  class TorsorSyntax[S,G](s: S)(implicit ε: Torsor[S,G])
   {
-    def - (t: S): G                 = ε.delta(t,s)
+    def delta (t: S): G             = ε.delta(t,s)
+    def -     (t: S): G             = ε.delta(t,s)
   }
 
-  implicit final class ℤActionSyntax[S](s: S)(implicit ε: Action[S,ℤ])
+  implicit final
+  class ℤSetSyntax[S](s: S)(implicit ε: ℤSet[S])
   {
     def ♭ : S                       = ε(s,-1)
     def ♮ : S                       = s
     def ♯ : S                       = ε(s,+1)
   }
 
-  implicit object isℤGroup extends Group[ℤ]
+  implicit lazy val `Group[ℤ]` = new Group[ℤ]
   {
     val e                 : ℤ       = 0
     def inverse(i: ℤ)     : ℤ       = -i
     def operate(i: ℤ,j: ℤ): ℤ       = i + j
   }
 
-  implicit object isℝGroup extends Group[ℝ]
+  implicit lazy val `Group[ℝ]` = new Group[ℝ]
   {
     val e                 : ℝ       = 0
     def inverse(i: ℝ)     : ℝ       = -i
     def operate(i: ℝ,j: ℝ): ℝ       = i + j
   }
-//αβγδεζηθικλμνξοπρστυφχψω
-  implicit
-  def setIsAFunctor[α,β](implicit ε: CBF[Set[_],α,Set[β]]) = new cats.Functor[Set]
+
+  implicit lazy val `Functor[Set]` = new cats.Functor[Set]
   {
     def map[α,β](set: Set[α])(f: α ⇒ β): Set[β] = set.map(f)
   }
