@@ -50,8 +50,16 @@ trait Semigroup[S]
    * Returns the product of the given pair of elements, whatever this may mean
    * for the specific algebraic structure in question.
    *
-   * The function is ''associative''; that is, `(s₁ ⋅ s₂) ⋅ s₃ = s₁ ⋅ (s₂ ⋅ s₃)`
+   * The only requirement is that this mapping be ''associative''; that is:
+   * {{{
+   *     (s₁ ⋅ s₂) ⋅ s₃ = s₁ ⋅ (s₂ ⋅ s₃)                 associativity
+   * }}}
    * for all `sᵢ` in `S`, where `⋅` denotes the binary function `operate`.
+   *
+   * @param  s  An element of the carrier set `S`.
+   * @param  t  An element of the carrier set `S`.
+   *
+   * @return An element of the carrier set `S`.
    *
    * @see    [[https://en.wikipedia.org/wiki/Associative_property Associative
    *         property (Wikipedia)]]
@@ -101,8 +109,7 @@ trait Monoid[M] extends Semigroup[M]
  * for all `gᵢ` in `G`, where `⋅` and  `-` denote the  functions `operate` and
  * `inverse` respectively.
  *
- * In other words, `G` is a [[Monoid]] in which every element possesses an
- * inverse element.
+ * In other words, `G` is a [[Monoid]] in which every element has an inverse.
  *
  * @tparam G  The carrier set on which the binary operator `⋅` acts.
  *
@@ -117,6 +124,11 @@ trait Group[G] extends Monoid[G]
    * Returns the inverse of the element `g`;  that is, the unique element `-g`
    * in  `G` such  that  `g ⋅ -g = e = -g ⋅ g`,  where `⋅` denotes  the binary
    * function `operate`.
+   *
+   * @param  g  An element of the carrier set `G`.
+   *
+   * @return The unique element `-g` in `G` such  that  `g ⋅ -g = e = -g ⋅ g`,
+   * where `⋅` denotes  the binary function `operate`.
    */
   def inverse(g: G): G
 
@@ -190,7 +202,7 @@ abstract class Action[S,G](implicit val group: Group[G])
    * of `S`, regarded as a group under the composition of mappings.
    *
    * @param  s  An element of the carrier set `S`.
-   * @param  f  An element of the acting group `G`.
+   * @param  f  An element of the group `G` acting upon `S`.
    *
    * @return The result of applying the permutation denoted by `g` to the set
    *         element `s`.
@@ -201,20 +213,21 @@ abstract class Action[S,G](implicit val group: Group[G])
    * Derives the natural action of `G` upon `F[S]` for the given functor `F`.
    *
    * For any functor `F` there is a natural action of `G` upon `F[S]` obtained
-   * by 'mapping' the action `+ : G ⇒ Sym(S)` across the members of `F[S]`. To
-   * see this, observe that:
+   * by 'mapping' the action `+ : G ⇒ Sym(S)` across the members of `F[S]`.
    *
-   *  1. `G` can be regarded as a single object category whose arrows are all
-   *  isomorphisms.
+   * To see this, observe that:
    *
-   *  1. `S` can be regarded as a single object category whose arrows are the
+   *  1. `G` may be regarded as a single object category,  all of whose arrows
+   *  are isomorphisms.
+   *
+   *  1. `S` may be regarded as a single object category whose arrows are the
    *  permutations of `S`.
    *
    *  1. From this point of view, the action `+` is just a functor from `G` to
    *  `S`.
    *
-   *  1. The composition of functors `F` and `+` is again a functor, and so is
-   *  itself an action of `G` upon `F[S]`.
+   *  1. The composition of functors `F` and `+` is itself a functor, and thus
+   *  an action of `G` upon `F[S]`.
    *
    * @tparam F  A functor.
    * @param  φ  Evidence of the fact that `F` is a functor.
@@ -223,7 +236,7 @@ abstract class Action[S,G](implicit val group: Group[G])
    *         action of `G` upon `F[S]`.
    *
    * @see    [[http://en.wikipedia.org/wiki/Group_action#Variants_and_generalizations
-   *         Group action (Wikipedia)]] - group action as functor
+   *         Group action (Wikipedia)]] - actions as functors
    * @see    [[https://typelevel.org/cats/typeclasses/functor.html Functor (Cats)]]
    */
   def lift[F[_]](implicit φ: cats.Functor[F]) = new Action[F[S],G]
@@ -279,7 +292,7 @@ abstract class Torsor[S,G: Group] extends Action[S,G]
    * @param  s  An element of the carrier set `S`.
    * @param  t  An element of the carrier set `S`.
    *
-   * @return The unique element of `G` that maps `s` into `t`.
+   * @return The unique element of `G` that maps `s` to `t`.
    */
   def delta(s: S,t: S): G
 }
