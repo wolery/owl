@@ -21,7 +21,7 @@ class FrequencyTest extends CoreSuite
 {
   import arbitrary._                                     // For Owl implicits
 
-  test("Frequency is an ℝ-Torsor")
+  test("Frequency is an ℝ-torsor")
   {
     isTorsor[Frequency,ℝ]()                              // Verify the axioms
   }
