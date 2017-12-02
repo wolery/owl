@@ -188,7 +188,7 @@ object Pitch
    * TODO
    */
   implicit
-  val `ℤSet[Set[Pitch]]` : ℤSet[Set[Pitch]] = `ℤTorsor[Pitch]`.lift[Set]
+  val `ℤSet[Set[Pitch]]` = `ℤTorsor[Pitch]`.lift[Set]
 }
 
 /**
@@ -198,9 +198,14 @@ object Pitch
  */
 object Pitches extends FiniteSet.Factory[Pitch]
 {
+  /**
+   * TODO
+   */
   private[core]
-  def fromBitMask(lo: Long,hi: Long): Pitches = FiniteSet.fromBitMask(Array(lo,hi))
+  def fromBitMask(lo: Long,hi: Long): Pitches =
+  {
+    FiniteSet.fromBitMask(Array(lo,hi))
+  }
 }
 
 //****************************************************************************
-

@@ -31,7 +31,7 @@ import Frequency.{A4,A440}
  * representing a (possibly fractional) number of half-steps to raise or lower
  * the frequency `f` by. Notice for example that:
  * {{{
- *    f+12  ≡  2⋅f
+ *    f + 12  ≡  2 ⋅ f
  * }}}
  * for any frequency `f`, which corresponds to the transposition of `f` by one
  * octave.
@@ -161,12 +161,13 @@ object Frequency
   }
 
   /**
-   * The reals `(ℝ,+)` act regularly upon the frequencies via the mapping:
+   * `(ℝ,+)` acts regularly upon the frequencies via the mapping:
    * {{{
    *    + : (r,f) ⇒ (¹²√2)ʳ⋅f
    * }}}
    * for all real numbers `r` and frequencies `f`,  which captures the musical
-   * notion of ''transposition in half-steps''.
+   * notion of ''transposition in half-steps''. Moreover, the function `delta`
+   * formalizes the notion of the ''interval'' between two frequencies.
    */
   implicit
   val `Torsor[Frequency,R]` = new Torsor[Frequency,ℝ]
