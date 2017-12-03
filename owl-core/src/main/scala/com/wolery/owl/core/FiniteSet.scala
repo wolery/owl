@@ -126,14 +126,17 @@ object FiniteSet
     def fromBitMask(m: Array[Long]): FiniteSet[α] = FiniteSet.fromBitMask(m)
   }
 
-  def canBuildFrom[α: Finite]: CanBuildFrom[Set[_],α,FiniteSet[α]] =
+  implicit
+  def `CanBuildFrom[Set[_],α,FiniteSet[α]]`[α: Finite]: CanBuildFrom[Set[_],α,FiniteSet[α]] =
   {
     object instance extends CanBuildFrom[Set[_],α,FiniteSet[α]]
     {
       def apply()         : Builder[α,FiniteSet[α]] = newBuilder
       def apply(s: Set[_]): Builder[α,FiniteSet[α]] = newBuilder
-    } instance
-  }.asInstanceOf[CanBuildFrom[Set[_],α,FiniteSet[α]]]
+    }
+
+    instance.asInstanceOf[CanBuildFrom[Set[_],α,FiniteSet[α]]]
+  }
 
   private
   def newBuilder[α](implicit ε: Finite[α]) = new Builder[α,FiniteSet[α]]

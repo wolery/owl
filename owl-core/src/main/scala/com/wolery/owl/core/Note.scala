@@ -96,12 +96,6 @@ object Note
    * TODO
    */
   implicit
-  val `CanBuildFrom[Set[_],Note,Notes]` = FiniteSet.canBuildFrom[Note]
-
-  /**
-   * TODO
-   */
-  implicit
   val `ℤSet[Set[Note]]`:ℤSet[Set[Note]] = `ℤTorsor[Note]`.lift[Set]
 
   /**

@@ -182,12 +182,6 @@ object Pitch
    * TODO
    */
   implicit
-  val `CanBuildFrom[Set[_],Pitch,Pitches]` = FiniteSet.canBuildFrom[Pitch]
-
-  /**
-   * TODO
-   */
-  implicit
   val `ℤSet[Set[Pitch]]` = `ℤTorsor[Pitch]`.lift[Set]
 }
 
