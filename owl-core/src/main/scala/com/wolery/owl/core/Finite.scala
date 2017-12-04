@@ -18,9 +18,9 @@ package core
 /**
  * Describes types that are inhabited by finite sets of values.
  *
- * Every finite type is isomorphic to an initial segment [0, .. , ''n'') of ℕ,
+ * Every finite type is isomorphic to some initial segment `[0, .. , n)` of ℕ,
  * the set of natural numbers, although the bijection is of course not unique,
- * there being one for each of the ''n''! permutations of the ''n'' values.
+ * there being one for each of the `n!` permutations of the `n` values.
  *
  * Any such mapping is sufficient to uniquely encode the values of the type as
  * natural numbers, however, allowing us to easily enumerate them,  store them
@@ -29,7 +29,7 @@ package core
  * Instances satisfy the axioms:
  * {{{
  *           size   >  0                                  α is inhabited
- *    fromℕ ∘ toℕ   =  identity[α]                        toℕ is injective
+ *    fromℕ ∘ toℕ   =  identity[α]                        toℕ   is injective
  *    toℕ ∘ toFrom  =  identity[ℕ]                        fromℕ is injective
  * }}}
  * for all `a` in `α`, where ∘ denotes function composition.
@@ -58,6 +58,10 @@ trait Finite[α]
    * @param  i  A natural number in the range `[0, size)`.
    */
   def fromℕ(i: ℕ): α
+
+
+
+  def fromℕChecked(i: ℕ): α
 }
 
 //****************************************************************************
