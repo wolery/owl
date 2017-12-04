@@ -75,18 +75,18 @@ object Note
    * TODO
    */
   implicit
-  val `Finite[Note]` = new Finite[Note]
+  val `Finite[Note]`: Finite[Note] = new Finite[Note]
   {
-    val size: ℕ              = 12
-    def toℕ(note: Note): ℕ   = note.m_imp
-    def fromℕ(i: ℕ): Note    = {require(i.isBetween(0,11));new Note(i)}
+    val size           : ℕ     = 12
+    def toℕ(note: Note): ℕ     = note.m_imp
+    def fromℕ(i: ℕ)    : Note  = {require(i.isBetween(0,11));new Note(i)}
   }
 
   /**
    * TODO
    */
   implicit
-  val `ℤTorsor[Note]` = new ℤTorsor[Note]
+  val `ℤTorsor[Note]`: ℤTorsor[Note] = new ℤTorsor[Note]
   {
     def apply(n: Note,i: ℤ)               = new Note(mod12(n.m_imp + i))
     def delta(m: Note,n: Note)            = mod12(n.m_imp - m.m_imp)
@@ -96,15 +96,15 @@ object Note
    * TODO
    */
   implicit
-  val `ℤSet[Set[Note]]`:ℤSet[Set[Note]] = `ℤTorsor[Note]`.lift[Set]
+  val `ℤSet[Set[Note]]`: ℤSet[Set[Note]] = `ℤTorsor[Note]`.lift[Set]
 
   /**
    * TODO
    */
   implicit
-  val `ℤSet[Notes]` = new ℤSet[Notes]
+  val `ℤSet[Notes]`: ℤSet[Notes] = new ℤSet[Notes]
   {
-    def apply(notes: Notes,i: ℤ): Notes   = notes.map(_ + i)
+    def apply(notes: Notes,i: ℤ)          = notes.map(_ + i)
   }
 }
 

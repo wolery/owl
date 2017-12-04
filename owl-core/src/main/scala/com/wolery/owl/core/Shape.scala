@@ -15,8 +15,6 @@
 package com.wolery.owl
 package core
 
-//****************************************************************************
-
 import java.lang.Integer.bitCount
 import scala.collection.immutable.BitSet
 import util.utilities.{mod,mod12,ror12}
@@ -346,9 +344,9 @@ object Shape
    * interchange.
    */
   implicit
-  val `ℤSet[Shape` = new ℤSet[Shape]
+  val `ℤSet[Shape]`: ℤSet[Shape] = new ℤSet[Shape]
   {
-    def apply(shape: Shape,i: ℤ): Shape = shape.mode(i)
+    def apply(shape: Shape,i: ℤ) = shape.mode(i)
   }
 }
 

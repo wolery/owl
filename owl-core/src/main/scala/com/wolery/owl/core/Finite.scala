@@ -28,13 +28,13 @@ package core
  *
  * Instances satisfy the axioms:
  * {{{
- *           size  >  0                                  α is inhabited
- *    fromℕ ∘ toℕ  =  identity[α]                        toℕ is injective
- *       fromℕ(i)  =  fromℕ(i % size)                    fromℕ is periodic
+ *           size   >  0                                  α is inhabited
+ *    fromℕ ∘ toℕ   =  identity[α]                        toℕ is injective
+ *    toℕ ∘ toFrom  =  identity[ℕ]                        fromℕ is injective
  * }}}
  * for all `a` in `α`, where ∘ denotes function composition.
  *
- * @tparam α  A type that is inhabited by finite set of values.
+ * @tparam α  A type that inhabited by a finite set of values.
  *
  * @author Jonathon Bell
  */
@@ -55,7 +55,7 @@ trait Finite[α]
   /**
    * TODO
    *
-   * @param  i  A natural number.
+   * @param  i  A natural number in the range `[0, size)`.
    */
   def fromℕ(i: ℕ): α
 }

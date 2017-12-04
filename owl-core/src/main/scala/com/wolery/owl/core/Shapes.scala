@@ -15,8 +15,6 @@
 package com.wolery.owl
 package core
 
-//****************************************************************************
-
 import scala.collection.mutable.Map
 
 /**

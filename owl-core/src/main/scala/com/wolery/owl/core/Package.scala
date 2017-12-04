@@ -105,12 +105,12 @@ package object core
         case (true, true)  ⇒ Some( 0)
         case (true, false) ⇒ Some(-1)
         case (false,true)  ⇒ Some(+1)
-        case (fasle,false) ⇒ None
+        case (false,false) ⇒ None
       }
     }
 
-    instance
-  }.asInstanceOf[PartialOrdering[S[α]]]
+    instance.asInstanceOf[PartialOrdering[S[α]]]
+  }
 
   implicit
   lazy val `Functor[Set]` = new cats.Functor[Set]
