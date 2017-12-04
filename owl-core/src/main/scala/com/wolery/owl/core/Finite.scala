@@ -58,10 +58,6 @@ trait Finite[α]
    * @param  i  A natural number in the range `[0, size)`.
    */
   def fromℕ(i: ℕ): α
-
-
-
-  def fromℕChecked(i: ℕ): α
 }
 
 //****************************************************************************
