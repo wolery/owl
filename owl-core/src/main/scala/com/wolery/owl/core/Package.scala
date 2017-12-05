@@ -77,6 +77,66 @@ package object core
     def ♯ : S                       = ε(s,+1)
   }
 
+  implicit final
+  class ℤTorsorSyntax[α](a: α)(implicit ε: ℤTorsor[α],φ: Finite[α])
+  {
+    def to(b: α,by: ℤ = 1): FiniteSet[α] =
+    {
+      if (by > 0)
+      {
+        enumerate(a,b+1,by)
+      }
+      else
+      {
+        enumerate(b+1,a,-by)
+      }
+    }
+
+    def until(b: α,by: ℤ = 1): FiniteSet[α] =
+    {
+      if (by > 0)
+      {
+        enumerate(a,b, by)
+      }
+      else
+      {
+        enumerate(b,a,-by)
+      }
+    }
+
+    private
+    def enumerate(from: α,until: α,by: ℕ) =
+    {
+      assert(by > 0)
+
+      val s = scala.collection.mutable.BitSet()
+      val δ = ε.delta(from,until)
+      var i = 0
+
+      while (i < δ)
+      {
+        s.add(φ.toℕ(ε(a,i)))
+        i += by
+      }
+
+      FiniteSet.fromBitSet(s)
+    }
+  }
+
+  implicit final
+  class FiniteSyntax[α](a: α)(implicit ε: Finite[α])
+  {
+    def toℕ: ℕ                    = ε.toℕ(a)
+  }
+
+  implicit final
+  class FiniteSyntax2[α](i: ℕ)(implicit ε: Finite[α])
+  {
+    def fromℕ: α                  = ε.fromℕ(i)
+  }
+
+//instances:
+
   implicit
   lazy val `Group[ℤ]` = new Group[ℤ]
   {
@@ -91,6 +151,12 @@ package object core
     val e                 : ℝ       = 0
     def inverse(i: ℝ)     : ℝ       = -i
     def operate(i: ℝ,j: ℝ): ℝ       = i + j
+  }
+
+  implicit
+  lazy val `Functor[Set]` = new cats.Functor[Set]
+  {
+    def map[α,β](set: Set[α])(f: α ⇒ β): Set[β] = set.map(f)
   }
 
   implicit
@@ -110,12 +176,6 @@ package object core
     }
 
     instance.asInstanceOf[PartialOrdering[S[α]]]
-  }
-
-  implicit
-  lazy val `Functor[Set]` = new cats.Functor[Set]
-  {
-    def map[α,β](set: Set[α])(f: α ⇒ β): Set[β] = set.map(f)
   }
 }
 
