@@ -19,25 +19,45 @@ import java.io.{PrintWriter,Writer}
 
 import scala.tools.nsc.{ConsoleWriter,Settings}
 import scala.tools.nsc.interpreter.IMain
+import com.wolery.owl.util.Logging
 
 //****************************************************************************
 
-object interpreter
+object interpreter extends Logging
 {
-  val m_con: Writer = new ConsoleWriter()
-  var m_imp: Writer = m_con
-  val m_out = new Writer
+  object m_out extends PrintWriter(new ConsoleWriter)
   {
-    def close: Unit = m_imp.close()
-    def flush: Unit = m_imp.flush()
-    def write(array: Array[Char],offset: ℕ,length: ℕ): Unit = m_imp.write(array,offset,length)
+    val con           : Writer = out
+    def get           : Writer = out
+    def set(w: Writer): Unit   = out = if (w == null) con else w
   }
-  val m_set = new Settings(){processArgumentString(preferences.compiler())}
-  m_set.classpath.append(preferences.scala_library.value)
-  val m_int = new IMain(m_set,new PrintWriter(m_out))
 
-  def writer: Writer                                = m_imp
-  def writer_=(writer: Writer = null): Unit         = m_imp = if(writer == null) m_con else writer
+  val m_int =
+  {
+    def classPath(classes: String*): String =
+    {
+      import java.lang.Class.forName
+      import java.io.File.pathSeparator
+
+      classes.map(forName(_).getProtectionDomain
+                            .getCodeSource
+                            .getLocation
+                            .toString)
+             .mkString(java.io.File.pathSeparator)
+    }
+
+    val s = new Settings
+
+    s.usejavacp.value     = true
+    s.bootclasspath.value = classPath("scala.tools.nsc.Interpreter",
+                                      "scala.Some")
+    s.processArgumentString(preferences.compiler.value)
+
+    new IMain(s,m_out)
+  }
+
+  def writer                         : Writer       = m_out.get
+  def writer_=(writer: Writer = null): Unit         = m_out.set(writer)
 
   def interpret(line: String)                       = m_int.interpret(line)
   def bind[α]  (name: String,tipe: String,value: α) = m_int.bind(name,tipe,value)
