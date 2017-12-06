@@ -28,11 +28,12 @@ package core
  *
  * Instances satisfy the axioms:
  * {{{
- *           0 ≤ toℕ(a) < size                            α is inhabited
- *    fromℕ ∘ toℕ   =  identity[α]                        toℕ   is injective
- *    toℕ ∘ toFrom  =  identity[ℕ]                        fromℕ is injective
+ *           size  >  0                                  α is inhabited
+ *         toℕ(a)  ∈  [0, size)                          to initial segment
+ *    fromℕ ∘ toℕ  =  identity[α]                        toℕ   is injective
+ *    toℕ ∘ fromℕ  =  identity[ℕ]                        fromℕ is injective
  * }}}
- * for all `a` in `α`, where ∘ denotes function composition.
+ * for all `a` in `α`, where `∘` denotes function composition.
  *
  * @tparam α  A type inhabited by a finite set of values.
  *
@@ -42,7 +43,7 @@ trait Finite[α]
 {
   /**
    * The number of values inhabiting the type α. The size must be greater than
-   * 0; that is, the type `α` is inhabited.
+   * 0; that is, the type `α` is ''inhabited''.
    */
   val size: ℕ
 
@@ -54,7 +55,7 @@ trait Finite[α]
    *
    * @param  a  Any value of type α.
    *
-   * @return A natural number in the range `[0,n)'.
+   * @return A natural number in the range `[0, size)'.
    */
   def toℕ(a: α): ℕ
 
@@ -62,7 +63,7 @@ trait Finite[α]
    * Recovers a value of type `α` from its encoding as a natural number in the
    * range `[0, size)`.
    *
-   * Undefined for values outside of this interval
+   * Undefined for values outside of this interval.
    *
    * Effects a bijection from the initial `size` natural numbers onto the type
    * `α`.
