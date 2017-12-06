@@ -21,6 +21,11 @@ class NoteTest extends CoreSuite
 {
   import arbitrary._                                     // For Owl implicits
 
+  test("Note is finite")
+  {
+    isFinite[Note]()                                     // Verify the axioms
+  }
+
   test("Note is a ℤ/12ℤ-torsor")
   {
     isℤTorsor[Note]()                                    // Verify the axioms

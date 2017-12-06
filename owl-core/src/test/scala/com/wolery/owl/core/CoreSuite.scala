@@ -25,6 +25,23 @@ import org.scalacheck.Gen._
 trait CoreSuite extends OwlSuite
 {
   /**
+   * Checks that `S` satisfies the axioms for a [[Finite]] type;  that is, the
+   * mappings `toℕ` and `fromℕ` are both injective and mutually inverse,  that
+   * the `S` is non empty, and that the range of `toℕ` is contained within the
+   * interval `[0, size)`.
+   */
+  def isFinite[S]()(implicit α: Finite[S],β: Arbitrary[S]): Unit =
+  {
+    assert(α.size > 0,                                 "[S is inhabited]")
+
+    forAll("s") {(s: S) ⇒                              // ∀ s ∈ S
+    {
+      assert(s.toℕ.isBetween(0,α.size - 1),            "[0 ≤ toℕ < size]")
+      assert(s.toℕ.fromℕ == s,                         "[toℕ ∘ fromℕ = id]")
+    }}
+  }
+
+  /**
    * Checks that `(S,⋅)` satisfies the axioms of a [[Semigroup]]; that is, the
    * mapping `⋅ : S → S` is associative.
    *

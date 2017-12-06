@@ -21,6 +21,11 @@ class PitchTest extends CoreSuite
 {
   import arbitrary._                                     // For Owl implicits
 
+  test("Pitch is finite")
+  {
+    isFinite[Pitch]()                                    // Verify the axioms
+  }
+
   test("Pitch is a ℤ/128ℤ-torsor")
   {
     isℤTorsor[Pitch]()                                   // Verify the axioms
