@@ -1,0 +1,34 @@
+//**************************** Copyright © Jonathon Bell. All rights reserved.
+//*
+//*
+//*  Version : $Header:$
+//*
+//*
+//*  Purpose :
+//*
+//*
+//*  Comments: This file uses a tab size of 2 spaces.
+//*
+//*
+//****************************************************************************
+
+.root
+{
+  -fx-base:                 black;
+}
+
+//****************************************************************************
+
+#console 
+{
+  -fx-text-fill:            #c7c7c7;
+  -fx-highlight-fill:       #c1deff;
+  -fx-highlight-text-fill:  black;
+}
+
+#console .content
+{
+  -fx-background-color:     black;
+}
+
+//****************************************************************************
