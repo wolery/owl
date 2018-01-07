@@ -1,9 +1,7 @@
-# owl-controls
+# owl-core
 
 A library of custom JavaFX controls, including:
 
- - **Console**:  An embeddable command line console implemented as a JavaFX TextArea.
- 
 ### Console
 
 TODO 
@@ -13,4 +11,3 @@ TODO
 Owl is developed by Jonathon Bell.
 
 jonathon.a.bell@gmail.com
-
