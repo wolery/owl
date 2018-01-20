@@ -211,7 +211,7 @@ object Shape
    * The library includes a database of scale shapes and their associated meta
    * data (see class [[Shapes]]). Here we attempt to look up a shape by one of
    * its names, an operation which can fail, hence we return the result in the
-   * [[Maybe]] monad.
+   * Option monad.
    *
    * Names are matched case insensitively, and the accidental characters ♭, ♮,
    * and ♯ match the Latin letters ''b'', ''n'', and ''s'' respectively.
