@@ -30,7 +30,7 @@
       <artifactId>scala-reflect</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.wolery.owl</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>owl-core</artifactId>
     </dependency>
   </dependencies>
