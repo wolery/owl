@@ -1,6 +1,6 @@
-# owl-core
+# owl
 
-Owl JavaFX Controls Library.
+Owl Parent POM.
 
 ## Team
 

@@ -1,6 +1,6 @@
-# owl-core
+# owl-macros
 
-Owl JavaFX Controls Library.
+Owl Macros Library.
 
 ## Team
 

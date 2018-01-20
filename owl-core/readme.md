@@ -1,6 +1,6 @@
 # owl-core
 
-Owl JavaFX Controls Library.
+Owl Core Library.
 
 ## Team
 

@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.wolery.owl</groupId>
+    <groupId>com.wolery</groupId>
     <artifactId>owl</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
@@ -16,7 +16,7 @@
   <packaging>jar</packaging>
 
   <name>Owl Macros</name>
-  <description>Owl Macro Library</description>
+  <description>Owl Macros Library.</description>
   <url>https://github.com/wolery/owl</url>
   <inceptionYear>October 2017</inceptionYear>
 
