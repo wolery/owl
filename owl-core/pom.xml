@@ -1,5 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="UTF-8"?><!--
+//**************************** Copyright © Jonathon Bell. All rights reserved.
+//*
+//*
+//*  Version : $Header:$
+//*
+//*
+//*  Purpose : Owl core library.
+//*
+//*
+//*  Comments: This file uses a tab size of 2 spaces.
+//*                                                                     0-0
+//*                                                                   (| v |)
+//**********************************************************************w*w***-->
 <project xmlns=             "http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi=         "http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -16,7 +28,7 @@
   <packaging>jar</packaging>
 
   <name>Owl Core</name>
-  <description>Owl Core Library.</description>
+  <description>Owl core library.</description>
   <url>https://github.com/wolery/owl</url>
   <inceptionYear>September 2015</inceptionYear>
 
