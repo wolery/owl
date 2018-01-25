@@ -20,9 +20,9 @@
 
   <parent>
     <groupId>com.wolery</groupId>
-    <artifactId>wolery</artifactId>
-    <version>1</version>
-    <relativePath>../wolery/pom.xml</relativePath>
+    <artifactId>pom</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
   <artifactId>owl</artifactId>
