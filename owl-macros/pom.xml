@@ -44,19 +44,17 @@
       <artifactId>scala-reflect</artifactId>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.wolery</groupId>
       <artifactId>owl-core</artifactId>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
-
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
       </plugin>
-
     </plugins>
   </build>
 </project>

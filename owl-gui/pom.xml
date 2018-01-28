@@ -53,21 +53,20 @@
     </dependency>
     <dependency>
       <groupId>org.backuity</groupId>
-      <artifactId>ansi-interpolator_2.12</artifactId>
+      <artifactId>ansi-interpolator_${scala.binary.version}</artifactId>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.wolery</groupId>
       <artifactId>owl-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>com.wolery</groupId>
       <artifactId>owl-controls</artifactId>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
-
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
@@ -85,7 +84,6 @@
           <executable>etc/bind.sh</executable>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
 </project>
