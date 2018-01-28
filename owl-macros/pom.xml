@@ -43,10 +43,6 @@
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-reflect</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.wolery</groupId>
-      <artifactId>owl-core</artifactId>
-    </dependency>
   </dependencies>
 
   <build>

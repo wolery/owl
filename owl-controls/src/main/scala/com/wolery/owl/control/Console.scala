@@ -15,7 +15,8 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
-package com.wolery.owl
+package com.wolery
+package owl
 package control
 
 import java.io.Writer
@@ -123,7 +124,7 @@ import util._
  *
  * @author Jonathon Bell
  */
-class Console extends TextArea with Logging
+class Console extends TextArea with util.Logging
 {
   private type Filters = Seq[(EventType[KeyEvent],EventHandler[KeyEvent])]
 

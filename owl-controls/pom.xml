@@ -35,10 +35,6 @@
   <inceptionYear>October 2017</inceptionYear>
 
   <dependencies>
-    <dependency>
-      <groupId>com.wolery</groupId>
-      <artifactId>owl-core</artifactId>
-    </dependency>
   </dependencies>
 
   <build>
