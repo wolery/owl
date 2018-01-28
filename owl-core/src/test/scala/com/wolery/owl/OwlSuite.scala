@@ -12,7 +12,8 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
-package com.wolery.owl
+package com.wolery
+package owl
 
 import org.scalactic.{Prettifier,source}
 import org.scalatest.{Assertion,FunSuite}

@@ -12,7 +12,8 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl
+package com.wolery
+package owl
 package core
 
 import scala.collection.{BitSet,GenSet,SetLike}

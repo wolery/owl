@@ -15,7 +15,8 @@
 //*
 //****************************************************************************
 
-package com.wolery.owl
+package com.wolery
+package owl
 package macros
 
 import scala.reflect.macros.blackbox.Context

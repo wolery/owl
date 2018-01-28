@@ -15,7 +15,8 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
-package com.wolery.owl
+package com.wolery
+package owl
 package gui
 package util
 
