@@ -23,7 +23,7 @@ import org.scalacheck.Gen._
 
 //****************************************************************************
 
-trait CoreSuite extends OwlSuite
+trait CoreSuite extends test.Suite
 {
   /**
    * Checks that `S` satisfies the axioms for a [[Finite]] type;  that is, the
