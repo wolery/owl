@@ -221,13 +221,13 @@ abstract class Action[S,G](implicit val group: Group[G])
    *  1. `G` may be regarded as a single object category,  all of whose arrows
    *  are isomorphisms.
    *
-   *  1. `S` may be regarded as a single object category whose arrows are the
+   *  2. `S` may be regarded as a single object category whose arrows are the
    *  permutations of `S`.
    *
-   *  1. From this point of view, the action `+` is just a functor from `G` to
+   *  3. From this point of view, the action `+` is just a functor from `G` to
    *  `S`.
    *
-   *  1. The composition of functors `F` and `+` is itself a functor, and thus
+   *  4. The composition of functors `F` and `+` is itself a functor, and thus
    *  an action of `G` upon `F[S]`.
    *
    * @tparam F  A functor.
