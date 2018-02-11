@@ -34,7 +34,7 @@
   <inceptionYear>January 2016</inceptionYear>
   
   <properties>
-    <project.build.mainClass>com.wolery.owl.gui.owl</project.build.mainClass>
+    <project.build.mainClass>com.wolery.owl.owl</project.build.mainClass>
   </properties>
 
   <dependencies>

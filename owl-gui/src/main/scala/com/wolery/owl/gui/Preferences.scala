@@ -17,6 +17,7 @@ package owl
 package gui
 
 import com.wolery.owl.util.Preferences
+import com.wolery.owl.owl
 
 //****************************************************************************
 

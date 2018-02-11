@@ -14,27 +14,29 @@
 
 package com.wolery
 package owl
-package gui
 
 //****************************************************************************
 
-import com.wolery.owl.gui.util.implicits.asTask
 import javafx.concurrent.Task
+
 import javafx.stage.Stage
-import javax.sound.midi.{ MidiSystem, Sequencer, Synthesizer }
+
+import javax.sound.midi.{MidiSystem,Sequencer,Synthesizer}
+
+import com.wolery.fx.util.Application
+import com.wolery.owl.gui.ConsoleView
+import com.wolery.owl.gui.util.implicits.asTask
 
 //****************************************************************************
 
-object owl extends util.Application
+object owl extends Application
 {
   val sequencer:   Sequencer   = MidiSystem.getSequencer()
   val synthesizer: Synthesizer = MidiSystem.getSynthesizer()
 
   val initialize: Task[Unit] =
   {
-  //load.font("fontawesome-webfont")
     synthesizer.open()
-  //synthesizer.loadAllInstruments(load.soundbank("FluidR3 GM2-2"))
     sequencer.open()
     sequencer.getTransmitter.setReceiver(synthesizer.getReceiver)
   }
@@ -42,7 +44,7 @@ object owl extends util.Application
   def start(stage: Stage): Unit =
   {
     ConsoleView(stage)
-//    splash(stage,initialize,() ⇒ MainView())
+//  splash(stage,initialize,() ⇒ MainView())
   }
 
   override

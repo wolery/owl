@@ -25,6 +25,7 @@ import javafx.stage.{ Stage, StageStyle }
 import javax.sound.midi.{ MetaEventListener, MetaMessage }
 import midi.Transport
 import util.load
+import com.wolery.owl.owl
 
 //****************************************************************************
 
