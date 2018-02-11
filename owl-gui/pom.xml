@@ -55,13 +55,14 @@
       <groupId>org.backuity</groupId>
       <artifactId>ansi-interpolator_${scala.binary.version}</artifactId>
     </dependency>
+
     <dependency>
       <groupId>com.wolery</groupId>
-      <artifactId>owl-core</artifactId>
+      <artifactId>nest</artifactId>
     </dependency>
     <dependency>
       <groupId>com.wolery</groupId>
-      <artifactId>owl-controls</artifactId>
+      <artifactId>owl-core</artifactId>
     </dependency>
   </dependencies>
 

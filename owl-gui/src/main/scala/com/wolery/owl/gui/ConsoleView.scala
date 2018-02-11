@@ -18,9 +18,9 @@ package gui
 
 import scala.tools.nsc.interpreter.Results.Incomplete
 
-import com.wolery.owl.control.Console
+import com.wolery.util.Logging
+import com.wolery.fx.control.Console
 import com.wolery.owl.gui.util.load
-import com.wolery.owl.util.Logging
 
 import javafx.event.ActionEvent
 import javafx.scene.Scene
