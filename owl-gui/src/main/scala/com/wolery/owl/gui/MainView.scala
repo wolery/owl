@@ -17,7 +17,7 @@ package owl
 package gui
 
 import com.wolery.owl.core._
-import com.wolery.owl.util.Logging
+import com.wolery.util.Logging
 import javafx.event.ActionEvent
 import javafx.scene.Scene
 import javafx.scene.control.MenuBar
