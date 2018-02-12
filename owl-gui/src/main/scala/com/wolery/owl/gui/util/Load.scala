@@ -22,7 +22,6 @@ package util
 
 //****************************************************************************
 
-import com.wolery.owl.ℕ
 import javafx.fxml.FXMLLoader
 import javafx.scene.layout.Pane
 import javafx.scene.text.Font
