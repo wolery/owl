@@ -26,6 +26,8 @@ import javax.sound.midi.{MidiSystem,Sequencer,Synthesizer}
 import com.wolery.fx.util.Application
 import com.wolery.owl.gui.ConsoleView
 import com.wolery.owl.gui.util.implicits.asTask
+import com.wolery.owl.gui.PrototypeView
+import com.wolery.owl.gui.splash
 
 //****************************************************************************
 
@@ -43,8 +45,8 @@ object owl extends Application
 
   def start(stage: Stage): Unit =
   {
-    ConsoleView(stage)
-//  splash(stage,initialize,() ⇒ MainView())
+    //ConsoleView(stage)
+    splash(stage,initialize,() ⇒ PrototypeView())
   }
 
   override
