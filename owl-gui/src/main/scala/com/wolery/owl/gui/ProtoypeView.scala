@@ -78,7 +78,7 @@ object PrototypeView
 
     val (_,c) = instrument.view("Guitar")
     val (t,x) = load.view("TransportView",new TransportController(transport))
-    val (m,_) = load.view("MainView"     ,new PrototypeController(c,x))
+    val (m,_) = load.view("PrototypeView",new PrototypeController(c,x))
 
     m.getChildren.addAll(c.view,t)
 
