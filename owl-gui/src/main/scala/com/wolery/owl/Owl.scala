@@ -18,16 +18,11 @@ package owl
 //****************************************************************************
 
 import javafx.concurrent.Task
-
 import javafx.stage.Stage
-
 import javax.sound.midi.{MidiSystem,Sequencer,Synthesizer}
 
-import com.wolery.fx.util.Application
-import com.wolery.owl.gui.ConsoleView
-import com.wolery.owl.gui.util.implicits.asTask
-import com.wolery.owl.gui.PrototypeView
-import com.wolery.owl.gui.splash
+import gui._
+import gui.util.implicits.asTask
 
 //****************************************************************************
 
@@ -36,7 +31,7 @@ object owl extends Application
   val sequencer:   Sequencer   = MidiSystem.getSequencer()
   val synthesizer: Synthesizer = MidiSystem.getSynthesizer()
 
-  val initialize: Task[Unit] =
+  def task: Task[Unit] =
   {
     synthesizer.open()
     sequencer.open()
@@ -45,8 +40,9 @@ object owl extends Application
 
   def start(stage: Stage): Unit =
   {
-    //ConsoleView(stage)
-    splash(stage,initialize,() ⇒ PrototypeView())
+    log.debug("start(stage)")
+
+    SplashView(stage,task,MainView())
   }
 
   override

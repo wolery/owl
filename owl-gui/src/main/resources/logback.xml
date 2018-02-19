@@ -1,15 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?><!--
+//**************************** Copyright © Jonathon Bell. All rights reserved.
+//*
+//*
+//*  Version : $Header:$
+//*
+//*
+//*  Purpose : Logging configuration script.
+//*
+//*
+//*  See Also: https://logback.qos.ch/manual/index.html.
+//*
+//*
+//*  Comments: This file uses a tab size of 2 spaces.
+//*                                                                     0-0
+//*                                                                   (| v |)
+//**********************************************************************w*w***-->
+
 <configuration>
 
   <appender name="cout" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
-      </pattern>
+      <pattern>%-5level %logger{36} - %msg [%thread{10}]%n</pattern>
     </encoder>
   </appender>
 
-  <root level="info">
-    <appender-ref ref="cout" />
+  <root level="debug">
+    <appender-ref ref="cout"/>
   </root>
 
-</configuration>
+</configuration> <!--
+
+******************************************************************************-->

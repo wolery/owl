@@ -5,28 +5,26 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" styleClass="main-view" stylesheets="@MainView.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <MenuBar fx:id="menubar">
-         <menus>
-            <Menu mnemonicParsing="false" text="File">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#onCIonian" text="C Ionian" />
-                  <MenuItem mnemonicParsing="false" onAction="#onCWholeTone" text="C Whole Tone" />
-                  <MenuItem mnemonicParsing="false" onAction="#onPlay" text="Play" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="About" />
-               </items>
-            </Menu>
-         </menus>
-      </MenuBar>
-   </children>
+<VBox fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="450.0" spacing="10.0" stylesheets="@../css/Owl.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <MenuBar stylesheets="@../css/Owl.css">
+      <menus>
+        <Menu text="File">
+          <items>
+            <MenuItem text="Preferences..." />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Window">
+          <items>
+            <MenuItem text="Console" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem onAction="#onAbout" text="About" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+  </children>
 </VBox>

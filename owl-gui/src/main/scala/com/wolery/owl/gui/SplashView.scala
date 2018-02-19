@@ -18,60 +18,65 @@ package gui
 
 //****************************************************************************
 
-import com.wolery.owl.gui.util.load
-
 import javafx.animation.FadeTransition
-import javafx.concurrent.{Task,WorkerStateEvent}
-import javafx.event.ActionEvent
+import javafx.concurrent.Task
 import javafx.scene.Scene
-import javafx.scene.control.{Label,ProgressBar}
 import javafx.scene.paint.Color
 import javafx.stage.{Stage,StageStyle}
 import javafx.util.Duration.seconds
 
 //****************************************************************************
 
-class SplashController(stage: Stage,task: Task[_],continue: () ⇒ Unit)
+class SplashController
+(
+  stage:    Stage,
+  task:     Task[_],
+  continue: ⇒ Unit
+)
+extends AboutController(stage)
 {
-  @fx var root: Pane        = _
-  @fx var bar:  ProgressBar = _
-  @fx var txt:  Label       = _
-
-  task.setOnSucceeded((_: WorkerStateEvent) ⇒ onSucceeded())
-
-  def initialize() =
+  override
+  def initialize(): Unit =
   {
-    txt.textProperty.bind    (task.messageProperty)
-    bar.progressProperty.bind(task.progressProperty)
+    log.debug("initialize()")
 
-    stage.setScene(new Scene(root,Color.TRANSPARENT))
-    stage.initStyle(StageStyle.TRANSPARENT)
-    stage.setAlwaysOnTop(true)
-    stage.show()
+    super.initialize()
 
+    m_task.textProperty.bind    (task.messageProperty)
+    m_prog.progressProperty.bind(task.progressProperty)
+    m_task.setVisible(true)
+    m_prog.setVisible(true)
+
+    task.setOnSucceeded(_ ⇒ onSucceeded())
     new Thread(task).start()
   }
 
-  def onSucceeded() =
+  def onSucceeded(): Unit =
   {
-    val t = new FadeTransition(seconds(1.0),root)
+    log.debug("onSucceeded()")
+
+    val t = new FadeTransition(seconds(3.0),m_root)
 
     t.setFromValue (1.0)
     t.setToValue   (0.0)
-    t.setOnFinished((_: ActionEvent) ⇒ stage.hide())
+    t.setOnFinished(_ ⇒ stage.close())
     t.play()
 
-    continue()
+    continue
   }
 }
 
 //****************************************************************************
 
-object splash
+object SplashView
 {
-  def apply(stage: Stage,task: Task[Unit],done: () ⇒ Unit): Unit =
+  def apply(stage: Stage,task: Task[Unit],continue: ⇒ Unit): Unit =
   {
-    load.view("SplashView",new SplashController(stage,task,done))
+    val (v,_) = util.load.view("SplashView",new SplashController(stage,task,continue))
+
+    stage.setScene (new Scene(v,Color.TRANSPARENT))
+    stage.initStyle(StageStyle.TRANSPARENT)
+    stage.show()
   }
 }
 

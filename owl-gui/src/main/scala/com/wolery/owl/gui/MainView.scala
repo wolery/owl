@@ -16,79 +16,38 @@ package com.wolery
 package owl
 package gui
 
-import com.wolery.owl.core._
-import com.wolery.util.Logging
-import javafx.event.ActionEvent
 import javafx.scene.Scene
-import javafx.scene.control.MenuBar
-import javafx.stage.{ Stage, StageStyle }
-import javax.sound.midi.{ MetaEventListener, MetaMessage }
-import midi.Transport
+import javafx.stage.{Stage,StageStyle}
 import util.load
-import com.wolery.owl.owl
 
 //****************************************************************************
 
-class MainController(controller: Controller,transport: MetaEventListener) extends Logging
+class MainController(stage:Stage) extends Logging
 {
-  @fx
-  var menubar   : MenuBar    = _
-  val instrument: Instrument = controller.instrument
-  val playable  : Pitches    = instrument.playable
-
-  def initialize() =
+  def initialize(): Unit =
   {
-    log.info("initialize")
-
-    menubar.setUseSystemMenuBar(true)
-
-    val tk = de.codecentric.centerdevice.MenuToolkit.toolkit()
-
-    tk.setApplicationMenu(tk.createDefaultApplicationMenu("Owl"))
-
-    setup()
+    log.debug("initialize()")
   }
-
-  def onCIonian(ae: ActionEvent)    = {}
-  def onCWholeTone(ae: ActionEvent) = {}
-  def onClose()                     = {}
-  def onPlay()                      =
+@fx
+  def onAbout(): Unit =
   {
-    owl.sequencer.setLoopStartPoint(0)
-    owl.sequencer.setLoopStartPoint(1000)
-  }
-
-  def setup(): Unit =
-  {
-    owl.sequencer.getTransmitter.setReceiver(controller)
-    owl.sequencer.addMetaEventListener(transport)
-    owl.sequencer.addMetaEventListener(new MetaEventListener{def meta(m:MetaMessage):Unit = controller.send(m,-1)})
+    log.debug("onAbout()")
+    AboutView(stage)
   }
 }
 
 //****************************************************************************
 
-object MainView
+object MainView extends Logging
 {
   def apply(): Unit =
   {
-    val instrument = com.wolery.owl.gui.stringed.StringedInstrument(24,E(2),A(2),D(3),G(3),B(3),E(4))
-    owl.sequencer.setSequence(load.sequence("time"))
-    val transport = new Transport(owl.sequencer)
+    val s     = new Stage(StageStyle.DECORATED)
+    val (m,_) = load.view("MainView",new MainController(s))
 
-    val (_,c) = instrument.view("Guitar")
-    val (t,x) = load.view("TransportView",new TransportController(transport))
-    val (m,_) = load.view("MainView"     ,new MainController(c,x))
-
-    m.getChildren.addAll(c.view,t)
-
-    new Stage(StageStyle.DECORATED)
-    {
-      setResizable(false)
-      setTitle    ("Owl")
-      setScene    (new Scene(m))
-      show        ()
-    }
+    s.setTitle("Owl")
+    s.setScene(new Scene(m))
+    s.show    ()
   }
 }
 
