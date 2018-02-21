@@ -14,15 +14,27 @@
             <Image url="@../img/wol.jpeg" />
          </image>
       </ImageView>
-      <Label layoutX="244.0" layoutY="23.0" prefHeight="44.0" prefWidth="280.0" text="Owl">
+      <Label layoutX="244.0" layoutY="27.0" prefHeight="28.0" prefWidth="280.0" text="Owl">
          <font>
-            <Font size="36.0" />
+            <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="m_vers" layoutX="244.0" layoutY="84.0" prefHeight="17.0" prefWidth="280.0" text="Version 1.0.0-SNAPSHOT [Debug]" />
-      <Label fx:id="m_bld" layoutX="244.0" layoutY="112.0" prefHeight="17.0" prefWidth="280.0" text="Version 1.0.0-SNAPSHOT [Debug]" />
-      <Label fx:id="m_task" layoutX="244.0" layoutY="150.0" prefHeight="17.0" prefWidth="280.0" text="progress..." />
-      <Label fx:id="m_copy" alignment="TOP_LEFT" layoutX="244.0" layoutY="234.0" prefHeight="56.0" prefWidth="280.0" text="© 2015-2018 Jonathon Bell. All rights reserved." wrapText="true" />
-      <ProgressBar fx:id="m_prog" layoutX="244.0" layoutY="193.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="280.0" progress="0.0" stylesheets="@../css/Owl.css" />
+      <Label fx:id="m_vers" layoutX="244.0" layoutY="65.0" prefHeight="17.0" prefWidth="280.0" text="Version ${Implementation-Version}[${Profile-Id}]">
+         <font>
+            <Font size="11.0" />
+         </font></Label>
+      <Label fx:id="m_time" layoutX="244.0" layoutY="84.0" prefHeight="17.0" prefWidth="280.0" text="Built on ${Built}">
+         <font>
+            <Font size="11.0" />
+         </font></Label>
+      <Label fx:id="m_task" layoutX="244.0" layoutY="140.0" prefHeight="17.0" prefWidth="280.0" text="progress..." visible="false">
+         <font>
+            <Font size="11.0" />
+         </font></Label>
+      <Label fx:id="m_copy" alignment="TOP_LEFT" layoutX="244.0" layoutY="234.0" prefHeight="56.0" prefWidth="280.0" text="© 2015-2018 Jonathon Bell. All rights reserved." wrapText="true">
+         <font>
+            <Font size="11.0" />
+         </font></Label>
+      <ProgressBar fx:id="m_prog" layoutX="244.0" layoutY="170.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="280.0" progress="0.0" visible="false" />
    </children>
 </AnchorPane>

@@ -16,71 +16,50 @@ package com.wolery
 package owl
 package gui
 
-//****************************************************************************
-
 import javafx.scene.Scene
 import javafx.scene.control.{Label,ProgressBar}
-import javafx.stage.{Modality,Stage,StageStyle}
+import javafx.stage.{Modality,Stage}
 
-//****************************************************************************
-
+/**
+ * @author Jonathon Bell
+ */
 class AboutController(stage: Stage) extends Logging
 {
-  @fx var m_root: Pane        = _
-  @fx var m_vers: Label       = _
-  @fx var m_bld:  Label       = _
-  @fx var m_task: Label       = _
-  @fx var m_copy: Label       = _
-  @fx var m_prog: ProgressBar = _
+  @fx var m_root: Pane        = _                        //
+  @fx var m_vers: Label       = _                        //
+  @fx var m_time: Label       = _                        //
+  @fx var m_copy: Label       = _                        //
+  @fx var m_task: Label       = _                        //
+  @fx var m_prog: ProgressBar = _                        //
 
   def initialize(): Unit =
   {
-    log.debug("initialize()")
+    log.debug("initialize()")                            //
 
-    m_vers.setText  (AboutView.version)
-    m_bld. setText  (AboutView.build)
-    m_task.setVisible(false)
-    m_prog.setVisible(false)
+    m_vers.setText(manifest.format(m_vers.getText))      //
+    m_time.setText(manifest.format(m_time.getText))      //
 
-    stage.setAlwaysOnTop(true)
-    stage.setResizable(false)
+    stage.setAlwaysOnTop(true)                           //
+    stage.setResizable(false)                            //
   }
 }
 
+/**
+ * @author Jonathon Bell
+ */
 object AboutView
 {
   def apply(owner: Stage): Unit =
   {
-    val stage = new Stage
-    val (v,_) = util.load.view("SplashView",new AboutController(stage))
+    val s = new Stage                                    //
+    val c = new AboutController(s)                       //
+    val (v,_) = util.load.view("SplashView",c)           //
 
-    stage.setScene    (new Scene(v))
-    stage.initOwner   (owner);
-    stage.initStyle   (StageStyle.DECORATED)
-    stage.initModality(Modality.APPLICATION_MODAL);
-    stage.showAndWait ();
-  }
-
-  def build:String =
-  {
-    val f = new java.text.SimpleDateFormat("yy-MM-dd'T'HH:mm:ss")
-
-    manifest.attributes
-            .get("Built")
-            .map(f.parse(_).toString)
-            .getOrElse("BUJILD")
-  }
-
-  def version =
-  {
-    val v =     manifest.attributes
-                .get("Specification-Version")
-                .map("Version " + _)
-                .getOrElse("VERSION")
-    val p =    manifest.attributes
-                .get("Profile")
-                .getOrElse("")
-            v + " " + p
+    s.initOwner   (owner);                               //
+    s.setScene    (new Scene(v))                         //
+    s.setTitle    ("About Owl")                          //
+    s.initModality(Modality.APPLICATION_MODAL);          //
+    s.showAndWait ();                                    //
   }
 }
 

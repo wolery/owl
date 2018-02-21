@@ -29,9 +29,9 @@ package object gui
   type fx          = javafx.fxml.FXML
   type Pane        = javafx.scene.layout.Pane
 
+  type Application = com.wolery.fx.util.Application
   type Logging     = com.wolery.util.Logging
   val  manifest    = com.wolery.util.manifest
-  type Application = com.wolery.fx.util.Application
 }
 
 //****************************************************************************
