@@ -31,6 +31,8 @@ package object gui
 
   type Application = com.wolery.fx.util.Application
   type Logging     = com.wolery.util.Logging
+  type Preferences = com.wolery.util.Preferences
+
   val  manifest    = com.wolery.util.manifest
 }
 
