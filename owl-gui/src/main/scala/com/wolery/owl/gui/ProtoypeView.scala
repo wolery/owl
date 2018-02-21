@@ -17,12 +17,11 @@ package owl
 package gui
 
 import com.wolery.owl.core._
-import com.wolery.util.Logging
 import javafx.event.ActionEvent
 import javafx.scene.Scene
 import javafx.scene.control.MenuBar
-import javafx.stage.{ Stage, StageStyle }
-import javax.sound.midi.{ MetaEventListener, MetaMessage }
+import javafx.stage.{Stage,StageStyle}
+import javax.sound.midi.{MetaEventListener,MetaMessage}
 import midi.Transport
 import util.load
 import com.wolery.owl.owl
