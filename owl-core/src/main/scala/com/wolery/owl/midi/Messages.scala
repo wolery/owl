@@ -10,7 +10,7 @@
 //*  Comments: This file uses a tab size of 2 spaces.
 //*
 //*
-//*  See Also: http://www.somascape.org/midi/tech/mfile.html
+//*  See Also: http://www.somascape.org/midi/tech/mfile.html.
 //*                                                                     0-0
 //*                                                                   (| v |)
 //**********************************************************************w*w***
@@ -22,13 +22,11 @@ package midi
 //****************************************************************************
 
 import java.io._
-import Math.{max}
+import java.lang.Math.{max}
+import javax.sound.midi.{MetaMessage,ShortMessage}
 import scala.language.postfixOps
 
 import com.wolery.owl.core._
-import com.wolery.owl.util.utilities._
-
-import javax.sound.midi.{MetaMessage,ShortMessage}
 
 //****************************************************************************
 
@@ -82,7 +80,7 @@ object messages
 
     def uint8(index: ℕ = 0): ℕ =
     {
-      assert(isBetween(index,0,m.getLength))
+      assert(index.isBetween(0,m.getLength))
 
       m.getData.apply(index) & 0xFF
     }

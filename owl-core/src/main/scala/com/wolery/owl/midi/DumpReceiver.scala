@@ -23,9 +23,11 @@ package midi
 
 import java.io.PrintStream
 import javax.sound.midi._
-import com.wolery.owl.core._
-import messages._
 import javax.sound.midi.ShortMessage._
+
+import com.wolery.owl.core._
+
+import messages._
 
 //****************************************************************************
 

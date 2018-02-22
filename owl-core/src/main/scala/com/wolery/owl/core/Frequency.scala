@@ -16,7 +16,8 @@ package com.wolery
 package owl
 package core
 
-import Math.{log,pow,abs,round}
+import java.lang.Math.{log,pow,abs,round}
+
 import Frequency.{A4,A440}
 
 /**

@@ -18,16 +18,12 @@ package midi
 
 //****************************************************************************
 
+import javax.sound.midi.{MetaMessage,Sequencer}
 import scala.collection.Searching._
 import scala.collection.mutable.ArrayBuffer
 
 import com.wolery.owl.core._
 import com.wolery.owl.midi.messages._
-import com.wolery.owl.util.utilities._
-import com.wolery.util.Logging
-
-import javax.sound.midi.MetaMessage
-import javax.sound.midi.Sequencer
 
 //****************************************************************************
 
@@ -55,8 +51,8 @@ final class Transport(m_seq: Sequencer) extends Logging
 
   case class Region(from: Tick,to: Tick)
   {
-    assert(isBetween(from,0L,to ))
-    assert(isBetween(to,from,end))
+    assert(from.isBetween(0L,to ))
+    assert(to.isBetween(from,end))
 
     override
     def toString: String = s"[$from,$to]"
