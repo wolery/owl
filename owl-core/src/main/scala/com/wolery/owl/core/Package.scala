@@ -15,18 +15,29 @@
 package com.wolery
 package owl
 
-import scala.collection.generic.{CanBuildFrom => CBF}
-
 //****************************************************************************
 
 package object core
 {
+  type Logging                      = com.wolery.util.Logging
+
+  type Functor[F[_]]                = com.wolery.math.Functor[F]
+  type Finite[α]                    = com.wolery.math.Finite[α]
+  type FiniteSet[α]                 = com.wolery.math.FiniteSet[α]
+  type Semigroup[S]                 = com.wolery.math.Semigroup[S]
+  type Monoid[S]                    = com.wolery.math.Monoid[S]
+  type Group[S]                     = com.wolery.math.Group[S]
+  type Action[S,G]                  = com.wolery.math.Action[S,G]
+  type Torsor[S,G]                  = com.wolery.math.Torsor[S,G]
+  val  FiniteSet                    = com.wolery.math.FiniteSet
+
+  type ℤSet[S]                      = Action[S,ℤ]
+  type ℤTorsor[S]                   = Torsor[S,ℤ]
+
   type Midi                         = ℕ
   type Octave                       = ℤ
   type Notes                        = FiniteSet[Note]
   type Pitches                      = FiniteSet[Pitch]
-  type ℤSet[S]                      = Action[S,ℤ]
-  type ℤTorsor[S]                   = Torsor[S,ℤ]
 
   def Hz (r: ℝ): Frequency          = Frequency(r)
   def kHz(r: ℝ): Frequency          = Frequency(r * 1e3)
@@ -44,8 +55,8 @@ package object core
   implicit final
   class SemigroupSyntax[S](s: S)(implicit ε: Semigroup[S])
   {
-    def operate (t: S): S           = ε.operate(s,t)
-    def ⋅       (t: S): S           = ε.operate(s,t)
+    def combine (t: S): S           = ε.combine(s,t)
+    def ⋅       (t: S): S           = ε.combine(s,t)
   }
 
   implicit final
@@ -79,61 +90,15 @@ package object core
   }
 
   implicit final
-  class ℤTorsorSyntax[α](a: α)(implicit ε: ℤTorsor[α],φ: Finite[α])
-  {
-    def to(b: α,by: ℤ = 1): FiniteSet[α] =
-    {
-      if (by > 0)
-      {
-        enumerate(a,b+1,by)
-      }
-      else
-      {
-        enumerate(b+1,a,-by)
-      }
-    }
-
-    def until(b: α,by: ℤ = 1): FiniteSet[α] =
-    {
-      if (by > 0)
-      {
-        enumerate(a,b, by)
-      }
-      else
-      {
-        enumerate(b,a,-by)
-      }
-    }
-
-    private
-    def enumerate(from: α,until: α,by: ℕ) =
-    {
-      assert(by > 0)
-
-      val s = scala.collection.mutable.BitSet()
-      val δ = ε.delta(from,until)
-      var i = 0
-
-      while (i < δ)
-      {
-        s.add(φ.toℕ(ε(a,i)))
-        i += by
-      }
-
-      FiniteSet.fromBitSet(s)
-    }
-  }
-
-  implicit final
   class FiniteSyntax[α](a: α)(implicit ε: Finite[α])
   {
-    def toℕ: ℕ                    = ε.toℕ(a)
+    def toℕ: ℕ                      = ε.toℕ(a)
   }
 
   implicit final
   class FiniteSyntax2[α](i: ℕ)(implicit ε: Finite[α])
   {
-    def fromℕ: α                  = ε.fromℕ(i)
+    def fromℕ: α                    = ε.fromℕ(i)
   }
 
 //instances:
@@ -143,7 +108,7 @@ package object core
   {
     val e                 : ℤ       = 0
     def inverse(i: ℤ)     : ℤ       = -i
-    def operate(i: ℤ,j: ℤ): ℤ       = i + j
+    def combine(i: ℤ,j: ℤ): ℤ       = i + j
   }
 
   implicit
@@ -151,12 +116,13 @@ package object core
   {
     val e                 : ℝ       = 0
     def inverse(i: ℝ)     : ℝ       = -i
-    def operate(i: ℝ,j: ℝ): ℝ       = i + j
+    def combine(i: ℝ,j: ℝ): ℝ       = i + j
   }
 
   implicit
-  lazy val `Functor[Set]` = new cats.Functor[Set]
+  lazy val `Functor[Set]` = new Functor[Set]
   {
+    override
     def map[α,β](set: Set[α])(f: α ⇒ β): Set[β] = set.map(f)
   }
 

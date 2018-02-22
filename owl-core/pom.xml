@@ -50,10 +50,6 @@
       <groupId>com.wolery</groupId>
       <artifactId>nest</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.typelevel</groupId>
-      <artifactId>cats-core_${scala.binary.version}</artifactId>
-    </dependency>
   </dependencies>
 
   <build>
