@@ -16,18 +16,15 @@ package com.wolery
 package owl
 package gui
 
-import com.wolery.util.Preferences
-import com.wolery.owl.owl
-
 //****************************************************************************
 
 object preferences extends Preferences(owl.getClass)
 {
-  val compiler = string("compiler","-deprecation -feature -Xlint")
-  val prompt1  = string("prompt1","owl> ")
-  val prompt2  = string("prompt2","   | ")
+  val compiler      = string("compiler","-deprecation -feature -Xlint")
+  val prompt1       = string("prompt1","owl> ")
+  val prompt2       = string("prompt2","   | ")
 
-  val eol      = System.lineSeparator
+  val eol           = System.lineSeparator
 
   val scala_library = string("scala_library","/opt/scala-2.12.3/lib/scala-library.jar")
 }

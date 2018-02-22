@@ -18,7 +18,6 @@ package gui
 
 import scala.tools.nsc.interpreter.Results.Incomplete
 
-import com.wolery.util.Logging
 import com.wolery.fx.control.Console
 import com.wolery.owl.gui.util.load
 

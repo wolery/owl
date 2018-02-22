@@ -43,13 +43,13 @@ import Shape.bit
  * the 'first', 'second', 'third' and so on intervals of the shape - what are
  * sometimes referred to as its ''degrees''.
  *
- * @param set  A subset of the integers [0, .. ,11] encoded as an integer whose
- *             ''i''-th bit is set if and only if scale instances of this shape
- *             include the note ''i'' half steps above their root.
+ * @param   set  A subset of the integers [0, .. ,11] encoded as an integer whose
+ *               ''i''-th bit is set if and only if scale instances of this shape
+ *               include the note ''i'' half steps above their root.
  *
- * @param seq  A sorted sequence of the intervals listed in ''set'', encoded as
- *             as an integer whose ''i''-th  nibble is the ''i''-th interval of
- *             the sequence.
+ * @param   seq  A sorted sequence of the intervals listed in ''set'', encoded as
+ *               as an integer whose ''i''-th  nibble is the ''i''-th interval of
+ *               the sequence.
  *
  * @example   new Shape(0x555,0xA86420L)  ≡  Shape("whole tone")
  */
@@ -151,7 +151,7 @@ final class Shape private (set: Int,seq: Long) extends Serializable
   /**
    * Returns `true` if the given interval is included in the shape.
    *
-   * @param interval
+   * @param  interval
    *
    * @return `true` if
    */
