@@ -24,9 +24,9 @@ import javafx.stage.{Stage,StageStyle}
 import javafx.util.Duration.seconds
 
 /**
- * @param stage     .
- * @param task      .
- * @param continue  .
+ * @param  stage     .
+ * @param  task      .
+ * @param  continue  .
  *
  * @author Jonathon Bell
  */
