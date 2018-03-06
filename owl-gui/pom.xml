@@ -80,9 +80,6 @@
       <plugin>
         <artifactId>exec-maven-plugin</artifactId>
         <groupId>org.codehaus.mojo</groupId>
-        <configuration>
-          <executable>etc/bind.sh</executable>
-        </configuration>
       </plugin>
     </plugins>
   </build>
