@@ -13,6 +13,6 @@
 #**                                                                   (| v |)
 #***********************************************************************w*w***
 
-cat etc/launch.sh target/owl-gui-*.jar > owl && chmod +x owl
+cat etc/launch.sh target/owl-gui-*.jar > target/Owl && chmod +x target/Owl
 
 #*****************************************************************************
