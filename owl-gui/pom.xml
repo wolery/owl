@@ -47,10 +47,6 @@
       <artifactId>logback-classic</artifactId>
     </dependency>
     <dependency>
-      <groupId>de.codecentric.centerdevice</groupId>
-      <artifactId>centerdevice-nsmenufx</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.backuity</groupId>
       <artifactId>ansi-interpolator_${scala.binary.version}</artifactId>
     </dependency>

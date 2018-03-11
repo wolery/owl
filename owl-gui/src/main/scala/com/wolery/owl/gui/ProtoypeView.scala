@@ -40,11 +40,6 @@ class PrototypeController(controller: Controller,transport: MetaEventListener) e
     log.info("initialize")
 
     menubar.setUseSystemMenuBar(true)
-
-    val tk = de.codecentric.centerdevice.MenuToolkit.toolkit()
-
-    tk.setApplicationMenu(tk.createDefaultApplicationMenu("Owl"))
-
     setup()
   }
 
