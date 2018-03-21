@@ -17,12 +17,14 @@ package owl
 
 //****************************************************************************
 
+import javax.sound.midi.{MidiSystem, Sequence, Sequencer, Synthesizer}
+
 import javafx.concurrent.Task
 import javafx.stage.Stage
-import javax.sound.midi.{MidiSystem,Sequencer,Synthesizer}
 
-import gui._
-import gui.util.implicits.asTask
+import com.wolery.owl.gui.{Application, MainView, SplashView}
+import com.wolery.owl.gui.util.implicits.asTask
+import com.wolery.owl.midi.Transport
 
 //****************************************************************************
 
@@ -30,6 +32,12 @@ object owl extends Application
 {
   val sequencer:   Sequencer   = MidiSystem.getSequencer()
   val synthesizer: Synthesizer = MidiSystem.getSynthesizer()
+
+  override
+  def init(): Unit =
+  {
+    stylesheet = Some("/css/Owl.css")
+  }
 
   def task: Task[Unit] =
   {
@@ -50,6 +58,13 @@ object owl extends Application
   {
     sequencer.close()
     synthesizer.close()
+  }
+
+  def open(sequence: Sequence): Transport =
+  {
+    sequencer.setSequence(sequence)
+
+    new Transport(sequencer)
   }
 }
 

@@ -16,24 +16,32 @@ package com.wolery
 package owl
 package gui
 
+import com.wolery.fx.util.menu
+import com.wolery.owl.gui.util.load
+
+import javafx.application.Platform
 import javafx.scene.Scene
-import javafx.stage.{Stage,StageStyle}
-import util.load
+import javafx.scene.control.MenuBar
+import javafx.scene.layout.BorderPane
+import javafx.stage.Stage
+import javafx.stage.StageStyle
 
 //****************************************************************************
 
-class MainController(stage:Stage) extends Logging
+class MainController(stage: Stage) extends Logging
 {
+  @fx var m_menubar: MenuBar = _
+
   def initialize(): Unit =
   {
     log.debug("initialize()")
+
+    menu.setApplicationMenu(m_menubar)
   }
-@fx
-  def onAbout(): Unit =
-  {
-    log.debug("onAbout()")
-    AboutView(stage)
-  }
+
+  def onAbout()      : Unit = {AboutView(stage)}
+  def onPreferences(): Unit = {log.debug("onPreferences()")}
+  def onQuit()       : Unit = {Platform.exit()}
 }
 
 //****************************************************************************
@@ -42,12 +50,21 @@ object MainView extends Logging
 {
   def apply(): Unit =
   {
-    val s     = new Stage(StageStyle.DECORATED)
-    val (m,_) = load.view("MainView",new MainController(s))
+    val transport = owl.open(load.sequence("time"))
+    val stage     = new Stage(StageStyle.DECORATED)
 
-    s.setTitle("Owl")
-    s.setScene(new Scene(m))
-    s.show    ()
+    val (mv,_) = load.view("MainView",     new MainController(stage))
+    val (tv,_) = load.view("TransportView",new TransportController(transport))
+
+    mv.asInstanceOf[BorderPane].setTop(tv)
+    mv.asInstanceOf[BorderPane].setCenter(new InterpreterConsole)
+
+    stage.setScene    (new Scene(mv))
+    stage.setMinWidth (mv.getMinWidth)
+    stage.setMinHeight(mv.getMinHeight)
+  //stage.setMaximized(true)
+    stage.setTitle    ("Owl")
+    stage.show        ()
   }
 }
 

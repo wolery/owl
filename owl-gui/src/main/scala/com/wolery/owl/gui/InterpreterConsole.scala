@@ -19,56 +19,53 @@ package gui
 import scala.tools.nsc.interpreter.Results.Incomplete
 
 import com.wolery.fx.control.Console
-import com.wolery.owl.gui.util.load
 
 import javafx.event.ActionEvent
-import javafx.scene.Scene
-import javafx.stage.Stage
-import preferences.{ prompt1, prompt2 }
-import scala.util.Try
+import preferences.prompt1
+import preferences.prompt2
 
 //****************************************************************************
 
-class ConsoleView extends Logging
+class InterpreterConsole(id: String = "console") extends Console
 {
- @fx
-  var m_console: Console = _
-  var m_partial: String  = ""
+  var m_partial: String = ""
 
-  def initialize(): Unit =
-  {
-    interpreter.writer = m_console.writer
-    m_console.prompt   = prompt1()
-  }
+  setId(id)
+  setWrapText(true)
+  setFocusTraversable(false)
+  setOnAccept        (onAccept(_))
+  setOnComplete      (onComplete(_))
+
+  interpreter.writer = writer
+  prompt             = prompt1()
 
   def onAccept(e: ActionEvent): Unit =
   {
     log.info("onAccept({})",e)
 
-    m_partial += m_console.input.trim
+    m_partial += input.trim
 
     if (m_partial.isEmpty)
     {
-      m_console.appendText(prompt1())
+      appendText(prompt1())
     }
     else
     if (m_partial.startsWith(":"))
     {
-      m_console.addCommand(m_partial)
+      addCommand(m_partial)
       onCommand(m_partial)
-      m_console.appendText(prompt1())
+      appendText(prompt1())
       m_partial = ""
-
     }
     else
     if (interpreter.interpret(m_partial) == Incomplete)
     {
-      m_console.appendText(prompt2())
+      appendText(prompt2())
     }
     else
     {
-      m_console.addCommand(m_partial)
-      m_console.appendText(prompt1())
+      addCommand(m_partial)
+      appendText(prompt1())
       m_partial = ""
     }
   }
@@ -82,10 +79,6 @@ class ConsoleView extends Logging
   {
     val arguments = command.split("\\s+")
 
-// def int   (i: ℕ,default: ℤ)     : ℤ      = Try(arguments(i).toInt)   .getOrElse(default)
-// def real  (i: ℕ,default: ℝ)     : ℝ      = Try(arguments(i).toDouble).getOrElse(default)
-// def string(i: ℕ,default: String): String = Try(arguments(i)).getOrElse(default)
-
     arguments(0) match
     {
       case ":help"    ⇒ onHelp      (arguments)
@@ -98,8 +91,8 @@ class ConsoleView extends Logging
   {
     log.debug("onBadCommmand({})",arguments)
 
-    m_console.appendText(arguments(0))
-    m_console.appendLine(": no such command.  Type :help for help.")
+    this.appendText(arguments(0))
+    this.appendLine(": no such command.  Type :help for help.")
   }
 
   def onHelp(arguments: Seq[String]): Unit =
@@ -111,14 +104,14 @@ class ConsoleView extends Logging
       |:history [num]           show the history (optional num is commands to show)
     """.stripMargin
 
-    m_console.appendLine(help)
+    this.appendLine(help)
   }
 
   def onHistory(arguments: Seq[String]): Unit =
   {
     log.debug("onHistory({})",arguments)
 
-    m_console.listCommands()
+    listCommands()
   }
 
   def onClose(): Unit =
@@ -126,23 +119,6 @@ class ConsoleView extends Logging
     log.debug("onClose()")
 
     interpreter.writer = null
-  }
-}
-
-//****************************************************************************
-
-object ConsoleView
-{
-  def apply(stage: Stage): Unit =
-  {
-    val (r,c) = load.view[ConsoleView]("ConsoleView")
-
-    stage.setTitle         ("Owl - Console")
-    stage.setMinWidth      (r.getPrefWidth)
-    stage.setMinHeight     (r.getPrefHeight)
-    stage.setScene         (new Scene(r))
-    stage.setOnCloseRequest(_ ⇒ c.onClose())
-    stage.show             ()
   }
 }
 

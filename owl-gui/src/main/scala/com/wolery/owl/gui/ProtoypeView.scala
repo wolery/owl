@@ -23,7 +23,7 @@ import javafx.scene.control.MenuBar
 import javafx.stage.{Stage,StageStyle}
 import javax.sound.midi.{MetaEventListener,MetaMessage}
 import midi.Transport
-import util.load
+import com.wolery.owl.gui.util.{load}
 import com.wolery.owl.owl
 
 //****************************************************************************

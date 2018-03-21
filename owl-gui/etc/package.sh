@@ -8,7 +8,10 @@
 #**  Purpose : Packages the executable JAR as a self contained application. 
 #**
 #**
-#**  Comments: This file uses a tab size of 3 spaces.
+#**  See Also: https://docs.oracle.com/javase/9/tools/javapackager.htm#JSWOR719
+#**
+#**
+#**  Comments: This file uses a tab size of 2 spaces.
 #**                                                                     0-0
 #**                                                                   (| v |)
 #***********************************************************************w*w***
