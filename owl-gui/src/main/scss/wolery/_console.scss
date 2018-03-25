@@ -1,0 +1,49 @@
+//**************************** Copyright © Jonathon Bell. All rights reserved.
+//*
+//*
+//*  Version : $Header:$
+//*
+//*
+//*  Purpose :
+//*
+//*
+//*  Comments: This file uses a tab size of 2 spaces.
+//*
+//*
+//****************************************************************************
+
+$console-font:                    12 sans-serif     !default;
+$console-background-color:        grey              !default;
+
+//****************************************************************************
+
+.console
+{
+  -fx-cursor:                     default;
+  -fx-font:                       $console-font;
+  -fx-padding:                    3;
+  -fx-background-color:           red;
+
+  -fx-highlight-fill:             cyan;
+  -fx-highlight-text-fill:        yellow;
+}
+
+.console:focused
+{
+  -fx-background-color:           cyan;
+}
+
+.console .content
+{
+  -fx-padding:                    1em;
+  -fx-background-color:           red;
+  -fx-border-color:               green;
+}
+
+.console > .scroll-pane
+{
+  -fx-vbar-policy:                always;
+}
+
+
+//****************************************************************************
