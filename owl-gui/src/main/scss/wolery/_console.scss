@@ -12,38 +12,40 @@
 //*
 //****************************************************************************
 
-$console-font:                    12 sans-serif     !default;
-$console-background-color:        grey              !default;
+$console-font:                    12 sans-serif                     !default;
+$console-text-color:              white                             !default;
+$console-back-color:              black                             !default;
+$console-text-hilight-color:      black                             !default;
+$console-back-hilight-color:      rgb(190,221,255)                  !default;
 
 //****************************************************************************
 
 .console
 {
+  -fx-padding:                    2;
   -fx-cursor:                     default;
   -fx-font:                       $console-font;
-  -fx-padding:                    3;
-  -fx-background-color:           red;
-
-  -fx-highlight-fill:             cyan;
-  -fx-highlight-text-fill:        yellow;
+  -fx-text-fill:                  $console-text-color;
+  -fx-background-color:           $console-back-color;
+  -fx-highlight-text-fill:        $console-text-hilight-color;
+  -fx-highlight-fill:             $console-back-hilight-color;
 }
 
 .console:focused
 {
-  -fx-background-color:           cyan;
+  -fx-background-color:           -fx-focus-color;
 }
 
 .console .content
 {
-  -fx-padding:                    1em;
-  -fx-background-color:           red;
-  -fx-border-color:               green;
+  -fx-padding:                    0.25em;
+  -fx-background-color:           $console-back-color;
 }
 
 .console > .scroll-pane
 {
+  -fx-padding:                    0em;
   -fx-vbar-policy:                always;
 }
-
 
 //****************************************************************************
