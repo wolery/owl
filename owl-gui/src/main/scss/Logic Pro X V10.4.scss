@@ -11,7 +11,18 @@
 //*                                                                     0-0
 //*                                                                   (| v |)
 //**********************************************************************w*w***
- 
-@import "Logic Pro X V10.4";
+
+$console-font:                    12 Monaco;
+$console-text-color:              white;
+$console-back-color:              black;
+$console-text-highlight-color:    black;
+$console-back-highlight-color:    rgb(190,221,255);
+
+$scroll-bar-track-color:          rgb( 56, 56, 56);
+$scroll-bar-thumb-color:          rgb(116,116,116);
+
+//****************************************************************************
+
+@import "application";
 
 //****************************************************************************
