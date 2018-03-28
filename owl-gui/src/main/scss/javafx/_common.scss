@@ -19,37 +19,6 @@
 //* -fx-selection-bar-text    for text on top of -fx-selection-bar
 //****************************************************************************
 
-//  RESIZING FOR DIFFERENT SCREEN DPI
-//  -------------------------------
-//
-//  When the screen DPI changes Windows will use a different font size by default.
-//  The default is 12px and can change to 15px or 18px depending on user
-//  preference or screen DPI. On Mac the default is 13px and embedded will depend
-//  on hardware. To make UI controls scale and be the right proportions for each of
-//  these font sizes we base the padding (which controls size of control) on the
-//  font size. This is done using the CSS measurement unit of a "em" where
-//  (1em = font size). The default sizes are based on Windows default of 12px, as
-//  a quick reference here are common px sizes in em units on windows.
-//
-//  Windows 12px -> em units    -> Mac 13px
-//  ----------------------------------------
-//       1px     -> 0.083333em  -> 1.08px ~ 2px
-//       2px     -> 0.166667em  -> 2.16px ~ 3px
-//       3px  = 0.25em
-//       4px  = 0.333333em
-//       5px  = 0.416667em
-//       6px  = 0.5em
-//       7px  = 0.583333em
-//       8px  = 0.666667em
-//       9px  = 0.75em
-//      10px  = 0.833333em
-//      11px  = 0.916667em
-//      12px  = 1em
-//
-//  IMPORTANT: Not all sizes are scaled with em units only padding. All borders and
-//  background insets are still in pixels. Also any padding where it has to match up
-//  is being used to size a border should also be in pixels.
-
 //****************************************************************************
 //*
 //* CSS Styles for core infrastructure bits. The .root section provides the
