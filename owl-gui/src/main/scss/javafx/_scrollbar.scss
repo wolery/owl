@@ -22,6 +22,16 @@ $scroll-bar-thumb-color:          rgb(116,116,116)                  !default;
   -fx-background-color:           $scroll-bar-track-color;
 }
 
+.scroll-bar:vertical
+{
+  -fx-pref-width:                 16;
+}
+
+.scroll-bar:horizontal
+{
+  -fx-pref-height:                16;
+}
+
 .scroll-bar > .thumb
 {
   -fx-background-color:           $scroll-bar-thumb-color;
