@@ -1,0 +1,37 @@
+//**************************** Copyright © Jonathon Bell. All rights reserved.
+//*
+//*
+//*  Version : $Header:$
+//*
+//*
+//*  Purpose :
+//*
+//*
+//*  Comments: This file uses a tab size of 2 spaces.
+//*                                                                     0-0
+//*                                                                   (| v |)
+//**********************************************************************w*w***
+
+$scroll-bar-track-color:          rgb( 56, 56, 56)                  !default;
+$scroll-bar-thumb-color:          rgb(116,116,116)                  !default;
+
+//****************************************************************************
+
+.scroll-bar
+{
+  -fx-background-color:           $scroll-bar-track-color;
+}
+
+.scroll-bar > .thumb
+{
+  -fx-background-color:           $scroll-bar-thumb-color;
+  -fx-background-insets:          2;
+  -fx-background-radius:          10;
+}
+
+.scroll-bar:hover > .thumb
+{
+  -fx-background-color:           derive($scroll-bar-thumb-color, +20%);
+}
+
+//****************************************************************************
