@@ -15,8 +15,8 @@
 $console-font:                    12 sans-serif                     !default;
 $console-text-color:              white                             !default;
 $console-back-color:              black                             !default;
-$console-text-hilight-color:      black                             !default;
-$console-back-hilight-color:      rgb(190,221,255)                  !default;
+$console-text-highlight-color:    black                             !default;
+$console-back-highlight-color:    rgb(190,221,255)                  !default;
 
 //****************************************************************************
 
@@ -27,8 +27,8 @@ $console-back-hilight-color:      rgb(190,221,255)                  !default;
   -fx-font:                       $console-font;
   -fx-text-fill:                  $console-text-color;
   -fx-background-color:           $console-back-color;
-  -fx-highlight-text-fill:        $console-text-hilight-color;
-  -fx-highlight-fill:             $console-back-hilight-color;
+  -fx-highlight-text-fill:        $console-text-highlight-color;
+  -fx-highlight-fill:             $console-back-highlight-color;
 }
 
 .console:focused
@@ -38,7 +38,7 @@ $console-back-hilight-color:      rgb(190,221,255)                  !default;
 
 .console .content
 {
-  -fx-padding:                    0.25em;
+  -fx-padding:                    em(3);
   -fx-background-color:           $console-back-color;
 }
 
