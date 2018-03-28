@@ -33,7 +33,7 @@
   <name>Owl</name>
   <description>Owl parent POM.</description>
   <url>https://github.com/wolery/owl</url>
-  <inceptionYear>September 2015</inceptionYear>
+  <inceptionYear>2015</inceptionYear>
 
   <scm>
     <url>https://github.com/wolery/owl</url>

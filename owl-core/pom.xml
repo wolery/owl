@@ -31,7 +31,7 @@
   <name>Owl Core</name>
   <description>Owl core library.</description>
   <url>https://github.com/wolery/owl</url>
-  <inceptionYear>September 2015</inceptionYear>
+  <inceptionYear>2015</inceptionYear>
 
   <dependencies>
     <dependency>

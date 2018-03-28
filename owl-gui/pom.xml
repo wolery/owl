@@ -31,7 +31,7 @@
   <name>Owl Gui</name>
   <description>Owl JavaFX application.</description>
   <url>https://github.com/wolery/owl</url>
-  <inceptionYear>January 2016</inceptionYear>
+  <inceptionYear>2016</inceptionYear>
   
   <properties>
     <project.build.mainClass>com.wolery.owl.owl</project.build.mainClass>
