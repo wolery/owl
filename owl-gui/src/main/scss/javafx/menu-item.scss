@@ -1,0 +1,74 @@
+//**************************** Copyright © Jonathon Bell. All rights reserved.
+//*
+//*
+//*  Version : $Header:$
+//*
+//*
+//*  Purpose :
+//*
+//*
+//*  Comments: This file uses a tab size of 2 spaces.
+//*                                                                     0-0
+//*                                                                   (| v |)
+//**********************************************************************w*w***
+
+$menu-item-selected-color:        rgb(33,76,120)                    !default;
+$menu-item-text-color    :        white                             !default;
+$menu-item-mark-color    :        white                             !default;
+
+//****************************************************************************
+
+.menu-item
+{
+  -fx-background-color:           transparent;
+  -fx-padding:                    em(1) em(5) em(1) em(24);
+}
+
+.menu-item > .left-container
+{
+  -fx-padding:                    em(5.5) em(9.5) em(5.5) em(5.5);
+}
+
+.menu-item > .right-container
+{
+  -fx-padding:                    em(0) em(0) em(0) em(6);
+}
+
+.menu-item > .label
+{
+  -fx-padding:                    em(0) em(6) em(0) em(0);
+ // -fx-text-fill:                  white; //-fx-text-base-color;
+}
+
+.menu-item > .graphic-container
+{
+  -fx-padding:                    em(0) em(4) em(0) em(0);
+}
+
+//.menu-item:focused
+//{
+//  -fx-background:                 -fx-selection-bar;
+//  -fx-background-color:           -fx-background;
+//  -fx-text-fill:                  white;//   -fx-text-background-color;
+//}
+
+//.menu-item:focused > .label
+//{
+//  -fx-text-fill:              rgb(33,76,120);// -fx-focused-text-base-color;
+//}
+
+.check-menu-item:checked > .left-container > .check,
+.radio-menu-item:checked > .left-container > .radio
+{
+  -fx-shape:                      "M0,5H2L4,8L8,0H10L5,10H3Z";
+  -fx-background-color:           $menu-item-mark-color;
+  -fx-scale-shape :               false;
+}
+
+.check-menu-item:focused:checked > .left-container > .check,
+.radio-menu-item:focused:checked > .left-container > .radio
+{
+  -fx-background-color:           orange;
+}
+
+//****************************************************************************

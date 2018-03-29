@@ -1,0 +1,50 @@
+//**************************** Copyright © Jonathon Bell. All rights reserved.
+//*
+//*
+//*  Version : $Header:$
+//*
+//*
+//*  Purpose :
+//*
+//*
+//*  Comments: This file uses a tab size of 2 spaces.
+//*                                                                     0-0
+//*                                                                   (| v |)
+//**********************************************************************w*w***
+
+$menu-back-color:                 gray( 22)                         !default;
+$menu-border-color:               gray(112)                         !default;
+$menu-separator-color:            gray( 39)                         !default;
+
+//****************************************************************************
+
+.context-menu
+{
+  -fx-background-color:           $menu-border-color, black, $menu-back-color;
+  -fx-background-insets:          0, 2, 3;
+  -fx-background-radius:          8, 6, 5;
+
+  -fx-font-size:                  12;
+  -fx-padding:                    em(4) em(1) em(8) em(1);
+}
+
+.context-menu .separator:horizontal .line
+{
+  -fx-border-color:               $menu-separator-color transparent transparent transparent;
+  -fx-border-insets:              2 1 2 1;
+}
+
+.context-menu > .scroll-arrow
+{
+  -fx-padding:                    em(5) em(5) em(5) em(5);
+  -fx-background-color:           transparent;
+}
+
+.context-menu > .scroll-arrow:hover
+{
+  -fx-background:                 -fx-selection-bar;
+  -fx-background-color:           -fx-background;
+  -fx-text-fill:                  -fx-text-background-color;
+}
+
+//****************************************************************************

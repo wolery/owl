@@ -440,27 +440,27 @@
 -fx-stroke:                       transparent;
 }
 
-.titled-pane:show-mnemonics > .mnemonic-underline,
-.label:show-mnemonics > .mnemonic-underline,
-.context-menu:show-mnemonics > .mnemonic-underline,
-.menu:show-mnemonics > .mnemonic-underline,
-.menu-bar:show-mnemonics > .mnemonic-underline,
-.menu-item:show-mnemonics > .mnemonic-underline,
-.button:show-mnemonics > .mnemonic-underline,
-.toggle-button:show-mnemonics > .mnemonic-underline,
-.radio-button:show-mnemonics > .mnemonic-underline,
-.check-box:show-mnemonics > .mnemonic-underline,
+.titled-pane:show-mnemonics       > .mnemonic-underline,
+.label:show-mnemonics             > .mnemonic-underline,
+.context-menu:show-mnemonics      > .mnemonic-underline,
+.menu:show-mnemonics              > .mnemonic-underline,
+.menu-bar:show-mnemonics          > .mnemonic-underline,
+.menu-item:show-mnemonics         > .mnemonic-underline,
+.button:show-mnemonics            > .mnemonic-underline,
+.toggle-button:show-mnemonics     > .mnemonic-underline,
+.radio-button:show-mnemonics      > .mnemonic-underline,
+.check-box:show-mnemonics         > .mnemonic-underline,
 .split-menu-button:show-mnemonics > .mnemonic-underline,
-.menu-button:show-mnemonics > .mnemonic-underline
+.menu-button:show-mnemonics       > .mnemonic-underline
 {
 -fx-stroke:                       -fx-text-base-color;
 }
 
-.menu-button:showing > .label:show-mnemonics > .mnemonic-underline,
-.menu-button:hover > .label:show-mnemonics > .mnemonic-underline,
-.menu-button:focused > .label:show-mnemonics > .mnemonic-underline,
-.menu-item:hover .label:show-mnemonics > .mnemonic-underline,
-.menu-item:focused .label:show-mnemonics > .mnemonic-underline
+.menu-button:showing  > .label:show-mnemonics > .mnemonic-underline,
+.menu-button:hover    > .label:show-mnemonics > .mnemonic-underline,
+.menu-button:focused  > .label:show-mnemonics > .mnemonic-underline,
+.menu-item:hover        .label:show-mnemonics > .mnemonic-underline,
+.menu-item:focused      .label:show-mnemonics > .mnemonic-underline
 {
 -fx-stroke:                       -fx-focused-text-base-color;
 }
@@ -482,7 +482,7 @@
 
 /* ====   ARROWS   ========================================================== */
 
-.menu-button > .arrow-button > .arrow,
+.menu-button       > .arrow-button > .arrow,
 .split-menu-button > .arrow-button > .arrow
 {
 -fx-background-color:             -fx-mark-highlight-color, -fx-mark-color;
@@ -1258,41 +1258,7 @@
   -fx-background-radius: 2, 1, 0;
 }
 
-//****************************************************************************
-//*
-//* PopupMenu
-//*
-//****************************************************************************
-
-.context-menu
-{
-  -fx-background-color:           linear-gradient(to bottom,
-                                                  derive(-fx-color,-17%),
-                                                  derive(-fx-color,-30%)),
-                                                  -fx-control-inner-background;
-  -fx-background-insets:          0, 1;
-  -fx-padding:                    0.333333em 0.083333em 0.333333em 0.083333em; // 4 1 8 1
-  -fx-effect:                     dropshadow(gaussian,rgba(0,0,0,0.2),12,0.0,0,8);
-}
-
-.context-menu .separator:horizontal .line
-{
-  -fx-border-color:               -fx-box-border transparent transparent transparent;
-  -fx-border-insets:              1 0 0 0;
-}
-
-.context-menu > .scroll-arrow
-{
-  -fx-padding:                    0.416667em 0.416667em 0.416667em 0.416667em; // 5
-  -fx-background-color:           transparent;
-}
-
-.context-menu > .scroll-arrow:hover
-{
-  -fx-background:                 -fx-selection-bar;
-  -fx-background-color:           -fx-background;
-  -fx-text-fill:                  -fx-text-background-color;
-}
+@import "context-menu.scss";
 
 //****************************************************************************
 //*
@@ -1303,12 +1269,12 @@
 .menu
 {
   -fx-background-color:           transparent;
-  -fx-padding:                    0.333333em 0.666667em 0.333333em 0.666667em; // 4 8 4 8
+  -fx-padding:                    em(4) em(8) em(4) em(8);
 }
 
 .menu > .right-container > .arrow
 {
-  -fx-padding:                    0.458em 0.167em 0.458em 0.167em; // 4.5 2 4.5 2
+  -fx-padding:                    em(4.5) em(2) em(4.5) em(2);
   -fx-background-color:          -fx-mark-color;
   -fx-shape:                      "M0,-4L4,0L0,4Z";
   -fx-scale-shape:                false;
@@ -1399,74 +1365,7 @@
   -fx-text-fill:                  -fx-text-background-color;
 }
 
-//****************************************************************************
-//*
-//* MenuItem
-//*
-//****************************************************************************
-
-.menu-item
-{
-  -fx-background-color:           transparent;
-  -fx-padding:                    0.333333em 0.41777em 0.333333em 0.41777em;  // 4 5 4 5
-}
-
-.menu-item > .left-container
-{
-  -fx-padding:                    0.458em 0.791em 0.458em 0.458em;
-}
-
-.menu-item > .graphic-container
-{
-  -fx-padding:                    0em 0.333em 0em 0em;
-}
-
-.menu-item >.label
-{
-  -fx-padding:                    0em 0.5em 0em 0em;
-  -fx-text-fill:                  -fx-text-base-color;
-}
-
-.menu-item:focused
-{
-  -fx-background:                 -fx-selection-bar;
-  -fx-background-color:           -fx-background;
-  -fx-text-fill:                  -fx-text-background-color;
-}
-
-.menu-item:focused > .label
-{
-  -fx-text-fill:                  -fx-focused-text-base-color;
-}
-
-.menu-item > .right-container
-{
-  -fx-padding:                    0em 0em 0em 0.5em;
-}
-
-.radio-menu-item:checked > .left-container > .radio
-{
-  -fx-background-color:           -fx-mark-color;
-  -fx-shape:                      "M0,5H2L4,8L8,0H10L5,10H3Z";
-  -fx-scale-shape:                false;
-}
-
-.radio-menu-item:focused:checked > .left-container > .radio
-{
-  -fx-background-color:           -fx-focused-mark-color;
-}
-
-.check-menu-item:checked > .left-container > .check
-{
-  -fx-background-color:           -fx-mark-color;
-  -fx-shape:                      "M0,5H2L4,8L8,0H10L5,10H3Z";
-  -fx-scale-shape :               false;
-}
-
-.check-menu-item:focused:checked > .left-container > .check
-{
-  -fx-background-color:           -fx-focused-mark-color;
-}
+@import "menu-item";
 
 //****************************************************************************
 //*
