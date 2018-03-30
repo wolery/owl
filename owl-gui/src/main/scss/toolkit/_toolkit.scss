@@ -13,18 +13,27 @@
 //**********************************************************************w*w***
 
 /**
- * @param  pixels
- * 
+ * @param  px
+ *
  * @return The given number of pixels as a multiple of the font size.
  */
 @function em($px)
 {
-  @return 1em * round(1000 * $px / 12) / 1000;           // 
+  @return 1em * round(1000 * $px / 12) / 1000;
 }
 
+/**
+ * Returns the shade of gray whose red, green, and blue components are all set
+ * to the same given value.
+ *
+ * @param  shade  A shade of gray, represented as an integer between 0 (black)
+ *                and 255 (white).
+ *                
+ * @return The color value describing the given shade of gray.
+ */
 @function gray($shade)
 {
-  @return rgb($shade,$shade,$shade);                     // 
+  @return rgb($shade,$shade,$shade);
 }
 
 //****************************************************************************
