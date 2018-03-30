@@ -22,7 +22,7 @@ $menu-separator-color:            gray( 39)                         !default;
 {
   -fx-background-color:           $menu-border-color, black, $menu-back-color;
   -fx-background-insets:          0, 2, 3;
-  -fx-background-radius:          8, 6, 5;
+  -fx-background-radius:          6, 4, 3;
 
   -fx-font-size:                  12;
   -fx-padding:                    em(4) em(1) em(8) em(1);
