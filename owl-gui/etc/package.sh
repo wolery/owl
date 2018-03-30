@@ -16,23 +16,66 @@
 #**                                                                   (| v |)
 #***********************************************************************w*w***
 
-jar=$(basename $(ls -1 target/owl*.jar))                 # The executable jar
+App=Owl                                                  # Application title
+app=owl                                                  # Application class
 
-if [[ -d target/Owl.app ]]                               # Does target exist?
-then
-  rm -rf target/Owl.app                                  # ...then remove it
+#*****************************************************************************
+
+css=target/classes/css                                   # The CSS directory
+jar=$(basename $(ls -1 target/$app*.jar))                # The executable jar
+
+# Compile the contents of the 'css' directory into binary 'bss' files.
+
+compile-css()
+{
+  echo "Compiling style sheets"                          # Trace our progress
+
+  javapackager                                           \
+    -createbss                                           \
+    -srcdir     $css                                     \
+    -outdir     $css                                     \
+     >/dev/null                                          # Suppress warning
+}
+
+# Replace the 'css' style sheets with their binary 'bss' counterparts.
+
+update-jar()
+{
+  echo "Updating style sheets"                           # Trace our progress
+  (
+    cd   target/classes                                  # Change into subdir 
+    zip -qd ../$jar css/*                                # Remove style sheets
+    jar  uf ../$jar css/*.bss                            # Update the binaries
+  )
+}
+
+# Package the results up as a self contained application.
+
+package()
+{
+  if [[ -d target/$App.app ]]                            # Does target exist?
+  then
+    rm -rf target/$App.app                               # ...then remove it
+  fi
+
+  javapackager                                           \
+    -deploy                                              \
+    -srcdir       target                                 \
+    -outdir       target                                 \
+    -native       image                                  \
+    -srcfiles     $jar                                   \
+    -outfile      $App                                   \
+    -name         $App                                   \
+    -title        $App                                   \
+    -appclass     com.wolery.$app.$app                   \
+    -Bicon=src/main/resources/$app.icns
+}
+
+if [[ -d $css ]]                                         # Do we have sheets? 
+then 
+  compile-css &&  update-jar                             # ...compile + update
 fi
 
-javapackager                                             \
-  -deploy                                                \
-  -srcdir       target                                   \
-  -outdir       target                                   \
-  -native       image                                    \
-  -srcfiles     $jar                                     \
-  -outfile      Owl                                      \
-  -name         Owl                                      \
-  -title        Owl                                      \
-  -appclass     com.wolery.owl.owl                       \
-  -Bicon=src/main/resources/icns/owl.icns
+package                                                  # Package application
 
 #*****************************************************************************
