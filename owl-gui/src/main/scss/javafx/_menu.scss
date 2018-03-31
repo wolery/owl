@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose : Menu related styles.
+//*  Purpose : Menu related stylings.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -15,49 +15,61 @@
 $menu-back-color:                 gray( 22)                         !default;
 $menu-border-color:               gray(112)                         !default;
 $menu-separator-color:            gray( 39)                         !default;
+$menu-text-color:                 white                             !default;
+$menu-check-color:                $menu-text-color                  !default;
+$menu-arrow-color:                $menu-text-color                  !default;
+$menu-highlight-color:            rgb(33,76,120)                    !default;
+$menu-check-shape:                "M0,5 H2 L4,8 L8,0 H10 L5,10 H3 Z"!default;
+$menu-arrow-u-shape:              "M0,2 L2,2 L1,0 Z"                !default;
+$menu-arrow-d-shape:              "M0,0 L2,0 L1,2 Z"                !default;
+$menu-arrow-r-shape:              "M0,0 L6,4 L0,8 Z"                !default;
 
-$menu-item-text-color:            white                             !default;
-$menu-item-mark-color:            white                             !default;
-$menu-item-highlight-color:       rgb(33,76,120)                    !default;
-$menu-item-check-shape:           "M0,5H2L4,8L8,0H10L5,10H3Z"       !default;
+//****************************************************************************
+
+.menu > .right-container > .arrow
+{
+  -fx-padding:                    em(4.5) em(0) em(4.5) em(12);
+  -fx-shape:                      $menu-arrow-r-shape;
+  -fx-background-color:           $menu-arrow-color;
+  -fx-scale-shape:                false;
+}
+
+.menu-up-arrow
+{
+  -fx-padding:                    em(8) em(5) em(0) em(5);
+  -fx-shape:                      $menu-arrow-u-shape;
+  -fx-background-color:           $menu-arrow-color;
+}
+
+.menu-down-arrow
+{
+  -fx-padding:                    em(8) em(5) em(0) em(5);
+  -fx-shape:                      $menu-arrow-d-shape;
+  -fx-background-color:           $menu-arrow-color;
+}
 
 //****************************************************************************
 
 .context-menu
-{
--fx-background-color:           $menu-border-color, black, $menu-back-color;
--fx-background-insets:          0, 2, 3;
--fx-background-radius:          6, 4, 3;
-
--fx-font-size:                  12;
--fx-padding:                    em(4) em(1) em(8) em(1);
+{ 
+  -fx-padding:                    em(4) em(2) em(8) em(2);
+  -fx-background-color:           $menu-border-color,black,$menu-back-color;
+  -fx-background-insets:          0, 2, 3;
+  -fx-background-radius:          6, 4, 3;
+  -fx-font-size:                  12;
 }
 
 .context-menu .separator:horizontal .line
 {
--fx-border-color:               $menu-separator-color transparent transparent transparent;
--fx-border-insets:              2 1 2 1;
-}
-
-.context-menu > .scroll-arrow
-{
--fx-padding:                    em(5) em(5) em(5) em(5);
--fx-background-color:           transparent;
-}
-
-.context-menu > .scroll-arrow:hover
-{
--fx-background:                 -fx-selection-bar;
--fx-background-color:           -fx-background;
--fx-text-fill:                  -fx-text-background-color;
+  -fx-border-color:               $menu-separator-color transparent transparent transparent;
+  -fx-border-insets:              2 1 2 1;
 }
 
 //****************************************************************************
 
 .menu-item
 {
-//-fx-background-color:           transparent;
-  -fx-padding:                    em(1) em(5) em(1) 1em;
+  -fx-padding:                    em(1) em(12) em(1) em(12);
 }
 
 .menu-item > .left-container
@@ -73,7 +85,7 @@ $menu-item-check-shape:           "M0,5H2L4,8L8,0H10L5,10H3Z"       !default;
 .menu-item > .label
 {
   -fx-padding:                    em(0) em(6) em(0) em(0);
-  -fx-text-fill:                  $menu-item-text-color;
+  -fx-text-fill:                  $menu-text-color;
 }
 
 .menu-item > .graphic-container
@@ -83,15 +95,14 @@ $menu-item-check-shape:           "M0,5H2L4,8L8,0H10L5,10H3Z"       !default;
 
 .menu-item:focused
 {
-  -fx-background-color:           $menu-item-highlight-color;
+  -fx-background-color:           $menu-highlight-color;
 }
 
-.check-menu-item:checked > .left-container > .check,
-.radio-menu-item:checked > .left-container > .radio
+.menu-item:checked > .left-container
 {
-  -fx-shape:                      $menu-item-check-shape;
+  -fx-shape:                      $menu-check-shape;
+  -fx-background-color:           $menu-check-color;
   -fx-scale-shape:                false;
-  -fx-background-color:           $menu-item-mark-color;
 }
 
 //****************************************************************************
