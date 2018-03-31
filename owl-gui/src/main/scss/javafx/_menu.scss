@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : Menu related styles.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -12,10 +12,45 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
-$menu-item-text-color:            white                           !default;
-$menu-item-mark-color:            white                           !default;
-$menu-item-highlight-color:       rgb(33,76,120)                  !default;
-$menu-item-check-shape:           "M0,5H2L4,8L8,0H10L5,10H3Z"     !default;
+$menu-back-color:                 gray( 22)                         !default;
+$menu-border-color:               gray(112)                         !default;
+$menu-separator-color:            gray( 39)                         !default;
+
+$menu-item-text-color:            white                             !default;
+$menu-item-mark-color:            white                             !default;
+$menu-item-highlight-color:       rgb(33,76,120)                    !default;
+$menu-item-check-shape:           "M0,5H2L4,8L8,0H10L5,10H3Z"       !default;
+
+//****************************************************************************
+
+.context-menu
+{
+-fx-background-color:           $menu-border-color, black, $menu-back-color;
+-fx-background-insets:          0, 2, 3;
+-fx-background-radius:          6, 4, 3;
+
+-fx-font-size:                  12;
+-fx-padding:                    em(4) em(1) em(8) em(1);
+}
+
+.context-menu .separator:horizontal .line
+{
+-fx-border-color:               $menu-separator-color transparent transparent transparent;
+-fx-border-insets:              2 1 2 1;
+}
+
+.context-menu > .scroll-arrow
+{
+-fx-padding:                    em(5) em(5) em(5) em(5);
+-fx-background-color:           transparent;
+}
+
+.context-menu > .scroll-arrow:hover
+{
+-fx-background:                 -fx-selection-bar;
+-fx-background-color:           -fx-background;
+-fx-text-fill:                  -fx-text-background-color;
+}
 
 //****************************************************************************
 

@@ -36,7 +36,7 @@ object owl extends Application
   override
   def init(): Unit =
   {
-    stylesheet = Some("/css/Owl.css")
+    stylesheet = Some("css/Owl.css")
   }
 
   def task: Task[Unit] =
