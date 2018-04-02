@@ -46,6 +46,7 @@ update-jar()
     cd   target/classes                                  # Change into subdir 
     zip -qd ../$jar css/*                                # Remove style sheets
     jar  uf ../$jar css/*.bss                            # Update the binaries
+    rm              css/*.bss                            # Remove the binaries
   )
 }
 
