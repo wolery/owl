@@ -12,51 +12,27 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
-$menu-back-color:                 gray( 22)                         !default;
-$menu-border-color:               gray(112)                         !default;
-$menu-separator-color:            gray( 39)                         !default;
+$menu-back-color:                 gray( 26)                         !default;
+$menu-border-color:               gray(141)                         !default;
+$menu-separator-color:            gray( 43)                         !default;
 $menu-text-color:                 white                             !default;
 $menu-check-color:                $menu-text-color                  !default;
 $menu-arrow-color:                $menu-text-color                  !default;
 $menu-highlight-color:            rgb(33,76,120)                    !default;
 $menu-check-shape:                "M0,5 H2 L4,8 L8,0 H10 L5,10 H3 Z"!default;
-$menu-arrow-u-shape:              "M0,2 L2,2 L1,0 Z"                !default;
-$menu-arrow-d-shape:              "M0,0 L2,0 L1,2 Z"                !default;
-$menu-arrow-r-shape:              "M0,0 L6,4 L0,8 Z"                !default;
-
-//****************************************************************************
-
-.menu > .right-container > .arrow
-{
-  -fx-padding:                    em(4.5) em(0) em(4.5) em(12);
-  -fx-shape:                      $menu-arrow-r-shape;
-  -fx-background-color:           $menu-arrow-color;
-  -fx-scale-shape:                false;
-}
-
-.menu-up-arrow
-{
-  -fx-padding:                    em(8) em(5) em(0) em(5);
-  -fx-shape:                      $menu-arrow-u-shape;
-  -fx-background-color:           $menu-arrow-color;
-}
-
-.menu-down-arrow
-{
-  -fx-padding:                    em(8) em(5) em(0) em(5);
-  -fx-shape:                      $menu-arrow-d-shape;
-  -fx-background-color:           $menu-arrow-color;
-}
+$menu-arrow-u-shape:              "M0,7 L10,7 L5,0 Z"               !default;
+$menu-arrow-d-shape:              "M0,0 L10,0 L5,7 Z"               !default;
+$menu-arrow-r-shape:              "M0,0 L6,4  L0,8 Z"               !default;
 
 //****************************************************************************
 
 .context-menu
-{ 
-  -fx-padding:                    em(4) em(2) em(8) em(2);
+{
+  -fx-font-size:                  em(11);
+  -fx-padding:                    em(3) em(1);
   -fx-background-color:           $menu-border-color,black,$menu-back-color;
   -fx-background-insets:          0, 2, 3;
-  -fx-background-radius:          6, 4, 3;
-  -fx-font-size:                  12;
+  -fx-background-radius:          5, 4, 3;
 }
 
 .context-menu .separator:horizontal .line
@@ -67,42 +43,53 @@ $menu-arrow-r-shape:              "M0,0 L6,4 L0,8 Z"                !default;
 
 //****************************************************************************
 
-.menu-item
+.menu-up-arrow
 {
-  -fx-padding:                    em(1) em(12) em(1) em(12);
+  -fx-padding:                    em(6);
+  -fx-scale-shape:                false;
+  -fx-background-color:           $menu-arrow-color;
+  -fx-shape:                      $menu-arrow-u-shape;
 }
 
-.menu-item > .left-container
+.menu-down-arrow
 {
-  -fx-padding:                    em(5.5) em(9.5) em(5.5) em(5.5);
+  -fx-padding:                    em(6);
+  -fx-scale-shape:                false;
+  -fx-background-color:           $menu-arrow-color;
+  -fx-shape:                      $menu-arrow-d-shape;
 }
 
-.menu-item > .right-container
-{
-  -fx-padding:                    em(0) em(0) em(0) em(6);
-}
-
-.menu-item > .label
-{
-  -fx-padding:                    em(0) em(6) em(0) em(0);
-  -fx-text-fill:                  $menu-text-color;
-}
-
-.menu-item > .graphic-container
-{
-  -fx-padding:                    em(0) em(4) em(0) em(0);
-}
+//****************************************************************************
 
 .menu-item:focused
 {
   -fx-background-color:           $menu-highlight-color;
 }
 
+.menu-item > .label
+{
+  -fx-padding:                    em(0) em(12) em(0) em(0);
+  -fx-text-fill:                  $menu-text-color;
+}
+
+.menu-item > .left-container,
+.menu-item > .right-container
+{
+  -fx-padding:                    em(8) em(12);
+}
+
 .menu-item:checked > .left-container
 {
-  -fx-shape:                      $menu-check-shape;
-  -fx-background-color:           $menu-check-color;
   -fx-scale-shape:                false;
+  -fx-background-color:           $menu-check-color;
+  -fx-shape:                      $menu-check-shape;
+}
+
+.menu-item > .right-container > .arrow
+{
+  -fx-scale-shape:                false;
+  -fx-background-color:           $menu-check-color;
+  -fx-shape:                      $menu-arrow-r-shape;
 }
 
 //****************************************************************************
