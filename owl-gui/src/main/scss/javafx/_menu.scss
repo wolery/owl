@@ -16,13 +16,13 @@ $menu-back-color:                 gray( 26)                         !default;
 $menu-border-color:               gray(141)                         !default;
 $menu-separator-color:            gray( 43)                         !default;
 $menu-text-color:                 white                             !default;
-$menu-check-color:                $menu-text-color                  !default;
 $menu-arrow-color:                $menu-text-color                  !default;
+$menu-check-color:                $menu-text-color                  !default;
 $menu-highlight-color:            rgb(33,76,120)                    !default;
-$menu-check-shape:                "M-15,-1h2l2,3 4,-7h2l-5,9h-2 Z"  !default;
 $menu-arrow-u-shape:              "M0,7  L10,7 L5,0 Z"              !default;
 $menu-arrow-d-shape:              "M0,0  L10,0 L5,7 Z"              !default;
 $menu-arrow-r-shape:              "M0,-4 l6,4 -6,4  Z"              !default;
+$menu-check-shape:                "M-15,-1h2l2,3 4,-7h2l-5,9h-2 Z"  !default;
 
 //****************************************************************************
 
