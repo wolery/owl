@@ -19,10 +19,10 @@ $menu-text-color:                 white                             !default;
 $menu-check-color:                $menu-text-color                  !default;
 $menu-arrow-color:                $menu-text-color                  !default;
 $menu-highlight-color:            rgb(33,76,120)                    !default;
-$menu-check-shape:                "M0,5 H2 L4,8 L8,0 H10 L5,10 H3 Z"!default;
-$menu-arrow-u-shape:              "M0,7 L10,7 L5,0 Z"               !default;
-$menu-arrow-d-shape:              "M0,0 L10,0 L5,7 Z"               !default;
-$menu-arrow-r-shape:              "M0,0 L6,4  L0,8 Z"               !default;
+$menu-check-shape:                "M-15,-1h2l2,3 4,-7h2l-5,9h-2 Z"  !default;
+$menu-arrow-u-shape:              "M0,7  L10,7 L5,0 Z"              !default;
+$menu-arrow-d-shape:              "M0,0  L10,0 L5,7 Z"              !default;
+$menu-arrow-r-shape:              "M0,-4 l6,4 -6,4  Z"              !default;
 
 //****************************************************************************
 
@@ -46,7 +46,7 @@ $menu-arrow-r-shape:              "M0,0 L6,4  L0,8 Z"               !default;
 .menu-up-arrow,
 .menu-down-arrow
 {
-  -fx-padding:                    0.5em;
+  -fx-padding:                    em(6);
   -fx-scale-shape:                false;
   -fx-background-color:           $menu-arrow-color;
 }
@@ -63,6 +63,11 @@ $menu-arrow-r-shape:              "M0,0 L6,4  L0,8 Z"               !default;
 
 //****************************************************************************
 
+.menu-item
+{
+  -fx-padding:                    em(0) em(12) em(0) em(20);
+}
+
 .menu-item:focused
 {
   -fx-background-color:           $menu-highlight-color;
@@ -70,19 +75,13 @@ $menu-arrow-r-shape:              "M0,0 L6,4  L0,8 Z"               !default;
 
 .menu-item > .label
 {
-  -fx-padding:                    em(0) em(12) em(0) em(0);
   -fx-text-fill:                  $menu-text-color;
-}
-
-.menu-item > .left-container,
-.menu-item > .right-container
-{
-  -fx-padding:                    em(8) em(12);
 }
 
 .menu-item:checked > .left-container
 {
   -fx-scale-shape:                false;
+  -fx-position-shape:             false;
   -fx-background-color:           $menu-check-color;
   -fx-shape:                      $menu-check-shape;
 }
@@ -90,7 +89,8 @@ $menu-arrow-r-shape:              "M0,0 L6,4  L0,8 Z"               !default;
 .menu-item > .right-container > .arrow
 {
   -fx-scale-shape:                false;
-  -fx-background-color:           $menu-check-color;
+  -fx-position-shape:             false;
+  -fx-background-color:           $menu-arrow-color;
   -fx-shape:                      $menu-arrow-r-shape;
 }
 
