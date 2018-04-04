@@ -14,14 +14,20 @@
 
 @import "toolkit/toolkit";
 
+$menu-back-color:                 gray( 26);
+$menu-border-color:               gray(141);
+$menu-separator-color:            gray( 43);
+$menu-text-color:                 white;
+$menu-arrow-color:                $menu-text-color;
+$menu-check-color:                $menu-text-color;
+$menu-highlight-color:            rgb(33,76,120);
+$scroll-bar-track-color:          gray( 56);
+$scroll-bar-thumb-color:          gray(116);
 $console-font:                    12 Monaco;
 $console-text-color:              white;
 $console-back-color:              black;
 $console-text-highlight-color:    black;
 $console-back-highlight-color:    rgb(190,221,255);
-
-$scroll-bar-track-color:          gray( 56);
-$scroll-bar-thumb-color:          gray(116);
 
 //****************************************************************************
 
