@@ -16,15 +16,14 @@ package com.wolery
 package owl
 package gui
 
-import com.wolery.fx.util.menu
-import com.wolery.owl.gui.util.load
-
 import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.scene.control.MenuBar
 import javafx.scene.layout.BorderPane
-import javafx.stage.Stage
-import javafx.stage.StageStyle
+import javafx.stage.{Stage,StageStyle}
+
+import com.wolery.fx.control.menu
+import com.wolery.owl.gui.util.load
 
 //****************************************************************************
 
