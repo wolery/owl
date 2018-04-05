@@ -33,12 +33,12 @@ $menu-check-shape:                "M-15,-1h2l2,3 4,-7h2l-5,9h-2 Z"  !default;
   -fx-background-color:           $menu-border-color,black,$menu-back-color;
   -fx-background-insets:          0px, 1px, 2px;
   -fx-background-radius:          5px, 4px, 3px;
-}
 
-.context-menu .separator:horizontal .line
-{
-  -fx-border-color:               $menu-separator-color transparent transparent transparent;
-  -fx-border-insets:              5px 0px;
+  .separator:horizontal .line
+  {
+    -fx-border-color:             $menu-separator-color transparent transparent transparent;
+    -fx-border-insets:            5px 0px;
+  }
 }
 
 //****************************************************************************
@@ -46,7 +46,7 @@ $menu-check-shape:                "M-15,-1h2l2,3 4,-7h2l-5,9h-2 Z"  !default;
 .menu-up-arrow,
 .menu-down-arrow
 {
-  -fx-padding:                    em(6);
+  -fx-padding:                    0.5em;
   -fx-scale-shape:                false;
   -fx-background-color:           $menu-arrow-color;
 }
@@ -65,38 +65,38 @@ $menu-check-shape:                "M-15,-1h2l2,3 4,-7h2l-5,9h-2 Z"  !default;
 
 .menu-item
 {
-  -fx-padding:                    em(0) em(12) em(0) em(20);
-}
+  -fx-padding:                    0em 1em 0em 1.7em;
 
-.menu-item:focused
-{
-  -fx-background-color:           $menu-highlight-color;
-}
-
-.menu-item > .label
-{
-  -fx-text-fill:                  $menu-text-color;
-}
-
-.menu-item:checked > .left-container
-{
-  -fx-scale-shape:                false;
-  -fx-position-shape:             false;
-  -fx-background-color:           $menu-check-color;
-  -fx-shape:                      $menu-check-shape;
-}
-
-.menu-item > .right-container
-{
-  -fx-padding:                    em(0) em(0) em(0) 3em;
-}
-
-.menu-item > .right-container > .arrow
-{
-  -fx-scale-shape:                false;
-  -fx-position-shape:             false;
-  -fx-background-color:           $menu-arrow-color;
-  -fx-shape:                      $menu-arrow-r-shape;
+  &:focused
+  {
+    -fx-background-color:         $menu-highlight-color;
+  }
+  
+  .label
+  {
+    -fx-text-fill:                $menu-text-color;
+  }
+  
+  &:checked .left-container
+  {
+    -fx-scale-shape:              false;
+    -fx-position-shape:           false;
+    -fx-background-color:         $menu-check-color;
+    -fx-shape:                    $menu-check-shape;
+  }
+  
+  .right-container
+  {
+    -fx-padding:                  0em 0em 0em 3em;
+  
+    .arrow
+    {
+      -fx-scale-shape:            false;
+      -fx-position-shape:         false;
+      -fx-background-color:       $menu-arrow-color;
+      -fx-shape:                  $menu-arrow-r-shape;
+    }
+  }
 }
 
 //****************************************************************************
