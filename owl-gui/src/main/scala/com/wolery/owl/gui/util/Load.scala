@@ -70,7 +70,9 @@ object load
 
   def theme(name: String): Option[String] =
   {
-    Option(url(name,"css").toString)
+    val n = encode(name,"UTF-16").replace("+","%20")
+
+    Option(s"/css/$n.css")
   }
 
   def url(path: String,kind: String): URL =
