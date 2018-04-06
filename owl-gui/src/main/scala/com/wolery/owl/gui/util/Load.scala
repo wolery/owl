@@ -22,6 +22,7 @@ package util
 
 //****************************************************************************
 
+import java.net.URL
 import java.net.URLEncoder.encode
 
 import javafx.fxml.FXMLLoader
@@ -36,7 +37,7 @@ object load
 {
   def view[Controller](name: String): (Pane,Controller) =
   {
-    val l = new FXMLLoader(getClass.getResource(s"/fxml/$name.fxml"))
+    val l = new FXMLLoader(url(name,"fxml"))
     val n = l.load[Pane]
     val c = l.getController[Controller]
 
@@ -45,7 +46,7 @@ object load
 
   def view[Controller](name: String,controller: Controller): (Pane,Controller) =
   {
-    val l = new FXMLLoader(getClass.getResource(s"/fxml/$name.fxml"))
+    val l = new FXMLLoader(url(name,"fxml"))
 
     l.setController(controller)
 
@@ -54,24 +55,32 @@ object load
 
   def font(name: String,size: ℕ = 12): Font =
   {
-    Font.loadFont(getClass.getResource(s"/font/$name.ttf").toExternalForm,size);
+    Font.loadFont(url(name,"ttf").toExternalForm,size);
   }
 
   def soundbank(name: String): Soundbank =
   {
-    MidiSystem.getSoundbank(getClass.getResource(s"/sf2/$name.sf2"))
+    MidiSystem.getSoundbank(url(name,"sf2"))
   }
 
   def sequence(name: String): Sequence =
   {
-    MidiSystem.getSequence(getClass.getResource(s"/midi/$name.mid"))
+    MidiSystem.getSequence(url(name,"mid"))
   }
 
   def theme(name: String): Option[String] =
   {
-    val n = encode(name,"UTF-16").replace("+","%20")     // Escape white space
+    Option(url(name,"css").toString)
+  }
 
-    Some(s"/css/$n.css")                                 // Relative to 'css'
+  def url(path: String,kind: String): URL =
+  {
+    url(s"/$kind/$path.$kind")
+  }
+
+  def url(path: String): URL =
+  {
+    owl.getClass.getResource(path)
   }
 }
 
