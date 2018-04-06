@@ -24,7 +24,7 @@ object preferences extends Preferences(owl.getClass)
   val prompt1       = string("prompt1","owl> ")
   val prompt2       = string("prompt2","   | ")
 
-  val theme         = string("theme","Owl")
+  val theme         = string("theme","Logic Pro X V10.4")
 
   val eol           = System.lineSeparator
 }

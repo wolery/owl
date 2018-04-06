@@ -22,12 +22,13 @@ package util
 
 //****************************************************************************
 
+import java.net.URLEncoder.encode
+
 import javafx.fxml.FXMLLoader
 import javafx.scene.layout.Pane
 import javafx.scene.text.Font
-import javax.sound.midi.MidiSystem
-import javax.sound.midi.Sequence
-import javax.sound.midi.Soundbank
+
+import javax.sound.midi.{MidiSystem,Sequence,Soundbank}
 
 //****************************************************************************
 
@@ -64,6 +65,13 @@ object load
   def sequence(name: String): Sequence =
   {
     MidiSystem.getSequence(getClass.getResource(s"/midi/$name.mid"))
+  }
+
+  def theme(name: String): Option[String] =
+  {
+    val n = encode(name,"UTF-16").replace("+","%20")     // Escape white space
+
+    Some(s"/css/$n.css")                                 // Relative to 'css'
   }
 }
 
