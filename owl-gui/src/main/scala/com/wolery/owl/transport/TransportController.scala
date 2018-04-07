@@ -14,17 +14,12 @@
 
 package com.wolery
 package owl
-package gui
-
-//****************************************************************************
-
-import Math.max
+package transport
 
 import com.wolery.owl.core._
 import com.wolery.owl.util.utilities._
 import com.wolery.owl.midi.messages._
 import com.wolery.owl.gui.util.implicits._
-
 import javafx.animation.{ KeyFrame, Timeline }
 import javafx.application.Platform.{ runLater ⇒ defer }
 import javafx.css.PseudoClass.getPseudoClass
@@ -35,7 +30,7 @@ import javafx.scene.input.MouseEvent
 import javafx.util.Duration.millis
 import javafx.util.StringConverter
 import javax.sound.midi.{ MetaEventListener, MetaMessage }
-import midi.Transport
+import com.wolery.owl.midi.Transport
 
 //****************************************************************************
 
@@ -131,7 +126,7 @@ class TransportController(m_xpt: Transport) extends MetaEventListener
     updateClock()
   }
 
-  var m_tap: Tick = 0
+  var m_tap: Long = 0
   def onTapTempo(me: MouseEvent): Unit =
   {
 //    if (m_xpt.isPlaying)
@@ -223,6 +218,17 @@ class TransportController(m_xpt: Transport) extends MetaEventListener
   val STOPPED   = getPseudoClass("stopped")
   val PLAYING   = getPseudoClass("playing")
   val LOOPING   = getPseudoClass("looping")
+}
+
+//****************************************************************************
+
+object TransportView
+{
+  def apply(transport: Transport): Node =
+  {
+    val (tv,_) = com.wolery.owl.gui.util.load.view("TransportView",new TransportController(transport))
+    tv
+  }
 }
 
 //****************************************************************************

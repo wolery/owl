@@ -14,12 +14,14 @@
 
 package com.wolery
 package owl
-package gui
+package interpreter
 
 import java.io.{PrintWriter,Writer}
 
-import scala.tools.nsc.interpreter.IMain
 import scala.tools.nsc.{ConsoleWriter,Settings}
+import scala.tools.nsc.interpreter.IMain
+
+import com.wolery.owl.preferences
 
 //****************************************************************************
 
@@ -36,8 +38,8 @@ object interpreter extends Logging
   {
     def classPath(classes: String*): String =
     {
-      import java.lang.Class.forName
       import java.io.File.pathSeparator
+      import java.lang.Class.forName
 
       classes.map(forName(_).getProtectionDomain
                             .getCodeSource

@@ -14,14 +14,11 @@
 
 package com.wolery
 package owl
-package gui
+package interpreter
 
 import javafx.event.ActionEvent
-
 import scala.tools.nsc.interpreter.Results.Incomplete
-
 import com.wolery.fx.control.Console
-
 import preferences.{prompt1, prompt2}
 
 //****************************************************************************
@@ -120,6 +117,13 @@ class InterpreterConsole(id: String = "console") extends Console
 
     interpreter.writer = null
   }
+}
+
+//****************************************************************************
+
+object InterpreterView
+{
+  def apply(): Node = new InterpreterConsole()
 }
 
 //****************************************************************************

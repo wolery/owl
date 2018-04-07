@@ -17,8 +17,10 @@ package owl
 package gui
 
 import javafx.scene.Scene
-import javafx.scene.control.{Label,ProgressBar}
-import javafx.stage.{Modality,Stage}
+import javafx.scene.control.{Label, ProgressBar}
+import javafx.stage.{Modality, Stage}
+
+import com.wolery.util.manifest.format
 
 /**
  * @author Jonathon Bell
@@ -36,8 +38,8 @@ class AboutController(stage: Stage) extends Logging
   {
     log.debug("initialize()")                            //
 
-    m_vers.setText(manifest.format(m_vers.getText))      //
-    m_time.setText(manifest.format(m_time.getText))      //
+    m_vers.setText(format(m_vers.getText))               //
+    m_time.setText(format(m_time.getText))               //
 
     stage.setAlwaysOnTop(true)                           //
     stage.setResizable(false)                            //
