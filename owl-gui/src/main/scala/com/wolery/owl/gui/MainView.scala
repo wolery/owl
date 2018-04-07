@@ -59,11 +59,10 @@ object MainView extends Logging
     mv.asInstanceOf[BorderPane].setCenter(new InterpreterConsole)
 
     stage.setScene    (new Scene(mv))
-    stage.setMinWidth (mv.getMinWidth)
-    stage.setMinHeight(mv.getMinHeight)
-  //stage.setMaximized(true)
     stage.setTitle    ("Owl")
     stage.show        ()
+    stage.setMinWidth (mv.getMinWidth  + stage.getWidth  - mv.getWidth)
+    stage.setMinHeight(mv.getMinHeight + stage.getHeight - mv.getHeight)
   }
 }
 
