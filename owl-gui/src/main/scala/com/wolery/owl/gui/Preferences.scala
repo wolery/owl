@@ -24,9 +24,9 @@ object preferences extends Preferences(owl.getClass)
   val prompt1       = string("prompt1","owl> ")
   val prompt2       = string("prompt2","   | ")
 
-  val eol           = System.lineSeparator
+  val theme         = string("theme","Logic Pro X V10.4")
 
-  val scala_library = string("scala_library","/opt/scala-2.12.3/lib/scala-library.jar")
+  val eol           = System.lineSeparator
 }
 
 //****************************************************************************

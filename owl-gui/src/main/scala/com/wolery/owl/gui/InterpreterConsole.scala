@@ -17,7 +17,6 @@ package owl
 package gui
 
 import javafx.event.ActionEvent
-import javafx.scene.control._//{ContextMenu, Menu , MenuItem, SeparatorMenuItem}
 
 import scala.tools.nsc.interpreter.Results.Incomplete
 
@@ -39,22 +38,6 @@ class InterpreterConsole(id: String = "console") extends Console
 
   interpreter.writer = writer
   prompt             = prompt1()
-
-
-  setContextMenu(
-  new ContextMenu(
-    new MenuItem("Cut"),
-    new MenuItem("Select Overlapped Regions/Events"),
-    new Menu("Submenu",null,
-      new MenuItem("Cut"),
-      new MenuItem("Disabled")    {setDisabled(true)},
-      new CheckMenuItem("checked"){setSelected(true)},
-      new RadioMenuItem("radio")  {setSelected(true)},
-      new SeparatorMenuItem(),
-      new MenuItem("Select All")),
-    new MenuItem("Paste"),
-    new SeparatorMenuItem(),
-    new MenuItem("Select All")))
 
   def onAccept(e: ActionEvent): Unit =
   {

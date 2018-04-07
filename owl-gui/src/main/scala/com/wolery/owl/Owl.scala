@@ -23,7 +23,9 @@ import javafx.concurrent.Task
 import javafx.stage.Stage
 
 import com.wolery.owl.gui.{Application, MainView, SplashView}
+import com.wolery.owl.gui.util.load
 import com.wolery.owl.gui.util.implicits.asTask
+import com.wolery.owl.gui.preferences.theme.{value => theme}
 import com.wolery.owl.midi.Transport
 
 //****************************************************************************
@@ -36,7 +38,7 @@ object owl extends Application
   override
   def init(): Unit =
   {
-    stylesheet = Some("css/Owl.css")
+    stylesheet = load.theme(theme)
   }
 
   def task: Task[Unit] =
