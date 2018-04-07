@@ -24,7 +24,7 @@ import javafx.stage.{Stage, StageStyle}
 
 import com.wolery.fx.control.menu
 import com.wolery.owl.gui.util.load
-import com.wolery.owl.interpreter.InterpreterView
+import com.wolery.owl.interpreter.ScalaInterpreter.console
 import com.wolery.owl.transport.TransportView
 
 //****************************************************************************
@@ -57,7 +57,7 @@ object MainView extends Logging
     val (mv,_) = load.view("MainView",     new MainController(stage))
 
     mv.asInstanceOf[BorderPane].setTop   (TransportView(transport))
-    mv.asInstanceOf[BorderPane].setCenter(InterpreterView())
+    mv.asInstanceOf[BorderPane].setCenter(console())
 
     stage.setScene    (new Scene(mv))
     stage.setTitle    ("Owl")

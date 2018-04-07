@@ -17,24 +17,24 @@ package owl
 package interpreter
 
 import javafx.event.ActionEvent
-import scala.tools.nsc.interpreter.Results.Incomplete
+
 import com.wolery.fx.control.Console
-import preferences.{prompt1, prompt2}
+import com.wolery.owl.preferences.{prompt1, prompt2}
 
 //****************************************************************************
 
-class InterpreterConsole(id: String = "console") extends Console
+class InterpreterConsole(m_int: Interpreter) extends Console
 {
   var m_partial: String = ""
 
-  setId(id)
+  setId("console")
   setWrapText(true)
   setFocusTraversable(false)
   setOnAccept        (onAccept(_))
   setOnComplete      (onComplete(_))
 
-  interpreter.writer = Some(writer)
-  prompt             = prompt1()
+  m_int.writer = Some(writer)
+  prompt       = prompt1()
 
   def onAccept(e: ActionEvent): Unit =
   {
@@ -55,7 +55,7 @@ class InterpreterConsole(id: String = "console") extends Console
       m_partial = ""
     }
     else
-    if (interpreter.interpret(m_partial) == Incomplete)
+    if (m_int.interpret(m_partial) == Incomplete)
     {
       appendText(prompt2())
     }
@@ -115,15 +115,8 @@ class InterpreterConsole(id: String = "console") extends Console
   {
     log.debug("onClose()")
 
-    interpreter.writer = None
+    m_int.writer = None
   }
-}
-
-//****************************************************************************
-
-object InterpreterView
-{
-  def apply(): Node = new InterpreterConsole()
 }
 
 //****************************************************************************
