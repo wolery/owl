@@ -33,7 +33,7 @@ class InterpreterConsole(id: String = "console") extends Console
   setOnAccept        (onAccept(_))
   setOnComplete      (onComplete(_))
 
-  interpreter.writer = writer
+  interpreter.writer = Some(writer)
   prompt             = prompt1()
 
   def onAccept(e: ActionEvent): Unit =
@@ -115,7 +115,7 @@ class InterpreterConsole(id: String = "console") extends Console
   {
     log.debug("onClose()")
 
-    interpreter.writer = null
+    interpreter.writer = None
   }
 }
 

@@ -31,7 +31,7 @@ object interpreter extends Logging
   {
     val con           : Writer = out
     def get           : Writer = out
-    def set(w: Writer): Unit   = out = if (w == null) con else w
+    def set(w: Option[Writer]): Unit = out = w.getOrElse(con)
   }
 
   val m_int =
@@ -59,7 +59,7 @@ object interpreter extends Logging
   }
 
   def writer                         : Writer       = m_out.get
-  def writer_=(writer: Writer = null): Unit         = m_out.set(writer)
+  def writer_=(writer: Option[Writer]): Unit        = m_out.set(writer)
 
   def interpret(line: String)                       = m_int.interpret(line)
   def bind[α]  (name: String,tipe: String,value: α) = m_int.bind(name,tipe,value)
