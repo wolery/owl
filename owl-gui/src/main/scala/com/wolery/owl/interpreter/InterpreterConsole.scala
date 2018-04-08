@@ -23,7 +23,8 @@ import com.wolery.fx.control.Console
 /**
  * Specializes class `Console` for use with an interpreter.
  *
- * Class `Interpreter`
+ * Class `InterpreterConsole` specializes class `Console` to implement a 'read
+ * -eval-print' loop for the given interpreter.
  *
  * @param  m_int  The interpreter to interact with.
  *
@@ -90,7 +91,7 @@ class InterpreterConsole(m_int: Interpreter) extends Console
     {
       case ":help"    ⇒ onHelp      (arguments)
       case ":history" ⇒ onHistory   (arguments)
-      case   bad      ⇒ onBadCommand(arguments)
+      case otherwise  ⇒ onBadCommand(arguments)
     }
   }
 
