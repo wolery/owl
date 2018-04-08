@@ -25,6 +25,7 @@ import javafx.stage.Stage
 import com.wolery.owl.gui.{MainView, SplashView}
 import com.wolery.owl.gui.util.implicits.asTask
 import com.wolery.owl.gui.util.load
+import com.wolery.owl.interpreter.{Interpreter,InterpreterConsole,ScalaInterpreter}
 import com.wolery.owl.midi.Transport
 import com.wolery.owl.preferences.theme
 
@@ -32,6 +33,7 @@ import com.wolery.owl.preferences.theme
 
 object owl extends Application
 {
+  val interpreter: Interpreter = ScalaInterpreter
   val sequencer:   Sequencer   = MidiSystem.getSequencer()
   val synthesizer: Synthesizer = MidiSystem.getSynthesizer()
 
@@ -67,6 +69,11 @@ object owl extends Application
     sequencer.setSequence(sequence)
 
     new Transport(sequencer)
+  }
+
+  def console(): Node =
+  {
+    new InterpreterConsole(interpreter)
   }
 }
 
