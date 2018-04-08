@@ -31,41 +31,49 @@ import com.wolery.owl.preferences.compiler
  */
 object ScalaInterpreter extends Interpreter
 {
+  /**
+   * A PrintWriter that initially sends characters to the Java system console,
+   * but that can be redirected to send its characters elsewhere.
+   *
+   *
+   */
   private
   object m_out extends PrintWriter(new ConsoleWriter)
   {
-    val con           : Writer = out
-    def get           : Writer = out
-    def set(w: Option[Writer]): Unit = out = w.getOrElse(con)
+    def writer                  : Writer = out
+    def writer_=(writer: Writer): Unit   = out = writer
   }
 
+  /**
+   *
+   */
   private
   val m_int =
   {
-    def classPath(classes: String*): String =
+    def cpath(classes: Class[_]*): String =
     {
-      import java.io.File.pathSeparator
-      import java.lang.Class.forName
-
-      classes.map(forName(_).getProtectionDomain
-                            .getCodeSource
-                            .getLocation
-                            .toString)
+      classes.map(_.getProtectionDomain
+                   .getCodeSource
+                   .getLocation
+                   .toString)
              .mkString(java.io.File.pathSeparator)
     }
 
     val s = new Settings
 
     s.usejavacp.value     = true
-    s.bootclasspath.value = classPath("scala.tools.nsc.Interpreter",
-                                      "scala.Some")
+    s.bootclasspath.value = cpath(classOf[IMain],
+                                  classOf[Some[_]])
     s.processArgumentString(compiler.value)
 
     new IMain(s,m_out)
   }
 
+  /**
+   * Convert the given Scala interpreter result code to our own format.
+   */
   private
-  def result(r: IResult): Result = r match
+  def result(iresult: IResult): Result = iresult match
   {
     case Error      ⇒ error
     case Success    ⇒ success
@@ -73,43 +81,58 @@ object ScalaInterpreter extends Interpreter
   }
 
   /**
+   * Returns the object to which this interpreter currently writes results and
+   * error messages.
    *
+   * @return The current output writer.
    */
   def writer: Option[Writer] =
   {
-    Option(m_out.get)
+    Option(m_out.writer)                                 // Return the writer
   }
 
   /**
+   * Updates the object to which this interpreter currently writes results and
+   * error messages, or resets it to the default object, which appends text to
+   * the Java system console
    *
+   * @param  writer  The object to which this interpreter should write results
+   *                 and error messages,
    */
   def writer_=(writer: Option[Writer]): Unit =
   {
-    m_out.set(writer)
+    m_out.writer = writer.getOrElse(new ConsoleWriter)   // Update the writer
   }
 
   /**
+   * Interprets a single line of input.
    *
+   * Results and error messages are written to the associated `Writer` object.
+   *
+   * @param  line  The line of text to interpret.
+   *
+   * @return A code indicating whether the evaluation succeeded or not.
    */
   def interpret(line: String): Result =
   {
-    result(m_int.interpret(line))
+    result(m_int.interpret(line))                        // Interpret the line
   }
 
   /**
+   * Binds a variable with  the given name and type to an initial value in the
+   * intepreter's top level context where it can subsequently be referenced by
+   * name.
    *
+   * @param  name   The name of the variable to bind.
+   * @param  tipe   The fully package qualified type name of the value to bind
+   *                to.
+   * @param  value  The value to bind to.
+   *
+   * @return A code indicating whether the binding succeeded or not.
    */
   def bind[α](name: String,tipe: String,value: α): Result =
   {
-    result(m_int.bind(name,tipe,value))
-  }
-
-  /**
-   * @return
-   */
-  def console(): Node =
-  {
-    new InterpreterConsole(this)
+    result(m_int.bind(name,tipe,value))                  // Bind name to value
   }
 }
 
