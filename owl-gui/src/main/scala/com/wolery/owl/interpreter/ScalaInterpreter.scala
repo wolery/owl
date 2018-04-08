@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : An embedded interpreter for the language Scala.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -20,11 +20,15 @@ import java.io.{PrintWriter,Writer}
 
 import scala.tools.nsc.{ConsoleWriter,Settings}
 import scala.tools.nsc.interpreter.IMain
+import scala.tools.nsc.interpreter.Results.{Result⇒IResult,Error,Success,Incomplete}
 
-import com.wolery.owl.preferences
+import com.wolery.owl.preferences.compiler
 
-//****************************************************************************
-
+/**
+ * An embedded interpreter for the language Scala.
+ *
+ * @author Jonathon Bell
+ */
 object ScalaInterpreter extends Interpreter
 {
   private
@@ -55,26 +59,58 @@ object ScalaInterpreter extends Interpreter
     s.usejavacp.value     = true
     s.bootclasspath.value = classPath("scala.tools.nsc.Interpreter",
                                       "scala.Some")
-    s.processArgumentString(preferences.compiler.value)
+    s.processArgumentString(compiler.value)
 
     new IMain(s,m_out)
   }
 
   private
-  def result(r: scala.tools.nsc.interpreter.Results.Result): Result = r match
+  def result(r: IResult): Result = r match
   {
-    case scala.tools.nsc.interpreter.Results.Success    ⇒ Success
-    case scala.tools.nsc.interpreter.Results.Error      ⇒ Error
-    case scala.tools.nsc.interpreter.Results.Incomplete ⇒ Incomplete
+    case Error      ⇒ error
+    case Success    ⇒ success
+    case Incomplete ⇒ incomplete
   }
 
-  def console()                                     : Node = new InterpreterConsole(this)
+  /**
+   *
+   */
+  def writer: Option[Writer] =
+  {
+    Option(m_out.get)
+  }
 
-  def writer                                        : Writer = m_out.get
-  def writer_=(writer: Option[Writer])              : Unit   = m_out.set(writer)
+  /**
+   *
+   */
+  def writer_=(writer: Option[Writer]): Unit =
+  {
+    m_out.set(writer)
+  }
 
-  def interpret(line: String)                       : Result = result(m_int.interpret(line))
-  def bind[α]  (name: String,tipe: String,value: α) : Result = result(m_int.bind(name,tipe,value))
+  /**
+   *
+   */
+  def interpret(line: String): Result =
+  {
+    result(m_int.interpret(line))
+  }
+
+  /**
+   *
+   */
+  def bind[α](name: String,tipe: String,value: α): Result =
+  {
+    result(m_int.bind(name,tipe,value))
+  }
+
+  /**
+   * @return
+   */
+  def console(): Node =
+  {
+    new InterpreterConsole(this)
+  }
 }
 
 //****************************************************************************

@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : Specializes class `Console` for use with an interpreter.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -19,61 +19,71 @@ package interpreter
 import javafx.event.ActionEvent
 
 import com.wolery.fx.control.Console
-import com.wolery.owl.preferences.{prompt1, prompt2}
 
-//****************************************************************************
-
+/**
+ * Specializes class `Console` for use with an interpreter.
+ *
+ * Class `Interpreter`
+ *
+ * @param  m_int  The interpreter to interact with.
+ *
+ * @author Jonathon Bell
+ */
 class InterpreterConsole(m_int: Interpreter) extends Console
 {
-  var m_partial: String = ""
+  val m_prompt1: String = preferences.prompt1()          // Main prompt string
+  val m_prompt2: String = preferences.prompt2()          // Need more input...
+  var m_partial: String = ""                             // Partial input line
 
   setId("console")
   setWrapText(true)
   setFocusTraversable(false)
-  setOnAccept        (onAccept(_))
-  setOnComplete      (onComplete(_))
+  setOnAccept(onAccept(_))
+  setOnComplete(onComplete(_))
 
   m_int.writer = Some(writer)
-  prompt       = prompt1()
+  prompt       = m_prompt1
 
   def onAccept(e: ActionEvent): Unit =
   {
-    log.info("onAccept({})",e)
+    log.info("onAccept({})",e)                           // Trace our progress
 
-    m_partial += input.trim
+    m_partial += input.trim                              //
 
     if (m_partial.isEmpty)
     {
-      appendText(prompt1())
+      appendText(m_prompt1)
     }
     else
     if (m_partial.startsWith(":"))
     {
       addCommand(m_partial)
-      onCommand(m_partial)
-      appendText(prompt1())
+      onCommand (m_partial)
+      appendText(m_prompt1)
       m_partial = ""
     }
     else
-    if (m_int.interpret(m_partial) == Incomplete)
+    if (m_int.interpret(m_partial) == incomplete)
     {
-      appendText(prompt2())
+      appendText(m_prompt2)
     }
     else
     {
       addCommand(m_partial)
-      appendText(prompt1())
+      appendText(m_prompt1)
       m_partial = ""
     }
   }
 
   def onComplete(e: ActionEvent): Unit =
   {
-    log.info("onCompleteEvent({})",e)
+    log.info("onCompleteEvent({})",e)                    // Trace our progress
   }
 
   def onCommand(command: String): Unit =
   {
+    log.debug("onCommmand({})",command)                  // Trace our progress
+
     val arguments = command.split("\\s+")
 
     arguments(0) match
@@ -86,7 +96,7 @@ class InterpreterConsole(m_int: Interpreter) extends Console
 
   def onBadCommand(arguments: Seq[String]): Unit =
   {
-    log.debug("onBadCommmand({})",arguments)
+    log.debug("onBadCommmand({})",arguments)             // Trace our progress
 
     this.appendText(arguments(0))
     this.appendLine(": no such command.  Type :help for help.")
@@ -94,7 +104,7 @@ class InterpreterConsole(m_int: Interpreter) extends Console
 
   def onHelp(arguments: Seq[String]): Unit =
   {
-    log.debug("onHelp({})",arguments)
+    log.debug("onHelp({})",arguments)                    // Trace our progress
 
     val help = """
       |:help [command]          print this summary or command-specific help
@@ -106,14 +116,14 @@ class InterpreterConsole(m_int: Interpreter) extends Console
 
   def onHistory(arguments: Seq[String]): Unit =
   {
-    log.debug("onHistory({})",arguments)
+    log.debug("onHistory({})",arguments)                 // Trace our progress
 
     listCommands()
   }
 
   def onClose(): Unit =
   {
-    log.debug("onClose()")
+    log.debug("onClose()")                               // Trace our progress
 
     m_int.writer = None
   }
