@@ -20,7 +20,7 @@ import java.io.{PrintWriter,Writer}
 
 import scala.tools.nsc.{ConsoleWriter,Settings}
 import scala.tools.nsc.interpreter.IMain
-import scala.tools.nsc.interpreter.Results.{Result⇒IResult,Error,Success,Incomplete}
+import scala.tools.nsc.interpreter.Results.{Result⇒IResult,_}
 
 import com.wolery.owl.preferences.compiler
 
@@ -32,16 +32,21 @@ import com.wolery.owl.preferences.compiler
 object ScalaInterpreter extends Interpreter
 {
   /**
-   * A PrintWriter that initially sends characters to the Java system console,
-   * but that can be redirected to send its characters elsewhere.
+   * A `PrintWriter` object that initially sends characters to the Java system
+   * console, but that also can be redirected to send its output elsewhere.
    *
-   *
+   * Class `IMain` requires that a writer be supplied at construction but does
+   * not allow this object to be changed thereafter.  The host application may
+   * wish to close the console window and reopen it again later, however. This
+   * object extends the `PrintWriter`  base class to provide mutable access to
+   * the protected 'out' member, thus allowing us to redirect the output of an
+   * interpreter without recreating the interpreter itself.
    */
   private
   object m_out extends PrintWriter(new ConsoleWriter)
   {
-    def writer                  : Writer = out
-    def writer_=(writer: Writer): Unit   = out = writer
+    def writer                  : Writer = out           // Return the writer
+    def writer_=(writer: Writer): Unit   = out = writer  // Update the update
   }
 
   /**
