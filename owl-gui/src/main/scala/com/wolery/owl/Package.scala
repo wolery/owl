@@ -27,7 +27,6 @@ package object owl
 
   type fx          = javafx.fxml.FXML
   type Node        = javafx.scene.Node
-  type Parent      = javafx.scene.Parent
   type Pane        = javafx.scene.layout.Pane
 }
 
