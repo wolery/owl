@@ -17,7 +17,6 @@ package owl
 package interpreter
 
 import javafx.event.ActionEvent
-
 import com.wolery.fx.control.Console
 
 /**

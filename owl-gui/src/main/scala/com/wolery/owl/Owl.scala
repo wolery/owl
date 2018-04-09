@@ -17,17 +17,17 @@ package owl
 
 //****************************************************************************
 
-import javax.sound.midi.{MidiSystem, Sequence, Sequencer, Synthesizer}
-
 import javafx.concurrent.Task
 import javafx.stage.Stage
 
 import com.wolery.owl.gui.{MainView, SplashView}
-import com.wolery.owl.gui.util.implicits.asTask
 import com.wolery.owl.gui.util.load
+import com.wolery.owl.gui.util.implicits.asTask
 import com.wolery.owl.interpreter.{Interpreter,InterpreterConsole,ScalaInterpreter}
 import com.wolery.owl.midi.Transport
 import com.wolery.owl.preferences.theme
+
+import javax.sound.midi.{MidiSystem, Sequence, Sequencer, Synthesizer}
 
 //****************************************************************************
 
