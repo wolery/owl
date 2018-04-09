@@ -18,8 +18,6 @@ package gui
 
 //****************************************************************************
 
-import com.wolery.owl.gui.util.implicits._
-
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Region.USE_PREF_SIZE
 import javafx.scene.layout.StackPane
