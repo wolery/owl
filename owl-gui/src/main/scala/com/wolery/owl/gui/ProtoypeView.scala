@@ -25,6 +25,7 @@ import javax.sound.midi.{MetaEventListener,MetaMessage}
 import midi.Transport
 import com.wolery.owl.gui.util.{load}
 import com.wolery.owl.owl
+import com.wolery.owl.transport.TransportController
 
 //****************************************************************************
 

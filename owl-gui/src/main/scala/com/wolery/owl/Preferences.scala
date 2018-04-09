@@ -14,7 +14,6 @@
 
 package com.wolery
 package owl
-package gui
 
 //****************************************************************************
 
@@ -25,8 +24,6 @@ object preferences extends Preferences(owl.getClass)
   val prompt2       = string("prompt2","   | ")
 
   val theme         = string("theme","Logic Pro X V10.4")
-
-  val eol           = System.lineSeparator
 }
 
 //****************************************************************************

@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : Common definitions used throughout the application.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -13,18 +13,21 @@
 //**********************************************************************w*w***
 
 package com.wolery
-package owl
 
-//****************************************************************************
-
-package object gui
+/**
+ * Common definitions used throughout the application.
+ *
+ * @author Jonathon Bell
+ */
+package object owl
 {
-  type Chord       = Seq[core.Pitch]
-  type Pitches     = Seq[core.Pitch]
-  type Tick        = Long
-  type Tempo       = ℝ // in BPM
-  type BPM         = ℝ
-  type Millisecond = ℕ
+  type Logging     = com.wolery.util.Logging
+  type Preferences = com.wolery.util.Preferences
+  type Application = com.wolery.fx.util.Application
+
+  type fx          = javafx.fxml.FXML
+  type Node        = javafx.scene.Node
+  type Pane        = javafx.scene.layout.Pane
 }
 
 //****************************************************************************

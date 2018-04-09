@@ -22,7 +22,6 @@ import com.wolery.owl.core.Pitch
 import com.wolery.owl.core.Scale
 import com.wolery.owl.gui.Bead
 import com.wolery.owl.midi.messages._
-import com.wolery.owl.gui.util.implicits._
 import com.wolery.owl._
 import javafx.fxml.{ FXML ⇒ fx }
 import javafx.scene.Node

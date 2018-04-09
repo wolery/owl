@@ -20,10 +20,11 @@ import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.scene.control.MenuBar
 import javafx.scene.layout.BorderPane
-import javafx.stage.{Stage,StageStyle}
+import javafx.stage.{Stage, StageStyle}
 
 import com.wolery.fx.control.menu
 import com.wolery.owl.gui.util.load
+import com.wolery.owl.transport.TransportView
 
 //****************************************************************************
 
@@ -53,10 +54,9 @@ object MainView extends Logging
     val stage     = new Stage(StageStyle.DECORATED)
 
     val (mv,_) = load.view("MainView",     new MainController(stage))
-    val (tv,_) = load.view("TransportView",new TransportController(transport))
 
-    mv.asInstanceOf[BorderPane].setTop(tv)
-    mv.asInstanceOf[BorderPane].setCenter(new InterpreterConsole)
+    mv.asInstanceOf[BorderPane].setTop   (TransportView(transport))
+    mv.asInstanceOf[BorderPane].setCenter(owl.console())
 
     stage.setScene    (new Scene(mv))
     stage.setTitle    ("Owl")
