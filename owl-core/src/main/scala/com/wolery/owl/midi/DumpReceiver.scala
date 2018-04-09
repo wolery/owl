@@ -89,7 +89,7 @@ final class DumpReceiver(m_out: PrintStream = System.out) extends Receiver
 
     def song = f"${mm.getData1}%03d"
 
-    def mtcQuarterFrame =
+    def mtcQuarterFrame() =
     {
       mm.getData1 & 0x70 match
       {
@@ -109,7 +109,7 @@ final class DumpReceiver(m_out: PrintStream = System.out) extends Receiver
     mm.getStatus & 0x0F match
     {
       case 0x0 ⇒ m_out.print(s"sysex[           ")
-      case 0x1 ⇒ m_out.print(s"mtc 1/4 frame $mtcQuarterFrame")
+      case 0x1 ⇒ m_out.print(s"mtc 1/4 frame ${mtcQuarterFrame()}")
       case 0x2 ⇒ m_out.print(s"song position ${mm.integer}")
       case 0x3 ⇒ m_out.print(s"song select $song")
       case 0x6 ⇒ m_out.print(s"tune request     ")

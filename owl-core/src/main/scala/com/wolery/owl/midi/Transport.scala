@@ -100,9 +100,9 @@ final class Transport(m_seq: Sequencer) extends Logging
 //conversions
   def measure(tick: Tick)             : Measure =
   {
-    val measure = m_map.m_measure(tick)
-    val meter  = m_map.m_meter(tick)
-    println(m_map.m_measure(tick))
+//    val measure = m_map.m_measure(tick)
+//    val meter  = m_map.m_meter(tick)
+//    println(m_map.m_measure(tick))
       Measure(m_map.m_measure(tick))
   }
 
