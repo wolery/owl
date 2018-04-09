@@ -16,21 +16,21 @@ package com.wolery
 package owl
 package transport
 
-import com.wolery.owl.core._
-import com.wolery.owl.util.utilities._
-import com.wolery.owl.midi.messages._
-import com.wolery.owl.gui.util.implicits._
-import javafx.animation.{ KeyFrame, Timeline }
-import javafx.application.Platform.{ runLater ⇒ defer }
+import javax.sound.midi.{MetaEventListener,MetaMessage}
+
+import javafx.animation.{KeyFrame, Timeline}
+import javafx.application.Platform.{runLater ⇒ defer}
 import javafx.css.PseudoClass.getPseudoClass
 import javafx.event.ActionEvent
-import javafx.scene.control.{ Label, Spinner, SpinnerValueFactory }
+import javafx.scene.control.{Label, Spinner, SpinnerValueFactory}
 import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory
 import javafx.scene.input.MouseEvent
 import javafx.util.Duration.millis
 import javafx.util.StringConverter
-import javax.sound.midi.{ MetaEventListener, MetaMessage }
+
+import com.wolery.owl.gui.util.implicits._
 import com.wolery.owl.midi.Transport
+import com.wolery.owl.midi.messages._
 
 //****************************************************************************
 
