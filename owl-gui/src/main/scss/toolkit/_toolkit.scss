@@ -21,13 +21,13 @@
  *    $_: assert($x);
  * }}}
  * halts compilation with an  assertion failure if the  variable `x` is false,
- * but has no effect  (beyond assigning the value `true` to the dummy variable
- * `_`) if, as expected, `x` evaluates true.
+ * but has no effect otherwise (beyond assigning the value `true` to the dummy
+ * variable `_`).
  *
  * @param  assertion  A boolean expression that is expected to evaluate true.
  * @param  message    An optional message to include in the failure report.
  *
- * @return `true` if the given assertion evaluates true.
+ * @return `true` if the given expression evaluates true.
  */
 @function assert($assertion,$message: $assertion)
 {
@@ -36,7 +36,31 @@
     @return true;                                        // ...no problem then
   }
 
-  @error "assertion failed: #{$message}";                // Assertion failure!
+  @error "assertion failed: #{$message}";                // Report the failure
+}
+
+/**
+ * Asserts that a given value has an expected type,  and halts the compilation
+ * with an error if this is not in fact the case.
+ *
+ * For example, the statement:
+ * {{{
+ *    $_: assert($x,number);
+ * }}}
+ * halts compilation with an  assertion failure if the  variable `x` is not in
+ * fact a number, but has no effect otherwise (beyond assigning a value `true` 
+ * to the  dummy variable `_`).
+ * 
+ * @param  value  The value whose type is to be tested.
+ * @param  type   The expected type of the given value.
+ * 
+ * @return `true` if the given value has the expected type.
+ */
+@function assert-type($value,$want)
+{
+  $got: type-of($value);                                 // Examine its type
+
+  @return assert($want == $got,"expected type #{$want} but got #{$got}");
 }
 
 /**
@@ -95,6 +119,22 @@
 @function gray($shade)
 {
   @return rgb($shade,$shade,$shade);                     // Convert to color
+}
+
+/**
+ * Return true if `prefix` is an initial prefix of the given string.
+ *
+ * @param  string  An arbitrary string.
+ * @param  prefix  A possible prefix of the given string.
+ * 
+ * @return `true` if `prefix` is an initial prefix of the given string.
+ */
+@function starts-with($string,$prefix)
+{
+  $_:assert-type($string,string);                        // Validate argument
+  $_:assert-type($prefix,string);                        // Validate argument
+
+  @return str-index($string,$prefix) == 1;               // Is initial prefix?
 }
 
 //****************************************************************************
