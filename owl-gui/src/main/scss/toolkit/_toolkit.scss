@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : Miscellaneous utility functions used throughout the Wolery.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -13,13 +13,74 @@
 //**********************************************************************w*w***
 
 /**
- * @param  px
+ * Asserts that the given expression evaluates true, and halts the compilation
+ * with an error if this is not in fact the case.
  *
- * @return The given number of pixels as a multiple of the font size.
+ * For example, the statement:
+ * {{{
+ *    $_: assert($x);
+ * }}}
+ * halts compilation with an  assertion failure if the  variable `x` is false,
+ * but has no effect  (beyond assigning the value `true` to the dummy variable
+ * `_`) if, as expected, `x` evaluates true.
+ *
+ * @param  assertion  A boolean expression that is expected to evaluate true.
+ *
+ * @return `true` if the given assertion evaluates true.
  */
-@function em($px)
+@function assert($assertion)
 {
-  @return 1em * round(1000 * $px / 12) / 1000;
+  @if $assertion                                         // Assertion is true?
+  {
+    @return true;                                        // ...no problem then
+  }
+
+  @error "assertion failed: #{$assertion}";              // Assertion failure!
+}
+
+/**
+ * Converts a length, expressed in pixels, into a multiple of the default font
+ * size, expressed in terms of the typographic unit 'em'.
+ *
+ * Dimensions expressed in terms of 'em's scale naturally on different display 
+ * devices because the OS adjusts the default font size automatically to match
+ * the target screen resolution.
+ *
+ * This implementation assumes a default font size of 12 points (Mac OSX), and
+ * rounds the result to 3 decimal places.
+ *
+ * @param  length  A length, assumed to be in pixels if no unit is specified.
+ *
+ * @return The given length, expressed as a multiple of the default font size
+ *         and rounded to 3 decimal places.
+ *
+ * @see    [[https://en.wikipedia.org/wiki/Em_(typography) Em (typography)]]
+ */
+@function em($length)
+{
+  $_: assert(type-of($length) == number);                // Validate argements
+
+  @if unit($length) == "em"                              // In units of em?
+  {
+    $length: $length / 1em;                              // ...drop the unit
+  }
+  @else
+  if unit($length) == "px"                               // In units of px?
+  {
+    $length: $length / 1px;                              // ...drop the unit
+    $length: $length / 12;                               // ...scale to font
+  }
+  @else
+  if unit($length) == ""                                 // No explicit units?
+  {
+    $length: $length / 12;                               // ...scale to font
+  }
+  @else                                                  // Some other unit?
+  {
+    @error "em: expected length but got '#{$length}'";   // ...not yet handled
+  }
+
+  @return 1em * round($length * 1000) / 1000;            // Adjust precision
 }
 
 /**
@@ -28,12 +89,12 @@
  *
  * @param  shade  A shade of gray, represented as an integer between 0 (black)
  *                and 255 (white).
- *                
+ *
  * @return The color value describing the given shade of gray.
  */
 @function gray($shade)
 {
-  @return rgb($shade,$shade,$shade);
+  @return rgb($shade,$shade,$shade);                     // Convert to color
 }
 
 //****************************************************************************
