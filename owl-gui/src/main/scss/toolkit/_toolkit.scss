@@ -25,17 +25,18 @@
  * `_`) if, as expected, `x` evaluates true.
  *
  * @param  assertion  A boolean expression that is expected to evaluate true.
+ * @param  message    An optional message to include in the failure report.
  *
  * @return `true` if the given assertion evaluates true.
  */
-@function assert($assertion)
+@function assert($assertion,$message: $assertion)
 {
   @if $assertion                                         // Assertion is true?
   {
     @return true;                                        // ...no problem then
   }
 
-  @error "assertion failed: #{$assertion}";              // Assertion failure!
+  @error "assertion failed: #{$message}";                // Assertion failure!
 }
 
 /**
@@ -53,7 +54,6 @@
  *
  * @return The given length, expressed as a multiple of the default font size
  *         and rounded to 3 decimal places.
- *
  * @see    [[https://en.wikipedia.org/wiki/Em_(typography) Em (typography)]]
  */
 @function em($length)
