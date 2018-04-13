@@ -150,30 +150,12 @@
 
 .spinner.arrows-on-right-horizontal .increment-arrow-button .increment-arrow
 {
-  -fx-shape:              "M8,5
-                           v  4
-                           h  2 
-                           v -4
-                           h -2
-                           M4,9
-                           h  10
-                           v   2
-                           h -10
-                           v  -2
-                           M8,11
-                           v  4
-                           h  2 
-                           v -4
-                           h -2";
+  -fx-shape:              "M8,5v4h2v-4h-2M4,9h10v2h-10v-2M8,11v4h2v-4h-2";
 }
 
 .spinner.arrows-on-right-horizontal .decrement-arrow-button .decrement-arrow
 {
-  -fx-shape:              "M4,10
-                           h  10
-                           v   2
-                           h -10
-                           v  -2";
+  -fx-shape:              "M4,10 h10 v2 h-10 v-2";
 }
 
 //****************************************************************************
