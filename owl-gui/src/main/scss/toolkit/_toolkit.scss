@@ -82,7 +82,7 @@
  */
 @function em($length)
 {
-  $_: assert(type-of($length) == number);                // Validate argements
+  $_: assert-tyoe($length,number);                       // Validate argements
 
   @if unit($length) == "em"                              // In units of em?
   {
@@ -122,6 +122,171 @@
 }
 
 /**
+ * Returns the first element of the given list.
+ *
+ * @param  list  An arbitrary list.
+ * 
+ * @return The first element of the given list.
+ */
+@function first($list)
+{
+  @return nth($list,1);                                  // The first element
+}
+
+/**
+ * Returns the final element of the given list.
+ *
+ * @param  list  An arbitrary list.
+ * 
+ * @return The final element of the given list.
+ */
+@function final($list)
+{
+  @return nth($list,length($list));                      // The final element
+}
+
+/**
+ * Returns the value of the specified field within an object.
+ *
+ * Descends into the object, dereferencing each field listed in the given path 
+ * in turn until either the final field is reached and its value returned,  or
+ * field is dereferenced that does not actually exist, in which case we return
+ * null.
+ *
+ * Objects are represented as maps, fields as map keys, and paths as lists of 
+ * keys.
+ *
+ * For example, the script:
+ * {{{
+ *    @debug get-value((a: (b: 1)));
+ *    @debug get-value((a: (b: 1)),a);
+ *    @debug get-value((a: (b: 1)),x);
+ *    @debug get-value((a: (b: 1)),a,b);
+ *    @debug get-value((a: (b: 1)),a,b,c);
+ * }}}
+ * prints:
+ * {{{
+ *    (a: (b: 1))
+ *    (b: 1)
+ *    null
+ *    1
+ *    null
+ * }}}
+ *
+ * @param  object  An object, represented as a Sass map.
+ * @param  path    The path to the field, represented as a list field names.
+ *
+ * @return The value of the specified field, or null if no such field exists.
+ */
+@function get-value($object,$path...)
+{
+  $_:assert-type($object,map);                           // Validate argument
+  $_:assert-type($path,arglist);                         // Validate argument
+
+  @each $field in $path                                  // For each field
+  {
+    @if type-of($object) != map                          // ...has no fields?
+    {
+      @return null;                                      // ....no such value
+    }
+
+    @if not map-has-key($object,$field)                  // ...no such  field?
+    {
+      @return null;                                      // ....no such value
+    }    
+
+    $object: map-get($object,$field);                    // ...deref the field
+  }
+
+  @return $object;                                       // Return the value
+}
+
+/**
+ * Returns true if the object has a non-null value for the given field.
+ *
+ * Objects are represented as maps, fields as map keys, and paths as lists of 
+ * keys.
+ *
+ * For example, the script:
+ * {{{
+ *    @debug has-value((a: (b: 1)));
+ *    @debug has-value((a: (b: 1)),a);
+ *    @debug has-value((a: (b: 1)),x);
+ *    @debug has-value((a: (b: 1)),a,b);
+ *    @debug has-value((a: (b: 1)),a,b,c);
+ * }}}
+ * prints:
+ * {{{
+ *    true
+ *    true
+ *    false
+ *    true
+ *    null
+ * }}}
+ *
+ * @param  object  An object, represented as a Sass map.
+ * @param  path    The path to the field, represented as a list field names.
+ *
+ * @return The value of the specified field, or null if no such field exists.
+ */
+@function has-value($object,$path...)
+{
+  @return get-value($object,$path...) != null;
+}
+
+/**
+ * Constructs a new object by projecting the specified fields out of the given 
+ * object.
+ *
+ * Objects are represented as maps, fields as map keys, and paths as lists of 
+ * keys.
+ *
+ * For example, the script:
+ * {{{
+ *    @debug get-fields((a: (b: 1),c: 2));
+ *    @debug get-fields((a: (b: 1),c: 2),a);
+ *    @debug get-fields((a: (b: 1),c: 2),a b);
+ *    @debug get-fields((a: (b: 1),c: 2),    c);
+ *    @debug get-fields((a: (b: 1),c: 2),(a b),c);
+ *    @debug get-fields((a: (b: 1),c: 2),a  ,c);
+ * }}}
+ * prints:
+ * {{{
+ *    ()
+ *    ("a": (b: 1))
+ *    ("b": 1)
+ *    ("c": 2)
+ *    ("b": 1, "c": 2)
+ *    ("a": (b: 1), "c": 2)
+ * }}}
+ *
+ * @param  object  An object, represented as a Sass map.
+ * @param  paths   The path to the field, represented as a list field names.
+ *
+ * @return An object whose fields include the values oof the specified fields
+ *         of the given object.
+ */
+@function get-fields($object,$paths...) 
+{
+  $_:assert-type($object,map);                           // Validate argument
+  $_:assert-type($paths,arglist);                        // Validate argument
+
+  $map: ();                                              // Initialize result
+
+  @each $path in $paths                                  // For each path
+  {
+    $value: get-value($object,$path...);                 // Dereference field
+
+    @if $value                                           // Field has a value?
+    {
+      $map: map-merge($map,("#{final($path)}": $value)); // ...add into result
+    }
+  }
+
+  @return $map;                                          // Resulting fields
+}
+
+/**
  * Return true if `prefix` is an initial prefix of the given string.
  *
  * @param  string  An arbitrary string.
@@ -135,6 +300,89 @@
   $_:assert-type($prefix,string);                        // Validate argument
 
   @return str-index($string,$prefix) == 1;               // Is initial prefix?
+}
+
+//****************************************************************************
+
+/**
+ * Apply the given style in the current context.
+ *
+ * Styles are represented as objects some or all of whose fields correspond to 
+ * JavaFx CSS property rules.
+ *
+ * For example, the script:
+ * {{{
+ *    selector
+ *    {
+ *      @include apply((-fx-font: 12 sans-serif));
+ *    }
+ * }}}
+ * emits the CSS code:
+ * {{{
+ *    selector
+ *    {
+ *      -fx-font: 12 sans-serif;
+ *    }
+ * }}}
+ *
+ * @param  style  The style object to be applied in the current context. 
+ * @param  path   The path to the field, represented as a list field names.
+ */
+@mixin apply($style,$path...)
+{
+  $_:assert-type($style,map);                            // Validate argument
+
+  $style: get-value($style,$path...);                    // Dereference field
+
+  @each $key, $value in $style                           // For each <key,val>
+  {
+    @if $value and starts-with($key,"-fx")               // ...is JavaFX rule?
+    {
+      #{$key}: $value;                                   // .....emit the rule
+    }
+  }
+}
+
+//****************************************************************************
+
+@function new-font($family: null,$size: null,$weight: null,$style: null)
+{
+  @return (-fx-font-family: $family,
+           -fx-font-size:   $size,
+           -fx-font-weight: $weight,
+           -fx-font-style:  $style);
+}
+
+@function new-background($colors: null,$insets: null,$radii: null)
+{
+  @return (-fx-background-color:  $colors,
+           -fx-background-insets: $insets,
+           -fx-background-radius: $radii);
+}
+
+@function new-shape($shape: null,$scale: null,$position: null)
+{
+  @return (-fx-shape:          $shape,
+           -fx-scale-shape:    $scale,
+           -fx-position-shape: $position);
+}
+
+@function new-text-color($foreground:    null,
+                         $background:    null,                      
+                         $selection:     null,                 
+                         $selected-text: null)
+{
+  @return (-fx-text-fill:           $foreground,
+           -fx-background-color:    $background,          
+           -fx-highlight-text-fill: $selection,
+           -fx-highlight-fill:      $selected-text);
+}
+
+@function new-console($font: null,$colors: null)
+{
+  @return (font:    $font,
+           colors:  $colors,
+           content: get-fields($colors,-fx-background-color));
 }
 
 //****************************************************************************

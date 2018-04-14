@@ -12,23 +12,21 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
-$console-font:                    12 sans-serif                     !default;
-$console-text-color:              white                             !default;
-$console-back-color:              black                             !default;
-$console-text-highlight-color:    black                             !default;
-$console-back-highlight-color:    rgb(190,221,255)                  !default;
+$console: new-console(
+  new-font(sans-serif,12),
+  new-text-color(white,black,black,lightblue)) 
+  !default;
+//lightblue : should be system higlightcolor, currently rgb(173,274,255);
 
 //****************************************************************************
 
 .console
 {
+  @include                        apply($console,font);
+  @include                        apply($console,colors);
+
   -fx-padding:                    2;
   -fx-cursor:                     default;
-  -fx-font:                       $console-font;
-  -fx-text-fill:                  $console-text-color;
-  -fx-background-color:           $console-back-color;
-  -fx-highlight-text-fill:        $console-text-highlight-color;
-  -fx-highlight-fill:             $console-back-highlight-color;
 }
 
 .console:focused
@@ -38,8 +36,9 @@ $console-back-highlight-color:    rgb(190,221,255)                  !default;
 
 .console .content
 {
+  @include                        apply($console,content);
+ 
   -fx-padding:                    em(3);
-  -fx-background-color:           $console-back-color;
 }
 
 .console > .scroll-pane
