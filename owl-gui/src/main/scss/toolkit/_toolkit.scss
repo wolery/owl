@@ -18,7 +18,7 @@
  *
  * For example, the statement:
  * {{{
- *    $_: assert($x);
+ *    $_:assert($x);
  * }}}
  * halts compilation with an  assertion failure if the  variable `x` is false,
  * but has no effect otherwise (beyond assigning the value `true` to the dummy
@@ -31,21 +31,21 @@
  */
 @function assert($assertion,$message: $assertion)
 {
-  @if $assertion                                         // Assertion is true?
+  @if $assertion                                         // Is assertion true?
   {
-    @return true;                                        // ...no problem then
+    @return true;                                        // ...fine, carry on
   }
 
   @error "assertion failed: #{$message}";                // Report the failure
 }
 
 /**
- * Asserts that a given value has an expected type,  and halts the compilation
+ * Asserts that a given value has the expected type, and halts the compilation
  * with an error if this is not in fact the case.
  *
  * For example, the statement:
  * {{{
- *    $_: assert($x,number);
+ *    $_:assert($x,number);
  * }}}
  * halts compilation with an  assertion failure if the  variable `x` is not in
  * fact a number, but has no effect otherwise (beyond assigning a value `true` 
@@ -74,7 +74,7 @@
  * This implementation assumes a default font size of 12 points (Mac OSX), and
  * rounds the result to 3 decimal places.
  *
- * @param  length  A length, assumed to be in pixels if no unit is specified.
+ * @param  length  A length, assumed to be in pixels if no unit was specified.
  *
  * @return The given length, expressed as a multiple of the default font size
  *         and rounded to 3 decimal places.
@@ -82,14 +82,14 @@
  */
 @function em($length)
 {
-  $_: assert-tyoe($length,number);                       // Validate argements
+  $_:assert-type($length,number);                        // Validate argements
 
-  @if unit($length) == "em"                              // In units of em?
+  @if unit($length) == "em"                              // Is in units of em?
   {
     $length: $length / 1em;                              // ...drop the unit
   }
   @else
-  if unit($length) == "px"                               // In units of px?
+  if unit($length) == "px"                               // Is in units of px?
   {
     $length: $length / 1px;                              // ...drop the unit
     $length: $length / 12;                               // ...scale to font
@@ -104,7 +104,7 @@
     @error "em: expected length but got '#{$length}'";   // ...not yet handled
   }
 
-  @return 1em * round($length * 1000) / 1000;            // Adjust precision
+  @return 1em * round($length * 1000) / 1000;            // Compressed output
 }
 
 /**
@@ -146,12 +146,12 @@
 }
 
 /**
- * Returns the value of the specified field within an object.
+ * Returns the value of the specified field within the given object.
  *
  * Descends into the object, dereferencing each field listed in the given path 
  * in turn until either the final field is reached and its value returned,  or
- * field is dereferenced that does not actually exist, in which case we return
- * null.
+ * else a field is dereferenced that does not actually exist, in which case we 
+ * return null.
  *
  * Objects are represented as maps, fields as map keys, and paths as lists of 
  * keys.
@@ -173,7 +173,7 @@
  *    null
  * }}}
  *
- * @param  object  An object, represented as a Sass map.
+ * @param  object  An object, represented as a map.
  * @param  path    The path to the field, represented as a list field names.
  *
  * @return The value of the specified field, or null if no such field exists.
@@ -190,19 +190,19 @@
       @return null;                                      // ....no such value
     }
 
-    @if not map-has-key($object,$field)                  // ...no such  field?
+    @if not map-has-key($object,$field)                  // ...no such field?
     {
       @return null;                                      // ....no such value
     }    
 
-    $object: map-get($object,$field);                    // ...deref the field
+    $object: map-get($object,$field);                    // ...dereference it
   }
 
-  @return $object;                                       // Return the value
+  @return $object;                                       // Return field value
 }
 
 /**
- * Returns true if the object has a non-null value for the given field.
+ * Returns true if the object has a non-null value for the specified field.
  *
  * Objects are represented as maps, fields as map keys, and paths as lists of 
  * keys.
@@ -224,19 +224,20 @@
  *    null
  * }}}
  *
- * @param  object  An object, represented as a Sass map.
+ * @param  object  An object, represented as a map.
  * @param  path    The path to the field, represented as a list field names.
  *
  * @return The value of the specified field, or null if no such field exists.
  */
 @function has-value($object,$path...)
 {
-  @return get-value($object,$path...) != null;
+  @return get-value($object,$path...) != null;           // Is value non null?
 }
 
 /**
- * Constructs a new object by projecting the specified fields out of the given 
- * object.
+ * Constructs a new object by projecting the specified fields from an existing 
+ * object. This 'flatten's the object, discarding any tree-like structire that
+ * may have exsited within the original object.
  *
  * Objects are represented as maps, fields as map keys, and paths as lists of 
  * keys.
@@ -260,11 +261,12 @@
  *    ("a": (b: 1), "c": 2)
  * }}}
  *
- * @param  object  An object, represented as a Sass map.
- * @param  paths   The path to the field, represented as a list field names.
+ * @param  object  An object, represented as a map.
+ * @param  paths   A list of paths to the fields to include within the result,
+ *                 represented as a list field paths.
  *
- * @return An object whose fields include the values oof the specified fields
- *         of the given object.
+ * @return An object whose fields include the values of the specified fields
+ *         of the given object, 'flattened' into a new object.
  */
 @function get-fields($object,$paths...) 
 {
@@ -275,15 +277,15 @@
 
   @each $path in $paths                                  // For each path
   {
-    $value: get-value($object,$path...);                 // Dereference field
+    $value: get-value($object,$path...);                 // ...dereference it
 
-    @if $value                                           // Field has a value?
+    @if $value                                           // ...fields exists?
     {
       $map: map-merge($map,("#{final($path)}": $value)); // ...add into result
     }
   }
 
-  @return $map;                                          // Resulting fields
+  @return $map;                                          // Flattened object
 }
 
 /**
@@ -305,7 +307,7 @@
 //****************************************************************************
 
 /**
- * Apply the given style in the current context.
+ * Apply the given style within the current context.
  *
  * Styles are represented as objects some or all of whose fields correspond to 
  * JavaFx CSS property rules.
@@ -325,8 +327,9 @@
  *    }
  * }}}
  *
- * @param  style  The style object to be applied in the current context. 
- * @param  path   The path to the field, represented as a list field names.
+ * @param  style  The style object to be applied within the current context. 
+ * @param  path   An optional path to a field within the object to extrtact 
+ *                and apply. If omitted, all immediate fields are applied.
  */
 @mixin apply($style,$path...)
 {
