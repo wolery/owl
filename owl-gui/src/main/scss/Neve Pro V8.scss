@@ -1,0 +1,50 @@
+//**************************** Copyright © Jonathon Bell. All rights reserved.
+//*
+//*
+//*  Version : $Header:$
+//*
+//*
+//*  Purpose : Neve Pro V8 theme.
+//*
+//*
+//*  Comments: This file uses a tab size of 2 spaces.
+//*                                                                     0-0
+//*                                                                   (| v |)
+//**********************************************************************w*w***
+
+@import "toolkit/toolkit";
+
+$menu-back-color:                 gray( 26);
+$menu-border-color:               gray(141);
+$menu-separator-color:            gray( 43);
+$menu-text-color:                 white;
+$menu-arrow-color:                $menu-text-color;
+$menu-check-color:                $menu-text-color;
+$menu-highlight-color:            rgb(33,76,120);
+$scroll-bar-track-color:          gray( 56);
+$scroll-bar-thumb-color:          gray(116);
+$console-font:                    12 Monaco;
+$console-text-color:              white;
+$console-back-color:              black;
+$console-text-highlight-color:    black;
+$console-back-highlight-color:    rgb(190,221,255);
+
+//****************************************************************************
+
+$control-bar-color:               linear-gradient(rgb( 78, 89,101),rgb( 62, 72, 78));
+
+$transport-display: (
+  bezel: new-background(
+    $colors: (linear-gradient(rgb( 58, 67, 76),rgb( 58, 67, 76),       rgb( 80, 93,105), rgb( 80, 93,105)),
+                              rgb( 39, 45, 50),
+              linear-gradient(rgb(100, 81, 62),                                          rgb(160,148,132)),
+              linear-gradient(rgb(100, 81, 62),rgb(200,173,145) 25%,rgb(208,190,168) 95%,rgb(160,148,132))),
+    $insets: (0px,2px,4px,5px),
+    $radii:  (5px,0px,0px,0px))
+  );
+
+//****************************************************************************
+
+@import "application";
+
+//****************************************************************************
