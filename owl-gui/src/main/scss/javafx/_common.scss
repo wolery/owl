@@ -12,22 +12,35 @@
 //*
 //****************************************************************************
 
-//****************************************************************************
-//* -fx-text-base-color       for text on top of -fx-base,-fx-color,and -fx-body-color
-//* -fx-text-background-color for text on top of -fx-background
-//* -fx-text-inner-color      for text on top of -fx-control-inner-color
-//* -fx-selection-bar-text    for text on top of -fx-selection-bar
-//****************************************************************************
-
-//****************************************************************************
-//*
-//* CSS Styles for core infrastructure bits. The .root section provides the
-//* overall default colors used by the rest of the sections.
-//*
-//****************************************************************************
-
 .root
 {
+  -sys-desktop-color:             rgb(0,92,92);
+  -sys-active-caption-color:      rgb(0,0,128);
+  -sys-active-caption-Text-color: white;
+  -sys-active-caption-border-color:lightgray;
+  -sys-inactive-caption-color:    gray;
+  -sys-inactive-caption-text-color:lightgray;
+  -sys-inactive-caption-border-color:lightgray;
+  -sys-window-color:              white;
+  -sys-window-border-color:       black;
+  -sys-window-text-color:         black;
+  -sys-menu-color:                lightgray;
+  -sys-menu-text-color:           black;
+  -sys-text-color:                lightgray;
+  -sys-text-text-color:           black;
+  -sys-text-highlight-color:      rgb(0,0,128);
+  -sys-text-highlight-text-color: white;
+  -sys-text-inactive-text-color:  gray;
+  -sys-control-color:             lightgray;
+  -sys-control-text-color:        black;
+  -sys-control-highlight-color:   white;
+  -sys-control-lt-hhghlight-color:rgb(224,224,224);
+  -sys-control-shadow-color:      gray;
+  -sys-control-dk-shadow-color:   black;
+  -sys-scrollbar-color:           rgb(224,224,224);
+  -sys-info-color:                rgb(224,224,0);
+  -sys-infoText-color:            black;
+  
   //**************************************************************************
   //*
   //* The basic palette from which the remaining colors are derived.
@@ -2810,109 +2823,6 @@
 .spinner.split-arrows-horizontal:contains-focus > .text-field
 {
   -fx-background-insets:          1 0 1 0, 1 0 1 0, 3 2 3 2;
-}
-
-//****************************************************************************
-//*
-//* Dialogs
-//*
-//****************************************************************************
-
-.dialog-pane
-{
-  -fx-background-color:           -fx-background;
-  -fx-padding:                    0;
-}
-
-.dialog-pane > .expandable-content
-{
-  -fx-padding:                    0.666em;               // 8px
-}
-
-.dialog-pane > .button-bar > .container
-{
-  -fx-padding:                    0.833em;               // 10px
-}
-
-.dialog-pane > .content.label
-{
-  -fx-alignment:                  top-left;
-  -fx-padding:                    1.333em 0.833em 0 0.833em; // 16px 10px 0px 10px
-}
-
-.dialog-pane > .content
-{
-  -fx-padding:                    0.833em;               // 10px
-}
-
-.dialog-pane:no-header .graphic-container
-{
-  -fx-padding:                    0.833em 0 0 0.833em;   // 10px 0px 0px 10px
-}
-
-.dialog-pane:header .header-panel
-{
-  -fx-padding:                    0.833em;               // 10px
-  -fx-background-color:           -fx-box-border,
-                                  linear-gradient(-fx-background,
-                                                  derive(-fx-background,30%));
-  -fx-background-insets:          0, 0 0 1 0;
-}
-
-.dialog-pane:header .header-panel .label
-{
-  -fx-font-size:                  1.167em;               // 14px
-  -fx-wrap-text:                  true;
-}
-
-.dialog-pane:header .header-panel .graphic-container
-{
-// Prevent text in the header running directly into the graphic
-  -fx-padding:                    0 0 0 0.833em;         // 0px 0px 0px 10px
-}
-
-.dialog-pane > .button-bar > .container > .details-button
-{
-  -fx-alignment:                  baseline-left;
-  -fx-focus-traversable:          false;
-  -fx-padding:                    0.416em;               // 5px
-}
-
-.dialog-pane > .button-bar > .container > .details-button.more
-{
-  -fx-graphic:                    url("dialog-more-details.png");
-}
-
-.dialog-pane > .button-bar > .container > .details-button.less
-{
-  -fx-graphic:                    url("dialog-fewer-details.png");
-}
-
-.dialog-pane > .button-bar > .container > .details-button:hover
-{
-  -fx-underline:                  true;
-}
-
-.alert.confirmation.dialog-pane,
-.text-input-dialog.dialog-pane,
-.choice-dialog.dialog-pane
-{
-  -fx-graphic:                    url("dialog-confirm.png");
-}
-
-.alert.information.dialog-pane
-{
-  -fx-graphic:                    url("dialog-information.png");
-}
-
-.alert.error.dialog-pane
-{
-  -fx-graphic:                    url("dialog-error.png");
-}
-
-.alert.warning.dialog-pane
-{
-  -fx-graphic:                    url("dialog-warning.png");
 }
 
 //****************************************************************************
