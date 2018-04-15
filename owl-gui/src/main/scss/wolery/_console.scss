@@ -14,9 +14,8 @@
 
 $console: new-console(
   new-font(sans-serif,12),
-  new-text-color(white,black,black,lightblue)) 
+  new-text-color(white,black,-sys-text-highlight-color,-sys-text-highlight-text-color)) 
   !default;
-//lightblue : should be system higlightcolor, currently rgb(173,274,255);
 
 //****************************************************************************
 
@@ -31,7 +30,7 @@ $console: new-console(
 
 .console:focused
 {
-  -fx-background-color:           -fx-focus-color;
+  -fx-background-color:           -sys-text-highlight-color;
 }
 
 .console .content

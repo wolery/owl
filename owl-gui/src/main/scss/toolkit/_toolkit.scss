@@ -371,14 +371,14 @@
 }
 
 @function new-text-color($foreground:    null,
-                         $background:    null,                      
-                         $selection:     null,                 
+                         $background:    null,
+                         $selection:     null,
                          $selected-text: null)
 {
   @return (-fx-text-fill:           $foreground,
-           -fx-background-color:    $background,          
-           -fx-highlight-text-fill: $selection,
-           -fx-highlight-fill:      $selected-text);
+           -fx-background-color:    $background,
+           -fx-highlight-fill:      $selection,
+           -fx-highlight-text-fill: $selected-text);
 }
 
 @function new-console($font: null,$colors: null)
