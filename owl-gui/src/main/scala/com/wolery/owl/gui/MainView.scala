@@ -53,16 +53,61 @@ object MainView extends Logging
     val transport = owl.open(load.sequence("time"))
     val stage     = new Stage(StageStyle.DECORATED)
 
-    val (mv,_) = load.view("MainView",     new MainController(stage))
+    val (mv,_) = load.view("MainView",new MainController(stage))
 
     mv.asInstanceOf[BorderPane].setTop   (TransportView(transport))
     mv.asInstanceOf[BorderPane].setCenter(owl.console())
+
+    setSystemColors(mv)
 
     stage.setScene    (new Scene(mv))
     stage.setTitle    ("Owl")
     stage.show        ()
     stage.setMinWidth (mv.getMinWidth  + stage.getWidth  - mv.getWidth)
     stage.setMinHeight(mv.getMinHeight + stage.getHeight - mv.getHeight)
+  }
+
+  def setSystemColors(root: Node): Unit =
+  {
+    import java.awt.SystemColor.{menu=>menus,_}
+
+    val s = new StringBuffer()
+
+    for ((name,color) ← Seq(
+      "desktop"                 → desktop,
+      "active-caption"          → activeCaption,
+      "active-caption-Text"     → activeCaptionText,
+      "active-caption-border"   → activeCaptionBorder,
+      "inactive-caption"        → inactiveCaption,
+      "inactive-caption-text"   → inactiveCaptionText,
+      "inactive-caption-border" → inactiveCaptionBorder,
+      "window"                  → window,
+      "window-border"           → windowBorder,
+      "window-text"             → windowText,
+      "menu"                    → menus,
+      "menu-text"               → menuText,
+      "text"                    → text,
+      "text-text"               → textText,
+      "text-highlight"          → textHighlight,
+      "text-highlight-text"     → textHighlightText,
+      "text-inactive-text"      → textInactiveText,
+      "control"                 → control,
+      "control-text"            → controlText,
+      "control-highlight"       → controlHighlight,
+      "control-lt-highlight"    → controlLtHighlight,
+      "control-shadow"          → controlShadow,
+      "control-dk-shadow"       → controlDkShadow,
+      "scrollbar"               → scrollbar,
+      "info"                    → info,
+      "info-text"               → infoText)
+    )
+    {
+      val c = color.getRGB & 0x00FFFFFF
+
+      s.append(f"-sys-$name-color: #$c%06X;")
+    }
+
+    root.setStyle(s.toString)
   }
 }
 
