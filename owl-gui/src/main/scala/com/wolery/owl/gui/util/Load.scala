@@ -53,6 +53,15 @@ object load
     (l.load[Pane],controller)
   }
 
+  def node(name: String,root: Node): Unit =
+  {
+    val l = new FXMLLoader(url(name,"fxml"))
+
+    l.setController(root)
+    l.setRoot(root)
+    l.load()
+  }
+
   def font(name: String,size: ℕ = 12): Font =
   {
     Font.loadFont(url(name,"ttf").toExternalForm,size);
