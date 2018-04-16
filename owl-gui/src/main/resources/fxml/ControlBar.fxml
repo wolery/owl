@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root id="control-bar" maxHeight="60.0" minHeight="60.0" onContextMenuRequested="#onContextMenuRequested" spacing="50.0" type="HBox" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox id="transport-display" maxHeight="50.0" minHeight="50.0">
+         <children>
+            <HBox id="transport-display-varispeed" styleClass="transport-display-segment">
+               <children>
+                  <VBox HBox.hgrow="NEVER">
+                     <children>
+                        <Label id="transport-display-varispeed-mode" alignment="BOTTOM_LEFT" contentDisplay="CENTER" prefHeight="21.0" prefWidth="114.0" styleClass="transport-display-dropdown" text="Speed Only">
+                        </Label>
+                        <HBox>
+                           <children>
+                              <TextField id="transport-display-varispeed-value" prefHeight="27.0" prefWidth="87.0" text="+- 0.00" />
+                              <Label id="transport-display-varispeed-type" alignment="CENTER" prefHeight="27.0" prefWidth="26.0" styleClass="transport-display-dropdown" text="\%" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Separator maxWidth="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefWidth="10.0" styleClass="transport-display-separator" />
+            <HBox id="transport-display-tempo" styleClass="transport-display-segment">
+               <children>
+                  <VBox HBox.hgrow="NEVER">
+                     <children>
+                        <TextField id="transport-display-tempo-counter" text="80.00000" />
+                        <Label id="transport-display-tempo-mode" prefHeight="19.0" prefWidth="175.0" styleClass="transport-display-dropdown" text="KEEP" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Label id="transport-display-options" alignment="CENTER" contentDisplay="CENTER" maxHeight="50.0" maxWidth="12.0" minHeight="50.0" minWidth="12.0" prefHeight="50.0" prefWidth="12.0" styleClass="transport-display-dropdown" text="v" />
+         </children>
+         <HBox.margin>
+            <Insets bottom="5.0" left="100.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </HBox>
+   </children>
+</fx:root>

@@ -160,38 +160,66 @@
 
 //****************************************************************************
 
-$clear: rgba(0,0,0,0);
-
-#control-bar
+#control-bar // HBox
 {
   -fx-background-color:           $control-bar-color;
+  -fx-min-height:                 60;
+  -fx-max-height:                 60;
+  -fx-spacing:                    50;
 }
 
-#transport-display
+//****************************************************************************
+
+$transport-display-separator-color: rgb(55,71,96);
+$transport-display-text-color:      rgb(181,201,224);
+  
+//****************************************************************************
+
+#transport-display // HBox
 {
   @include                        apply($transport-display,bezel);
+
+  .separator:vertical .line
+  {
+    -fx-border-color:             clear clear clear $transport-display-separator-color;
+    -fx-border-insets:            2px,0px;
+    -fx-border-width:             1px;
+  }
 }
 
-#transport-display-options
+.transport-display-segment
 {
-  -fx-border-width:               1px;
-  -fx-border-color:               white;
-  -fx-border-insets:              0px 1px;
-  -fx-shape:                      "m0,0l5,5l5,-5";
-  -fx-scale-shape:                false;
-  -fx-position-shape:             true;
 }
 
-.transport-display-editable:hover
+
+
+.transport-display-dropdown
 {
-  -fx-background-color: yellow;
+  -fx-font      : 18 sans-serif;
+  -fx-alignment : center;
+  -fx-text-fill : $transport-display-text-color;
+}
+.transport-display-dropdown:hover
+{
+//  -fx-opacity: 0.5;
+  -fx-background-color: rgb(34,45,67);
 }
 
-.transport-display-separator .line
+
+#transport-display-mode // TransportDisplayDropdown
 {
-  -fx-border-color:               $clear $clear $clear rgb(55,71,96);
-  -fx-border-insets:              2px,0px;
-  -fx-border-width:               1px;
+  -fx-border-width:               2px;
+  -fx-border-insets:              22px 1px;
+  -fx-border-color:               $transport-display-text-color;
+  
+  -fx-min-width: 12;
+  -fx-max-width: 12;
+  -fx-min-height:50;
+  -fx-max-height:50;
+
+  -fx-shape:                      "M0,0L4,5L8,0";
+  -fx-scale-shape:               true;
+  -fx-position-shape:            true;
 }
 
 //****************************************************************************

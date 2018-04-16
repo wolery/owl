@@ -25,6 +25,7 @@ import javafx.stage.{Stage, StageStyle}
 import com.wolery.fx.control.menu
 import com.wolery.owl.gui.util.load
 import com.wolery.owl.transport.TransportView
+import com.wolery.owl.transport.ControlBar
 
 //****************************************************************************
 
@@ -55,7 +56,7 @@ object MainView extends Logging
 
     val (mv,_) = load.view("MainView",new MainController(stage))
 
-    mv.asInstanceOf[BorderPane].setTop   (TransportView(transport))
+    mv.asInstanceOf[BorderPane].setTop   (new ControlBar())
     mv.asInstanceOf[BorderPane].setCenter(owl.console())
 
     setSystemColors(mv)
@@ -69,7 +70,7 @@ object MainView extends Logging
 
   def setSystemColors(root: Node): Unit =
   {
-    import java.awt.SystemColor.{menu=>menus,_}
+    import java.awt.SystemColor.{ menu ⇒ menus, _ }
 
     val s = new StringBuffer()
 
