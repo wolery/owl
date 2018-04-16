@@ -12,18 +12,13 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
-$console: new-console(
-  new-font(sans-serif,12),
-  new-text-color(white,black,-sys-text-highlight-color,-sys-text-highlight-text-color)) 
-  !default;
+$console: new-console()                                             !default;
 
 //****************************************************************************
 
 .console
 {
-  @include                        apply($console,font);
-  @include                        apply($console,colors);
-
+  @include                        apply($console);
   -fx-padding:                    2;
   -fx-cursor:                     default;
 }
@@ -35,8 +30,7 @@ $console: new-console(
 
 .console .content
 {
-  @include                        apply($console,content);
- 
+  -fx-background-color:           get-value($console,-fx-background-color);
   -fx-padding:                    em(3);
 }
 

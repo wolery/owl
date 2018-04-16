@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose :
+//*  Purpose : Logic Pro V10.4 theme.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -28,6 +28,12 @@ $console-text-color:              white;
 $console-back-color:              black;
 $console-text-highlight-color:    black;
 $console-back-highlight-color:    rgb(190,221,255);
+
+//****************************************************************************
+
+$console:                         new-console(new-font(Monaco,12));
+$control-bar-color:               linear-gradient(gray(212),gray(142));
+$transport-display:               (bezel: new-background($color: rgb(27,29,44),$radius: 3px));
 
 //****************************************************************************
 

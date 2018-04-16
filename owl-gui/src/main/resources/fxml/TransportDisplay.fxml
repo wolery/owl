@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane id="control-bar" prefHeight="60.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox id="transport-display" layoutX="15.0" prefHeight="50.0" prefWidth="400.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <children>
+            <TextField id="counter" styleClass="transport-counter" />
+            <Separator maxWidth="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefWidth="10.0" styleClass="transport-display-separator" />
+            <Label id="transport-display-options" alignment="CENTER" contentDisplay="CENTER" maxHeight="50.0" maxWidth="12.0" minHeight="50.0" minWidth="12.0" prefHeight="50.0" prefWidth="12.0" text="v" />
+         </children></HBox>
+   </children>
+</AnchorPane>

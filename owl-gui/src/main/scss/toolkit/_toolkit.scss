@@ -356,11 +356,38 @@
            -fx-font-style:  $style);
 }
 
-@function new-background($colors: null,$insets: null,$radii: null)
+//region
+@function new-background($color: null,$insets: null,$radius: null)
 {
-  @return (-fx-background-color:  $colors,
+  @return (-fx-background-color:  $color,
            -fx-background-insets: $insets,
-           -fx-background-radius: $radii);
+           -fx-background-radius: $radius);
+}
+
+@function new-background-image($image: null,$position: null,$repeat: null,$size: null)
+{
+  @return (-fx-background-image:    $image,
+           -fx-background-position: $position,
+           -fx-background-repeat:   $repeat,
+           -fx-background-size:     $size);
+}
+
+@function new-border($color: null,$insets: null,$radius: null,$style: null,$width: null)
+{
+  @return (-fx-border-color:  $color,
+           -fx-border-insets: $insets,
+           -fx-border-radius: $radius,
+           -fx-border-style:  $style,
+           -fx-border-width:  $width);
+}
+
+@function new-border-image($source: null,$insets: null,$repeat: null,$slice: null,$width: null)
+{
+  @return (-fx-border-image-source: $source,
+           -fx-border-image-insets: $insets,
+           -fx-border-image-repeat: $repeat,
+           -fx-border-image-slice:  $slice,
+           -fx-border-image-width:  $width);
 }
 
 @function new-shape($shape: null,$scale: null,$position: null)
@@ -370,22 +397,51 @@
            -fx-position-shape: $position);
 }
 
-@function new-text-color($foreground:    null,
-                         $background:    null,
-                         $selection:     null,
-                         $selected-text: null)
+@function new-width($pref: null,$min: null,$max: null)
 {
-  @return (-fx-text-fill:           $foreground,
-           -fx-background-color:    $background,
-           -fx-highlight-fill:      $selection,
-           -fx-highlight-text-fill: $selected-text);
+  @return (-fx-pref-width: $pref,
+           -fx-min-width:  $min,
+           -fx-max-width:  $max);
 }
 
-@function new-console($font: null,$colors: null)
+@function new-height($pref: null,$min: null,$max: null)
 {
-  @return (font:    $font,
-           colors:  $colors,
-           content: get-fields($colors,-fx-background-color));
+  @return (-fx-pref-height: $pref,
+           -fx-min-height:  $min,
+           -fx-max-height:  $max);
+}
+
+@function new-region($background:       null,
+                     $background-image: null,
+                     $border:           null,
+                     $border-image:     null,
+                     $shape:            null,
+                     $width:            null,
+                     $height:           null)
+{
+  @return (background:       $background,       
+           border:           $border,
+           shape:            $shape,
+           width:            $width,
+           height:           $height,
+           background-image: $background-image,
+           border-image:     $border-image);
+}
+
+//****************************************************************************
+
+@function new-console($font:          new-font(sans-serif,12),
+                      $foreground:    white,
+                      $background:    black,
+                      $selection:     -sys-text-highlight-color,
+                      $selected-text: -sys-text-highlight-text-color)
+{
+  $c:(-fx-text-fill:           $foreground,
+      -fx-background-color:    $background,
+      -fx-highlight-fill:      $selection,
+      -fx-highlight-text-fill: $selected-text);
+
+  @return if($font,map-merge($c,$font),$c);
 }
 
 //****************************************************************************

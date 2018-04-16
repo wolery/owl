@@ -31,16 +31,17 @@ $console-back-highlight-color:    rgb(190,221,255);
 
 //****************************************************************************
 
+$console:                         new-console(new-font(Monaco,12));
 $control-bar-color:               linear-gradient(rgb( 78, 89,101),rgb( 62, 72, 78));
 
 $transport-display: (
   bezel: new-background(
-    $colors: (linear-gradient(rgb( 58, 67, 76),rgb( 58, 67, 76),       rgb( 80, 93,105), rgb( 80, 93,105)),
+    $color:  (linear-gradient(rgb( 58, 67, 76),rgb( 58, 67, 76),       rgb( 80, 93,105), rgb( 80, 93,105)),
                               rgb( 39, 45, 50),
               linear-gradient(rgb(100, 81, 62),                                          rgb(160,148,132)),
               linear-gradient(rgb(100, 81, 62),rgb(200,173,145) 25%,rgb(208,190,168) 95%,rgb(160,148,132))),
     $insets: (0px,2px,4px,5px),
-    $radii:  (5px,0px,0px,0px))
+    $radius: (5px,0px,0px,0px))
   );
 
 //****************************************************************************

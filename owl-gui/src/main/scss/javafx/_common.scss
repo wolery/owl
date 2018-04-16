@@ -14,6 +14,8 @@
 
 .root
 {
+  clear: rgba(0,0,0,0); //alias for 'transparent'
+
   -sys-desktop-color:             rgb(0,92,92);
   -sys-active-caption-color:      rgb(0,0,128);
   -sys-active-caption-Text-color: white;
@@ -1018,20 +1020,21 @@
 //*
 //****************************************************************************
 
-.separator:horizontal .line
-{
-  -fx-border-color: -fx-text-box-border transparent transparent transparent,
-        -fx-shadow-highlight-color transparent transparent transparent;
-  -fx-border-insets: 0, 1 0 0 0;
-}
-
-.separator:vertical .line
-{
-  -fx-border-color: transparent transparent transparent -fx-shadow-highlight-color,
-        transparent transparent transparent -fx-text-box-border;
-  -fx-border-width: 3, 1;
-  -fx-border-insets: 0, 0 0 0 1;
-}
+//.separator:horizontal .line
+//{
+//  -fx-border-color:   -fx-text-box-border        transparent transparent transparent,
+//                      -fx-shadow-highlight-color transparent transparent transparent;
+//  -fx-border-insets:  0, 1 0 0 0;
+//}
+//
+//.separator:vertical .line
+//{
+//  -fx-border-color:   transparent transparent transparent -fx-shadow-highlight-color,
+//                      transparent transparent transparent -fx-text-box-border;
+//-fx-border-color:   transparent transparent transparent red;
+//  -fx-border-width:   3, 1;
+//  -fx-border-insets:  0, 0 0 0 1;
+//}
 
 //****************************************************************************
 //*

@@ -159,3 +159,39 @@
 }
 
 //****************************************************************************
+
+$clear: rgba(0,0,0,0);
+
+#control-bar
+{
+  -fx-background-color:           $control-bar-color;
+}
+
+#transport-display
+{
+  @include                        apply($transport-display,bezel);
+}
+
+#transport-display-options
+{
+  -fx-border-width:               1px;
+  -fx-border-color:               white;
+  -fx-border-insets:              0px 1px;
+  -fx-shape:                      "m0,0l5,5l5,-5";
+  -fx-scale-shape:                false;
+  -fx-position-shape:             true;
+}
+
+.transport-display-editable:hover
+{
+  -fx-background-color: yellow;
+}
+
+.transport-display-separator .line
+{
+  -fx-border-color:               $clear $clear $clear rgb(55,71,96);
+  -fx-border-insets:              2px,0px;
+  -fx-border-width:               1px;
+}
+
+//****************************************************************************
