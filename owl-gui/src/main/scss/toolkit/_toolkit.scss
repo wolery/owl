@@ -21,8 +21,8 @@
  *    $_:assert($x);
  * }}}
  * halts compilation with an  assertion failure if the  variable `x` is false,
- * but has no effect otherwise (beyond assigning the value `true` to the dummy
- * variable `_`).
+ * but has no effect otherwise  (beyond assigning `true` to the dummy variable
+ * `_`).
  *
  * @param  assertion  A boolean expression that is expected to evaluate true.
  * @param  message    An optional message to include in the failure report.
@@ -45,11 +45,11 @@
  *
  * For example, the statement:
  * {{{
- *    $_:assert($x,number);
+ *    $_:assert-type($x,number);
  * }}}
  * halts compilation with an  assertion failure if the  variable `x` is not in
- * fact a number, but has no effect otherwise (beyond assigning a value `true` 
- * to the  dummy variable `_`).
+ * fact a number, but has no effect otherwise  (beyond assigning `true` to the 
+ * dummy variable `_`).
  * 
  * @param  value  The value whose type is to be tested.
  * @param  type   The expected type of the given value.
@@ -60,7 +60,30 @@
 {
   $got: type-of($value);                                 // Examine its type
 
-  @return assert($want == $got,"expected type #{$want} but got #{$got}");
+  @return assert($want == $got,"expected type #{$want} but got '#{$got}'");
+}
+
+/**
+ * Asserts that a given value is an object,  and halts the compilation with an 
+ * error if this is not in fact the case.
+ *
+ * For example, the statement:
+ * {{{
+ *    $_:assert-bject($x);
+ * }}}
+ * halts compilation with an  assertion failure if the  variable `x` is not in
+ * fact an object, but has no effect otherwise (beyond assigning `true` to the
+ * dummy variable `_`).
+ * 
+ * By 'object' we mean either a map, or else the special value `()`.
+ *
+ * @param  value  The value whose type is to be tested.
+ * 
+ * @return `true` if the given value is an object.
+ */
+@function assert-object($value)
+{
+  @return $value==() of assert-type($value,map);         // Verify () or a map
 }
 
 /**
@@ -289,6 +312,32 @@
 }
 
 /**
+ * Constructs a new object by merging all of the of the given list of objects.
+ *
+ * Extends `map-merge` to accept more than two arguments.
+ * 
+ * @param  objects  A list of zero or more objects, represented as maps.
+ * 
+ * @return An new object whose fields comprise the union of the fields of all
+ *         objects i nthe given list.
+ */
+@function merge-fields($objects...)
+{
+  $_:assert-type($objects,arglist);                      // Validate argument
+
+  $union: ();                            
+
+  @each $object in $objects                              // For each object
+  {
+    $_:assert-object($object);                           // ...check its type
+  
+    $union: map-merge($union,$object);                   // ...merge fields
+  }
+
+  @return $union;                                        // Resulting object
+}
+
+/**
  * Return true if `prefix` is an initial prefix of the given string.
  *
  * @param  string  An arbitrary string.
@@ -356,7 +405,6 @@
            -fx-font-style:  $style);
 }
 
-//region
 @function new-background($color: null,$insets: null,$radius: null)
 {
   @return (-fx-background-color:  $color,
@@ -429,7 +477,7 @@
 }
 
 //****************************************************************************
-
+ 
 @function new-console($font:          new-font(sans-serif,12),
                       $foreground:    white,
                       $background:    black,
@@ -441,7 +489,7 @@
       -fx-highlight-fill:      $selection,
       -fx-highlight-text-fill: $selected-text);
 
-  @return if($font,map-merge($c,$font),$c);
+  @return merge-fields($c,if($font,$font,()));
 }
 
 //****************************************************************************
