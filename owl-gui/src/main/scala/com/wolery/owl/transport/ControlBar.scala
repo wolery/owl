@@ -64,10 +64,55 @@ class TransportDisplayDropdown(id: String,menu: ContextMenu) extends Label
   getStyleClass.add("transport-display-dropdown")
 }
 
+trait Choice extends Enumeration
+{
+  case class VAL(description: Option[String],
+                 accelerator: Option[String] = None) extends super.Val
+  {
+    def isSeparator: Bool = description.isEmpty
 
+    def menuItem: MenuItem = description match
+    {
+      case Some(s) ⇒ new MenuItem(s)
+      case None    ⇒ new SeparatorMenuItem()
+    }
+  }
 
+  implicit
+  def downcast(value: Value): VAL = value.asInstanceOf[Val]
 
+  def menu: ContextMenu =
+  {
+    new ContextMenu(values.map(_.menuItem).toSeq:_*)
+  }
 
+  object VAL
+  {
+    def apply()         = new VAL(None,None)
+    def apply(s:String) = new VAL(Some(s),None)
+    def apply(s:String,a:String) = new VAL(Some(s),Some(a))
+  }
+}
+
+object DisplayMode extends Choice
+{
+  VAL("Beats & Project")
+  VAL("Beats & Project (Large)")
+  VAL("Beats & Time")
+  VAL("Beats & Time (Large)")
+  VAL("Beats","^C")
+  VAL("Time")
+  VAL("Custom")
+  VAL()
+  VAL("Open Giant Beats Display")
+  VAL("Open Giant Time Display")
+  VAL()
+  VAL("Use SMPTE View Offset")
+  VAL()
+  VAL("Customize Control Bar and Display...")
+  VAL("Apply Defaults")
+
+}
 
 class TransportDisplayTempo extends TransportDisplaySegment
 {
