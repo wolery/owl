@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+
+<ContextMenu>
+  <items>
+    <MenuItem onAction="#onCustomize"      text="Customize Control Bar And Display..." />
+    <MenuItem onAction="#onApplyDefaults"  text="Apply Defaults" />
+    <MenuItem onAction="#onSaveAsDefaults" text="Save As Defaults" />
+  </items>
+</ContextMenu>
