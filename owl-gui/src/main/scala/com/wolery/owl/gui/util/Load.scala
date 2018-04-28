@@ -25,11 +25,12 @@ package util
 import java.net.URL
 import java.net.URLEncoder.encode
 
+import javax.sound.midi.{MidiSystem, Sequence, Soundbank}
+
 import javafx.fxml.FXMLLoader
+import javafx.scene.control.ContextMenu
 import javafx.scene.layout.Pane
 import javafx.scene.text.Font
-
-import javax.sound.midi.{MidiSystem,Sequence,Soundbank}
 
 //****************************************************************************
 
@@ -51,6 +52,15 @@ object load
     l.setController(controller)
 
     (l.load[Pane],controller)
+  }
+
+  def menu(name: String,controller: AnyRef): ContextMenu =
+  {
+    val l = new FXMLLoader(url(name,"fxml"))
+
+    l.setController(controller)
+
+    l.load[ContextMenu]()
   }
 
   def node(name: String,root: Node): Unit =

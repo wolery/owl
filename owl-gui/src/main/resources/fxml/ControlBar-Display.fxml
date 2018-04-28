@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root id="transport-display" prefHeight="50.0" type="HBox" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox id="transport-display-tempo" prefHeight="200.0" prefWidth="100.0" styleClass="transport-display-segment">
+         <children>
+            <MenuButton id="transport-display-tempo-value" mnemonicParsing="false" prefHeight="23.0" prefWidth="106.0" styleClass="transport-display-button" text="Tempo">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                  <MenuItem mnemonicParsing="false" text="Action 2" />
+               </items>
+            </MenuButton>
+            <MenuButton id="transport-display-tempo-mode" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="108.0" text="KEEP">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="KEEP - Keep Project Tempo" />
+                  <MenuItem mnemonicParsing="false" text="ADAPT - Adapt Project Tempo" />
+                  <MenuItem mnemonicParsing="false" text="AUTO - Automatic Mode" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Smart Tempo Project Settings..." />
+               </items>
+            </MenuButton>
+         </children>
+      </VBox>
+      <Separator orientation="VERTICAL" prefHeight="200.0" />
+      <MenuButton id="transport-display-mode" maxWidth="138.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="138.0" styleClass="transport-display-button">
+         <items>
+            <MenuItem mnemonicParsing="false" text="Beats &amp; Project" />
+            <MenuItem mnemonicParsing="false" text="Beats &amp; Project (Large)" />
+            <MenuItem mnemonicParsing="false" text="Beats &amp; Time" />
+            <MenuItem mnemonicParsing="false" text="Beats &amp; Time (Large)" />
+            <MenuItem mnemonicParsing="false" text="Beats" />
+            <MenuItem mnemonicParsing="false" text="Time" />
+            <MenuItem mnemonicParsing="false" text="Custom" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Open Giant Beats Display" />
+            <MenuItem mnemonicParsing="false" text="Open Giant Time Display" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Use SMPTE View offset" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Customize Control Bar And Display..." />
+            <MenuItem mnemonicParsing="false" text="Apply Defaults" />
+            <MenuItem mnemonicParsing="false" text="Save As Defaults" />
+         </items>
+      </MenuButton>
+   </children>
+</fx:root>

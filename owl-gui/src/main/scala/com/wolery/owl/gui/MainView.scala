@@ -25,7 +25,7 @@ import javafx.stage.{Stage, StageStyle}
 import com.wolery.fx.control.menu
 import com.wolery.owl.gui.util.load
 import com.wolery.owl.transport.TransportView
-import com.wolery.owl.transport.ControlBar
+import com.wolery.owl.controlbar.ControlBar
 
 //****************************************************************************
 

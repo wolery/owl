@@ -160,7 +160,12 @@
 
 //****************************************************************************
 
-#control-bar // HBox
+$transport-display-separator-color: rgb(55,71,96);
+$transport-display-text-color:      rgb(181,201,224);
+
+//****************************************************************************
+
+#control-bar                   // HBox
 {
   -fx-background-color:           $control-bar-color;
   -fx-min-height:                 60;
@@ -168,16 +173,12 @@
   -fx-spacing:                    50;
 }
 
-//****************************************************************************
-
-$transport-display-separator-color: rgb(55,71,96);
-$transport-display-text-color:      rgb(181,201,224);
-  
-//****************************************************************************
-
-#transport-display // HBox
+#transport-display             // HBox
 {
   @include                        apply($transport-display,bezel);
+
+  -fx-min-height:                 50;
+  -fx-max-height:                 50;
 
   .separator:vertical .line
   {
@@ -185,41 +186,48 @@ $transport-display-text-color:      rgb(181,201,224);
     -fx-border-insets:            2px,0px;
     -fx-border-width:             1px;
   }
+
+  .menu-button 
+  {
+    -fx-font:                     12 sans-serif;
+    -fx-background-color:         clear;
+
+    &>.label
+    {
+      -fx-text-fill:              rgb(172,202,228);
+      -fx-alignment:              CENTER;      
+      -fx-background-insets:      3px;
+    }
+    
+    &>.label:hover
+    {
+      -fx-text-fill:              rgb(147,203,255);
+      -fx-background-color:       rgb( 30, 43, 70);
+    }
+
+    .arrow-button
+    {
+      -fx-padding:                0px;
+      -fx-pref-width:             0px;
+      visibility:                 hidden;
+    }
+  }
 }
 
-.transport-display-segment
+
+#transport-display-mode        // MenuButton / TransportDisplayDropdown
 {
-}
+  -fx-min-width:                  12;
+  -fx-max-width:                  12;
+//-fx-min-height:                 50;
+//-fx-max-height:                 50;
 
-
-
-.transport-display-dropdown
-{
-  -fx-font      : 18 sans-serif;
-  -fx-alignment : center;
-  -fx-text-fill : $transport-display-text-color;
-}
-.transport-display-dropdown:hover
-{
-//  -fx-opacity: 0.5;
-  -fx-background-color: rgb(34,45,67);
-}
-
-
-#transport-display-mode // TransportDisplayDropdown
-{
-  -fx-border-width:               2px;
-  -fx-border-insets:              22px 1px;
-  -fx-border-color:               $transport-display-text-color;
-  
-  -fx-min-width: 12;
-  -fx-max-width: 12;
-  -fx-min-height:50;
-  -fx-max-height:50;
-
-  -fx-shape:                      "M0,0L4,5L8,0";
-  -fx-scale-shape:               true;
-  -fx-position-shape:            true;
+//-fx-border-width:               2px;
+//-fx-border-insets:              22px 1px;
+//-fx-border-color:               $transport-display-text-color;
+//-fx-shape:                      "M0,0L4,5L8,0";
+//-fx-scale-shape:               true;
+//-fx-position-shape:            true;
 }
 
 //****************************************************************************

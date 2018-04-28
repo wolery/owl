@@ -333,10 +333,10 @@
 -fx-content-display: LEFT;
 }
 
-.menu-button > .label
-{
--fx-alignment: CENTER_LEFT;
-}
+//.menu-button > .label
+//{
+//-fx-alignment: CENTER_LEFT;
+//}
 
 .button:hover,
 .toggle-button:hover,
@@ -365,7 +365,7 @@
 .toggle-button:armed,
 .radio-button:armed > .radio,
 .check-box:armed .box,
-.menu-button:armed,
+//.menu-button:armed,
 .split-menu-button:armed > .label,
 .split-menu-button > .arrow-button:pressed,
 .split-menu-button:showing > .arrow-button,
@@ -387,7 +387,7 @@
 .toggle-button:focused,
 .radio-button:focused > .radio,
 .check-box:focused > .box,
-.menu-button:focused,
+//.menu-button:focused,
 .choice-box:focused,
 .color-picker.split-button:focused > .color-picker-label,
 .combo-box-base:focused,
@@ -514,7 +514,7 @@
 {
 -fx-background-color:             -fx-mark-highlight-color, -fx-mark-color;
 -fx-background-insets:            0 0 -1 0, 0;
--fx-padding:                      0.166667em 0.333333em 0.166667em 0.333333em; // 2 4 2 4
+-fx-padding:                      em(2) em(4) em(2) em(4);
 -fx-shape:                        "M 0 0 h 7 l -3.5 4 z";
 }
 
@@ -527,18 +527,18 @@
 -fx-padding:                      0;
 }
 
-.choice-box > .label,
-.menu-button > .label,
+.choice-box   > .label,
+.menu-button  > .label,
 .color-picker > .label
 {
--fx-padding:                      0.333333em 0.666667em 0.333333em 0.666667em; // 4 8 4 8
+-fx-padding:                      em(4) em(8) em(4) em(4);
 -fx-text-fill:                    -fx-text-base-color;
 }
 
-.choice-box > .open-button,
+.choice-box  > .open-button,
 .menu-button > .arrow-button
 {
--fx-padding:                      0.5em 0.667em 0.5em 0.0em; // 6 8 6 0
+-fx-padding:                      em(6) em(8) em(6) em(0);
 }
 
 /* ====   BOX LIKE THINGS   ================================================= */
