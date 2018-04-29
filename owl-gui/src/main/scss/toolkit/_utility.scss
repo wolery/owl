@@ -1,0 +1,398 @@
+//**************************** Copyright © Jonathon Bell. All rights reserved.
+//*
+//*
+//*  Version : $Header:$
+//*
+//*
+//*  Purpose : Miscellaneous utility functions used throughout the Wolery.
+//*
+//*
+//*  Comments: This file uses a tab size of 2 spaces.
+//*                                                                     0-0
+//*                                                                   (| v |)
+//**********************************************************************w*w***
+
+/**
+ * Asserts that the given expression evaluates true, and halts the compilation
+ * with an error if this is not in fact the case.
+ *
+ * For example, the statement:
+ * {{{
+ *    $_:assert($x);
+ * }}}
+ * halts compilation with an  assertion failure if the  variable `x` is false,
+ * but has no effect otherwise  (beyond assigning `true` to the dummy variable
+ * `_`).
+ *
+ * @param  assertion  A boolean expression that is expected to evaluate true.
+ * @param  message    An optional message to include in the failure report.
+ *
+ * @return `true` if the given expression evaluates true.
+ */
+@function assert($assertion,$message: $assertion)
+{
+  @if $assertion                                         // Is assertion true?
+  {
+    @return true;                                        // ...fine, carry on
+  }
+
+  @error "assertion failed: #{$message}";                // Report the failure
+}
+
+/**
+ * Asserts that a given value has the expected type, and halts the compilation
+ * with an error if this is not in fact the case.
+ *
+ * For example, the statement:
+ * {{{
+ *    $_:assert-type($x,number);
+ * }}}
+ * halts compilation with an  assertion failure if the  variable `x` is not in
+ * fact a number, but has no effect otherwise  (beyond assigning `true` to the 
+ * dummy variable `_`).
+ * 
+ * @param  value  The value whose type is to be tested.
+ * @param  type   The expected type of the given value.
+ * 
+ * @return `true` if the given value has the expected type.
+ */
+@function assert-type($value,$want)
+{
+  $got: type-of($value);                                 // Examine its type
+
+  @return assert($want == $got,"expected type #{$want} but got '#{$got}'");
+}
+
+/**
+ * Asserts that a given value is an object,  and halts the compilation with an 
+ * error if this is not in fact the case.
+ *
+ * For example, the statement:
+ * {{{
+ *    $_:assert-bject($x);
+ * }}}
+ * halts compilation with an  assertion failure if the  variable `x` is not in
+ * fact an object, but has no effect otherwise (beyond assigning `true` to the
+ * dummy variable `_`).
+ * 
+ * By 'object' we mean either a map, or else the special value `()`.
+ *
+ * @param  value  The value whose type is to be tested.
+ * 
+ * @return `true` if the given value is an object.
+ */
+@function assert-object($value)
+{
+  @return $value==() of assert-type($value,map);         // Verify () or a map
+}
+
+/**
+ * Converts a length, expressed in pixels, into a multiple of the default font
+ * size, expressed in terms of the typographic unit 'em'.
+ *
+ * Dimensions expressed in terms of 'em's scale naturally on different display 
+ * devices because the OS adjusts the default font size automatically to match
+ * the target screen resolution.
+ *
+ * This implementation assumes a default font size of 12 points (Mac OSX), and
+ * rounds the result to 3 decimal places.
+ *
+ * @param  length  A length, assumed to be in pixels if no unit was specified.
+ *
+ * @return The given length, expressed as a multiple of the default font size
+ *         and rounded to 3 decimal places.
+ * @see    [[https://en.wikipedia.org/wiki/Em_(typography) Em (typography)]]
+ */
+@function em($length)
+{
+  $_:assert-type($length,number);                        // Validate argements
+
+  @if unit($length) == "em"                              // Is in units of em?
+  {
+    $length: $length / 1em;                              // ...drop the unit
+  }
+  @else
+  if unit($length) == "px"                               // Is in units of px?
+  {
+    $length: $length / 1px;                              // ...drop the unit
+    $length: $length / 12;                               // ...scale to font
+  }
+  @else
+  if unit($length) == ""                                 // No explicit units?
+  {
+    $length: $length / 12;                               // ...scale to font
+  }
+  @else                                                  // Some other unit?
+  {
+    @error "em: expected length but got '#{$length}'";   // ...not yet handled
+  }
+
+  @return 1em * round($length * 1000) / 1000;            // Compressed output
+}
+
+/**
+ * Returns the shade of gray whose red, green, and blue components are all set
+ * to the same given value.
+ *
+ * @param  shade  A shade of gray, represented as an integer between 0 (black)
+ *                and 255 (white).
+ *
+ * @return The color value describing the given shade of gray.
+ */
+@function gray($shade)
+{
+  @return rgb($shade,$shade,$shade);                     // Convert to color
+}
+
+/**
+ * Returns the first element of the given list.
+ *
+ * @param  list  An arbitrary list.
+ * 
+ * @return The first element of the given list.
+ */
+@function first($list)
+{
+  @return nth($list,1);                                  // The first element
+}
+
+/**
+ * Returns the final element of the given list.
+ *
+ * @param  list  An arbitrary list.
+ * 
+ * @return The final element of the given list.
+ */
+@function final($list)
+{
+  @return nth($list,length($list));                      // The final element
+}
+
+/**
+ * Returns the value of the specified field within the given object.
+ *
+ * Descends into the object, dereferencing each field listed in the given path 
+ * in turn until either the final field is reached and its value returned,  or
+ * else a field is dereferenced that does not actually exist, in which case we 
+ * return null.
+ *
+ * Objects are represented as maps, fields as map keys, and paths as lists of 
+ * keys.
+ *
+ * For example, the script:
+ * {{{
+ *    @debug get-value((a: (b: 1)));
+ *    @debug get-value((a: (b: 1)),a);
+ *    @debug get-value((a: (b: 1)),x);
+ *    @debug get-value((a: (b: 1)),a,b);
+ *    @debug get-value((a: (b: 1)),a,b,c);
+ * }}}
+ * prints:
+ * {{{
+ *    (a: (b: 1))
+ *    (b: 1)
+ *    null
+ *    1
+ *    null
+ * }}}
+ *
+ * @param  object  An object, represented as a map of field names to values.
+ * @param  path    The path to the field, represented as a list field names.
+ *
+ * @return The value of the specified field, or null if no such field exists.
+ */
+@function get-value($object,$path...)
+{
+  $_:assert-type($object,map);                           // Validate argument
+  $_:assert-type($path,arglist);                         // Validate argument
+
+  @each $field in $path                                  // For each field
+  {
+    @if type-of($object) != map                          // ...has no fields?
+    {
+      @return null;                                      // ....no such value
+    }
+
+    @if not map-has-key($object,$field)                  // ...no such field?
+    {
+      @return null;                                      // ....no such value
+    }    
+
+    $object: map-get($object,$field);                    // ...dereference it
+  }
+
+  @return $object;                                       // Return field value
+}
+
+/**
+ * Returns true if the object has a non-null value for the specified field.
+ *
+ * Objects are represented as maps, fields as map keys, and paths as lists of 
+ * keys.
+ *
+ * For example, the script:
+ * {{{
+ *    @debug has-value((a: (b: 1)));
+ *    @debug has-value((a: (b: 1)),a);
+ *    @debug has-value((a: (b: 1)),x);
+ *    @debug has-value((a: (b: 1)),a,b);
+ *    @debug has-value((a: (b: 1)),a,b,c);
+ * }}}
+ * prints:
+ * {{{
+ *    true
+ *    true
+ *    false
+ *    true
+ *    null
+ * }}}
+ *
+ * @param  object  An object, represented as a map of field names to values.
+ * @param  path    The path to the field, represented as a list field names.
+ *
+ * @return The value of the specified field, or null if no such field exists.
+ */
+@function has-value($object,$path...)
+{
+  @return get-value($object,$path...) != null;           // Is value non null?
+}
+
+/**
+ * Constructs a new object by projecting the specified fields from an existing 
+ * object. This 'flatten's the object, discarding any tree-like structire that
+ * may have exsited within the original object.
+ *
+ * Objects are represented as maps, fields as map keys, and paths as lists of 
+ * keys.
+ *
+ * For example, the script:
+ * {{{
+ *    @debug get-fields((a: (b: 1),c: 2));
+ *    @debug get-fields((a: (b: 1),c: 2),a);
+ *    @debug get-fields((a: (b: 1),c: 2),a b);
+ *    @debug get-fields((a: (b: 1),c: 2),    c);
+ *    @debug get-fields((a: (b: 1),c: 2),(a b),c);
+ *    @debug get-fields((a: (b: 1),c: 2),a  ,c);
+ * }}}
+ * prints:
+ * {{{
+ *    ()
+ *    ("a": (b: 1))
+ *    ("b": 1)
+ *    ("c": 2)
+ *    ("b": 1, "c": 2)
+ *    ("a": (b: 1), "c": 2)
+ * }}}
+ *
+ * @param  object  An object, represented as a map of field names to values.
+ * @param  paths   A list of paths to the fields to include within the result,
+ *                 represented as a list field paths.
+ *
+ * @return An object whose fields include the values of the specified fields
+ *         of the given object, 'flattened' into a new object.
+ */
+@function get-fields($object,$paths...) 
+{
+  $_:assert-type($object,map);                           // Validate argument
+  $_:assert-type($paths,arglist);                        // Validate argument
+
+  $map: ();                                              // Initialize result
+
+  @each $path in $paths                                  // For each path
+  {
+    $value: get-value($object,$path...);                 // ...dereference it
+
+    @if $value                                           // ...fields exists?
+    {
+      $map: map-merge($map,("#{final($path)}": $value)); // ...add into result
+    }
+  }
+
+  @return $map;                                          // Flattened object
+}
+
+/**
+ * Constructs a new object by merging all of the of the given list of objects.
+ *
+ * Extends `map-merge` to accept more than two arguments.
+ * 
+ * @param  objects  A list of zero or more objects, represented as maps.
+ * 
+ * @return The object whose fields comprise the union of all the fields of all 
+ *         of the objects spefied in the given list.
+ */
+@function merge-fields($objects...)
+{
+  $_:assert-type($objects,arglist);                      // Validate argument
+
+  $union: ();                            
+
+  @each $object in $objects                              // For each object
+  {
+    $_:assert-object($object);                           // ...check its type
+  
+    $union: map-merge($union,$object);                   // ...merge fields
+  }
+
+  @return $union;                                        // Resulting object
+}
+
+/**
+ * Return true if `prefix` is an initial prefix of the given string.
+ *
+ * @param  string  An arbitrary string.
+ * @param  prefix  A possible prefix of the given string.
+ * 
+ * @return `true` if `prefix` is an initial prefix of the given string.
+ */
+@function starts-with($string,$prefix)
+{
+  $_:assert-type($string,string);                        // Validate argument
+  $_:assert-type($prefix,string);                        // Validate argument
+
+  @return str-index($string,$prefix) == 1;               // Is initial prefix?
+}
+
+//****************************************************************************
+
+/**
+ * Apply the given style within the current context.
+ *
+ * Styles are represented as objects some or all of whose fields correspond to 
+ * JavaFx CSS property rules.
+ *
+ * For example, the script:
+ * {{{
+ *    selector
+ *    {
+ *      @include apply((-fx-font: 12 sans-serif));
+ *    }
+ * }}}
+ * emits the CSS code:
+ * {{{
+ *    selector
+ *    {
+ *      -fx-font: 12 sans-serif;
+ *    }
+ * }}}
+ *
+ * @param  style  The style object to be applied within the current context. 
+ * @param  path   An optional path to a field within the object to extrtact 
+ *                and apply. If omitted, all immediate fields are applied.
+ */
+@mixin apply($style,$path...)
+{
+  $_:assert-type($style,map);                            // Validate argument
+
+  $style: get-value($style,$path...);                    // Dereference field
+
+  @each $key, $value in $style                           // For each <key,val>
+  {
+    @if $value and starts-with($key,"-fx")               // ...is JavaFX rule?
+    {
+      #{$key}: $value;                                   // .....emit the rule
+    }
+  }
+}
+
+//****************************************************************************
