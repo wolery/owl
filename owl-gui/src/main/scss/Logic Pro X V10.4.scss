@@ -31,6 +31,12 @@ $console-back-highlight-color:    rgb(190,221,255);
 
 //****************************************************************************
 
+$tooltip: new_tooltip(
+    $font:       new_font(sans-serif,9pt),
+    $foreground: black,
+    $background: new_background(gray(221)),
+    $padding:    em(3) em(6));
+
 $console:                         new-console(new-font(Monaco,12));
 $control-bar-color:               linear-gradient(gray(212),gray(142));
 

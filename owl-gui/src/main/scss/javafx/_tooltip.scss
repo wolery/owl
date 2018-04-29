@@ -12,37 +12,13 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
+$tooltip: new-tooltip()                                             !default;
 
-//$tooltip: new-tooltip
 //****************************************************************************
 
 .tooltip
 {
-//  @include                        apply($tooltip);
-
-  -fx-font-size:                  em(10);
-
-  -fx-padding:                    em(8) em(9);
-  -fx-text-fill:                  white;
-
-  -fx-background-color:           rgba(30,30,30,0.8);
-  -fx-background-radius:          6px;
-  -fx-background-insets:          0;
-
-  -fx-effect:                     dropshadow(three-pass-box,
-                                             rgba(0,0,0,0.5),
-                                             10,0,0,3);
+  @include                        apply($tooltip);
 }
 
 //****************************************************************************
-//.tooltip
-//{
-//-fx-padding:                    em(3) em(6);
-//-fx-text-fill:                  black;
-//-fx-background:                 gray(30);
-
-//-fx-background-color:           gray(221);
-//-fx-background-insets:          0px;
-//-fx-background-radius:          0px;
-//}
-
