@@ -23,21 +23,13 @@ $menu-check-color:                $menu-text-color;
 $menu-highlight-color:            rgb(33,76,120);
 $scroll-bar-track-color:          gray( 56);
 $scroll-bar-thumb-color:          gray(116);
-$console-font:                    12 Monaco;
-$console-text-color:              white;
-$console-back-color:              black;
-$console-text-highlight-color:    black;
-$console-back-highlight-color:    rgb(190,221,255);
 
 //****************************************************************************
 
-$tooltip: new_tooltip(
-    $font:       new_font(sans-serif,9pt),
-    $foreground: black,
-    $background: new_background(gray(221)),
-    $padding:    em(3) em(6));
+$tooltip:                         new_tooltip();
 
 $console:                         new-console(new-font(Monaco,12));
+
 $control-bar-color:               linear-gradient(gray(212),gray(142));
 
 $transport-display:               

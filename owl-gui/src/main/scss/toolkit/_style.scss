@@ -77,7 +77,7 @@
 //****************************************************************************
 
 @function new-tooltip(
-  $font:                          new-font(sans-serif,8pt),
+  $font:                          new-font(sans-serif,12),
   $foreground:                    black,
   $background:                    new_background(lightgray),
   $padding:                       em(3) em(6),
@@ -91,7 +91,7 @@
 }
 
 @function new-console(
-  $font:                          new-font(monospace,12pt),
+  $font:                          new-font(monospace,12),
   $foreground:                    white,
   $background:                    black,
   $selection:                     -sys-text-highlight-color,
