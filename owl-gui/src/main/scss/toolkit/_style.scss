@@ -4,7 +4,7 @@
 //*  Version : $Header:$
 //*
 //*
-//*  Purpose : 
+//*  Purpose : Defines constructor functiosn for the various style objects.
 //*
 //*
 //*  Comments: This file uses a tab size of 2 spaces.
@@ -62,33 +62,16 @@
 
 @function new-width($pref: null,$min: null,$max: null)
 {
-  @return (-fx-pref-width: $pref,
-           -fx-min-width:  $min,
-           -fx-max-width:  $max);
+  @return (-fx-min-width:  $min,
+           -fx-max-width:  $max,
+           -fx-pref-width: $pref);
 }
 
 @function new-height($pref: null,$min: null,$max: null)
 {
-  @return (-fx-pref-height: $pref,
-           -fx-min-height:  $min,
-           -fx-max-height:  $max);
-}
-
-@function new-region($background:       null,
-                     $background-image: null,
-                     $border:           null,
-                     $border-image:     null,
-                     $shape:            null,
-                     $width:            null,
-                     $height:           null)
-{
-  @return (background:       $background,       
-           border:           $border,
-           shape:            $shape,
-           width:            $width,
-           height:           $height,
-           background-image: $background-image,
-           border-image:     $border-image);
+  @return (-fx-min-height:  $min,
+           -fx-max-height:  $max,
+           -fx-pref-height: $pref);
 }
 
 //****************************************************************************
