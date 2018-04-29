@@ -1,6 +1,7 @@
 <?import javafx.scene.control.*?>
+<?import com.wolery.owl.controlbar.display.*?>
 
-<MenuButton id="transport-display-mode" styleClass="transport-display-button" text="v">
+<DropDown id="transport-display-mode" styleClass="transport-display-button" text="v">
   <items>
     <MenuItem text="Beats &amp; Project"/>
     <MenuItem text="Beats &amp; Project (Large)"/>
@@ -22,4 +23,4 @@
   <tooltip>
     <Tooltip text="Display Mode"/>
   </tooltip>
-</MenuButton>
+</DropDown>

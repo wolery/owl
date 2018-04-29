@@ -191,7 +191,7 @@ $transport-display-selected-text-color:rgb(46,71,113);
     -fx-border-width:             1px;
   }
 
-  .menu-button 
+  .transport-display-drop-down 
   {
     -fx-font:                     12 sans-serif;
     -fx-background-color:         clear;
@@ -217,7 +217,7 @@ $transport-display-selected-text-color:rgb(46,71,113);
     }
   }
   
-  .text-field
+  .transport-display-counter
   {
     -fx-text-fill:                $transport-display-text-color;
   //-fx-highlight-fill:           ;
@@ -230,7 +230,7 @@ $transport-display-selected-text-color:rgb(46,71,113);
     -fx-focus-traversable:        false;
   }
   
-  .text-field:hover
+  .transport-display-counter:hover
   {
     -fx-text-fill:                $transport-display-text-hover-color;
   //-fx-highlight-fill:           ;
@@ -241,7 +241,7 @@ $transport-display-selected-text-color:rgb(46,71,113);
     -fx-background-radius:        0px;
   }
 
-  .text-field:focused
+  .transport-display-counter:focused
   {
     -fx-text-fill:                $transport-display-text-color;
   //-fx-highlight-fill:           ;
@@ -283,13 +283,13 @@ $transport-display-selected-text-color:rgb(46,71,113);
 
 //****************************************************************************
 
-.tooltip
-{
-  -fx-padding: em(3) em(8);
-  -fx-background-color:  gray(221);
-  -fx-background-insets: 0px;
-  -fx-background-radius: 0px;
-  -fx-text-fill:         black;
-}
+//.tooltip
+//{
+//  -fx-padding:                    em(3) em(6);
+//  -fx-background-color:           gray(221);
+//  -fx-background-insets:          0px;
+//  -fx-background-radius:          0px;
+//  -fx-text-fill:                  black;
+//}
 
 //****************************************************************************

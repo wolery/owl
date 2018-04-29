@@ -1,6 +1,7 @@
 <?import javafx.scene.control.*?>
+<?import com.wolery.owl.controlbar.display.*?>
 
-<MenuButton id="transport-display-tempo-mode" styleClass="transport-display-button" text="KEEP">
+<DropDown id="transport-display-tempo-mode" styleClass="transport-display-button" text="KEEP">
   <items>
     <MenuItem text="KEEP - Keep Project Tempo"/>
     <MenuItem text="ADAPT - Adapt Project Tempo"/>
@@ -11,4 +12,4 @@
   <tooltip>
     <Tooltip text="Project Tempo Menu"/>
   </tooltip>
-</MenuButton>
+</DropDown>

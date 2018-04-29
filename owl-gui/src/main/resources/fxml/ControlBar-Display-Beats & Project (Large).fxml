@@ -1,59 +1,61 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import com.wolery.owl.controlbar.display.*?>
+<?import com.wolery.owl.controlbar.display.Separator?>
 
 <fx:root id="transport-display" prefHeight="50.0" type="HBox" xmlns:fx="http://javafx.com/fxml/1">
    <children>
 
       <VBox prefWidth="100.0">
          <children>
-            <TextField styleClass="transport-display-counter" text="000">
+            <Counter text="000">
               <tooltip><Tooltip text="Playhead Position (Bars)"/></tooltip>
-            </TextField>
+            </Counter>
             <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="BAR"/>
          </children>
       </VBox>
 
       <VBox prefWidth="100.0">
          <children>
-            <TextField styleClass="transport-display-counter" text="0">
+            <Counter text="0">
               <tooltip><Tooltip text="Playhead Position (Bars)"/></tooltip>
-            </TextField>
+            </Counter>
             <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="BEAT"/>
          </children>
       </VBox>
 
       <VBox prefWidth="100.0">
          <children>
-            <TextField styleClass="transport-display-counter" text="0">
+            <Counter text="0">
               <tooltip><Tooltip text="Playhead Position (Bars)"/></tooltip>
-            </TextField>
+            </Counter>
             <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="DIV"/>
          </children>
       </VBox>
 
       <VBox prefWidth="100.0">
          <children>
-            <TextField styleClass="transport-display-counter" text="000">
+            <Counter text="000">
               <tooltip><Tooltip text="Playhead Position (Bars)"/></tooltip>
-            </TextField>
+            </Counter>
             <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="TICK"/>
          </children>
       </VBox>
       
-      <Separator orientation="VERTICAL"/>
+      <Separator/>
 
       <VBox>
         <children>
-          <TextField styleClass="transport-display-counter" text="80">
+          <Counter text="80">
             <tooltip><Tooltip text="Tempo"/></tooltip>
-          </TextField>
+          </Counter>
           <fx:include source="ControlBar-Display-Segment-Tempo.fxml"/>
           <Label prefWidth="51.0"
             styleClass="transport-display-segment-label" text="TEMPO"/>
         </children>
       </VBox>
 
-      <Separator orientation="VERTICAL"/>
+      <Separator/>
 
       <VBox>
         <children>
@@ -62,7 +64,7 @@
         </children>
       </VBox>
 
-      <Separator orientation="VERTICAL"/>
+      <Separator/>
 
       <VBox>
         <children>
@@ -71,7 +73,7 @@
         </children>
       </VBox>
 
-      <Separator orientation="VERTICAL"/>
+      <Separator/>
 
       <fx:include source="ControlBar-Display-Segment-Mode.fxml"/>
 

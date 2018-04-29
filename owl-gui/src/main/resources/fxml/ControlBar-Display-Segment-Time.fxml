@@ -1,6 +1,7 @@
 <?import javafx.scene.control.*?>
+<?import com.wolery.owl.controlbar.display.*?>
 
-<MenuButton id="transport-display-tempo-mode" styleClass="transport-display-button" text="4/4" >
+<DropDown id="transport-display-tempo-mode" styleClass="transport-display-button" text="4/4" >
   <items>
     <MenuItem text="3/4"/>
     <MenuItem text="4/4"/>
@@ -14,4 +15,4 @@
   <tooltip>
     <Tooltip text="Time Signature"/>
   </tooltip>
-</MenuButton>
+</DropDown>

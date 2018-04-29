@@ -1,6 +1,7 @@
 <?import javafx.scene.control.*?>
+<?import com.wolery.owl.controlbar.display.*?>
 
-<MenuButton id="transport-display-segment-key" styleClass="transport-display-button" text="Cmaj">
+<DropDown id="transport-display-segment-key" styleClass="transport-display-button" text="Cmaj">
   <items>
     <MenuItem text="B major"/>
     <MenuItem text="B♭ major"/>
@@ -37,4 +38,4 @@
   <tooltip>
     <Tooltip text="Key Signature"/>
   </tooltip>
-</MenuButton>
+</DropDown>
