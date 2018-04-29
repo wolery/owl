@@ -30,8 +30,8 @@ $console: new-console()                                             !default;
 
 .console .content
 {
-  -fx-background-color:           get-value($console,-fx-background-color);
   -fx-padding:                    em(3);
+  -fx-background-color:           get-value($console,-fx-background-color);
 }
 
 .console > .scroll-pane

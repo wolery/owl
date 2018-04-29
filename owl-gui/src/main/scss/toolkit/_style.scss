@@ -94,31 +94,33 @@
 //****************************************************************************
 
 @function new-tooltip(
-  $font:          new-font(sans-serif,8pt),
-  $foreground:    black,
-  $background:    new_background(lightgray),
-  $padding:       em(8) em(9),
-  $effect:        dropshadow(three-pass-box,rgba(black,0.5),10,0,0,3))
+  $font:                          new-font(sans-serif,8pt),
+  $foreground:                    black,
+  $background:                    new_background(lightgray),
+  $padding:                       em(8) em(9),
+  $effect:                        dropshadow(three-pass-box,rgba(black,0.5),10,0,0,3))
 {
-  $f: (-fx-text-fill: $foreground);
-  $p: (-fx-padding:   $padding);
-  $e: (-fx-effect:    $effect);
-
-  @return merge-fields($font,$f,$background,$p,$e);
+  @return merge-fields(
+    $font,
+    $background,
+    (-fx-text-fill:               $foreground),
+    (-fx-padding:                 $padding),
+    (-fx-effect:                  $effect));
 }
 
-@function new-console($font:          new-font(sans-serif,12),
-                      $foreground:    white,
-                      $background:    black,
-                      $selection:     -sys-text-highlight-color,
-                      $selected-text: -sys-text-highlight-text-color)
+@function new-console(
+  $font:                          new-font(sans-serif,12),
+  $foreground:                    white,
+  $background:                    black,
+  $selection:                     -sys-text-highlight-color,
+  $selected-text:                 -sys-text-highlight-text-color)
 {
-  $c: (-fx-text-fill:           $foreground,
-       -fx-background-color:    $background,
-       -fx-highlight-fill:      $selection,
-       -fx-highlight-text-fill: $selected-text);
-
-  @return merge-fields($c,if($font,$font,()));
+  @return merge-fields(
+    $font,      
+    (-fx-text-fill:               $foreground),
+    (-fx-background-color:        $background),
+    (-fx-highlight-fill:          $selection),
+    (-fx-highlight-text-fill:     $selected-text));
 }
 
 //****************************************************************************
