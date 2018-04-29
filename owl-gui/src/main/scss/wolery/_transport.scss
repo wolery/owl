@@ -160,8 +160,12 @@
 
 //****************************************************************************
 
-$transport-display-separator-color: rgb(55,71,96);
+$transport-display-separator-color: rgb( 55, 71, 96);
 $transport-display-text-color:      rgb(181,201,224);
+$transport-display-label-color:     rgb( 85,100,122);
+
+$transport-display-text-hover-color:rgb(147,203,255);
+$transport-display-selected-text-color:rgb(46,71,113);
 
 //****************************************************************************
 
@@ -194,14 +198,14 @@ $transport-display-text-color:      rgb(181,201,224);
 
     &>.label
     {
-      -fx-text-fill:              rgb(172,202,228);
+      -fx-text-fill:              $transport-display-text-color;//rgb(172,202,228);
       -fx-alignment:              CENTER;      
       -fx-background-insets:      3px;
     }
     
     &>.label:hover
     {
-      -fx-text-fill:              rgb(147,203,255);
+      -fx-text-fill:              $transport-display-text-hover-color;
       -fx-background-color:       rgb( 30, 43, 70);
     }
 
@@ -212,8 +216,55 @@ $transport-display-text-color:      rgb(181,201,224);
       visibility:                 hidden;
     }
   }
+  
+  .text-field
+  {
+    -fx-text-fill:                $transport-display-text-color;
+  //-fx-highlight-fill:           ;
+  //-fx-highlight-text-fill:      ;
+  
+    -fx-background-color:         clear;
+    -fx-background-insets:        0px;
+    -fx-background-radius:        0px;
+
+    -fx-focus-traversable:        false;
+  }
+  
+  .text-field:hover
+  {
+    -fx-text-fill:                $transport-display-text-hover-color;
+  //-fx-highlight-fill:           ;
+  //-fx-highlight-text-fill:      ;
+
+    -fx-background-color:         rgb( 30, 43, 70);
+    -fx-background-insets:        0px;
+    -fx-background-radius:        0px;
+  }
+
+  .text-field:focused
+  {
+    -fx-text-fill:                $transport-display-text-color;
+  //-fx-highlight-fill:           ;
+  //-fx-highlight-text-fill:      ;
+  
+    -fx-background-color:         $transport-display-selected-text-color;
+    -fx-background-insets:        0px;
+    -fx-background-radius:        0px;
+  }
 }
 
+.transport-display-text-tiny     {-fx-text-size: 8;}
+.transport-display-text-small    {-fx-text-size: 8;}
+.transport-display-text-medium   {-fx-text-size: 8;}
+.transport-display-text-large    {-fx-text-size: 8;}
+.transport-display-text-huge     {-fx-text-size: 8;}
+
+.transport-display-segment-label  // Label
+{
+  -fx-font-size:                  8;
+  -fx-text-fill:                  $transport-display-label-color;
+  -fx-alignment:                  BOTTOM_CENTER;      
+}
 
 #transport-display-mode        // MenuButton / TransportDisplayDropdown
 {
@@ -228,6 +279,17 @@ $transport-display-text-color:      rgb(181,201,224);
 //-fx-shape:                      "M0,0L4,5L8,0";
 //-fx-scale-shape:               true;
 //-fx-position-shape:            true;
+}
+
+//****************************************************************************
+
+.tooltip
+{
+  -fx-padding: em(3) em(8);
+  -fx-background-color:  gray(221);
+  -fx-background-insets: 0px;
+  -fx-background-radius: 0px;
+  -fx-text-fill:         black;
 }
 
 //****************************************************************************

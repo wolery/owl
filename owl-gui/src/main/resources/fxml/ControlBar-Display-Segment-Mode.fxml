@@ -1,0 +1,25 @@
+<?import javafx.scene.control.*?>
+
+<MenuButton id="transport-display-mode" styleClass="transport-display-button" text="v">
+  <items>
+    <MenuItem text="Beats &amp; Project"/>
+    <MenuItem text="Beats &amp; Project (Large)"/>
+    <MenuItem text="Beats &amp; Time"/>
+    <MenuItem text="Beats &amp; Time (Large)"/>
+    <MenuItem text="Beats"/>
+    <MenuItem text="Time"/>
+    <MenuItem text="Custom"/>
+    <SeparatorMenuItem />
+    <MenuItem text="Open Giant Beats Display"/>
+    <MenuItem text="Open Giant Time Display"/>
+    <SeparatorMenuItem />
+    <MenuItem text="Use SMPTE View offset"/>
+    <SeparatorMenuItem />
+    <MenuItem text="Customize Control Bar And Display..."/>
+    <MenuItem text="Apply Defaults"/>
+    <MenuItem text="Save As Defaults"/>
+  </items>
+  <tooltip>
+    <Tooltip text="Display Mode"/>
+  </tooltip>
+</MenuButton>

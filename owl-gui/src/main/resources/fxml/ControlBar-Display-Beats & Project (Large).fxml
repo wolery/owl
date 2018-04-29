@@ -1,0 +1,79 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root id="transport-display" prefHeight="50.0" type="HBox" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+
+      <VBox prefWidth="100.0">
+         <children>
+            <TextField styleClass="transport-display-counter" text="000">
+              <tooltip><Tooltip text="Playhead Position (Bars)"/></tooltip>
+            </TextField>
+            <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="BAR"/>
+         </children>
+      </VBox>
+
+      <VBox prefWidth="100.0">
+         <children>
+            <TextField styleClass="transport-display-counter" text="0">
+              <tooltip><Tooltip text="Playhead Position (Bars)"/></tooltip>
+            </TextField>
+            <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="BEAT"/>
+         </children>
+      </VBox>
+
+      <VBox prefWidth="100.0">
+         <children>
+            <TextField styleClass="transport-display-counter" text="0">
+              <tooltip><Tooltip text="Playhead Position (Bars)"/></tooltip>
+            </TextField>
+            <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="DIV"/>
+         </children>
+      </VBox>
+
+      <VBox prefWidth="100.0">
+         <children>
+            <TextField styleClass="transport-display-counter" text="000">
+              <tooltip><Tooltip text="Playhead Position (Bars)"/></tooltip>
+            </TextField>
+            <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="TICK"/>
+         </children>
+      </VBox>
+      
+      <Separator orientation="VERTICAL"/>
+
+      <VBox>
+        <children>
+          <TextField styleClass="transport-display-counter" text="80">
+            <tooltip><Tooltip text="Tempo"/></tooltip>
+          </TextField>
+          <fx:include source="ControlBar-Display-Segment-Tempo.fxml"/>
+          <Label prefWidth="51.0"
+            styleClass="transport-display-segment-label" text="TEMPO"/>
+        </children>
+      </VBox>
+
+      <Separator orientation="VERTICAL"/>
+
+      <VBox>
+        <children>
+          <fx:include source="ControlBar-Display-Segment-Time.fxml"/>
+          <Label text="TIME" styleClass="transport-display-segment-label"/>
+        </children>
+      </VBox>
+
+      <Separator orientation="VERTICAL"/>
+
+      <VBox>
+        <children>
+          <fx:include source="ControlBar-Display-Segment-Key.fxml"/>
+          <Label text="KEY" styleClass="transport-display-segment-label"/>
+        </children>
+      </VBox>
+
+      <Separator orientation="VERTICAL"/>
+
+      <fx:include source="ControlBar-Display-Segment-Mode.fxml"/>
+
+   </children>
+</fx:root>

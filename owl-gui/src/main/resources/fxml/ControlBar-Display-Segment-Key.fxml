@@ -1,0 +1,40 @@
+<?import javafx.scene.control.*?>
+
+<MenuButton id="transport-display-segment-key" styleClass="transport-display-button" text="Cmaj">
+  <items>
+    <MenuItem text="B major"/>
+    <MenuItem text="B♭ major"/>
+    <MenuItem text="A major"/>
+    <MenuItem text="A♭ major"/>
+    <MenuItem text="G major"/>
+    <MenuItem text="G♭ major"/>
+    <MenuItem text="F♯ major"/>
+    <MenuItem text="F major"/>
+    <MenuItem text="E major"/>
+    <MenuItem text="E♭ major"/>
+    <MenuItem text="D major"/>
+    <MenuItem text="D♭ major"/>
+    <MenuItem text="C♯ major"/>
+    <MenuItem text="C major"/>
+    <MenuItem text="C♭ major"/>
+    <SeparatorMenuItem/>
+    <MenuItem text="B minor"/>
+    <MenuItem text="B♭ minor"/>
+    <MenuItem text="A minor"/>
+    <MenuItem text="A♭ minor"/>
+    <MenuItem text="G minor"/>
+    <MenuItem text="G♭ minor"/>
+    <MenuItem text="F♯ minor"/>
+    <MenuItem text="F minor"/>
+    <MenuItem text="E minor"/>
+    <MenuItem text="E♭ minor"/>
+    <MenuItem text="D minor"/>
+    <MenuItem text="D♭ minor"/>
+    <MenuItem text="C♯ minor"/>
+    <MenuItem text="C minor"/>
+    <MenuItem text="C♭ minor"/>
+  </items>
+  <tooltip>
+    <Tooltip text="Key Signature"/>
+  </tooltip>
+</MenuButton>

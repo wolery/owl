@@ -1,0 +1,14 @@
+<?import javafx.scene.control.*?>
+
+<MenuButton id="transport-display-tempo-mode" styleClass="transport-display-button" text="KEEP">
+  <items>
+    <MenuItem text="KEEP - Keep Project Tempo"/>
+    <MenuItem text="ADAPT - Adapt Project Tempo"/>
+    <MenuItem text="AUTO - Automatic Mode"/>
+    <SeparatorMenuItem />
+    <MenuItem text="Smart Tempo Project Settings..."/>
+  </items>
+  <tooltip>
+    <Tooltip text="Project Tempo Menu"/>
+  </tooltip>
+</MenuButton>

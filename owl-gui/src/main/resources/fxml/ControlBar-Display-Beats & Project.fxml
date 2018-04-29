@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root id="transport-display" prefHeight="50.0" type="HBox" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.4">
+   <children>
+
+      <VBox prefWidth="100.0">
+         <children>
+            <TextField styleClass="transport-display-counter" text="000">
+              <tooltip><Tooltip text="Playhead Position (Bars)" /></tooltip>
+            </TextField>
+            <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="BAR" />
+         </children>
+      </VBox>
+
+      <VBox prefWidth="100.0">
+         <children>
+            <TextField styleClass="transport-display-counter" text="0">
+              <tooltip><Tooltip text="Playhead Position (Bars)" /></tooltip>
+            </TextField>
+            <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="BEAT" />
+         </children>
+      </VBox>
+
+      <VBox prefWidth="100.0">
+         <children>
+            <TextField styleClass="transport-display-counter" text="0" />
+            <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="DIV" />
+         </children>
+      </VBox>
+
+      <VBox prefWidth="100.0">
+         <children>
+            <TextField styleClass="transport-display-counter" text="000" />
+            <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="TICK" />
+         </children>
+      </VBox>
+      
+      <Separator orientation="VERTICAL" />
+
+      <VBox>
+        <children>
+          <TextField styleClass="transport-display-counter" text="80" />
+          <fx:include source="ControlBar-Display-Segment-Tempo.fxml" />
+          <Label prefWidth="51.0" styleClass="transport-display-segment-label" text="TEMPO" />
+        </children>
+      </VBox>
+
+      <Separator orientation="VERTICAL" />
+
+      <VBox>
+        <children>
+          <fx:include source="ControlBar-Display-Segment-Time.fxml" />
+          <Label styleClass="transport-display-segment-label" text="TIME" />
+        </children>
+      </VBox>
+
+      <Separator orientation="VERTICAL" />
+
+      <VBox>
+        <children>
+          <fx:include source="ControlBar-Display-Segment-Key.fxml" />
+          <Label styleClass="transport-display-segment-label" text="KEY" />
+        </children>
+      </VBox>
+
+      <Separator orientation="VERTICAL" />
+
+      <fx:include source="ControlBar-Display-Segment-Mode.fxml" />
+
+   </children>
+</fx:root>

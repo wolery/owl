@@ -18,20 +18,24 @@ package controlbar
 package display
 
 import javafx.scene.layout.HBox
+
 import com.wolery.owl.gui.util.load
-import javafx.fxml.FXMLLoader
+import com.wolery.fx.geometry.Insets
 
 //****************************************************************************
 
 class Display extends HBox with Logging
 {
-  log.debug("display")
-  load.node("ControlBar-Display",this)
+  load.node("ControlBar-Display-Beats & Project (Large)",this)
+
+  HBox.setMargin(this,Insets(5))
+
 
   def initialize(): Unit =
   {
     log.debug("initialize()");
   }
+
 }
 
 //****************************************************************************

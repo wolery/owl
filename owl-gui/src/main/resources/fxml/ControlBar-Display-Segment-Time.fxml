@@ -1,0 +1,17 @@
+<?import javafx.scene.control.*?>
+
+<MenuButton id="transport-display-tempo-mode" styleClass="transport-display-button" text="4/4" >
+  <items>
+    <MenuItem text="3/4"/>
+    <MenuItem text="4/4"/>
+    <MenuItem text="5/4"/>
+    <MenuItem text="6/8"/>
+    <MenuItem text="7/8"/>
+    <MenuItem text="12/8"/>
+    <SeparatorMenuItem />
+    <MenuItem text="Custom..."/>
+  </items>
+  <tooltip>
+    <Tooltip text="Time Signature"/>
+  </tooltip>
+</MenuButton>
