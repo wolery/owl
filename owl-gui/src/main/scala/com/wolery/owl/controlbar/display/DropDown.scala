@@ -12,20 +12,4 @@
 //*                                                                   (| v |)
 //**********************************************************************w*w***
 
-package com.wolery
-package owl
-package controlbar
-package display
-
-import javafx.scene.control.MenuButton
-
-//****************************************************************************
-
-class DropDown extends MenuButton with Logging
-{
-  log.debug("initialize()")
-
-  getStyleClass.setAll("transport-display-drop-down")
-}
-
 //****************************************************************************
