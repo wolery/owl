@@ -19,32 +19,19 @@ package display
 
 import javafx.scene.layout.HBox
 
-import com.wolery.owl.gui.util.load
-import com.wolery.fx.geometry.Insets
-import javafx.scene.layout.Region
-
 //****************************************************************************
-// move to package and make implicit? promote to com.wolery.fx.?
 
-class RegionSyntax[P <: Pane](val p: P) extends AnyVal
+abstract
+class Display extends HBox with Logging
 {
-  def add(nodes: Node*): P  = {p.getChildren.addAll(nodes:_*);p}
+  setId("transport-display")
 }
 
 //****************************************************************************
 
-class Display extends HBox with Logging
+object Display
 {
-  this.getChildren.addAll(new BeatsProjectLargeView())
-
-//load.node("ControlBar-Display-Beats & Project (Large)",this)
-
-  HBox.setMargin(this,Insets(5))
-
-  def initialize(): Unit =
-  {
-    log.debug("initialize()");
-  }
+  def apply(): Display = new BeatsProjectLargeView
 }
 
 //****************************************************************************

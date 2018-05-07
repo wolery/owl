@@ -16,21 +16,26 @@ package com.wolery
 package owl
 package gui
 
-import com.wolery.owl.core._
+import javax.sound.midi.{MetaEventListener, MetaMessage}
+
 import javafx.event.ActionEvent
 import javafx.scene.Scene
 import javafx.scene.control.MenuBar
-import javafx.stage.{Stage,StageStyle}
-import javax.sound.midi.{MetaEventListener,MetaMessage}
-import midi.Transport
-import com.wolery.owl.gui.util.{load}
+import javafx.stage.{Stage, StageStyle}
+
+import com.wolery.owl.core._
+import com.wolery.owl.gui.util.load
 import com.wolery.owl.owl
 import com.wolery.owl.transport.TransportController
+
+import com.wolery.owl.midi.Transport
 
 //****************************************************************************
 
 class PrototypeController(controller: Controller,transport: MetaEventListener) extends Logging
 {
+  type Chord       = Seq[core.Pitch]
+  type Pitches     = Seq[core.Pitch]
   @fx
   var menubar   : MenuBar    = _
   val instrument: Instrument = controller.instrument

@@ -24,7 +24,6 @@ import com.wolery.owl.gui.{MainView, SplashView}
 import com.wolery.owl.gui.util.load
 import com.wolery.owl.gui.util.implicits.asTask
 import com.wolery.owl.interpreter.{Interpreter,InterpreterConsole,ScalaInterpreter}
-import com.wolery.owl.midi.Transport
 import com.wolery.owl.preferences.theme
 
 import javax.sound.midi.{MidiSystem, Sequence, Sequencer, Synthesizer}
@@ -64,11 +63,11 @@ object owl extends Application
     synthesizer.close()
   }
 
-  def open(sequence: Sequence): Transport =
+  def open(sequence: Sequence): com.wolery.owl.midi.Transport =
   {
     sequencer.setSequence(sequence)
 
-    new Transport(sequencer)
+    new com.wolery.owl.midi.Transport(sequencer)
   }
 
   def console(): Node =

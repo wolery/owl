@@ -27,7 +27,7 @@ import com.wolery.owl.controlbar.display.Display
 
 final class ControlBar extends HBox with Logging
 {
-  val m_display = new Display
+  val m_display = Display()
 
   this.setId("control-bar")
   this.getChildren.add(m_display)

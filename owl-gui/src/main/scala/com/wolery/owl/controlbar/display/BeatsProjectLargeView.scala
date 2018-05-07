@@ -19,13 +19,13 @@ package display
 
 import javafx.scene.control._
 import javafx.scene.layout._
+import com.wolery.fx.control.menu._
+import com.wolery.owl.temporal._
 
 //****************************************************************************
 
-class BeatsProjectLargeView extends HBox
+class BeatsProjectLargeView extends Display
 {
-  setId("transport-display")
-
   this.getChildren.addAll(
 
     new VBox(
