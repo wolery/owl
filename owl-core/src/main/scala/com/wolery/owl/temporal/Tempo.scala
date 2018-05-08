@@ -52,7 +52,7 @@ object Tempo
       178.0 → "Prestissimo")
 
    private
-   val names: scala.collection.Map[String,ℝ] =
+   val names: Map[String,ℝ] =
      Map("larghissimo"      →  15.0,
          "grave"            →  30.5,
          "lento"            →  43.5,

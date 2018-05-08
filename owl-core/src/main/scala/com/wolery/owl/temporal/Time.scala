@@ -18,20 +18,20 @@ package temporal
 
 case class Bar (bar: ℕ = 0,beat: ℕ = 0,division: ℕ = 0,tick: ℕ = 0)
 {
-  def asTick(implicit m: Map): Tick = m.tick(this)
-  def asTime(implicit m: Map): Time = m.time(this)
+  def asTick(implicit m: Context): Tick = m.tick(this)
+  def asTime(implicit m: Context): Time = m.time(this)
 }
 
 case class Tick(tick: Long) extends AnyVal
 {
-  def asBar (implicit m: Map): Bar  = m.bar (this)
-  def asTime(implicit m: Map): Time = m.time(this)
+  def asBar (implicit m: Context): Bar  = m.bar (this)
+  def asTime(implicit m: Context): Time = m.time(this)
 }
 
 case class Time(millisecond: Long) extends AnyVal
 {
-  def asBar (implicit m: Map): Bar  = m.bar_(this)
-  def asTick(implicit m: Map): Tick = m.tick(this)
+  def asBar (implicit m: Context): Bar  = m.bar_(this)
+  def asTick(implicit m: Context): Tick = m.tick(this)
 
   def hour    : ℕ = ???
   def minute  : ℕ = ???
@@ -44,7 +44,7 @@ case class Meter(beats: ℕ = 4,symbol: ℕ = 4,clocks: ℕ = 24,subbeats: ℕ =
 
 //case class Tempo(bpm: ℕ) extends AnyVal
 
-trait Map
+trait Context
 {
   def bar  (t: Tick)              : Bar
   def bar_ (t: Time)              : Bar
