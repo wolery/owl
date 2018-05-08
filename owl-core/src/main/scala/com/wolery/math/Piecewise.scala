@@ -16,6 +16,7 @@ package com.wolery
 package math
 
 import scala.collection.Searching._
+import scala.reflect.ClassTag
 
 /**
  * @author Jonathon Bell
@@ -25,13 +26,13 @@ object Piecewise
   /**
    *
    */
-  def apply[α: Ordering,β](min: α ⇒ β,pieces: (α,α ⇒ β)*): Function[α,β] = new Function[α,β]
+  def apply[α: Ordering: ClassTag,β](min: α ⇒ β,pieces: (α,α ⇒ β)*): Function[α,β] = new Function[α,β]
   {
     val (v,p) =
     {
       val (v,p) = pieces.unzip
 
-      (v.to,(min +: p).to)
+      (v.toArray,(min +: p).toArray)
     }
 
     def apply(a: α): β = v.search(a) match
@@ -44,7 +45,7 @@ object Piecewise
   /**
    *
    */
-  def apply[α: Ordering,β](max: β,pieces: (α,β)*): Function[α,β] =
+  def apply[α: Ordering: ClassTag,β](max: β,pieces: (α,β)*): Function[α,β] =
   {
     val pairs = for ((a,b) ← pieces) yield
                      (a, (_: α) ⇒ b)
