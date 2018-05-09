@@ -44,14 +44,14 @@ trait Transport
   def tempo(tick: Tick = cursor)  : Tempo
 
   def tempo                       : Tempo
-  def tempo_=(ratio: ℝ)           : Unit
-  def tempo_=(tempo: Tempo)       : Unit
+  def tempo_*=(ratio: ℝ)          : Unit
+  def tempo_= (tempo: Tempo)      : Unit
 
   def cycling                     : Bool
   def cycling_=(on: Bool)         : Unit
 
   implicit
-  def map                         : temporal.Map
+  def context                     : Context
 }
 
 //****************************************************************************
