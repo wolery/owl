@@ -16,9 +16,13 @@ package com.wolery
 package owl
 package core
 
+//****************************************************************************
+
 import java.lang.Math.{log,pow,abs,round}
 
 import Frequency.{A4,A440}
+
+//****************************************************************************
 
 /**
  * Represents an audio frequency as a positive real number of hertz.

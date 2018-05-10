@@ -16,7 +16,11 @@ package com.wolery
 package owl
 package core
 
+//****************************************************************************
+
 import scala.collection.mutable.Map
+
+//****************************************************************************
 
 /**
  * Provides additional information about scale shapes beyond that which can be

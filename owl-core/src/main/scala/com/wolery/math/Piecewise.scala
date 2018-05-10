@@ -15,10 +15,14 @@
 package com.wolery
 package math
 
+//****************************************************************************
+
 import scala.collection.Searching._
 import scala.reflect.ClassTag
 
 import util.utilities.isIncreasing
+
+//****************************************************************************
 
 /**
  * Provides support for constructing functions whose definitions are specified

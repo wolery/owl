@@ -17,6 +17,8 @@ package owl
 package gui
 package stringed
 
+//****************************************************************************
+
 import com.wolery.owl._
 import com.wolery.owl.core._
 import com.wolery.owl.util.utilities._

@@ -16,6 +16,8 @@ package com.wolery
 package owl
 package temporal
 
+//****************************************************************************
+
 case class Bar (bar: ℕ = 0,beat: ℕ = 0,division: ℕ = 0,tick: ℕ = 0)
 {
   def asTick(implicit m: Context): Tick = m.tick(this)

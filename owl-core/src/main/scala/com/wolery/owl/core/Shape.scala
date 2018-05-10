@@ -16,12 +16,16 @@ package com.wolery
 package owl
 package core
 
+//****************************************************************************
+
 import java.lang.Integer.bitCount
 import scala.collection.immutable.BitSet
 
 import util.utilities.{mod,mod12,ror12}
 import Shapes.info
 import Shape.bit
+
+//****************************************************************************
 
 /**
  * Represents the defining interval structure of a musical scale as a sequence

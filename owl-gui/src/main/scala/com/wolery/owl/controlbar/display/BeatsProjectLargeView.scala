@@ -17,6 +17,8 @@ package owl
 package controlbar
 package display
 
+//****************************************************************************
+
 import javafx.scene.control._
 import javafx.scene.layout._
 import com.wolery.fx.control.menu._

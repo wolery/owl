@@ -14,6 +14,8 @@
 
 package com.wolery
 
+//****************************************************************************
+
 /**
  * Common definitions used throughout the application.
  *

@@ -16,6 +16,8 @@ package com.wolery
 package owl
 package gui
 
+//****************************************************************************
+
 import javax.sound.midi.{MetaEventListener, MetaMessage}
 
 import javafx.event.ActionEvent

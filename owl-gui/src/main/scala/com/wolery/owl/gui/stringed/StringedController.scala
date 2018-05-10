@@ -17,6 +17,8 @@ package owl
 package gui
 package stringed
 
+//****************************************************************************
+
 import com.wolery.owl.gui.Controller
 import com.wolery.owl.core.Pitch
 import com.wolery.owl.core.Scale

@@ -16,6 +16,8 @@ package com.wolery
 package owl
 package gui
 
+//****************************************************************************
+
 import javafx.scene.Scene
 import javafx.scene.control.{Label, ProgressBar}
 import javafx.stage.{Modality, Stage}

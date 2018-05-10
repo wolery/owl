@@ -16,6 +16,8 @@ package com.wolery
 package owl
 package util
 
+//****************************************************************************
+
 /**
  * Miscellaneous utility functions used throughout Owl.
  *

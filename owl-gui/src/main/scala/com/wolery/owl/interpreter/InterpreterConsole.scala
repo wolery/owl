@@ -16,8 +16,12 @@ package com.wolery
 package owl
 package interpreter
 
+//****************************************************************************
+
 import javafx.event.ActionEvent
 import com.wolery.fx.control.Console
+
+//****************************************************************************
 
 /**
  * Specializes class `Console` for use with an interpreter.

@@ -16,7 +16,11 @@ package com.wolery
 package owl
 package core
 
+//****************************************************************************
+
 import util.utilities.subscript
+
+//****************************************************************************
 
 /**
  * Represents an even tempered pitch as the interval it forms with a standard

@@ -16,6 +16,8 @@ package com.wolery
 package owl
 package interpreter
 
+//****************************************************************************
+
 import java.io.{PrintWriter,Writer}
 
 import scala.tools.nsc.{ConsoleWriter,Settings}
@@ -23,6 +25,8 @@ import scala.tools.nsc.interpreter.IMain
 import scala.tools.nsc.interpreter.Results.{Result⇒IResult,_}
 
 import com.wolery.owl.preferences.compiler
+
+//****************************************************************************
 
 /**
  * An embedded interpreter for the language Scala.

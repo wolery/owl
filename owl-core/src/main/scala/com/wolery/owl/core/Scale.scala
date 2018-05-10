@@ -16,6 +16,8 @@ package com.wolery
 package owl
 package core
 
+//****************************************************************************
+
 /**
  * Represents a musical scale as a subset of the twelve notes, together with a
  * distinguished element, the ''root'' of the scale.

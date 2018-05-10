@@ -17,6 +17,8 @@ package owl
 package controlbar
 package display
 
+//****************************************************************************
+
 import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.control._
 import javafx.scene.layout._

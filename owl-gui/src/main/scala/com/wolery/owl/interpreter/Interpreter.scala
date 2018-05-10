@@ -16,7 +16,11 @@ package com.wolery
 package owl
 package interpreter
 
+//****************************************************************************
+
 import java.io.Writer
+
+//****************************************************************************
 
 /**
  * An abstract interface to an embedded language interpreter.
