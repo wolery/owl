@@ -1,7 +1,7 @@
 //**************************** Copyright © Jonathon Bell. All rights reserved.
 //*
 //*
-//*  Version : Header:
+//*  Version : $Header:$
 //*
 //*
 //*  Purpose :
