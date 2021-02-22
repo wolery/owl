@@ -31,7 +31,7 @@ final case class Scale (val root: Note,val shape: Shape)
   def names: Seq[Name]                    = shape.names.map(n ⇒ s"$root $n")
 
   def size:  ℕ                            = shape.size
-  def toSet: Notes                        = (Notes.empty /: shape.toSet)((s,i) ⇒ s + (root + i))
+  def toSet: Notes                        = shape.toSet.foldLeft(Notes.empty)((s,i) ⇒ s + (root + i))
   def toSeq: Seq[Note]                    = shape.toSeq.map(root + _)
 
   def mode(mode: ℤ): Scale                = Scale(note(mode),toSet)

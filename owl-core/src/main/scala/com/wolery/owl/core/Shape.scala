@@ -245,7 +245,7 @@ object Shape
    */
   def apply(intervals: Traversable[ℤ]): Shape =
   {
-    Shape((1 /: intervals)((b,i) ⇒ b | bit(i)))
+    Shape(intervals.foldLeft(1)((b,i) ⇒ b | bit(i)))
   }
 
   /**
@@ -274,8 +274,8 @@ object Shape
   def apply(intervals: ℤ*): Shape = intervals match
   {
     case Seq()       ⇒ {        Shape(1)}
-    case Seq(0,t@_*) ⇒ {        Shape((1 /: t)((b,i) ⇒ b | bit(i)))}
-    case s           ⇒ {var n=0;Shape((1 /: s)((b,i) ⇒ b | bit{n+=i;n}))}
+    case Seq(0,t@_*) ⇒ {        Shape(t.foldLeft(1)((b,i) ⇒ b | bit(i)))}
+    case s           ⇒ {var n=0;Shape(s.foldLeft(1)((b,i) ⇒ b | bit{n+=i;n}))}
   }
 
   /**
