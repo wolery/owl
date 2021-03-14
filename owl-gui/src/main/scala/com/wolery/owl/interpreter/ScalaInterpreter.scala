@@ -21,7 +21,7 @@ import java.io.{PrintWriter,Writer}
 import scala.tools.nsc.{ConsoleWriter,Settings}
 import scala.tools.nsc.interpreter.IMain
 import scala.tools.nsc.interpreter.Results.{Result⇒IResult,_}
-import scala.tools.nsc.interpreter.shell.ReplReporterImpl
+//import scala.tools.nsc.interpreter.shell.ReplReporterImpl #TODO:JDK15
 
 import com.wolery.owl.preferences.compiler
 
@@ -72,7 +72,8 @@ object ScalaInterpreter extends Interpreter
                                   classOf[Some[_]])
     s.processArgumentString(compiler.value)
 
-    new IMain(s, new ReplReporterImpl(s, m_out))
+    new IMain(s, m_out)
+//  new IMain(s, new ReplReporterImpl(s, m_out)) #TODO:JDK15
   }
 
   /**
