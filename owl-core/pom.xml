@@ -43,8 +43,8 @@
       <artifactId>scalactic_${scala.binary.version}</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.scalacheck</groupId>
-      <artifactId>scalacheck_${scala.binary.version}</artifactId>
+      <groupId>org.scalatestplus</groupId>
+      <artifactId>scalacheck-1-15_${scala.binary.version}</artifactId>
     </dependency>
     <dependency>
       <groupId>com.wolery</groupId>
